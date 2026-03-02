@@ -31,6 +31,8 @@ Configure the development tooling required for the specific task.
 
 ## When to Use
 
+> **First-time project setup?** If this is your first time working on this project, use the `ampa-project-setup` skill instead — it provides comprehensive environment initialization including language detection, linting, and testing framework setup. This operation is for subsequent tasks where the environment is already configured.
+
 Use this operation when:
 - You have parsed task requirements and are ready to implement
 - You need to switch to a different project context

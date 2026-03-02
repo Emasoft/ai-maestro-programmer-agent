@@ -161,7 +161,7 @@ When this skill is applied correctly, the following artifacts are produced:
 
 ```bash
 # Clone the repository
-gh repo clone Emasoft/svgbbox
+gh repo clone <owner>/<repo>
 
 # Create feature branch
 git checkout -b feature/42-add-viewbox-parser main

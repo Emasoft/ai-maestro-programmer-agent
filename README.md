@@ -1,10 +1,12 @@
 # AI Maestro Programmer Agent (AMPA)
 
-**Version**: 1.0.0
+**Version**: 1.0.6
 
 ## Overview
 
 The AI Maestro Programmer Agent is a **general-purpose programmer** that executes implementation tasks assigned by the Orchestrator. It handles the actual coding work across multiple programming languages and toolchains.
+
+> **Standalone or Orchestrated**: This plugin works in two modes. In **standalone mode**, the agent receives tasks directly from the user and reports back in conversation. In **orchestrated mode** (within the AI Maestro ecosystem), it receives tasks from the Orchestrator (AMOA) via messaging. No additional setup is needed for standalone mode.
 
 **Prefix**: `ampa-` = AI Maestro Programmer Agent
 
@@ -38,24 +40,24 @@ The AI Maestro Programmer Agent is a **general-purpose programmer** that execute
 
 None. The `hooks/hooks.json` is empty -- AMPA uses globally installed hooks.
 
-### Scripts (1)
+### Scripts
+
+The `scripts/` directory contains the CPV (Claude Plugins Validation) suite — 21 validation scripts covering plugin structure, agents, skills, hooks, security, encoding, documentation, and more. The entry point is `validate_plugin.py`. Scripts are auto-synced from `Emasoft/claude-plugins-validation` via `sync_cpv_scripts.sh`.
 
 | Script | Description |
 |--------|-------------|
-| `validate_plugin.py` | Plugin structure validator |
+| `validate_plugin.py` | CPV suite entry point — runs all validation checks |
 
 ## Workflow
 
 The Programmer Agent follows **Steps 14, 15, 17-19, 21-23** from the master workflow:
 
-1. **Step 14**: Receive task from Orchestrator via AI Maestro
-2. **Step 15**: Investigate code context using SERENA MCP
-3. **Step 17**: Implement changes using Edit tool (NOT scripts)
-4. **Step 18**: Run language-specific linter/formatter/type checker
-5. **Step 19**: Write/update tests for changed code
-6. **Step 21**: Run tests and capture results to timestamped log
-7. **Step 22**: If tests fail, delegate to code fixer and repeat
-8. **Step 23**: Report completion to Orchestrator with file paths
+1. **Step 14**: Request Clarification from Orchestrator
+2. **Step 15**: Receive Feedback and Design Updates
+3. **Step 17**: Task Execution (code, lint, test)
+4. **Step 19**: Task Completion (create PR, notify)
+5. **Step 21**: Respond to PR Review Feedback
+6. **Step 22**: Handle Failed PR (fix and resubmit)
 
 ## Installation (Production)
 
@@ -69,6 +71,12 @@ Role plugins are installed with `--scope local` inside the specific agent's work
 # RESTART Claude Code after installing (required!)
 ```
 
+### Installation (from GitHub)
+
+```bash
+claude plugin install ai-maestro-programmer-agent --url https://github.com/Emasoft/ai-maestro-programmer-agent
+```
+
 Once installed, start a session with the main agent:
 
 ```bash
@@ -80,7 +88,13 @@ claude --agent ampa-programmer-main-agent
 `--plugin-dir` loads a plugin directly from a local directory without marketplace installation. Use only during plugin development.
 
 ```bash
-claude --plugin-dir ./OUTPUT_SKILLS/ai-maestro-programmer-agent
+claude --plugin-dir .
+```
+
+A pre-push git hook (`git-hooks/pre-push`) runs the validation suite before each push. Install it with:
+
+```bash
+cp git-hooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
 ```
 
 ## Requirements
@@ -102,7 +116,7 @@ The Programmer Agent relies on SERENA MCP for code investigation:
 | **Python** | `uv` | `ruff check` | `ruff format` | `mypy` |
 | **JavaScript/TypeScript** | `bun` | `eslint` | `prettier` | `tsc` |
 | **Rust** | `cargo` | `clippy` | `rustfmt` | Built-in |
-| **Go** | `go` | `golint` | `gofmt` | Built-in |
+| **Go** | `go` | `staticcheck` | `gofmt` | Built-in |
 | **.NET (C#/F#)** | `dotnet` | Built-in | Built-in | Built-in |
 | **C/C++** | `gcc`/`clang` | `clang-tidy` | `clang-format` | Built-in |
 | **Objective-C** | `clang` | `clang-tidy` | `clang-format` | Built-in |
@@ -154,11 +168,16 @@ The Programmer Agent relies on SERENA MCP for code investigation:
 ## Validation
 
 ```bash
-cd OUTPUT_SKILLS/ai-maestro-programmer-agent
 uv run python scripts/validate_plugin.py . --verbose
 ```
 
+### CI/CD
+
+- `validate.yml` — Runs plugin validation on push to main and PRs
+- `release.yml` — Creates GitHub releases on version tags (`v*`)
+- `notify-marketplace.yml` — Marketplace notification (currently disabled, TBD)
+
 ## See Also
 
-> **Related Plugins**: This agent works with the AI Maestro Orchestrator Agent (AMOA), AI Maestro Integrator Agent (AMIA), and AI Maestro Architect Agent (AMAA). Each agent plugin is installed independently.
+> **Related Plugins**: This agent works with the AI Maestro Orchestrator Agent (AMOA), AI Maestro Integrator Agent (AMIA), and AI Maestro Architect Agent (AMAA). Each agent plugin is installed independently. These plugins are part of the AI Maestro ecosystem and are not required for standalone use.
 

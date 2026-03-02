@@ -1,7 +1,7 @@
 # Full Project Workflow: From Requirements to Delivery
 
 **Version**: 1.1.0
-**Last Updated**: 2026-02-07
+**Last Updated**: 2026-03-02
 
 This document describes the complete workflow for how the AI Maestro agent system handles a project from initial requirements to delivery. All agents must understand this workflow to coordinate effectively.
 
@@ -445,6 +445,8 @@ All projects use an **8-column kanban system** on GitHub Projects. Every agent m
 - **PR Review Report**: Created by AMIA for each PR
 
 ---
+
+> **Cross-Plugin Reference**: The following Wave additions document skills across the entire AI Maestro ecosystem, not just AMPA. They are included here for workflow context.
 
 ## Wave 1-7 Skill Additions (2026-02-06 — 2026-02-07)
 

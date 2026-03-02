@@ -62,8 +62,8 @@ gh repo clone <owner>/<repo> -- --config core.sshCommand="ssh -i ~/.ssh/id_rsa"
 
 Example:
 ```bash
-gh repo clone Emasoft/my-project
-cd my-project
+gh repo clone <owner>/<project>
+cd <project>
 ```
 
 ### 1.3 Forking Upstream Repositories
@@ -152,8 +152,8 @@ git log --oneline -5
 ### Example 1: Clone Own Repository
 
 ```bash
-gh repo clone Emasoft/my-project
-cd my-project
+gh repo clone <owner>/<project>
+cd <project>
 git status
 # On branch main
 # Your branch is up to date with 'origin/main'.
@@ -165,8 +165,8 @@ git status
 gh repo fork facebook/react --clone=true
 cd react
 git remote -v
-# origin    https://github.com/Emasoft/react.git (fetch)
-# origin    https://github.com/Emasoft/react.git (push)
+# origin    https://github.com/<owner>/react.git (fetch)
+# origin    https://github.com/<owner>/react.git (push)
 # upstream  https://github.com/facebook/react.git (fetch)
 # upstream  https://github.com/facebook/react.git (push)
 ```
@@ -174,8 +174,8 @@ git remote -v
 ### Example 3: Clone to Specific Directory
 
 ```bash
-gh repo clone Emasoft/my-project ~/projects/my-project
-cd ~/projects/my-project
+gh repo clone <owner>/<project> ~/projects/<project>
+cd ~/projects/<project>
 ```
 
 ## Error Handling

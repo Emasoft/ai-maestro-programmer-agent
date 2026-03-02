@@ -77,7 +77,7 @@ This loads ONLY the ai-maestro-programmer-agent plugin into that Claude Code ses
 │   │       │   └── plugin.json
 │   │       ├── agents/
 │   │       │   └── ampa-programmer-main-agent.md
-│   │       ├── skills/  ← Empty (uses globally installed skills)
+│   │       ├── skills/  ← Contains 5 bundled AMPA skills (task-execution, orchestrator-communication, github-operations, project-setup, handoff-management)
 │   │       ├── hooks/
 │   │       │   └── hooks.json
 │   │       └── scripts/
@@ -151,17 +151,8 @@ Each plugin defines a **role boundary**. AMPA's job is to **implement tasks**, n
 - Integrate and review code (AMIA's job)
 - Manage user communication (AMAMA's job)
 
-### Globally Installed Skills
-AMPA relies on **globally installed skills** (not plugin-specific skills) for implementation guidance:
-- Skills installed in `~/.claude/skills/`
-- Generic programming skills (TDD, refactoring, testing patterns)
-- Language-specific skills (Python, TypeScript, Go, Rust)
-- Tool-specific skills (Git, Docker, pytest, Jest)
-
-**Why global skills?**
-- AMPA is a general-purpose implementer (not domain-specific)
-- Skills are shared across all programmer instances
-- Reduces plugin size and maintenance burden
+### Bundled and Globally Installed Skills
+AMPA ships 5 bundled skills in the `skills/` directory, declared via `plugin.json`. Additionally, the `agent-messaging` skill (required for orchestrated mode) must be globally installed at `~/.claude/skills/agent-messaging/`.
 
 ### SERENA MCP for Code Navigation
 AMPA uses the globally configured **SERENA MCP** for code navigation and analysis:
@@ -333,7 +324,7 @@ AMPA → [Progress Update] → AMOA
 AMPA → [PR Created] → AMIA (review request)
     ↓ (wait for review)
 AMIA → [Review Complete] → AMPA (via AMOA)
-    ↓ (AMOA merges PR)
+    ↓ (AMIA merges PR)
 AMPA → [Task Complete] → AMOA
 AMOA → [Kanban Updated] → GitHub
 ```
@@ -413,6 +404,8 @@ AUTO_HIBERNATE_AFTER_PR=true
 AUTO_HIBERNATE_TIMEOUT=600  # 10 minutes of inactivity
 ```
 
+(These environment variables are reserved for future use and are not currently implemented.)
+
 This prevents AMPA from consuming resources while waiting for review feedback.
 
 ---
@@ -450,8 +443,8 @@ This prevents AMPA from consuming resources while waiting for review feedback.
 **Symptom**: `Git authentication failed` or `Permission denied`
 **Cause**: Git credentials not configured in AMPA session
 **Solution**:
-1. Configure git: `git config --local user.name "AMPA Bot"`
-2. Configure email: `git config --local user.email "ampa@example.com"`
+1. Configure git identity as appropriate for your project. Example: `git config --local user.name 'Your Name'`
+2. Configure email as appropriate for your project. Example: `git config --local user.email 'your@email.com'`
 3. Verify SSH key or token access
 
 #### Issue: PR creation fails
@@ -538,6 +531,6 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 ---
 
-**Document Version**: 1.0.0
-**Last Updated**: 2026-02-06
+**Document Version**: 1.1.0
+**Last Updated**: 2026-03-02
 **Maintained By**: claude-skills-factory

@@ -8,7 +8,7 @@
 #   0 - All checks passed
 #   1 - CRITICAL issues found (blocks push)
 #   2 - MAJOR issues found (blocks push)
-#   3 - MINOR issues found (blocks push)
+#   3 - MINOR issues found (warning only, push allowed)
 #
 # To install:
 #   mkdir -p .git/hooks && cp git-hooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
@@ -41,6 +41,7 @@ echo -e "${BLUE}Pushing to:${NC} $REMOTE ($URL)"
 echo ""
 
 # Check if plugin files changed in the commits being pushed
+PLUGIN_FILES_CHANGED=false
 while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
     if [ "$LOCAL_SHA" = "0000000000000000000000000000000000000000" ]; then
         # Branch deletion, skip validation
@@ -49,14 +50,19 @@ while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
     fi
 
     if [ "$REMOTE_SHA" = "0000000000000000000000000000000000000000" ]; then
-        # New branch, check all files
-        CHANGED_FILES=$(git diff --name-only "$LOCAL_SHA" HEAD~10 2>/dev/null || git ls-tree -r --name-only "$LOCAL_SHA")
+        # New branch: compare against merge-base with main/master
+        BASE_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main")
+        MERGE_BASE=$(git merge-base "$LOCAL_SHA" "origin/$BASE_BRANCH" 2>/dev/null || echo "")
+        if [ -n "$MERGE_BASE" ]; then
+            CHANGED_FILES=$(git diff --name-only "$MERGE_BASE" "$LOCAL_SHA" 2>/dev/null)
+        else
+            CHANGED_FILES=$(git ls-tree -r --name-only "$LOCAL_SHA")
+        fi
     else
         # Existing branch, check changed files
         CHANGED_FILES=$(git diff --name-only "$REMOTE_SHA..$LOCAL_SHA" 2>/dev/null || true)
     fi
 
-    PLUGIN_FILES_CHANGED=false
     while IFS= read -r file; do
         case "$file" in
             .claude-plugin/*|agents/*|commands/*|skills/*|hooks/*|scripts/*.py|scripts/*.sh|*.mcp.json)
@@ -64,21 +70,17 @@ while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
                 ;;
         esac
     done <<< "$CHANGED_FILES"
-
-    if [ "$PLUGIN_FILES_CHANGED" = false ]; then
-        echo -e "${GREEN}No plugin files changed. Skipping validation.${NC}"
-        exit 0
-    fi
 done
+
+if [ "$PLUGIN_FILES_CHANGED" = false ]; then
+    echo -e "${GREEN}No plugin files changed. Skipping validation.${NC}"
+    exit 0
+fi
 
 cd "$REPO_ROOT"
 
-# Sync validation scripts from CPV before validating
-if [ -f "scripts/sync_cpv_scripts.sh" ] && command -v gh &> /dev/null; then
-    echo -e "${BLUE}Syncing validation scripts from CPV...${NC}"
-    bash scripts/sync_cpv_scripts.sh 2>&1 || echo -e "${YELLOW}WARNING: CPV sync failed (offline?). Using local scripts.${NC}"
-    echo ""
-fi
+# NOTE: CPV scripts are synced in CI (validate.yml), not during pre-push.
+# To manually update local validation scripts, run: bash scripts/sync_cpv_scripts.sh
 
 echo -e "${BLUE}Running plugin validation...${NC}"
 echo ""

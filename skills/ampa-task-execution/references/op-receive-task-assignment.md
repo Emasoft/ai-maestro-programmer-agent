@@ -71,7 +71,7 @@ Example message structure:
 ```json
 {
   "from": "orchestrator-master",
-  "to": "ampa-programmer-agent",
+  "to": "<project>-programmer-<NNN>",  // Session name follows the naming convention from AGENT_OPERATIONS.md: <project>-programmer-<NNN>
   "subject": "TASK: Implement user authentication",
   "priority": "high",
   "content": {

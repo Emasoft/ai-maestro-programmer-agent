@@ -1,4 +1,6 @@
-# AMCOS Role Boundaries
+# AI Maestro Role Boundaries
+
+*This is a shared cross-plugin document defining role boundaries for all agents in the AI Maestro ecosystem. It is distributed with each agent plugin for reference.*
 
 **CRITICAL: This document defines the strict boundaries between agent roles. Violating these boundaries breaks the system architecture.**
 
@@ -175,22 +177,51 @@ AMOA: Sends handoff to agent-456
 
 ---
 
-## Summary Table
+## Implementer Agents (AMPA, Artist, SFX-Expert, etc.)
 
-| Responsibility | AMAMA | AMCOS | AMOA | AMIA | AMAA |
-|----------------|------|------|-----|-----|-----|
-| Create projects | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Create agents | Approves | ✅ | Requests | ❌ | ❌ |
-| Configure agents | ❌ | ✅ | ❌ | ❌ | ❌ |
-| Assign agents to teams | ❌ | ✅ | ❌ | ❌ | ❌ |
-| Assign tasks | ❌ | ❌ | ✅ | ❌ | ❌ |
-| Manage kanban | ❌ | ❌ | ✅ | ❌ | ❌ |
-| Code review | ❌ | ❌ | ❌ | ✅ | ❌ |
-| Architecture | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Talk to user | ✅ | ❌ | ❌ | ❌ | ❌ |
+*Implementers are agents that produce artifacts. AMPA (Programmer Agent) is one subtype. These boundaries apply to all implementer subtypes.*
+
+### AMPA (Programmer Agent) Boundaries
+
+### AMPA CAN:
+- Write, modify, and refactor code in any supported language
+- Run tests and linting tools
+- Create feature branches and commits
+- Create pull requests
+- Report blockers, status updates, and completion to AMOA
+- Propose improvements and optimizations
+- Create handoff documents for session continuity
+- Set up project environments and tooling
+- In standalone mode: receive tasks from user, take initiative, merge PRs
+
+### AMPA CANNOT:
+- Merge pull requests (AMIA's responsibility, unless in standalone mode)
+- Make architectural decisions (AMAA's responsibility)
+- Assign tasks to other agents (AMOA's responsibility)
+- Communicate directly with the user (AMOA/AMAMA's responsibility, unless in standalone mode)
+- Modify CI/CD pipelines or deployment configurations
+- Access production environments
 
 ---
 
-**Document Version**: 1.0.0
-**Last Updated**: 2026-02-02
-**Author**: AMCOS Plugin Development
+## Summary Table
+
+| Responsibility | AMAMA | AMCOS | AMOA | AMIA | AMAA | Implementers |
+|----------------|------|------|-----|-----|-----|------------|
+| Create projects | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Create agents | Approves | ✅ | Requests | ❌ | ❌ | ❌ |
+| Configure agents | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Assign agents to teams | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Assign tasks | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
+| Manage kanban | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
+| Produce artifacts | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Code review | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| Merge PRs | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| Architecture | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Talk to user | ✅ | ❌ | ❌ | ❌ | ❌ | Standalone only |
+
+---
+
+**Document Version**: 1.1.0
+**Last Updated**: 2026-03-02
+**Author**: AI Maestro Team (shared cross-plugin document)

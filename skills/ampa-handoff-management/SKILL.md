@@ -35,7 +35,7 @@ Follow these numbered steps when performing handoff management:
 1. **Determine the handoff operation needed.** Consult the Quick Reference table at the bottom of this document to match your current situation to the correct operation (Read, Create, Write Bug Report, or Document Work State).
 2. **Read the corresponding operation reference file.** Each operation has a dedicated guide in the `references/` directory. Read the full guide before proceeding.
 3. **Verify the handoff directory exists.** Run `mkdir -p "$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-<task-name>/"` to ensure the task-specific subdirectory is available.
-4. **Execute the operation.** Follow the step-by-step procedure in the reference file. All handoff documents must include YAML frontmatter with fields: `type`, `from`, `to`, `task`, `timestamp`, and `status`.
+4. **Execute the operation.** Follow the step-by-step procedure in the reference file. All handoff documents must include YAML frontmatter with fields: `type`, `from`, `to`, `task`, `created`, `priority`, and `status`.
 5. **Validate the handoff document.** After writing, re-read the document to confirm all required fields are present and the content accurately reflects the current work state.
 6. **Send notification via AI Maestro.** After creating or updating a handoff, send a message to the receiving agent using `curl -X POST "http://localhost:23000/api/messages"` with the handoff file path in the message body.
 7. **Archive previous versions.** If updating an existing handoff, move the previous `current.md` to the `archive/` subdirectory with a timestamp suffix before writing the new version.

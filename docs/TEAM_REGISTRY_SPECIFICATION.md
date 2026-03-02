@@ -1,7 +1,7 @@
 # Team Registry Specification
 
-**Version**: 1.1.0
-**Last Updated**: 2026-02-07
+**Version**: 1.2.0
+**Last Updated**: 2026-03-02
 
 This document specifies the format and location of team registries, agent contacts, and naming conventions.
 
@@ -64,6 +64,8 @@ Team names must be **globally unique** across all projects managed by AMCOS. AMC
 
 ## Team Registry Format (team-registry.json)
 
+*Note: The `$schema` URL is reserved for future use. The schema is not yet published at `emasoft.github.io`.*
+
 ```json
 {
   "$schema": "https://emasoft.github.io/schemas/team-registry.v1.json",
@@ -99,20 +101,20 @@ Team names must be **globally unique** across all projects managed by AMCOS. AMC
       "assigned_at": "2026-02-03T10:30:00Z"
     },
     {
-      "name": "svgbbox-impl-01",
+      "name": "svgbbox-programmer-001",
       "role": "implementer",
-      "plugin": "ai-maestro-implementer-agent",
+      "plugin": "ai-maestro-programmer-agent",
       "host": "macbook-dev-01",
-      "ai_maestro_address": "svgbbox-impl-01",
+      "ai_maestro_address": "svgbbox-programmer-001",
       "status": "active",
       "assigned_at": "2026-02-03T10:35:00Z"
     },
     {
-      "name": "svgbbox-impl-02",
+      "name": "svgbbox-programmer-002",
       "role": "implementer",
-      "plugin": "ai-maestro-implementer-agent",
+      "plugin": "ai-maestro-programmer-agent",
       "host": "macbook-dev-02",
-      "ai_maestro_address": "svgbbox-impl-02",
+      "ai_maestro_address": "svgbbox-programmer-002",
       "status": "active",
       "assigned_at": "2026-02-03T10:35:00Z"
     },
@@ -148,7 +150,7 @@ Team names must be **globally unique** across all projects managed by AMCOS. AMC
     {
       "name": "amcos-chief-of-staff",
       "role": "chief-of-staff",
-      "plugin": "ai-maestro-chief-of-staff",
+      "plugin": "ai-maestro-chief-of-staff-agent",
       "host": "macbook-main",
       "ai_maestro_address": "amcos-chief-of-staff",
       "note": "Organization-wide, not team-specific"
@@ -198,13 +200,25 @@ Team names must be **globally unique** across all projects managed by AMCOS. AMC
 | Role | Plugin | Count per Team | Description |
 |------|--------|----------------|-------------|
 | `manager` | ai-maestro-assistant-manager-agent | 0 (org-wide) | User interface, approvals |
-| `chief-of-staff` | ai-maestro-chief-of-staff | 0 (org-wide) | Agent lifecycle |
+| `chief-of-staff` | ai-maestro-chief-of-staff-agent | 0 (org-wide) | Agent lifecycle |
 | `orchestrator` | ai-maestro-orchestrator-agent | **Exactly 1** | Task management, kanban, agent replacement, remote coordination, messaging templates |
 | `architect` | ai-maestro-architect-agent | **Exactly 1** | Design documents |
 | `integrator` | ai-maestro-integrator-agent | 1+ (can be shared) | PR review, merge, CI/CD pipeline, release management, quality gates, kanban sync |
-| `implementer` | ai-maestro-implementer-agent | 1+ | Code implementation |
+| `implementer` | ai-maestro-*-agent (see subtypes) | 1+ | Artifact production (code, art, audio, etc.) |
 | `tester` | ai-maestro-tester-agent | 0+ | Testing, QA |
 | `devops` | ai-maestro-devops-agent | 0+ | CI/CD, deployment |
+
+#### Implementer Subtypes
+
+The `implementer` role is a **category** for agents that produce artifacts. Each subtype uses its own plugin:
+
+| Subtype | Plugin | Produces |
+|---------|--------|----------|
+| `programmer` | ai-maestro-programmer-agent | Code, tests, PRs |
+| `artist` | ai-maestro-artist-agent | Visual assets, illustrations |
+| `sfx-expert` | ai-maestro-sfx-expert-agent | Sound effects, audio assets |
+
+The agent's **name** uses the specific subtype (e.g., `svgbbox-programmer-001`), while the **role** in the registry is always `implementer`.
 
 ---
 
@@ -221,8 +235,8 @@ Team names must be **globally unique** across all projects managed by AMCOS. AMC
 | Component | Description | Examples |
 |-----------|-------------|----------|
 | `team-prefix` | Short form of repo name | `svgbbox`, `maestro`, `myapp` |
-| `role` | Agent role identifier | `orchestrator`, `architect`, `impl`, `tester` |
-| `instance` | Instance number (for multiple same-role agents) | `01`, `02`, `03` |
+| `role` | Agent role or implementer subtype | `orchestrator`, `architect`, `programmer`, `artist`, `tester` |
+| `instance` | Instance number (for multiple same-role agents) | `001`, `002`, `003` |
 
 ### Examples
 
@@ -230,9 +244,9 @@ Team names must be **globally unique** across all projects managed by AMCOS. AMC
 |------|------|----------|------------|
 | svgbbox-library-team | orchestrator | - | `svgbbox-orchestrator` |
 | svgbbox-library-team | architect | - | `svgbbox-architect` |
-| svgbbox-library-team | implementer | 1 | `svgbbox-impl-01` |
-| svgbbox-library-team | implementer | 2 | `svgbbox-impl-02` |
-| ai-maestro-api-team | tester | 1 | `maestro-tester-01` |
+| svgbbox-library-team | implementer | 1 | `svgbbox-programmer-001` |
+| svgbbox-library-team | implementer | 2 | `svgbbox-programmer-002` |
+| ai-maestro-api-team | tester | 1 | `maestro-tester-001` |
 
 ### Organization-Wide Agents (No Team Prefix)
 
@@ -286,7 +300,7 @@ address = get_agent_address("svgbbox-orchestrator")
 
 All AI Maestro messages must include full agent identity. Send using the `agent-messaging` skill:
 
-- **Sender**: The sending agent's name (e.g., `svgbbox-impl-01`)
+- **Sender**: The sending agent's name (e.g., `svgbbox-programmer-001`)
 - **Recipient**: The target agent's name looked up from the team registry (e.g., `svgbbox-orchestrator`)
 - **Subject**: "[PROGRESS] Task #42: Login fix 80% complete"
 - **Priority**: `normal`
@@ -294,9 +308,9 @@ All AI Maestro messages must include full agent identity. Send using the `agent-
   - `type`: `progress-report`
   - `message`: "Login fix implementation 80% complete. Running tests now."
   - `sender_identity`: A nested structure containing:
-    - `name`: The sending agent's name (e.g., `svgbbox-impl-01`)
+    - `name`: The sending agent's name (e.g., `svgbbox-programmer-001`)
     - `role`: The agent's role (e.g., `implementer`)
-    - `plugin`: The plugin name (e.g., `ai-maestro-implementer-agent`)
+    - `plugin`: The plugin name (e.g., `ai-maestro-programmer-agent`)
     - `host`: The host machine identifier (e.g., `macbook-dev-01`)
     - `team`: The team name (e.g., `svgbbox-library-team`)
   - `task_reference`: A nested structure containing:
@@ -318,9 +332,9 @@ Fix login validation bug
 - Fixed password length check
 - Added unit tests
 
-Agent: svgbbox-impl-01
+Agent: svgbbox-programmer-001
 Role: implementer
-Plugin: ai-maestro-implementer-agent
+Plugin: ai-maestro-programmer-agent
 Host: macbook-dev-01
 Team: svgbbox-library-team
 GitHub-Bot: ai-maestro-bot
@@ -347,9 +361,9 @@ Fix login validation bug
 **Agent Identity**
 | Field | Value |
 |-------|-------|
-| Agent | svgbbox-impl-01 |
+| Agent | svgbbox-programmer-001 |
 | Role | implementer |
-| Plugin | ai-maestro-implementer-agent |
+| Plugin | ai-maestro-programmer-agent |
 | Host | macbook-dev-01 |
 | Team | svgbbox-library-team |
 

@@ -93,7 +93,7 @@ for script in "${SCRIPTS[@]}"; do
     fi
 
     # Decode base64 content
-    DECODED=$(echo "$CONTENT" | base64 --decode 2>/dev/null)
+    DECODED=$(printf '%s' "$CONTENT" | tr -d '\n' | base64 --decode 2>/dev/null)
 
     if [ -z "$DECODED" ]; then
         echo -e "${RED}  FAIL: ${script} (decode error)${NC}"
@@ -104,7 +104,7 @@ for script in "${SCRIPTS[@]}"; do
     # Check if content is different from current
     if [ -f "${SCRIPT_DIR}/${script}" ]; then
         CURRENT_HASH=$(shasum -a 256 "${SCRIPT_DIR}/${script}" | cut -d' ' -f1)
-        NEW_HASH=$(echo "$DECODED" | shasum -a 256 | cut -d' ' -f1)
+        NEW_HASH=$(printf '%s' "$DECODED" | shasum -a 256 | cut -d' ' -f1)
         if [ "$CURRENT_HASH" = "$NEW_HASH" ]; then
             UNCHANGED=$((UNCHANGED + 1))
             continue
@@ -112,7 +112,7 @@ for script in "${SCRIPTS[@]}"; do
     fi
 
     # Write the file
-    echo "$DECODED" > "${SCRIPT_DIR}/${script}"
+    printf '%s' "$DECODED" > "${SCRIPT_DIR}/${script}"
     chmod +x "${SCRIPT_DIR}/${script}"
     echo -e "${GREEN}  UPDATED: ${script}${NC}"
     SYNCED=$((SYNCED + 1))

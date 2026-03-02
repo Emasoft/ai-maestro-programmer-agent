@@ -4,7 +4,7 @@ description: Communication with AMOA Orchestrator via AI Maestro. Use when sendi
 license: MIT
 compatibility: Requires AI Maestro running.
 metadata:
-  author: Emasoft
+  author: AI Maestro
   version: 1.0.0
 context: fork
 agent: ampa-programmer-main-agent

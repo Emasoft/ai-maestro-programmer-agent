@@ -4,7 +4,7 @@ description: Setup project configuration and tooling. Use when starting work on 
 license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:
-  author: Emasoft
+  author: AI Maestro
   version: 1.0.0
 context: fork
 agent: ampa-programmer-main-agent
@@ -54,7 +54,7 @@ After successful execution of this skill, the following artifacts and states are
 | Python | uv | ruff, mypy | pytest |
 | JavaScript/TypeScript | bun, pnpm | eslint | jest, vitest |
 | Rust | cargo | clippy | cargo test |
-| Go | go mod | golint | go test |
+| Go | go mod | staticcheck | go test |
 | .NET | dotnet | - | dotnet test |
 | C/C++ | cmake, make | clang-tidy | gtest |
 | Objective-C | xcodebuild | - | XCTest |
@@ -293,5 +293,5 @@ Related skills and documentation for the AMPA programmer agent:
 - **[ruff-configuration-patterns.md](references/ruff-configuration-patterns.md)** — Standard ruff.toml template for Python projects, including rule explanations and customization guidance.
 - **[op-setup-testing-framework.md](references/op-setup-testing-framework.md)** — Testing framework configuration for pytest, jest, vitest, cargo test, go test, and others.
 - **[op-activate-serena-mcp.md](references/op-activate-serena-mcp.md)** — SERENA MCP activation procedure, verification, and troubleshooting.
-- **AMPA Coding Standards skill** (`ampa-coding-standards`) — Coding conventions and style rules to apply after project setup is complete.
+- **Coding Standards** — See the project's own coding standards or linting configuration (configured via `op-configure-linting`).
 - **AMPA Task Execution skill** (`ampa-task-execution`) — The next skill to use after project setup, covering how to execute assigned implementation tasks.

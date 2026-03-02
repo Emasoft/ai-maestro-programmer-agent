@@ -4,7 +4,7 @@ description: Execute programming tasks per requirements. Use when implementing a
 license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:
-  author: Emasoft
+  author: AI Maestro
   version: 1.0.0
 context: fork
 agent: ampa-programmer-main-agent
