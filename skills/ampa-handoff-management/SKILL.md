@@ -69,6 +69,8 @@ Use this operation when receiving work from AMOA or resuming from a previous ses
 ### 2. Create Handoff Document
 **File**: [op-create-handoff-document.md](references/op-create-handoff-document.md)
 
+**Sections:** When to Use · Prerequisites · Procedure · Checklist · Examples · Error Handling
+
 **Contents**:
 - 2.1 When to create a handoff document
 - 2.2 Handoff document structure and format
@@ -92,6 +94,8 @@ Use this operation when discovering bugs during implementation work.
 
 ### 4. Document Work State
 **File**: [op-document-work-state.md](references/op-document-work-state.md)
+
+**Sections:** When to Use · Prerequisites · Procedure · Checklist · Examples · Error Handling
 
 **Contents**:
 - 4.1 When to document work state

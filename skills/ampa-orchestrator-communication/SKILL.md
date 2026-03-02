@@ -86,6 +86,8 @@ Use when task requirements are unclear or need additional information.
 
 **Reference**: [op-request-clarification.md](references/op-request-clarification.md)
 
+**Sections:** When to Request Clarification · Prerequisites · Clarification Request Format · Procedure · Checklist · Sending the Request · Handling the Response · Examples · Error Handling
+
 **Contents**:
 - 1.1 When to Request Clarification
 - 1.2 Clarification Request Format
@@ -98,6 +100,8 @@ Use when task requirements are unclear or need additional information.
 Use to send "in development" status updates to keep AMOA informed.
 
 **Reference**: [op-report-status.md](references/op-report-status.md)
+
+**Sections:** When to Report Status · Prerequisites · Status Message Format · Progress Indicators · Procedure · Checklist · Sending Status Updates · Examples · Error Handling
 
 **Contents**:
 - 2.1 When to Report Status
@@ -112,6 +116,8 @@ Use when you encounter issues that prevent task progress.
 
 **Reference**: [op-report-blocker.md](references/op-report-blocker.md)
 
+**Sections:** Identifying Blockers · Prerequisites · Blocker Report Format · Severity Levels · Procedure · Checklist · Escalation Procedure · Examples · Error Handling
+
 **Contents**:
 - 3.1 Identifying Blockers
 - 3.2 Blocker Report Format
@@ -124,6 +130,8 @@ Use when you encounter issues that prevent task progress.
 Use to suggest design or implementation improvements.
 
 **Reference**: [op-propose-improvement.md](references/op-propose-improvement.md)
+
+**Sections:** When to Propose Improvements · Prerequisites · Improvement Proposal Format · Justification Requirements · Procedure · Checklist · Awaiting Approval · Examples · Error Handling
 
 **Contents**:
 - 4.1 When to Propose Improvements
@@ -138,6 +146,8 @@ Use when task implementation is complete and ready for review.
 
 **Reference**: [op-notify-completion.md](references/op-notify-completion.md)
 
+**Sections:** Completion Criteria · Prerequisites · Completion Notification Format · Deliverables Summary · Procedure · Checklist · Sending Notification · Examples · Error Handling
+
 **Contents**:
 - 5.1 Completion Criteria
 - 5.2 Completion Notification Format
@@ -150,6 +160,8 @@ Use when task implementation is complete and ready for review.
 Use to handle feedback from AMOA after PR review.
 
 **Reference**: [op-receive-feedback.md](references/op-receive-feedback.md)
+
+**Sections:** Monitoring for Feedback · Prerequisites · Feedback Message Types · Processing Feedback · Procedure · Checklist · Acknowledgment Protocol · Examples · Error Handling
 
 **Contents**:
 - 6.1 Monitoring for Feedback

@@ -35,19 +35,18 @@ on:
       - 'skills/**'
       - 'scripts/**'
 
-env:
-  # ⚠️ REQUIRED: Update these values to point to your marketplace repository
-  # Example: If your marketplace is at https://github.com/johndoe/my-claude-plugins
-  #   MARKETPLACE_OWNER: 'johndoe'
-  #   MARKETPLACE_REPO: 'my-claude-plugins'
-  # DISABLED: No marketplace configured yet
-  # MARKETPLACE_OWNER: 'Emasoft'
-  # MARKETPLACE_REPO: 'emasoft-plugins'
+# ⚠️ REQUIRED: To enable, uncomment the env block below and set your marketplace repo:
+#   MARKETPLACE_OWNER: 'Emasoft'
+#   MARKETPLACE_REPO: 'emasoft-plugins'
+# Then remove the `if: false` from the notify job.
 
 jobs:
   notify:
-    if: false  # DISABLED: No marketplace configured yet
+    if: false  # DISABLED: No marketplace configured yet. To enable, set if to true and uncomment env below.
     runs-on: ubuntu-latest
+    env:
+      MARKETPLACE_OWNER: 'REPLACE_ME'
+      MARKETPLACE_REPO: 'REPLACE_ME'
     steps:
       - name: Get plugin info
         id: plugin

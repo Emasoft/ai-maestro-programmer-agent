@@ -35,8 +35,8 @@ jobs:
       - name: Sync CPV validation scripts
         run: |
           echo "=== Syncing validation scripts from CPV ==="
-          if [ -f "scripts/sync_cpv_scripts.sh" ]; then
-            bash scripts/sync_cpv_scripts.sh || echo "WARNING: CPV sync failed. Using committed scripts."
+          if [ -f "scripts/sync_cpv_scripts.py" ]; then
+            python scripts/sync_cpv_scripts.py || echo "WARNING: CPV sync failed. Using committed scripts."
           fi
         env:
           GH_TOKEN: ${{ github.token }}

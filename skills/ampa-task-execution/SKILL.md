@@ -29,7 +29,7 @@ Follow these numbered steps in order for every assigned task:
 
 1. **Receive the task assignment** -- Read the incoming AI Maestro message from the orchestrator agent, extract the task identifier and metadata, validate all required fields are present, and send an acknowledgment back to the orchestrator.
 2. **Parse the task requirements** -- Extract the full list of acceptance criteria, identify any dependencies on other tasks that must be completed first, determine which files and components will be modified, and ask the orchestrator for clarification on anything ambiguous.
-3. **Set up the development environment** -- Navigate to the target project directory, activate the correct virtual environment (using `uv venv` or `source .venv/bin/activate` (Windows: `.venv\Scripts\activate.bat` or `.venv\Scripts\Activate.ps1`)), verify all dependencies are installed, and initialize SERENA MCP for code navigation.
+3. **Set up the development environment** -- Navigate to the target project directory, activate the correct virtual environment (using `uv venv` or `source .venv/bin/activate` (Windows: `.venv/Scripts/activate.bat` or `.venv/Scripts/Activate.ps1`)), verify all dependencies are installed, and initialize SERENA MCP for code navigation.
 4. **Implement the code** -- Use SERENA MCP to analyze the existing code structure, plan the implementation approach in small increments, write code in testable chunks, and add documentation and comments explaining the "why" of each change.
 5. **Write tests** -- Identify test scenarios directly from the requirements, write unit tests for all new functions, write integration tests where applicable, run all tests, and fix any failures before proceeding.
 6. **Validate acceptance criteria** -- Review each acceptance criterion one by one, verify the implementation satisfies it, document the evidence of validation, and report task completion to the orchestrator via AI Maestro.
@@ -131,6 +131,8 @@ Parse and validate the incoming task from AI Maestro.
 
 **Reference**: [op-receive-task-assignment.md](references/op-receive-task-assignment.md)
 
+**Sections in op-receive-task-assignment.md:** When to Use · Prerequisites · Procedure · Step 1.1: Read Incoming AI Maestro Message · Step 1.2: Extract Task Identifier and Metadata · Step 1.3: Validate Message Format and Required Fields · Step 1.4: Acknowledge Receipt to Orchestrator · Checklist · Examples · Error Handling · Related Operations
+
 **Contents**:
 - 1.1 Read Incoming AI Maestro Message
 - 1.2 Extract Task Identifier and Metadata
@@ -142,6 +144,8 @@ Understand what needs to be implemented.
 
 **Reference**: [op-parse-task-requirements.md](references/op-parse-task-requirements.md)
 
+**Sections in op-parse-task-requirements.md:** When to Use · Prerequisites · Procedure · Step 2.1: Extract Acceptance Criteria List · Step 2.2: Identify Dependencies on Other Tasks · Step 2.3: Determine Target Files and Components · Step 2.4: Clarify Ambiguities with Orchestrator · Checklist · Examples · Error Handling · Related Operations
+
 **Contents**:
 - 2.1 Extract Acceptance Criteria List
 - 2.2 Identify Dependencies on Other Tasks
@@ -152,6 +156,8 @@ Understand what needs to be implemented.
 Configure tooling for the specific task.
 
 **Reference**: [op-setup-development-environment.md](references/op-setup-development-environment.md)
+
+**Sections in op-setup-development-environment.md:** When to Use · Prerequisites · Procedure · Step 3.1: Navigate to Target Project Directory · Step 3.2: Activate Required Virtual Environment · Step 3.3: Verify Dependencies Are Installed · Step 3.4: Initialize SERENA MCP for Code Navigation · Checklist · Examples · Error Handling · Related Operations
 
 **Contents**:
 - 3.1 Navigate to Target Project Directory
