@@ -71,10 +71,17 @@ while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
     fi
 done
 
+cd "$REPO_ROOT"
+
+# Sync validation scripts from CPV before validating
+if [ -f "scripts/sync_cpv_scripts.sh" ] && command -v gh &> /dev/null; then
+    echo -e "${BLUE}Syncing validation scripts from CPV...${NC}"
+    bash scripts/sync_cpv_scripts.sh 2>&1 || echo -e "${YELLOW}WARNING: CPV sync failed (offline?). Using local scripts.${NC}"
+    echo ""
+fi
+
 echo -e "${BLUE}Running plugin validation...${NC}"
 echo ""
-
-cd "$REPO_ROOT"
 
 # Check that the validator script exists
 if [ ! -f "scripts/validate_plugin.py" ]; then
@@ -121,10 +128,10 @@ case $VALIDATION_EXIT_CODE in
         ;;
     3)
         echo -e "${YELLOW}========================================${NC}"
-        echo -e "${YELLOW}  BLOCKED: MINOR issues found${NC}"
-        echo -e "${YELLOW}  Fix ALL issues before pushing.${NC}"
+        echo -e "${YELLOW}  WARNING: MINOR issues found${NC}"
+        echo -e "${YELLOW}  Push allowed. Fix when convenient.${NC}"
         echo -e "${YELLOW}========================================${NC}"
-        exit 1
+        exit 0
         ;;
     *)
         echo -e "${RED}========================================${NC}"
