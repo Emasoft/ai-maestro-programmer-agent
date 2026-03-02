@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:
   author: AI Maestro
-  version: 1.0.0
+  version: 1.0.6
   workflow-instruction: "Step 17 (first task)"
   procedure: "proc-execute-task"
 context: fork
@@ -69,6 +69,8 @@ Use this skill when:
 - The project lacks proper tooling configuration
 - You need to set up a consistent development environment
 - Onboarding to an existing project that needs tooling verification
+
+> **Note**: For per-task development environment verification (virtual env activation, dependency check), see Step 3 of the **ampa-task-execution** skill. This skill covers one-time project initialization only.
 
 ## Prerequisites
 

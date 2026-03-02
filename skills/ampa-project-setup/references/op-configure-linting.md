@@ -16,7 +16,7 @@ workflow-step: "Step 4"
   - [Python: ruff and mypy Configuration](#python-ruff-and-mypy-configuration)
   - [JavaScript/TypeScript: eslint Configuration](#javascripttypescript-eslint-configuration)
   - [Rust: clippy Configuration](#rust-clippy-configuration)
-  - [Go: golint and staticcheck Configuration](#go-golint-and-staticcheck-configuration)
+  - [Go: staticcheck Configuration](#go-staticcheck-configuration)
   - [.NET: Built-in Analyzers](#net-built-in-analyzers)
   - [C/C++: clang-tidy Configuration](#cc-clang-tidy-configuration)
   - [Swift: swiftlint Configuration](#swift-swiftlint-configuration)
@@ -193,11 +193,10 @@ cognitive-complexity-threshold = 25
 cargo clippy
 ```
 
-### Go: golint and staticcheck Configuration
+### Go: staticcheck Configuration
 
-**Step 1: Install linters**
+**Step 1: Install linter**
 ```bash
-go install golang.org/x/lint/golint@latest
 go install honnef.co/go/tools/cmd/staticcheck@latest
 ```
 
@@ -210,7 +209,6 @@ checks = ["all", "-ST1000"]
 
 **Step 3: Verify linting works**
 ```bash
-golint ./...
 staticcheck ./...
 ```
 

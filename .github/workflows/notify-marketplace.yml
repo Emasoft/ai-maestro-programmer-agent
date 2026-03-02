@@ -36,17 +36,18 @@ on:
       - 'scripts/**'
 
 # ⚠️ REQUIRED: To enable, uncomment the env block below and set your marketplace repo:
-#   MARKETPLACE_OWNER: 'Emasoft'
-#   MARKETPLACE_REPO: 'emasoft-plugins'
-# Then remove the `if: false` from the notify job.
+#   MARKETPLACE_OWNER: 'your-github-username'
+#   MARKETPLACE_REPO: 'your-marketplace-repo'
+# Then set `if: true` on the notify job.
 
 jobs:
   notify:
     if: false  # DISABLED: No marketplace configured yet. To enable, set if to true and uncomment env below.
     runs-on: ubuntu-latest
     env:
-      MARKETPLACE_OWNER: 'REPLACE_ME'
-      MARKETPLACE_REPO: 'REPLACE_ME'
+      # TODO: Set these to your marketplace repository coordinates
+      MARKETPLACE_OWNER: 'your-github-username'
+      MARKETPLACE_REPO: 'your-marketplace-repo'
     steps:
       - name: Get plugin info
         id: plugin

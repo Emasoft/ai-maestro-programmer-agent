@@ -1,6 +1,6 @@
 ---
 name: ampa-programmer-main-agent
-description: General-purpose programmer that executes tasks assigned by the Orchestrator. No sub-agents, uses globally installed tools.
+description: General-purpose programmer agent that executes tasks assigned by the Orchestrator. Uses SERENA MCP for code navigation and globally installed AI Maestro skills for inter-agent communication.
 model: opus
 skills:
   - ampa-task-execution

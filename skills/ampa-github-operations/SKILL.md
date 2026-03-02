@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires gh CLI authenticated.
 metadata:
   author: AI Maestro
-  version: 1.0.0
+  version: 1.0.6
   workflow-instruction: "Steps 19, 21, 22"
   procedure: "proc-complete-task, proc-handle-failed-pr"
 context: fork
@@ -224,7 +224,7 @@ Copy this checklist and track your progress:
 
 | Error | Cause | Solution |
 |-------|-------|----------|
-| `gh: command not found` | gh CLI not installed | Install with `brew install gh` |
+| `gh: command not found` | gh CLI not installed | Install from https://cli.github.com/ |
 | `gh auth login` required | Not authenticated | Run `gh auth login` |
 | `Permission denied` | No write access | Request access or fork repository |
 | `Branch already exists` | Branch name collision | Delete old branch or use different name |

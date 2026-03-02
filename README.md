@@ -46,7 +46,7 @@ None. The `hooks/hooks.json` is empty -- AMPA uses globally installed hooks.
 
 ### Scripts
 
-The `scripts/` directory contains the CPV (Claude Plugins Validation) suite — 21 validation scripts covering plugin structure, agents, skills, hooks, security, encoding, documentation, and more. The entry point is `validate_plugin.py`. Scripts are auto-synced from `Emasoft/claude-plugins-validation` via `sync_cpv_scripts.sh`.
+The `scripts/` directory contains the CPV (Claude Plugins Validation) suite — 21 validation scripts covering plugin structure, agents, skills, hooks, security, encoding, documentation, and more. The entry point is `validate_plugin.py`. Scripts are auto-synced from `Emasoft/claude-plugins-validation` via `sync_cpv_scripts.py` (used in CI) or `sync_cpv_scripts.sh` (legacy).
 
 | Script | Description |
 |--------|-------------|
@@ -68,10 +68,6 @@ The Programmer Agent follows **Steps 14, 15, 17-19, 21-23** from the master work
 Role plugins are installed with `--scope local` inside the specific agent's working directory (`~/agents/<agent-name>/`). This ensures the plugin is only available to that agent.
 
 ```bash
-# NOTE: Marketplace install is TBD
-# claude plugin marketplace add emasoft-plugins --url https://github.com/Emasoft/emasoft-plugins
-# claude plugin install ai-maestro-programmer-agent@emasoft-plugins --scope local
-
 # RESTART Claude Code after installing (required!)
 ```
 
@@ -86,6 +82,17 @@ Once installed, start a session with the main agent:
 ```bash
 claude --agent ampa-programmer-main-agent
 ```
+
+## Getting Started
+
+1. **Install the plugin** using the command from the Installation section above.
+2. **Launch the agent** in your project directory:
+   ```bash
+   cd your-project/
+   claude --agent ampa-programmer-main-agent
+   ```
+3. **In standalone mode** (no orchestrator), describe your task directly in the conversation. The agent will set up the project environment, implement the code, write tests, and commit the changes.
+4. **In orchestrated mode** (with AI Maestro running), the agent receives tasks automatically from the AMOA orchestrator via inter-agent messaging. See `docs/FULL_PROJECT_WORKFLOW.md` for the complete multi-agent workflow.
 
 ## Development Only (--plugin-dir)
 

@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires AI Maestro running.
 metadata:
   author: AI Maestro
-  version: 1.0.0
+  version: 1.0.6
   workflow-instruction: "Steps 14, 15, 17, 19"
   procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
 context: fork
@@ -27,14 +27,14 @@ The AMPA-AMOA communication channel uses asynchronous inter-agent messaging prov
 
 Use this skill in the following situations:
 
-| Situation | Operation | Reference File |
-|-----------|-----------|----------------|
-| Task requirements are unclear or ambiguous | Request Clarification | [op-request-clarification.md](references/op-request-clarification.md) |
-| Need to report current development status | Report Status | [op-report-status.md](references/op-report-status.md) |
-| Encountered a blocking issue that prevents progress | Report Blocker | [op-report-blocker.md](references/op-report-blocker.md) |
-| Have suggestions for design or task improvements | Propose Improvement | [op-propose-improvement.md](references/op-propose-improvement.md) |
-| Task implementation is complete and ready for review | Notify Completion | [op-notify-completion.md](references/op-notify-completion.md) |
-| Received feedback from AMOA after PR review | Receive Feedback | [op-receive-feedback.md](references/op-receive-feedback.md) |
+| Situation | Operation | Reference |
+|-----------|-----------|-----------|
+| Task requirements are unclear or ambiguous | Request Clarification | [See Operation 1](#1-request-clarification-step-14) |
+| Need to report current development status | Report Status | [See Operation 2](#2-report-status-step-17) |
+| Encountered a blocking issue that prevents progress | Report Blocker | [See Operation 3](#3-report-blocker) |
+| Have suggestions for design or task improvements | Propose Improvement | [See Operation 4](#4-propose-improvement-step-15) |
+| Task implementation is complete and ready for review | Notify Completion | [See Operation 5](#5-notify-completion-step-19) |
+| Received feedback from AMOA after PR review | Receive Feedback | [See Operation 6](#6-receive-feedback) |
 
 ## Communication Architecture
 

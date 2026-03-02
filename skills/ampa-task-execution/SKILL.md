@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:
   author: AI Maestro
-  version: 1.0.0
+  version: 1.0.6
   workflow-instruction: "Step 17 - Task Execution"
   procedure: "proc-execute-task"
 context: fork
@@ -164,6 +164,8 @@ Configure tooling for the specific task.
 - 3.2 Activate Required Virtual Environment
 - 3.3 Verify Dependencies Are Installed
 - 3.4 Initialize SERENA MCP for Code Navigation
+
+> **Note**: For first-time project setup (language detection, package manager, dependencies, linting), see the **ampa-project-setup** skill. This step covers per-task environment verification only.
 
 ### Step 4: Implement Code
 Write the code following requirements.
