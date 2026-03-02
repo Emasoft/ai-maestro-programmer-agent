@@ -1,12 +1,12 @@
-# Emasoft Programmer Agent (EPA)
+# AI Maestro Programmer Agent (AMPA)
 
 **Version**: 1.0.0
 
 ## Overview
 
-The Emasoft Programmer Agent is a **general-purpose programmer** that executes implementation tasks assigned by the Orchestrator. It handles the actual coding work across multiple programming languages and toolchains.
+The AI Maestro Programmer Agent is a **general-purpose programmer** that executes implementation tasks assigned by the Orchestrator. It handles the actual coding work across multiple programming languages and toolchains.
 
-**Prefix**: `epa-` = Emasoft Programmer Agent
+**Prefix**: `ampa-` = AI Maestro Programmer Agent
 
 ## Core Responsibilities
 
@@ -22,21 +22,21 @@ The Emasoft Programmer Agent is a **general-purpose programmer** that executes i
 
 | Agent | File | Description |
 |-------|------|-------------|
-| `epa-programmer-main-agent` | `agents/epa-programmer-main-agent.md` | Main general-purpose programmer agent |
+| `ampa-programmer-main-agent` | `agents/ampa-programmer-main-agent.md` | Main general-purpose programmer agent |
 
 ### Skills (5)
 
 | Skill | Description |
 |-------|-------------|
-| `epa-task-execution` | Execute programming tasks per requirements |
-| `epa-orchestrator-communication` | Communication with the Orchestrator (EOA) agent |
-| `epa-github-operations` | Git and GitHub operations (clone, branch, commit, PR) |
-| `epa-project-setup` | Initialize project configuration and install tooling |
-| `epa-handoff-management` | Create and receive handoff documents and bug reports |
+| `ampa-task-execution` | Execute programming tasks per requirements |
+| `ampa-orchestrator-communication` | Communication with the Orchestrator (EOA) agent |
+| `ampa-github-operations` | Git and GitHub operations (clone, branch, commit, PR) |
+| `ampa-project-setup` | Initialize project configuration and install tooling |
+| `ampa-handoff-management` | Create and receive handoff documents and bug reports |
 
 ### Hooks
 
-None. The `hooks/hooks.json` is empty -- EPA uses globally installed hooks.
+None. The `hooks/hooks.json` is empty -- AMPA uses globally installed hooks.
 
 ### Scripts (1)
 
@@ -62,11 +62,9 @@ The Programmer Agent follows **Steps 14, 15, 17-19, 21-23** from the master work
 Role plugins are installed with `--scope local` inside the specific agent's working directory (`~/agents/<agent-name>/`). This ensures the plugin is only available to that agent.
 
 ```bash
-# Add Emasoft marketplace (first time only)
-claude plugin marketplace add emasoft-plugins --url https://github.com/Emasoft/emasoft-plugins
-
-# Install plugin (--scope local = this agent's directory only, recommended)
-claude plugin install emasoft-programmer-agent@emasoft-plugins --scope local
+# NOTE: Marketplace install is TBD
+# claude plugin marketplace add emasoft-plugins --url https://github.com/Emasoft/emasoft-plugins
+# claude plugin install ai-maestro-programmer-agent@emasoft-plugins --scope local
 
 # RESTART Claude Code after installing (required!)
 ```
@@ -74,7 +72,7 @@ claude plugin install emasoft-programmer-agent@emasoft-plugins --scope local
 Once installed, start a session with the main agent:
 
 ```bash
-claude --agent epa-programmer-main-agent
+claude --agent ampa-programmer-main-agent
 ```
 
 ## Development Only (--plugin-dir)
@@ -82,7 +80,7 @@ claude --agent epa-programmer-main-agent
 `--plugin-dir` loads a plugin directly from a local directory without marketplace installation. Use only during plugin development.
 
 ```bash
-claude --plugin-dir ./OUTPUT_SKILLS/emasoft-programmer-agent
+claude --plugin-dir ./OUTPUT_SKILLS/ai-maestro-programmer-agent
 ```
 
 ## Requirements
@@ -156,11 +154,11 @@ The Programmer Agent relies on SERENA MCP for code investigation:
 ## Validation
 
 ```bash
-cd OUTPUT_SKILLS/emasoft-programmer-agent
+cd OUTPUT_SKILLS/ai-maestro-programmer-agent
 uv run python scripts/validate_plugin.py . --verbose
 ```
 
 ## See Also
 
-> **Related Plugins**: This agent works with the Emasoft Orchestrator Agent (EOA), Emasoft Integrator Agent (EIA), and Emasoft Architect Agent (EAA). Each agent plugin is installed independently.
+> **Related Plugins**: This agent works with the AI Maestro Orchestrator Agent (EOA), AI Maestro Integrator Agent (EIA), and AI Maestro Architect Agent (EAA). Each agent plugin is installed independently.
 

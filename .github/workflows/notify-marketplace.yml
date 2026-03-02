@@ -40,11 +40,13 @@ env:
   # Example: If your marketplace is at https://github.com/johndoe/my-claude-plugins
   #   MARKETPLACE_OWNER: 'johndoe'
   #   MARKETPLACE_REPO: 'my-claude-plugins'
-  MARKETPLACE_OWNER: 'Emasoft'
-  MARKETPLACE_REPO: 'emasoft-plugins'
+  # DISABLED: No marketplace configured yet
+  # MARKETPLACE_OWNER: 'Emasoft'
+  # MARKETPLACE_REPO: 'emasoft-plugins'
 
 jobs:
   notify:
+    if: false  # DISABLED: No marketplace configured yet
     runs-on: ubuntu-latest
     steps:
       - name: Get plugin info

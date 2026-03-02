@@ -30,11 +30,12 @@ jobs:
         with:
           generate_release_notes: true
           body: |
-            ## Emasoft Programmer Agent v${{ steps.version.outputs.VERSION }}
+            ## AI Maestro Programmer Agent v${{ steps.version.outputs.VERSION }}
 
             ### Installation
             ```bash
-            claude plugin install emasoft-programmer-agent@emasoft-plugins
+            # Direct install from GitHub:
+            claude plugin install ai-maestro-programmer-agent --url https://github.com/Emasoft/ai-maestro-programmer-agent
             ```
 
             ### Changes

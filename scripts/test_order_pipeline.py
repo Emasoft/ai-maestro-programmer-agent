@@ -12,9 +12,9 @@ end-to-end, including:
 - Error handling and pipeline recovery
 - Completion status reporting
 
-Referenced in the EPA orchestrator-communication skill as the manual
+Referenced in the AMPA orchestrator-communication skill as the manual
 test companion for the "Order Processing Pipeline" example
-(see: skills/epa-orchestrator-communication/references/op-notify-completion.md).
+(see: skills/ampa-orchestrator-communication/references/op-notify-completion.md).
 
 Usage:
     uv run python scripts/test_order_pipeline.py
@@ -117,7 +117,7 @@ class OrderPipeline:
     """Simulated async order processing pipeline with retry logic.
 
     This is a self-contained test implementation that validates the pipeline
-    contract without requiring external services. The EPA programmer agent
+    contract without requiring external services. The AMPA programmer agent
     would replace this with the actual implementation being tested.
     """
 

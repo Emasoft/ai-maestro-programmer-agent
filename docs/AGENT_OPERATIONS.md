@@ -1,6 +1,6 @@
-# AGENT_OPERATIONS.md - EPA Programmer
+# AGENT_OPERATIONS.md - AMPA Programmer
 
-**Single Source of Truth for Emasoft Programmer Agent (EPA) Operations**
+**Single Source of Truth for AI Maestro Programmer Agent (AMPA) Operations**
 
 ---
 
@@ -23,16 +23,16 @@
 - **Number**: Zero-padded 3-digit sequence (001, 002, 003, ...)
 - **Messaging Identity**: Session name = messaging identity (initialized via the `agent-messaging` skill)
 - **Chosen By**: ECOS (Chief of Staff) when spawning the programmer
-- **NO `epa-` prefix**: Unlike EOA/ECOS/EIA/EAMA, EPA sessions use project-based naming
+- **NO `ampa-` prefix**: Unlike EOA/ECOS/EIA/EAMA, AMPA sessions use project-based naming
 
 ### Why This Matters
 The session name is used as your messaging identity and becomes the messaging address for inter-agent communication. The `<project>-programmer-<number>` format allows multiple programmer agents to work on the same project without name collisions.
 
 ### Sequential Assignment
 ECOS maintains a counter for each project to ensure unique numbering:
-- First EPA for svgbbox → `svgbbox-programmer-001`
-- Second EPA for svgbbox → `svgbbox-programmer-002`
-- First EPA for maestro → `maestro-programmer-001`
+- First AMPA for svgbbox → `svgbbox-programmer-001`
+- Second AMPA for svgbbox → `svgbbox-programmer-002`
+- First AMPA for maestro → `maestro-programmer-001`
 
 ---
 
@@ -42,26 +42,26 @@ ECOS maintains a counter for each project to ensure unique numbering:
 
 | Variable | Value | Usage |
 |----------|-------|-------|
-| `${CLAUDE_PLUGIN_ROOT}` | Points to `emasoft-programmer-agent/` | Use in scripts, hooks, skill references |
+| `${CLAUDE_PLUGIN_ROOT}` | Points to `ai-maestro-programmer-agent/` | Use in scripts, hooks, skill references |
 | `${CLAUDE_PROJECT_DIR}` | Points to `~/agents/<session-name>/` | Project root for the programmer instance |
 
 ### Local Plugin Path Structure
 ```
-~/agents/<project>-programmer-<number>/.claude/plugins/emasoft-programmer-agent/
+~/agents/<project>-programmer-<number>/.claude/plugins/ai-maestro-programmer-agent/
 ```
 
 **Example**:
 ```
-~/agents/svgbbox-programmer-001/.claude/plugins/emasoft-programmer-agent/
+~/agents/svgbbox-programmer-001/.claude/plugins/ai-maestro-programmer-agent/
 ```
 
 ### How Plugin is Loaded
-The EPA instance is launched with `--plugin-dir` flag:
+The AMPA instance is launched with `--plugin-dir` flag:
 ```bash
---plugin-dir ~/agents/$SESSION_NAME/.claude/plugins/emasoft-programmer-agent
+--plugin-dir ~/agents/$SESSION_NAME/.claude/plugins/ai-maestro-programmer-agent
 ```
 
-This loads ONLY the emasoft-programmer-agent plugin into that Claude Code session.
+This loads ONLY the ai-maestro-programmer-agent plugin into that Claude Code session.
 
 ---
 
@@ -72,11 +72,11 @@ This loads ONLY the emasoft-programmer-agent plugin into that Claude Code sessio
 ~/agents/<project>-programmer-<number>/
 ├── .claude/
 │   ├── plugins/
-│   │   └── emasoft-programmer-agent/  ← Plugin loaded via --plugin-dir
+│   │   └── ai-maestro-programmer-agent/  ← Plugin loaded via --plugin-dir
 │   │       ├── .claude-plugin/
 │   │       │   └── plugin.json
 │   │       ├── agents/
-│   │       │   └── epa-programmer-main-agent.md
+│   │       │   └── ampa-programmer-main-agent.md
 │   │       ├── skills/  ← Empty (uses globally installed skills)
 │   │       ├── hooks/
 │   │       │   └── hooks.json
@@ -98,16 +98,16 @@ This loads ONLY the emasoft-programmer-agent plugin into that Claude Code sessio
 
 ---
 
-## 4. How EPA is Created
+## 4. How AMPA is Created
 
-### ECOS Spawns EPA (via EOA delegation)
-The ECOS (Chief of Staff) agent spawns EPA instances using the `ai-maestro-agents-management` skill, typically after EOA requests implementer capacity:
+### ECOS Spawns AMPA (via EOA delegation)
+The ECOS (Chief of Staff) agent spawns AMPA instances using the `ai-maestro-agents-management` skill, typically after EOA requests implementer capacity:
 
 - **Agent name**: `<project>-programmer-001`
 - **Working directory**: `~/agents/<project>-programmer-001/`
 - **Task**: "Implement feature X for <project>"
-- **Plugin**: load `emasoft-programmer-agent` (must be copied to agent's local plugins directory first)
-- **Main agent**: `epa-programmer-main-agent`
+- **Plugin**: load `ai-maestro-programmer-agent` (must be copied to agent's local plugins directory first)
+- **Main agent**: `ampa-programmer-main-agent`
 
 **Verify**: confirm the agent appears in the agent list with active status.
 
@@ -117,12 +117,12 @@ The ECOS (Chief of Staff) agent spawns EPA instances using the `ai-maestro-agent
 |-----------|-------|---------|
 | Working directory | `~/agents/$SESSION_NAME` | Sets working directory for the programmer |
 | Task | Task description | Initial task prompt (from EOA or ECOS) |
-| Plugin | `emasoft-programmer-agent` | Load EPA plugin |
-| Main agent | `epa-programmer-main-agent` | Start with this agent from the plugin |
+| Plugin | `ai-maestro-programmer-agent` | Load AMPA plugin |
+| Main agent | `ampa-programmer-main-agent` | Start with this agent from the plugin |
 
 ### Pre-Spawn Setup
 Before spawning, ECOS must:
-1. Copy the plugin to `~/agents/$SESSION_NAME/.claude/plugins/emasoft-programmer-agent/`
+1. Copy the plugin to `~/agents/$SESSION_NAME/.claude/plugins/ai-maestro-programmer-agent/`
 2. Initialize messaging identity for the session (using the `agent-messaging` skill)
 3. Create initial task description (from EOA task breakdown)
 4. Set up working directories
@@ -134,9 +134,9 @@ Before spawning, ECOS must:
 
 ### Critical Rule: One Plugin Per Agent Instance
 
-Each EPA instance has **ONLY** the `emasoft-programmer-agent` plugin loaded.
+Each AMPA instance has **ONLY** the `ai-maestro-programmer-agent` plugin loaded.
 
-**EPA CANNOT access**:
+**AMPA CANNOT access**:
 - `emasoft-chief-of-staff-agent` (ECOS) skills
 - `emasoft-orchestrator-agent` (EOA) skills
 - `emasoft-integrator-agent` (EIA) skills
@@ -144,7 +144,7 @@ Each EPA instance has **ONLY** the `emasoft-programmer-agent` plugin loaded.
 - `emasoft-assistant-manager-agent` (EAMA) skills
 
 ### Why This Matters
-Each plugin defines a **role boundary**. EPA's job is to **implement tasks**, not to:
+Each plugin defines a **role boundary**. AMPA's job is to **implement tasks**, not to:
 - Make architectural decisions (EAA's job)
 - Orchestrate other agents (EOA's job)
 - Coordinate multiple orchestrators (ECOS's job)
@@ -152,41 +152,41 @@ Each plugin defines a **role boundary**. EPA's job is to **implement tasks**, no
 - Manage user communication (EAMA's job)
 
 ### Globally Installed Skills
-EPA relies on **globally installed skills** (not plugin-specific skills) for implementation guidance:
+AMPA relies on **globally installed skills** (not plugin-specific skills) for implementation guidance:
 - Skills installed in `~/.claude/skills/`
 - Generic programming skills (TDD, refactoring, testing patterns)
 - Language-specific skills (Python, TypeScript, Go, Rust)
 - Tool-specific skills (Git, Docker, pytest, Jest)
 
 **Why global skills?**
-- EPA is a general-purpose implementer (not domain-specific)
+- AMPA is a general-purpose implementer (not domain-specific)
 - Skills are shared across all programmer instances
 - Reduces plugin size and maintenance burden
 
 ### SERENA MCP for Code Navigation
-EPA uses the globally configured **SERENA MCP** for code navigation and analysis:
+AMPA uses the globally configured **SERENA MCP** for code navigation and analysis:
 - Symbol search
 - Definition lookup
 - References finding
 - Call hierarchy
 - Type hierarchy
 
-**SERENA is NOT part of the EPA plugin** - it's a globally installed MCP server.
+**SERENA is NOT part of the AMPA plugin** - it's a globally installed MCP server.
 
 ### Cross-Role Communication
 All cross-role communication happens via **inter-agent messages** sent through the `agent-messaging` skill, not skill sharing.
 
 **Example**:
 ```
-EPA encounters architectural question
-→ EPA sends a blocker message to EOA using the `agent-messaging` skill
+AMPA encounters architectural question
+→ AMPA sends a blocker message to EOA using the `agent-messaging` skill
   (Recipient: orchestrator, Subject: "BLOCKER: ...", Type: alert, Priority: urgent)
 → EOA escalates to ECOS
 → ECOS delegates to EAA
 → EAA responds with architectural guidance
 → ECOS forwards to EOA
-→ EOA forwards to EPA
-→ EPA checks inbox using the `agent-messaging` skill, reads the response, resumes implementation
+→ EOA forwards to AMPA
+→ AMPA checks inbox using the `agent-messaging` skill, reads the response, resumes implementation
 ```
 
 ---
@@ -201,7 +201,7 @@ Before sending any messages, verify your messaging identity is initialized. Read
 
 **Verify**: Confirm your identity file exists and contains your session name.
 
-### Sending Messages from EPA
+### Sending Messages from AMPA
 
 #### To EOA (Orchestrator)
 
@@ -236,7 +236,7 @@ Send a message to the integrator using the `agent-messaging` skill:
 
 **Verify**: confirm the message appears in your sent messages.
 
-### Reading Messages (EPA Inbox)
+### Reading Messages (AMPA Inbox)
 
 Check your inbox using the `agent-messaging` skill. Process all unread messages before proceeding with any work.
 
@@ -270,15 +270,15 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 
 ---
 
-## 7. EPA Responsibilities
+## 7. AMPA Responsibilities
 
 ### Core Responsibilities
 
 #### 1. Receive Tasks from EOA
 - EOA sends task assignment via the `agent-messaging` skill
-- EPA acknowledges receipt
-- EPA validates task clarity and completeness
-- EPA requests clarification if task is ambiguous
+- AMPA acknowledges receipt
+- AMPA validates task clarity and completeness
+- AMPA requests clarification if task is ambiguous
 
 #### 2. Execute Tasks (Implementation)
 - Write production code per task specification
@@ -304,16 +304,16 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 - PR title: `[Project] Feature/Fix: Brief description`
 - PR body: Include task reference, test results, implementation notes
 - Request review from EIA using the `agent-messaging` skill
-- **EPA does NOT merge PRs** - only EIA can merge
+- **AMPA does NOT merge PRs** - only EIA can merge
 
 #### 6. Update Task Status
-- EPA does NOT update GitHub Projects directly
-- EPA reports completion to EOA
+- AMPA does NOT update GitHub Projects directly
+- AMPA reports completion to EOA
 - EOA updates kanban board
 
-### What EPA Does NOT Do
+### What AMPA Does NOT Do
 
-| EPA Does NOT | Who Does It | Why |
+| AMPA Does NOT | Who Does It | Why |
 |--------------|-------------|-----|
 | Assign tasks to other agents | EOA | Orchestration is orchestrator's role |
 | Merge pull requests | EIA | Code integration is integrator's role |
@@ -325,30 +325,30 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 ### Workflow Pattern
 
 ```
-EOA → [Task Assignment] → EPA
-EPA → [Acknowledge] → EOA
+EOA → [Task Assignment] → AMPA
+AMPA → [Acknowledge] → EOA
     ↓ (implement)
-EPA → [Progress Update] → EOA
+AMPA → [Progress Update] → EOA
     ↓ (tests passing)
-EPA → [PR Created] → EIA (review request)
+AMPA → [PR Created] → EIA (review request)
     ↓ (wait for review)
-EIA → [Review Complete] → EPA (via EOA)
+EIA → [Review Complete] → AMPA (via EOA)
     ↓ (EOA merges PR)
-EPA → [Task Complete] → EOA
+AMPA → [Task Complete] → EOA
 EOA → [Kanban Updated] → GitHub
 ```
 
 ### Blocker Pattern
 
 ```
-EOA → [Task Assignment] → EPA
-EPA → [Acknowledge] → EOA
+EOA → [Task Assignment] → AMPA
+AMPA → [Acknowledge] → EOA
     ↓ (encounter blocker)
-EPA → [BLOCKER Report] → EOA
+AMPA → [BLOCKER Report] → EOA
 EOA → [Escalate] → ECOS
 ECOS → [Resolution] → EOA
-EOA → [Unblock] → EPA
-EPA → [Resume Implementation]
+EOA → [Unblock] → AMPA
+AMPA → [Resume Implementation]
 ```
 
 ---
@@ -357,11 +357,11 @@ EPA → [Resume Implementation]
 
 ### Session Lifecycle Management
 
-EPA session lifecycle is managed by ECOS (or EOA delegated by ECOS) using the `ai-maestro-agents-management` skill.
+AMPA session lifecycle is managed by ECOS (or EOA delegated by ECOS) using the `ai-maestro-agents-management` skill.
 
 ### Wake (Resume Session)
 
-To wake an EPA agent, use the `ai-maestro-agents-management` skill to wake the agent by session name (e.g., `<project>-programmer-<number>`).
+To wake an AMPA agent, use the `ai-maestro-agents-management` skill to wake the agent by session name (e.g., `<project>-programmer-<number>`).
 
 **When to wake**:
 - New task assigned by EOA
@@ -370,12 +370,12 @@ To wake an EPA agent, use the `ai-maestro-agents-management` skill to wake the a
 
 **What happens**:
 - Tmux session brought to foreground
-- EPA checks inbox using the `agent-messaging` skill
-- EPA resumes implementation work
+- AMPA checks inbox using the `agent-messaging` skill
+- AMPA resumes implementation work
 
 ### Hibernate (Pause Session)
 
-To hibernate an EPA agent, use the `ai-maestro-agents-management` skill to hibernate the agent by session name.
+To hibernate an AMPA agent, use the `ai-maestro-agents-management` skill to hibernate the agent by session name.
 
 **When to hibernate**:
 - Task completed, waiting for review
@@ -384,12 +384,12 @@ To hibernate an EPA agent, use the `ai-maestro-agents-management` skill to hiber
 
 **What happens**:
 - Tmux session detached (keeps running in background)
-- EPA continues monitoring via hooks
-- EPA can still receive messages via the `agent-messaging` skill
+- AMPA continues monitoring via hooks
+- AMPA can still receive messages via the `agent-messaging` skill
 
 ### Terminate (End Session)
 
-To terminate an EPA agent, use the `ai-maestro-agents-management` skill to terminate the agent by session name.
+To terminate an AMPA agent, use the `ai-maestro-agents-management` skill to terminate the agent by session name.
 
 **When to terminate**:
 - Task completed and PR merged
@@ -399,21 +399,21 @@ To terminate an EPA agent, use the `ai-maestro-agents-management` skill to termi
 
 **What happens**:
 - Tmux session killed
-- EPA sends final completion report to EOA
+- AMPA sends final completion report to EOA
 - Messaging identity deregistered
 - Working directory preserved at `~/agents/<project>-programmer-<number>/`
 
 ### Auto-Hibernate Feature
 
-EPA can auto-hibernate after submitting PR for review:
+AMPA can auto-hibernate after submitting PR for review:
 
 ```bash
-# In EPA's configuration
+# In AMPA's configuration
 AUTO_HIBERNATE_AFTER_PR=true
 AUTO_HIBERNATE_TIMEOUT=600  # 10 minutes of inactivity
 ```
 
-This prevents EPA from consuming resources while waiting for review feedback.
+This prevents AMPA from consuming resources while waiting for review feedback.
 
 ---
 
@@ -421,9 +421,9 @@ This prevents EPA from consuming resources while waiting for review feedback.
 
 ### Common Issues
 
-#### Issue: EPA cannot access EOA skills
+#### Issue: AMPA cannot access EOA skills
 **Symptom**: `Skill 'eoa-orchestration-patterns' not found`
-**Cause**: Plugin mutual exclusivity - EPA doesn't have EOA plugin loaded
+**Cause**: Plugin mutual exclusivity - AMPA doesn't have EOA plugin loaded
 **Solution**: Use the `agent-messaging` skill to send a message requesting EOA assistance
 
 #### Issue: Message not received by recipient
@@ -448,10 +448,10 @@ This prevents EPA from consuming resources while waiting for review feedback.
 
 #### Issue: Cannot commit to repository
 **Symptom**: `Git authentication failed` or `Permission denied`
-**Cause**: Git credentials not configured in EPA session
+**Cause**: Git credentials not configured in AMPA session
 **Solution**:
-1. Configure git: `git config --local user.name "EPA Bot"`
-2. Configure email: `git config --local user.email "epa@example.com"`
+1. Configure git: `git config --local user.name "AMPA Bot"`
+2. Configure email: `git config --local user.email "ampa@example.com"`
 3. Verify SSH key or token access
 
 #### Issue: PR creation fails
@@ -462,7 +462,7 @@ This prevents EPA from consuming resources while waiting for review feedback.
 2. Check token permissions (needs `repo` scope)
 3. Generate new token if expired
 
-#### Issue: EPA session terminated unexpectedly
+#### Issue: AMPA session terminated unexpectedly
 **Symptom**: Tmux session not found
 **Cause**: System restart, manual kill, or out-of-memory
 **Solution**:
@@ -470,11 +470,11 @@ This prevents EPA from consuming resources while waiting for review feedback.
 2. ECOS recreates session using the `ai-maestro-agents-management` skill
 3. Restore work from `~/agents/<project>-programmer-<number>/work/`
 
-#### Issue: EPA stuck waiting for review
+#### Issue: AMPA stuck waiting for review
 **Symptom**: PR submitted but no response from EIA
 **Cause**: EIA session hibernated or terminated
 **Solution**:
-1. EPA sends reminder message to EOA
+1. AMPA sends reminder message to EOA
 2. EOA checks EIA status
 3. EOA wakes or spawns EIA if needed
 
@@ -513,10 +513,10 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 - Added 8-column canonical kanban system across all shared docs
 - Added `encoding="utf-8"` to all Python file operations
-- Added `ruff-configuration-patterns.md` reference to `epa-project-setup` skill
+- Added `ruff-configuration-patterns.md` reference to `ampa-project-setup` skill
 - Synchronized FULL_PROJECT_WORKFLOW.md, TEAM_REGISTRY_SPECIFICATION.md, ROLE_BOUNDARIES.md across all plugins
-- EPA now receives TEAM_REGISTRY_SPECIFICATION.md (previously missing)
-- EPA ROLE_BOUNDARIES.md synchronized with canonical version
+- AMPA now receives TEAM_REGISTRY_SPECIFICATION.md (previously missing)
+- AMPA ROLE_BOUNDARIES.md synchronized with canonical version
 
 ---
 
