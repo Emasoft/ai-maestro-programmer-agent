@@ -46,7 +46,7 @@ None. The `hooks/hooks.json` is empty -- AMPA uses globally installed hooks.
 
 ### Scripts
 
-The `scripts/` directory contains the CPV (Claude Plugins Validation) suite — 21 validation scripts covering plugin structure, agents, skills, hooks, security, encoding, documentation, and more. The entry point is `validate_plugin.py`. Scripts are auto-synced from `Emasoft/claude-plugins-validation` via `sync_cpv_scripts.py` (used in CI) or `sync_cpv_scripts.sh` (legacy).
+The `scripts/` directory contains the CPV (Claude Plugins Validation) suite — 21 validation scripts covering plugin structure, agents, skills, hooks, security, encoding, documentation, and more. The entry point is `validate_plugin.py`. Scripts are auto-synced from `Emasoft/claude-plugins-validation` via `sync_cpv_scripts.py`.
 
 | Script | Description |
 |--------|-------------|
