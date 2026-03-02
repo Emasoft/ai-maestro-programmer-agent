@@ -18,6 +18,22 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+# Portable SHA-256 wrapper: prefers sha256sum (Linux), falls back to shasum (macOS), then python3.
+# Accepts an optional file argument; with no argument reads from stdin.
+sha256_hash() {
+    if command -v sha256sum &>/dev/null; then
+        sha256sum "$@" | cut -d' ' -f1
+    elif command -v shasum &>/dev/null; then
+        shasum -a 256 "$@" | cut -d' ' -f1
+    else
+        if [ $# -eq 0 ]; then
+            python3 -c "import hashlib,sys; print(hashlib.sha256(sys.stdin.buffer.read()).hexdigest())"
+        else
+            python3 -c "import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())" "$@"
+        fi
+    fi
+}
+
 REPO="Emasoft/claude-plugins-validation"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REF="${1:-}"  # Optional: tag or branch to sync from
@@ -55,7 +71,7 @@ echo ""
 # Check gh is available
 if ! command -v gh &> /dev/null; then
     echo -e "${RED}ERROR: gh (GitHub CLI) is required but not installed.${NC}"
-    echo "Install with: brew install gh"
+    echo "Install gh CLI: https://cli.github.com/ (macOS: brew install gh)"
     exit 1
 fi
 
@@ -103,8 +119,8 @@ for script in "${SCRIPTS[@]}"; do
 
     # Check if content is different from current
     if [ -f "${SCRIPT_DIR}/${script}" ]; then
-        CURRENT_HASH=$(shasum -a 256 "${SCRIPT_DIR}/${script}" | cut -d' ' -f1)
-        NEW_HASH=$(printf '%s' "$DECODED" | shasum -a 256 | cut -d' ' -f1)
+        CURRENT_HASH=$(sha256_hash "${SCRIPT_DIR}/${script}")
+        NEW_HASH=$(printf '%s' "$DECODED" | sha256_hash)
         if [ "$CURRENT_HASH" = "$NEW_HASH" ]; then
             UNCHANGED=$((UNCHANGED + 1))
             continue

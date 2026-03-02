@@ -8,6 +8,10 @@ The AI Maestro Programmer Agent is a **general-purpose programmer** that execute
 
 > **Standalone or Orchestrated**: This plugin works in two modes. In **standalone mode**, the agent receives tasks directly from the user and reports back in conversation. In **orchestrated mode** (within the AI Maestro ecosystem), it receives tasks from the Orchestrator (AMOA) via messaging. No additional setup is needed for standalone mode.
 
+### Implementer Agents
+
+In the AI Maestro ecosystem, **implementers** are agents that produce artifacts. The Programmer Agent (AMPA) is one subtype of implementer — it produces code, tests, and pull requests. Other implementer subtypes include artists (visual assets), SFX experts (audio assets), and more. All implementers share the same role (`implementer`) in team registries but use subtype-specific plugins and naming (e.g., `svgbbox-programmer-001`).
+
 **Prefix**: `ampa-` = AI Maestro Programmer Agent
 
 ## Core Responsibilities
@@ -179,5 +183,5 @@ uv run python scripts/validate_plugin.py . --verbose
 
 ## See Also
 
-> **Related Plugins**: This agent works with the AI Maestro Orchestrator Agent (AMOA), AI Maestro Integrator Agent (AMIA), and AI Maestro Architect Agent (AMAA). Each agent plugin is installed independently. These plugins are part of the AI Maestro ecosystem and are not required for standalone use.
+> **Related Plugins**: This agent works with the AI Maestro Orchestrator Agent (AMOA), AI Maestro Integrator Agent (AMIA), and AI Maestro Architect Agent (AMAA). Each agent plugin is installed independently. These plugins are part of the AI Maestro ecosystem and are not required for standalone use. AMPA is an **implementer** (artifact-producing agent). Future implementer subtypes (artist, sfx-expert, etc.) will follow the same patterns.
 

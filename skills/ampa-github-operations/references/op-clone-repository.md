@@ -26,7 +26,10 @@ Clone or fork the project repository to your local machine for development.
 
 ## Prerequisites
 
-- gh CLI installed: `brew install gh`
+- gh CLI installed (see https://cli.github.com/)
+  - macOS: `brew install gh`
+  - Linux: `sudo apt install gh` or see https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+  - Windows: `winget install --id GitHub.cli`
 - gh CLI authenticated: `gh auth login`
 - Git configured with user name and email
 - Network access to GitHub

@@ -3,7 +3,7 @@ name: op-respond-to-review
 description: Address AMIA review comments on pull request (Step 21)
 parent-skill: ampa-github-operations
 operation-type: pr-review-response
-workflow-step: 21
+workflow-step: "Step 21"
 ---
 
 # Respond to Review

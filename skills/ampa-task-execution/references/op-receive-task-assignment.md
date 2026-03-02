@@ -1,10 +1,8 @@
 ---
-operation: op-receive-task-assignment
-procedure: proc-execute-task
+name: op-receive-task-assignment
+description: Receive and validate task assignments from the Orchestrator
 workflow-step: "Step 17.1 - Receive Task Assignment"
 parent-skill: ampa-task-execution
-parent-plugin: ai-maestro-programmer-agent
-version: 1.0.0
 ---
 
 # Operation: Receive Task Assignment

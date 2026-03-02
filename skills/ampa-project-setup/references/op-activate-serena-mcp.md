@@ -2,7 +2,7 @@
 name: op-activate-serena-mcp
 description: Activate SERENA MCP for code navigation and semantic analysis.
 parent-skill: ampa-project-setup
-operation-number: 6
+workflow-step: "Step 6"
 ---
 
 # Operation: Activate SERENA MCP

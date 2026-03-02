@@ -1,10 +1,8 @@
 ---
-operation: op-validate-acceptance-criteria
-procedure: proc-execute-task
+name: op-validate-acceptance-criteria
+description: Validate that implementation meets all acceptance criteria
 workflow-step: "Step 17.6 - Validate Acceptance Criteria"
 parent-skill: ampa-task-execution
-parent-plugin: ai-maestro-programmer-agent
-version: 1.0.0
 ---
 
 # Operation: Validate Acceptance Criteria

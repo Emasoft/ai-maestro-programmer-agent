@@ -2,7 +2,7 @@
 name: op-initialize-package-manager
 description: Initialize the appropriate package manager for the detected project language.
 parent-skill: ampa-project-setup
-operation-number: 2
+workflow-step: "Step 2"
 ---
 
 # Operation: Initialize Package Manager
@@ -78,6 +78,7 @@ uv venv --python 3.12
 
 # Activate the virtual environment
 source .venv/bin/activate
+# Windows: .venv\Scripts\activate.bat (cmd) or .venv\Scripts\Activate.ps1 (PowerShell)
 
 # Initialize as uv-managed project
 uv init --python 3.12
@@ -90,6 +91,7 @@ uv venv --python 3.12
 
 # Activate
 source .venv/bin/activate
+# Windows: .venv\Scripts\activate.bat (cmd) or .venv\Scripts\Activate.ps1 (PowerShell)
 
 # Sync dependencies
 uv sync
@@ -300,6 +302,7 @@ uv venv --python 3.12
 
 # Activate
 source .venv/bin/activate
+# Windows: .venv\Scripts\activate.bat (cmd) or .venv\Scripts\Activate.ps1 (PowerShell)
 
 # Initialize
 uv init --python 3.12

@@ -6,16 +6,18 @@ compatibility: Requires gh CLI authenticated.
 metadata:
   author: AI Maestro
   version: 1.0.0
+  workflow-instruction: "Steps 19, 21, 22"
+  procedure: "proc-complete-task, proc-handle-failed-pr"
 context: fork
 agent: ampa-programmer-main-agent
 user-invocable: false
-workflow-instruction: "Steps 19, 21, 22"
-procedure: "proc-complete-task, proc-handle-failed-pr"
 ---
 
 # AMPA GitHub Operations
 
 ## Overview
+
+AMPA is an **implementer** agent. This skill handles GitHub operations for code-producing implementers.
 
 This skill provides the AI Maestro Programmer Agent (AMPA) with standardized procedures for all Git and GitHub operations. It covers the full lifecycle from cloning a repository, creating feature branches, committing code changes with conventional commit messages, opening pull requests via the gh CLI, and responding to AMIA code review feedback. All operations use the gh CLI tool and follow the AI Maestro ecosystem conventions for branch naming, commit formatting, and PR descriptions. This skill is used during workflow Steps 19 (create PR), 21 (respond to review), and 22 (push fixes after rejection).
 

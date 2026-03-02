@@ -2,7 +2,7 @@
 name: op-setup-testing-framework
 description: Configure the testing framework for the project.
 parent-skill: ampa-project-setup
-operation-number: 5
+workflow-step: "Step 5"
 ---
 
 # Operation: Setup Testing Framework

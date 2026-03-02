@@ -45,6 +45,10 @@ AMOA (Orchestrator)                                           │
   │ 13. Assigns tasks to agents                              │
   ▼                                                          │
 IMPLEMENTER AGENTS ◄───────────────────────────────────────► │
+  │  (Implementer category: agents that produce artifacts.   │
+  │   'Programmer' is one subtype; others include artist,    │
+  │   SFX expert, etc. All share the `implementer` role in  │
+  │   team registries but use subtype-specific plugins.)     │
   │                                                          │
   │ 14. Work on tasks                                        │
   │ 15. Submit PRs                                           │

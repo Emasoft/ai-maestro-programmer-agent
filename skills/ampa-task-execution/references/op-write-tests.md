@@ -1,10 +1,8 @@
 ---
-operation: op-write-tests
-procedure: proc-execute-task
+name: op-write-tests
+description: Write tests for implemented code changes
 workflow-step: "Step 17.5 - Write Tests"
 parent-skill: ampa-task-execution
-parent-plugin: ai-maestro-programmer-agent
-version: 1.0.0
 ---
 
 # Operation: Write Tests

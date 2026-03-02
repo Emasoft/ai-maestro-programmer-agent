@@ -6,16 +6,18 @@ compatibility: Requires AI Maestro running.
 metadata:
   author: AI Maestro
   version: 1.0.0
+  workflow-instruction: "support"
+  procedure: "proc-handoff-management"
 context: fork
 agent: ampa-programmer-main-agent
 user-invocable: false
-workflow-instruction: "support"
-procedure: "proc-handoff-management"
 ---
 
 # AMPA Handoff Management Skill
 
 ## Overview
+
+AMPA is an **implementer** agent. This skill handles context transfer between implementer sessions.
 
 This skill enables the AI Maestro Programmer Agent (AMPA) to create and receive handoff documents for seamless context transfer between agents and sessions. Handoff documents are structured Markdown files with YAML frontmatter that capture work state, task context, bug reports, and checkpoint data. The AMPA uses this skill whenever it receives delegated work from the AI Maestro Orchestrator Agent (AMOA), needs to pass completed work to the AI Maestro Integrator Agent (AMIA), discovers bugs during implementation, or must save progress before a session ends. All handoff documents are stored under `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/` in a standardized directory structure that all agents in the ecosystem can read.
 

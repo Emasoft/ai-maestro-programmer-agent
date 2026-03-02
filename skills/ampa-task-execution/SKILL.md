@@ -6,11 +6,11 @@ compatibility: Requires SERENA MCP activated.
 metadata:
   author: AI Maestro
   version: 1.0.0
+  workflow-instruction: "Step 17 - Task Execution"
+  procedure: "proc-execute-task"
 context: fork
 agent: ampa-programmer-main-agent
 user-invocable: false
-workflow-instruction: "Step 17 - Task Execution"
-procedure: "proc-execute-task"
 ---
 
 # AMPA Task Execution Skill
@@ -18,6 +18,8 @@ procedure: "proc-execute-task"
 Execute programming tasks according to requirements and acceptance criteria received from the orchestrator.
 
 ## Overview
+
+AMPA is an **implementer** (artifact-producing agent). This skill handles the task execution workflow for the programmer subtype.
 
 The AMPA Task Execution skill is the core operational skill for the AI Maestro Programmer Agent (AMPA). It defines the end-to-end workflow a programmer agent follows when assigned a coding task by an orchestrator agent (AMOA). The workflow covers every phase from receiving the task assignment via AI Maestro messaging, through parsing requirements, setting up the development environment, implementing code, writing tests, and validating acceptance criteria. This skill ensures that every task is completed methodically, with full traceability from requirement to implementation to verification. It depends on SERENA MCP for code navigation and AI Maestro for inter-agent communication.
 
@@ -27,7 +29,7 @@ Follow these numbered steps in order for every assigned task:
 
 1. **Receive the task assignment** -- Read the incoming AI Maestro message from the orchestrator agent, extract the task identifier and metadata, validate all required fields are present, and send an acknowledgment back to the orchestrator.
 2. **Parse the task requirements** -- Extract the full list of acceptance criteria, identify any dependencies on other tasks that must be completed first, determine which files and components will be modified, and ask the orchestrator for clarification on anything ambiguous.
-3. **Set up the development environment** -- Navigate to the target project directory, activate the correct virtual environment (using `uv venv` or `source .venv/bin/activate`), verify all dependencies are installed, and initialize SERENA MCP for code navigation.
+3. **Set up the development environment** -- Navigate to the target project directory, activate the correct virtual environment (using `uv venv` or `source .venv/bin/activate` (Windows: `.venv\Scripts\activate.bat` or `.venv\Scripts\Activate.ps1`)), verify all dependencies are installed, and initialize SERENA MCP for code navigation.
 4. **Implement the code** -- Use SERENA MCP to analyze the existing code structure, plan the implementation approach in small increments, write code in testable chunks, and add documentation and comments explaining the "why" of each change.
 5. **Write tests** -- Identify test scenarios directly from the requirements, write unit tests for all new functions, write integration tests where applicable, run all tests, and fix any failures before proceeding.
 6. **Validate acceptance criteria** -- Review each acceptance criterion one by one, verify the implementation satisfies it, document the evidence of validation, and report task completion to the orchestrator via AI Maestro.

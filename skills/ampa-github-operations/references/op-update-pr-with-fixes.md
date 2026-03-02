@@ -3,7 +3,7 @@ name: op-update-pr-with-fixes
 description: Push fixes to PR after rejection (Step 22)
 parent-skill: ampa-github-operations
 operation-type: pr-update
-workflow-step: 22
+workflow-step: "Step 22"
 ---
 
 # Update PR with Fixes

@@ -1,10 +1,8 @@
 ---
-operation: op-setup-development-environment
-procedure: proc-execute-task
+name: op-setup-development-environment
+description: Set up the development environment for the assigned task
 workflow-step: "Step 17.3 - Setup Development Environment"
 parent-skill: ampa-task-execution
-parent-plugin: ai-maestro-programmer-agent
-version: 1.0.0
 ---
 
 # Operation: Setup Development Environment
@@ -77,6 +75,7 @@ uv venv --python 3.12
 
 # Activate the environment
 source .venv/bin/activate
+# Windows: .venv\Scripts\activate.bat (cmd) or .venv\Scripts\Activate.ps1 (PowerShell)
 
 # Verify activation
 which python
@@ -159,11 +158,11 @@ Common SERENA initialization commands:
 
 ### Example 1: Python Project Setup
 
-Task requires working on `/Users/dev/projects/my-api`:
+Task requires working on `~/projects/my-api`:
 
 ```bash
 # Navigate to project
-cd /Users/dev/projects/my-api
+cd ~/projects/my-api
 
 # Check for existing venv
 ls -la .venv/
@@ -171,6 +170,7 @@ ls -la .venv/
 
 # Activate
 source .venv/bin/activate
+# Windows: .venv\Scripts\activate.bat (cmd) or .venv\Scripts\Activate.ps1 (PowerShell)
 
 # Sync dependencies
 uv sync
@@ -197,7 +197,7 @@ Task requires working on a freshly cloned project:
 
 ```bash
 # Navigate
-cd /Users/dev/projects/new-project
+cd ~/projects/new-project
 
 # No venv exists
 ls -la .venv/
@@ -209,6 +209,7 @@ uv venv --python 3.12
 
 # Activate
 source .venv/bin/activate
+# Windows: .venv\Scripts\activate.bat (cmd) or .venv\Scripts\Activate.ps1 (PowerShell)
 
 # Sync dependencies
 uv sync
@@ -221,7 +222,7 @@ Task requires working on a TypeScript frontend:
 
 ```bash
 # Navigate
-cd /Users/dev/projects/frontend
+cd ~/projects/frontend
 
 # Check Node version
 node --version

@@ -2,7 +2,7 @@
 name: op-detect-project-language
 description: Identify the programming language of a project from files and configuration.
 parent-skill: ampa-project-setup
-operation-number: 1
+workflow-step: "Step 1"
 ---
 
 # Operation: Detect Project Language

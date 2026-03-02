@@ -2,6 +2,8 @@
 
 **Single Source of Truth for AI Maestro Programmer Agent (AMPA) Operations**
 
+**Implementer Category**: AMPA is an **implementer** — an agent that produces artifacts. 'Programmer' is one subtype; others include artist, SFX expert, etc. All implementers share the `implementer` role in team registries but use subtype-specific plugins and naming conventions.
+
 ---
 
 ## 1. Session Naming Convention

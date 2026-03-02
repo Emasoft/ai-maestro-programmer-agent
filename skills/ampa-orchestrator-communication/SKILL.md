@@ -6,11 +6,11 @@ compatibility: Requires AI Maestro running.
 metadata:
   author: AI Maestro
   version: 1.0.0
+  workflow-instruction: "Steps 14, 15, 17, 19"
+  procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
 context: fork
 agent: ampa-programmer-main-agent
 user-invocable: false
-workflow-instruction: "Steps 14, 15, 17, 19"
-procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
 ---
 
 # AMPA Orchestrator Communication Skill
@@ -18,6 +18,8 @@ procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
 This skill defines all communication protocols between the AI Maestro Programmer Agent (AMPA) and the AI Maestro Orchestrator Agent (AMOA). Use this skill whenever you need to interact with the orchestrator for clarifications, status updates, blocking issues, improvement proposals, or task completion notifications.
 
 ## Overview
+
+AMPA is an **implementer** agent. This skill handles communication between implementers and the orchestrator.
 
 The AMPA-AMOA communication channel uses asynchronous inter-agent messaging provided by the globally installed `agent-messaging` skill. That skill defines the current commands and syntax for sending, receiving, reading, replying to, and checking the status of messages. Always read the `agent-messaging` skill at runtime to determine the exact commands -- never hardcode messaging command names in your workflow.
 

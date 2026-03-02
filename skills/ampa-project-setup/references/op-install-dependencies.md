@@ -2,7 +2,7 @@
 name: op-install-dependencies
 description: Install project dependencies using the initialized package manager.
 parent-skill: ampa-project-setup
-operation-number: 3
+workflow-step: "Step 3"
 ---
 
 # Operation: Install Dependencies

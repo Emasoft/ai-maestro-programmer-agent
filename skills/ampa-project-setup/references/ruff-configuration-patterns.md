@@ -1,3 +1,9 @@
+---
+name: ruff-configuration-patterns
+description: Reference patterns for Ruff linter and formatter configuration
+parent-skill: ampa-project-setup
+---
+
 # Ruff Configuration Patterns
 
 ## Contents

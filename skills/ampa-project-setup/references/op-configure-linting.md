@@ -2,7 +2,7 @@
 name: op-configure-linting
 description: Configure linting tools for code quality checks.
 parent-skill: ampa-project-setup
-operation-number: 4
+workflow-step: "Step 4"
 ---
 
 # Operation: Configure Linting

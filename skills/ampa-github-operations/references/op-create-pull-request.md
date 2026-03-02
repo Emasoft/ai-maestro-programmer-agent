@@ -3,7 +3,7 @@ name: op-create-pull-request
 description: Create a pull request with proper description (Step 19)
 parent-skill: ampa-github-operations
 operation-type: pr-creation
-workflow-step: 19
+workflow-step: "Step 19"
 ---
 
 # Create Pull Request

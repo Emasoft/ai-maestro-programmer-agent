@@ -1,10 +1,8 @@
 ---
-operation: op-parse-task-requirements
-procedure: proc-execute-task
+name: op-parse-task-requirements
+description: Parse task issue content to extract requirements and acceptance criteria
 workflow-step: "Step 17.2 - Parse Task Requirements"
 parent-skill: ampa-task-execution
-parent-plugin: ai-maestro-programmer-agent
-version: 1.0.0
 ---
 
 # Operation: Parse Task Requirements

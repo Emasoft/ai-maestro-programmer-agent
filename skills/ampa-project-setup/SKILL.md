@@ -6,11 +6,11 @@ compatibility: Requires SERENA MCP activated.
 metadata:
   author: AI Maestro
   version: 1.0.0
+  workflow-instruction: "Step 17 (first task)"
+  procedure: "proc-execute-task"
 context: fork
 agent: ampa-programmer-main-agent
 user-invocable: false
-workflow-instruction: "Step 17 (first task)"
-procedure: "proc-execute-task"
 ---
 
 # AMPA Project Setup Skill
@@ -18,6 +18,8 @@ procedure: "proc-execute-task"
 This skill provides procedures for setting up project configuration and tooling when starting work on a new project. It covers language detection, package manager initialization, dependency installation, linting configuration, testing framework setup, and SERENA MCP activation.
 
 ## Overview
+
+AMPA is an **implementer** agent. This skill handles project environment setup for code-producing implementers.
 
 The AMPA Project Setup skill equips the AI Maestro Programmer Agent (AMPA) with a complete, repeatable procedure for initializing any new project workspace. When an AMPA agent receives its first task on a project, it must configure the development environment before writing any code. This skill guides that process across eight supported languages (Python, JavaScript/TypeScript, Rust, Go, .NET, C/C++, Objective-C, Swift) by providing six sequential operations: language detection, package manager initialization, dependency installation, linting configuration, testing framework setup, and SERENA MCP activation. Each operation has its own detailed reference file under the `references/` subdirectory. The skill ensures that every AMPA agent starts from a consistent, fully-configured environment regardless of project language or existing state.
 
@@ -226,7 +228,7 @@ Scenario: You receive a task to work on a Python library project that has a `pyp
 Step 1: Read this SKILL.md (done).
 Step 2: Navigate to {baseDir}/my-python-lib and confirm write access.
 Step 3: Run language detection. Found pyproject.toml and src/*.py files. Detected language: Python.
-Step 4: Run "uv venv --python 3.12" to create virtual environment, then "source .venv/bin/activate".
+Step 4: Run "uv venv --python 3.12" to create virtual environment, then "source .venv/bin/activate" (Windows: .venv\Scripts\activate.bat or .venv\Scripts\Activate.ps1).
         Verify with "uv --version". Output: "uv 0.7.12". Success.
 Step 5: Run "uv sync" to install all dependencies from pyproject.toml.
         Output shows 47 packages installed, 0 errors. Success.

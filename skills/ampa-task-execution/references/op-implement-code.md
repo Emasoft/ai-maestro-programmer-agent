@@ -1,10 +1,8 @@
 ---
-operation: op-implement-code
-procedure: proc-execute-task
+name: op-implement-code
+description: Implement code changes according to task requirements
 workflow-step: "Step 17.4 - Implement Code"
 parent-skill: ampa-task-execution
-parent-plugin: ai-maestro-programmer-agent
-version: 1.0.0
 ---
 
 # Operation: Implement Code
