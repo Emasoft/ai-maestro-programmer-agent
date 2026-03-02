@@ -22,14 +22,14 @@
 - **Type**: Always use `programmer` (identifies role)
 - **Number**: Zero-padded 3-digit sequence (001, 002, 003, ...)
 - **Messaging Identity**: Session name = messaging identity (initialized via the `agent-messaging` skill)
-- **Chosen By**: ECOS (Chief of Staff) when spawning the programmer
-- **NO `ampa-` prefix**: Unlike EOA/ECOS/EIA/EAMA, AMPA sessions use project-based naming
+- **Chosen By**: AMCOS (Chief of Staff) when spawning the programmer
+- **NO `ampa-` prefix**: Unlike AMOA/AMCOS/AMIA/AMAMA, AMPA sessions use project-based naming
 
 ### Why This Matters
 The session name is used as your messaging identity and becomes the messaging address for inter-agent communication. The `<project>-programmer-<number>` format allows multiple programmer agents to work on the same project without name collisions.
 
 ### Sequential Assignment
-ECOS maintains a counter for each project to ensure unique numbering:
+AMCOS maintains a counter for each project to ensure unique numbering:
 - First AMPA for svgbbox → `svgbbox-programmer-001`
 - Second AMPA for svgbbox → `svgbbox-programmer-002`
 - First AMPA for maestro → `maestro-programmer-001`
@@ -93,15 +93,15 @@ This loads ONLY the ai-maestro-programmer-agent plugin into that Claude Code ses
 |-----------|---------|
 | `.claude/plugins/` | Plugin installation location |
 | `work/` | Task implementation files, scratch work |
-| `reports/` | Markdown reports for EOA/ECOS (task completion, blockers, test results) |
+| `reports/` | Markdown reports for AMOA/AMCOS (task completion, blockers, test results) |
 | `logs/` | Session activity logs, AI Maestro message logs |
 
 ---
 
 ## 4. How AMPA is Created
 
-### ECOS Spawns AMPA (via EOA delegation)
-The ECOS (Chief of Staff) agent spawns AMPA instances using the `ai-maestro-agents-management` skill, typically after EOA requests implementer capacity:
+### AMCOS Spawns AMPA (via AMOA delegation)
+The AMCOS (Chief of Staff) agent spawns AMPA instances using the `ai-maestro-agents-management` skill, typically after AMOA requests implementer capacity:
 
 - **Agent name**: `<project>-programmer-001`
 - **Working directory**: `~/agents/<project>-programmer-001/`
@@ -116,15 +116,15 @@ The ECOS (Chief of Staff) agent spawns AMPA instances using the `ai-maestro-agen
 | Parameter | Value | Purpose |
 |-----------|-------|---------|
 | Working directory | `~/agents/$SESSION_NAME` | Sets working directory for the programmer |
-| Task | Task description | Initial task prompt (from EOA or ECOS) |
+| Task | Task description | Initial task prompt (from AMOA or AMCOS) |
 | Plugin | `ai-maestro-programmer-agent` | Load AMPA plugin |
 | Main agent | `ampa-programmer-main-agent` | Start with this agent from the plugin |
 
 ### Pre-Spawn Setup
-Before spawning, ECOS must:
+Before spawning, AMCOS must:
 1. Copy the plugin to `~/agents/$SESSION_NAME/.claude/plugins/ai-maestro-programmer-agent/`
 2. Initialize messaging identity for the session (using the `agent-messaging` skill)
-3. Create initial task description (from EOA task breakdown)
+3. Create initial task description (from AMOA task breakdown)
 4. Set up working directories
 5. Clone project repository into `work/` directory
 
@@ -137,19 +137,19 @@ Before spawning, ECOS must:
 Each AMPA instance has **ONLY** the `ai-maestro-programmer-agent` plugin loaded.
 
 **AMPA CANNOT access**:
-- `emasoft-chief-of-staff-agent` (ECOS) skills
-- `emasoft-orchestrator-agent` (EOA) skills
-- `emasoft-integrator-agent` (EIA) skills
-- `emasoft-architect-agent` (EAA) skills
-- `emasoft-assistant-manager-agent` (EAMA) skills
+- `ai-maestro-chief-of-staff-agent` (AMCOS) skills
+- `ai-maestro-orchestrator-agent` (AMOA) skills
+- `ai-maestro-integrator-agent` (AMIA) skills
+- `ai-maestro-architect-agent` (AMAA) skills
+- `ai-maestro-assistant-manager-agent` (AMAMA) skills
 
 ### Why This Matters
 Each plugin defines a **role boundary**. AMPA's job is to **implement tasks**, not to:
-- Make architectural decisions (EAA's job)
-- Orchestrate other agents (EOA's job)
-- Coordinate multiple orchestrators (ECOS's job)
-- Integrate and review code (EIA's job)
-- Manage user communication (EAMA's job)
+- Make architectural decisions (AMAA's job)
+- Orchestrate other agents (AMOA's job)
+- Coordinate multiple orchestrators (AMCOS's job)
+- Integrate and review code (AMIA's job)
+- Manage user communication (AMAMA's job)
 
 ### Globally Installed Skills
 AMPA relies on **globally installed skills** (not plugin-specific skills) for implementation guidance:
@@ -179,13 +179,13 @@ All cross-role communication happens via **inter-agent messages** sent through t
 **Example**:
 ```
 AMPA encounters architectural question
-→ AMPA sends a blocker message to EOA using the `agent-messaging` skill
+→ AMPA sends a blocker message to AMOA using the `agent-messaging` skill
   (Recipient: orchestrator, Subject: "BLOCKER: ...", Type: alert, Priority: urgent)
-→ EOA escalates to ECOS
-→ ECOS delegates to EAA
-→ EAA responds with architectural guidance
-→ ECOS forwards to EOA
-→ EOA forwards to AMPA
+→ AMOA escalates to AMCOS
+→ AMCOS delegates to AMAA
+→ AMAA responds with architectural guidance
+→ AMCOS forwards to AMOA
+→ AMOA forwards to AMPA
 → AMPA checks inbox using the `agent-messaging` skill, reads the response, resumes implementation
 ```
 
@@ -203,7 +203,7 @@ Before sending any messages, verify your messaging identity is initialized. Read
 
 ### Sending Messages from AMPA
 
-#### To EOA (Orchestrator)
+#### To AMOA (Orchestrator)
 
 Send a message to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
@@ -214,10 +214,10 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 **Verify**: confirm the message appears in your sent messages.
 
-#### To ECOS (Chief of Staff) - For Blockers Only
+#### To AMCOS (Chief of Staff) - For Blockers Only
 
 Send a message to the chief of staff using the `agent-messaging` skill:
-- **Recipient**: the ECOS agent session
+- **Recipient**: the AMCOS agent session
 - **Subject**: "BLOCKER: [brief description]"
 - **Content**: describe the blocker, its impact, and point to the blocker report file path
 - **Type**: alert
@@ -225,10 +225,10 @@ Send a message to the chief of staff using the `agent-messaging` skill:
 
 **Verify**: confirm the message was delivered successfully.
 
-#### To EIA (Integrator) - For Review Requests
+#### To AMIA (Integrator) - For Review Requests
 
 Send a message to the integrator using the `agent-messaging` skill:
-- **Recipient**: the EIA agent session
+- **Recipient**: the AMIA agent session
 - **Subject**: "Review Request: PR #[number]"
 - **Content**: describe what the PR implements, how many tests pass, and that it is ready for review
 - **Type**: request
@@ -265,7 +265,7 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 | `status` | Progress update (mid-task) | "50% complete, tests passing" |
 | `task` | Task assignment | "Implement feature Z" |
 | `response` | Reply to a request | "Use OAuth2 authentication" |
-| `handoff` | Transfer responsibility | "Handing off to EIA for review" |
+| `handoff` | Transfer responsibility | "Handing off to AMIA for review" |
 | `ack` | Acknowledge receipt | "Received and processing" |
 
 ---
@@ -274,8 +274,8 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 
 ### Core Responsibilities
 
-#### 1. Receive Tasks from EOA
-- EOA sends task assignment via the `agent-messaging` skill
+#### 1. Receive Tasks from AMOA
+- AMOA sends task assignment via the `agent-messaging` skill
 - AMPA acknowledges receipt
 - AMPA validates task clarity and completeness
 - AMPA requests clarification if task is ambiguous
@@ -294,60 +294,60 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 - Test coverage report (aim for >80%)
 
 #### 4. Report Blockers Immediately
-- If blocked, send blocker message to EOA within 5 minutes
+- If blocked, send blocker message to AMOA within 5 minutes
 - Include detailed blocker report in `reports/` directory
 - Propose potential solutions if possible
-- Wait for EOA/ECOS guidance (do NOT implement workarounds)
+- Wait for AMOA/AMCOS guidance (do NOT implement workarounds)
 
 #### 5. Create Pull Requests
 - Create PR when task implementation complete
 - PR title: `[Project] Feature/Fix: Brief description`
 - PR body: Include task reference, test results, implementation notes
-- Request review from EIA using the `agent-messaging` skill
-- **AMPA does NOT merge PRs** - only EIA can merge
+- Request review from AMIA using the `agent-messaging` skill
+- **AMPA does NOT merge PRs** - only AMIA can merge
 
 #### 6. Update Task Status
 - AMPA does NOT update GitHub Projects directly
-- AMPA reports completion to EOA
-- EOA updates kanban board
+- AMPA reports completion to AMOA
+- AMOA updates kanban board
 
 ### What AMPA Does NOT Do
 
 | AMPA Does NOT | Who Does It | Why |
 |--------------|-------------|-----|
-| Assign tasks to other agents | EOA | Orchestration is orchestrator's role |
-| Merge pull requests | EIA | Code integration is integrator's role |
-| Make architectural decisions | EAA | Architecture is architect's role |
-| Update kanban boards | EOA | Task tracking is orchestrator's role |
-| Communicate with end users | EAMA | User comms is assistant manager's role |
-| Spawn other programmer agents | ECOS | Capacity management is chief of staff's role |
+| Assign tasks to other agents | AMOA | Orchestration is orchestrator's role |
+| Merge pull requests | AMIA | Code integration is integrator's role |
+| Make architectural decisions | AMAA | Architecture is architect's role |
+| Update kanban boards | AMOA | Task tracking is orchestrator's role |
+| Communicate with end users | AMAMA | User comms is assistant manager's role |
+| Spawn other programmer agents | AMCOS | Capacity management is chief of staff's role |
 
 ### Workflow Pattern
 
 ```
-EOA → [Task Assignment] → AMPA
-AMPA → [Acknowledge] → EOA
+AMOA → [Task Assignment] → AMPA
+AMPA → [Acknowledge] → AMOA
     ↓ (implement)
-AMPA → [Progress Update] → EOA
+AMPA → [Progress Update] → AMOA
     ↓ (tests passing)
-AMPA → [PR Created] → EIA (review request)
+AMPA → [PR Created] → AMIA (review request)
     ↓ (wait for review)
-EIA → [Review Complete] → AMPA (via EOA)
-    ↓ (EOA merges PR)
-AMPA → [Task Complete] → EOA
-EOA → [Kanban Updated] → GitHub
+AMIA → [Review Complete] → AMPA (via AMOA)
+    ↓ (AMOA merges PR)
+AMPA → [Task Complete] → AMOA
+AMOA → [Kanban Updated] → GitHub
 ```
 
 ### Blocker Pattern
 
 ```
-EOA → [Task Assignment] → AMPA
-AMPA → [Acknowledge] → EOA
+AMOA → [Task Assignment] → AMPA
+AMPA → [Acknowledge] → AMOA
     ↓ (encounter blocker)
-AMPA → [BLOCKER Report] → EOA
-EOA → [Escalate] → ECOS
-ECOS → [Resolution] → EOA
-EOA → [Unblock] → AMPA
+AMPA → [BLOCKER Report] → AMOA
+AMOA → [Escalate] → AMCOS
+AMCOS → [Resolution] → AMOA
+AMOA → [Unblock] → AMPA
 AMPA → [Resume Implementation]
 ```
 
@@ -357,16 +357,16 @@ AMPA → [Resume Implementation]
 
 ### Session Lifecycle Management
 
-AMPA session lifecycle is managed by ECOS (or EOA delegated by ECOS) using the `ai-maestro-agents-management` skill.
+AMPA session lifecycle is managed by AMCOS (or AMOA delegated by AMCOS) using the `ai-maestro-agents-management` skill.
 
 ### Wake (Resume Session)
 
 To wake an AMPA agent, use the `ai-maestro-agents-management` skill to wake the agent by session name (e.g., `<project>-programmer-<number>`).
 
 **When to wake**:
-- New task assigned by EOA
-- Blocker resolved by ECOS/EAA
-- Review feedback received from EIA
+- New task assigned by AMOA
+- Blocker resolved by AMCOS/AMAA
+- Review feedback received from AMIA
 
 **What happens**:
 - Tmux session brought to foreground
@@ -394,12 +394,12 @@ To terminate an AMPA agent, use the `ai-maestro-agents-management` skill to term
 **When to terminate**:
 - Task completed and PR merged
 - No more tasks assigned for this programmer
-- ECOS issues termination directive
+- AMCOS issues termination directive
 - Project milestone reached
 
 **What happens**:
 - Tmux session killed
-- AMPA sends final completion report to EOA
+- AMPA sends final completion report to AMOA
 - Messaging identity deregistered
 - Working directory preserved at `~/agents/<project>-programmer-<number>/`
 
@@ -421,13 +421,13 @@ This prevents AMPA from consuming resources while waiting for review feedback.
 
 ### Common Issues
 
-#### Issue: AMPA cannot access EOA skills
-**Symptom**: `Skill 'eoa-orchestration-patterns' not found`
-**Cause**: Plugin mutual exclusivity - AMPA doesn't have EOA plugin loaded
-**Solution**: Use the `agent-messaging` skill to send a message requesting EOA assistance
+#### Issue: AMPA cannot access AMOA skills
+**Symptom**: `Skill 'amoa-orchestration-patterns' not found`
+**Cause**: Plugin mutual exclusivity - AMPA doesn't have AMOA plugin loaded
+**Solution**: Use the `agent-messaging` skill to send a message requesting AMOA assistance
 
 #### Issue: Message not received by recipient
-**Symptom**: EOA didn't get task completion notification
+**Symptom**: AMOA didn't get task completion notification
 **Cause**: Wrong recipient name or messaging identity not initialized
 **Solution**: Verify your messaging identity is initialized using the `agent-messaging` skill, check that the recipient name is correct, and use the skill's status check to verify connectivity
 
@@ -467,16 +467,16 @@ This prevents AMPA from consuming resources while waiting for review feedback.
 **Cause**: System restart, manual kill, or out-of-memory
 **Solution**:
 1. Check system logs: `journalctl -u tmux`
-2. ECOS recreates session using the `ai-maestro-agents-management` skill
+2. AMCOS recreates session using the `ai-maestro-agents-management` skill
 3. Restore work from `~/agents/<project>-programmer-<number>/work/`
 
 #### Issue: AMPA stuck waiting for review
-**Symptom**: PR submitted but no response from EIA
-**Cause**: EIA session hibernated or terminated
+**Symptom**: PR submitted but no response from AMIA
+**Cause**: AMIA session hibernated or terminated
 **Solution**:
-1. AMPA sends reminder message to EOA
-2. EOA checks EIA status
-3. EOA wakes or spawns EIA if needed
+1. AMPA sends reminder message to AMOA
+2. AMOA checks AMIA status
+3. AMOA wakes or spawns AMIA if needed
 
 ---
 
@@ -524,11 +524,11 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 ### Related Documentation
 
-> **Cross-Plugin References**: The following plugins are part of the Emasoft Agent Ecosystem. Each is installed independently and communicates via the `agent-messaging` skill:
-> - EOA (Orchestrator) - Task distribution and delegation
-> - EIA (Integrator) - Code review and quality gates
-> - ECOS (Chief of Staff) - Agent lifecycle coordination
-> - EAA (Architect) - Architecture design and planning
+> **Cross-Plugin References**: The following plugins are part of the AI Maestro Agent Ecosystem. Each is installed independently and communicates via the `agent-messaging` skill:
+> - AMOA (Orchestrator) - Task distribution and delegation
+> - AMIA (Integrator) - Code review and quality gates
+> - AMCOS (Chief of Staff) - Agent lifecycle coordination
+> - AMAA (Architect) - Architecture design and planning
 > - `agent-messaging` skill - Provided by the AI Maestro messaging system
 
 ### External References

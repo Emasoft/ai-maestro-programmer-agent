@@ -23,7 +23,7 @@ Create a pull request to submit completed work for review. This corresponds to *
 - Task implementation is complete
 - All tests pass locally
 - Code is ready for review
-- Submitting work for EIA review (Step 19)
+- Submitting work for AMIA review (Step 19)
 
 ## Prerequisites
 

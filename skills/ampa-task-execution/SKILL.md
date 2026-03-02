@@ -19,7 +19,7 @@ Execute programming tasks according to requirements and acceptance criteria rece
 
 ## Overview
 
-The AMPA Task Execution skill is the core operational skill for the AI Maestro Programmer Agent (AMPA). It defines the end-to-end workflow a programmer agent follows when assigned a coding task by an orchestrator agent (EOA). The workflow covers every phase from receiving the task assignment via AI Maestro messaging, through parsing requirements, setting up the development environment, implementing code, writing tests, and validating acceptance criteria. This skill ensures that every task is completed methodically, with full traceability from requirement to implementation to verification. It depends on SERENA MCP for code navigation and AI Maestro for inter-agent communication.
+The AMPA Task Execution skill is the core operational skill for the AI Maestro Programmer Agent (AMPA). It defines the end-to-end workflow a programmer agent follows when assigned a coding task by an orchestrator agent (AMOA). The workflow covers every phase from receiving the task assignment via AI Maestro messaging, through parsing requirements, setting up the development environment, implementing code, writing tests, and validating acceptance criteria. This skill ensures that every task is completed methodically, with full traceability from requirement to implementation to verification. It depends on SERENA MCP for code navigation and AI Maestro for inter-agent communication.
 
 ## Instructions
 

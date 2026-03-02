@@ -1,6 +1,6 @@
 ---
 name: op-report-blocker
-description: Report blocking issues to EOA that prevent task progress.
+description: Report blocking issues to AMOA that prevent task progress.
 parent-skill: ampa-orchestrator-communication
 workflow-step: "Escalation Path"
 message-type: blocker-report
@@ -9,7 +9,7 @@ priority: urgent
 
 # Operation: Report Blocker
 
-This operation describes how to report blocking issues to the AI Maestro Orchestrator Agent (EOA) when you encounter problems that prevent you from making progress on an assigned task.
+This operation describes how to report blocking issues to the AI Maestro Orchestrator Agent (AMOA) when you encounter problems that prevent you from making progress on an assigned task.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ This operation describes how to report blocking issues to the AI Maestro Orchest
 
 ## 3.1 Identifying Blockers
 
-A blocker is an issue that completely prevents you from continuing work on a task. Blockers must be reported immediately to EOA.
+A blocker is an issue that completely prevents you from continuing work on a task. Blockers must be reported immediately to AMOA.
 
 ### What Qualifies as a Blocker
 
@@ -166,7 +166,7 @@ Follow these steps to report a blocker:
 7. **Compose message**: Use the format from section 3.2
 8. **Send with urgent priority**: Send the blocker report using the `agent-messaging` skill with urgent priority
 9. **Verify**: confirm message delivery via the `agent-messaging` skill's sent messages feature
-10. **Wait for response**: Check your inbox using the `agent-messaging` skill for EOA reply
+10. **Wait for response**: Check your inbox using the `agent-messaging` skill for AMOA reply
 11. **Continue if possible**: Work on unblocked items if any exist
 
 ## Checklist
@@ -196,8 +196,8 @@ Use this checklist before reporting a blocker:
 
 ### Escalation Actions
 
-1. **First Escalation**: Resend with reminder, confirm EOA received original
-2. **Second Escalation**: Request EOA to escalate to user
+1. **First Escalation**: Resend with reminder, confirm AMOA received original
+2. **Second Escalation**: Request AMOA to escalate to user
 3. **Final Escalation**: Send direct notification to user (if configured)
 
 ### Escalation Message
@@ -257,7 +257,7 @@ Send a blocker report to the orchestrator using the `agent-messaging` skill:
 | Error | Cause | Resolution |
 |-------|-------|------------|
 | Messaging service offline | Messaging service not running | Use the `agent-messaging` skill's status check, start AI Maestro immediately |
-| EOA not responding | EOA session inactive | Escalate to user directly |
+| AMOA not responding | AMOA session inactive | Escalate to user directly |
 | Message delivery failed | Network issue | Retry the send operation immediately using the `agent-messaging` skill, max 3 times |
 
 ### Critical Blocker Protocol

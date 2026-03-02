@@ -1,6 +1,6 @@
 ---
 name: op-propose-improvement
-description: Propose design or task improvements to EOA during implementation.
+description: Propose design or task improvements to AMOA during implementation.
 parent-skill: ampa-orchestrator-communication
 workflow-step: "Step 15"
 message-type: improvement-proposal
@@ -9,7 +9,7 @@ priority: normal
 
 # Operation: Propose Improvement
 
-This operation describes how to propose design or task improvements to the AI Maestro Orchestrator Agent (EOA) when you identify opportunities to enhance the implementation during development.
+This operation describes how to propose design or task improvements to the AI Maestro Orchestrator Agent (AMOA) when you identify opportunities to enhance the implementation during development.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ This operation describes how to propose design or task improvements to the AI Ma
 
 ## 4.1 When to Propose Improvements
 
-Propose improvements to EOA in these situations:
+Propose improvements to AMOA in these situations:
 
 | Situation | Appropriate Action |
 |-----------|-------------------|
@@ -196,7 +196,7 @@ Follow these steps to propose an improvement:
 4. **Consider alternatives**: Evaluate other approaches
 5. **Estimate effort**: Calculate implementation time
 6. **Compose proposal**: Use the format from section 4.2
-7. **Send to EOA**: Send the proposal using the `agent-messaging` skill
+7. **Send to AMOA**: Send the proposal using the `agent-messaging` skill
 8. **Wait for response**: Do not implement until approved (unless auto-proceed)
 9. **Implement if approved**: Proceed with the improvement
 10. **Document the change**: Note the improvement in commit message
@@ -220,7 +220,7 @@ Use this checklist before sending an improvement proposal:
 
 ### Approval Required (Default)
 
-For significant improvements, wait for EOA approval:
+For significant improvements, wait for AMOA approval:
 
 ```json
 "approval_required": true,
@@ -243,13 +243,13 @@ For minor, low-risk improvements:
 
 ### Handling Approval
 
-When EOA responds:
+When AMOA responds:
 
 | Response | Action |
 |----------|--------|
 | Approved | Implement the improvement |
 | Rejected | Continue with original approach |
-| Modified | Implement EOA's modified version |
+| Modified | Implement AMOA's modified version |
 | Request more info | Provide additional details |
 
 ## 4.5 Examples
@@ -297,8 +297,8 @@ Send a proposal to the orchestrator using the `agent-messaging` skill:
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| `Proposal rejected` | EOA did not approve | Continue with original approach |
-| `No response` | EOA busy | Follow auto-proceed setting |
+| `Proposal rejected` | AMOA did not approve | Continue with original approach |
+| `No response` | AMOA busy | Follow auto-proceed setting |
 | `Request for more info` | Justification insufficient | Provide additional details |
 
 ### Handling Rejection
@@ -312,7 +312,7 @@ If your proposal is rejected:
 
 ### Handling Modification
 
-If EOA modifies your proposal:
+If AMOA modifies your proposal:
 
 1. Acknowledge the modification
 2. Implement the modified version

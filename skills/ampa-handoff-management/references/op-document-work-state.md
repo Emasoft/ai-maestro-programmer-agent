@@ -309,7 +309,7 @@ state-type: work-state
 # Implement YAML Parser - Work State
 
 ## Task Summary
-Implementing a YAML configuration parser with schema validation per EOA delegation.
+Implementing a YAML configuration parser with schema validation per AMOA delegation.
 
 ## Current Progress
 

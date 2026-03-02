@@ -1,6 +1,6 @@
 ---
 name: op-respond-to-review
-description: Address EIA review comments on pull request (Step 21)
+description: Address AMIA review comments on pull request (Step 21)
 parent-skill: ampa-github-operations
 operation-type: pr-review-response
 workflow-step: 21
@@ -8,7 +8,7 @@ workflow-step: 21
 
 # Respond to Review
 
-Address review comments from EIA (Emasoft Integrator Agent) after PR rejection. This corresponds to **Step 21** of the AMPA workflow.
+Address review comments from AMIA (AI Maestro Integrator Agent) after PR rejection. This corresponds to **Step 21** of the AMPA workflow.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ Address review comments from EIA (Emasoft Integrator Agent) after PR rejection. 
 ## When to Use
 
 - PR has been reviewed and changes requested
-- EIA has rejected the PR with specific feedback
+- AMIA has rejected the PR with specific feedback
 - Need to understand what changes are required
 - Ready to address review comments
 
@@ -59,7 +59,7 @@ gh pr checks <pr-number>
 
 ### 5.2 Understanding Rejection Reasons
 
-Common rejection categories from EIA:
+Common rejection categories from AMIA:
 
 | Category | Description | How to Address |
 |----------|-------------|----------------|
@@ -192,14 +192,14 @@ EOF
 gh pr view 123 --comments
 
 # Output shows:
-# @eia-reviewer: SECURITY: SQL injection vulnerability in query builder.
+# @amia-reviewer: SECURITY: SQL injection vulnerability in query builder.
 # Use parameterized queries instead of string concatenation.
 
 # After fixing, reply:
 gh pr comment 123 --body "Fixed SQL injection vulnerability in commit abc123. Now using parameterized queries throughout."
 
 # Request re-review
-gh pr edit 123 --add-reviewer "eia-reviewer"
+gh pr edit 123 --add-reviewer "amia-reviewer"
 ```
 
 ### Example 2: Handling Multiple Comments

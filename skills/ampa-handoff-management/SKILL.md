@@ -4,7 +4,7 @@ description: Create and receive handoff documents for context transfer. Use when
 license: MIT
 compatibility: Requires AI Maestro running.
 metadata:
-  author: Emasoft
+  author: AI Maestro
   version: 1.0.0
 context: fork
 agent: ampa-programmer-main-agent
@@ -17,7 +17,7 @@ procedure: "proc-handoff-management"
 
 ## Overview
 
-This skill enables the AI Maestro Programmer Agent (AMPA) to create and receive handoff documents for seamless context transfer between agents and sessions. Handoff documents are structured Markdown files with YAML frontmatter that capture work state, task context, bug reports, and checkpoint data. The AMPA uses this skill whenever it receives delegated work from the Emasoft Orchestrator Agent (EOA), needs to pass completed work to the Emasoft Integrator Agent (EIA), discovers bugs during implementation, or must save progress before a session ends. All handoff documents are stored under `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/` in a standardized directory structure that all agents in the ecosystem can read.
+This skill enables the AI Maestro Programmer Agent (AMPA) to create and receive handoff documents for seamless context transfer between agents and sessions. Handoff documents are structured Markdown files with YAML frontmatter that capture work state, task context, bug reports, and checkpoint data. The AMPA uses this skill whenever it receives delegated work from the AI Maestro Orchestrator Agent (AMOA), needs to pass completed work to the AI Maestro Integrator Agent (AMIA), discovers bugs during implementation, or must save progress before a session ends. All handoff documents are stored under `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/` in a standardized directory structure that all agents in the ecosystem can read.
 
 ## Prerequisites
 
@@ -43,7 +43,7 @@ Follow these numbered steps when performing handoff management:
 ## Purpose
 
 Handoff documents preserve work state across:
-- Agent transitions (when EOA delegates to AMPA)
+- Agent transitions (when AMOA delegates to AMPA)
 - Session boundaries (when context is cleared)
 - Bug discoveries (structured reporting)
 - Work interruptions (save and resume)
@@ -62,7 +62,7 @@ This skill provides four core operations for handoff management:
 - 1.4 Identifying delegated work items
 - 1.5 Resuming from checkpoints
 
-Use this operation when receiving work from EOA or resuming from a previous session.
+Use this operation when receiving work from AMOA or resuming from a previous session.
 
 ### 2. Create Handoff Document
 **File**: [op-create-handoff-document.md](references/op-create-handoff-document.md)
@@ -116,14 +116,14 @@ $CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/
 
 This skill integrates with AI Maestro for inter-agent messaging:
 - Handoff creation triggers notification to receiving agent
-- Bug reports can be escalated to EOA for triage
+- Bug reports can be escalated to AMOA for triage
 - Work state documents enable checkpoint-based resume
 
 ## Quick Reference
 
 | Situation | Operation to Use |
 |-----------|------------------|
-| Received delegation from EOA | Read Handoff Document |
+| Received delegation from AMOA | Read Handoff Document |
 | Completing work, passing to next agent | Create Handoff Document |
 | Found a bug during implementation | Write Bug Report |
 | Need to pause work for later | Document Work State |
@@ -158,20 +158,20 @@ Common errors encountered during handoff management and their resolutions:
 | Handoff directory does not exist | `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/` was never created | Run `mkdir -p "$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-<task-name>/"` to create it |
 | AI Maestro notification fails | AI Maestro is not running on `localhost:23000` | Verify AI Maestro is running with `curl -s "http://localhost:23000/api/health"`. If it returns an error, start AI Maestro before retrying |
 | YAML frontmatter parse error | Missing `---` delimiters or invalid YAML syntax in the handoff document | Re-read the handoff document and ensure the frontmatter starts and ends with `---` on its own line, and all values are properly quoted if they contain special characters |
-| Receiving agent not found | The `to` field in the handoff references an agent session name that is not registered with AI Maestro | Check the team registry at `.ai-maestro/team-registry.json` for valid agent session names, or ask EOA for the correct recipient |
+| Receiving agent not found | The `to` field in the handoff references an agent session name that is not registered with AI Maestro | Check the team registry at `.ai-maestro/team-registry.json` for valid agent session names, or ask AMOA for the correct recipient |
 | Handoff document is stale | A `current.md` already exists from a previous task iteration | Archive the existing document by moving it to `archive/` with a timestamp suffix, then create the new handoff as `current.md` |
 
 ## Examples
 
 ### Example 1: Creating a handoff after completing implementation
 
-The AMPA has finished implementing a feature and needs to pass it to EIA for code review:
+The AMPA has finished implementing a feature and needs to pass it to AMIA for code review:
 
 ```markdown
 ---
 type: handoff
 from: ampa-svgbbox-programmer-001
-to: eia-svgbbox-reviewer
+to: amia-svgbbox-reviewer
 task: implement-bbox-calculation
 timestamp: 2026-02-14T10:30:00Z
 status: implementation-complete
@@ -189,7 +189,7 @@ status: implementation-complete
 - `tests/unit/test_calculator.py` (new file, 210 lines)
 
 ## Pending Items
-- Code review by EIA
+- Code review by AMIA
 - Integration test with SVG parser module
 
 ## Notes
@@ -202,16 +202,16 @@ After writing this to `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-impleme
 ```bash
 curl -X POST "http://localhost:23000/api/messages" \
   -H "Content-Type: application/json" \
-  -d '{"to": "eia-svgbbox-reviewer", "subject": "Handoff ready: implement-bbox-calculation", "priority": "normal", "content": {"type": "handoff", "message": "Implementation complete. Handoff at thoughts/shared/handoffs/ampa-implement-bbox-calculation/current.md"}}'
+  -d '{"to": "amia-svgbbox-reviewer", "subject": "Handoff ready: implement-bbox-calculation", "priority": "normal", "content": {"type": "handoff", "message": "Implementation complete. Handoff at thoughts/shared/handoffs/ampa-implement-bbox-calculation/current.md"}}'
 ```
 
-### Example 2: Receiving a delegation handoff from EOA
+### Example 2: Receiving a delegation handoff from AMOA
 
-The AMPA receives a message from EOA with a task delegation. The first step is to read the handoff:
+The AMPA receives a message from AMOA with a task delegation. The first step is to read the handoff:
 
 ```bash
 # 1. Read the handoff document
-cat "$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/eoa-refactor-parser/current.md"
+cat "$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/amoa-refactor-parser/current.md"
 
 # 2. Extract key fields from YAML frontmatter
 # Look for: task, requirements, deadline, dependencies, checkpoint (if resuming)
@@ -219,7 +219,7 @@ cat "$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/eoa-refactor-parser/current.md
 # 3. Acknowledge receipt via AI Maestro
 curl -X POST "http://localhost:23000/api/messages" \
   -H "Content-Type: application/json" \
-  -d '{"to": "eoa-svgbbox-orchestrator", "subject": "Handoff received: refactor-parser", "priority": "normal", "content": {"type": "acknowledgment", "message": "AMPA received handoff for refactor-parser. Starting work."}}'
+  -d '{"to": "amoa-svgbbox-orchestrator", "subject": "Handoff received: refactor-parser", "priority": "normal", "content": {"type": "acknowledgment", "message": "AMPA received handoff for refactor-parser. Starting work."}}'
 ```
 
 ### Example 3: Writing a bug report discovered during implementation
@@ -256,7 +256,7 @@ Arc commands retain relative coordinates, causing bbox calculation to be offset 
 - `tests/unit/test_path_parser.py::test_arc_absolute_coords` (currently failing)
 ```
 
-Save this to `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-implement-bbox-calculation/bugs/BUG-2026-0214-001.md` and escalate to EOA for triage.
+Save this to `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-implement-bbox-calculation/bugs/BUG-2026-0214-001.md` and escalate to AMOA for triage.
 
 ## Resources
 
@@ -268,5 +268,5 @@ Related skills, documents, and tools for handoff management:
 - **[op-document-work-state.md](references/op-document-work-state.md)** -- Detailed guide for capturing in-progress work state for session resume
 - **AI Maestro messaging API** -- Used for sending handoff notifications between agents (`http://localhost:23000/api/messages`)
 - **Team Registry** (`.ai-maestro/team-registry.json`) -- Contains valid agent session names needed for the `to` field in handoff documents
-- **EOA Orchestrator Agent** -- The primary source of task delegations and the escalation target for bug reports
-- **EIA Integrator Agent** -- The primary recipient of implementation-complete handoffs for code review
+- **AMOA Orchestrator Agent** -- The primary source of task delegations and the escalation target for bug reports
+- **AMIA Integrator Agent** -- The primary recipient of implementation-complete handoffs for code review

@@ -1,6 +1,6 @@
 ---
 name: op-notify-completion
-description: Notify EOA when task implementation is complete and ready for review.
+description: Notify AMOA when task implementation is complete and ready for review.
 parent-skill: ampa-orchestrator-communication
 workflow-step: "Step 19"
 message-type: completion-notification
@@ -9,7 +9,7 @@ priority: high
 
 # Operation: Notify Completion
 
-This operation describes how to inform the AI Maestro Orchestrator Agent (EOA) when your task implementation is complete and ready for review.
+This operation describes how to inform the AI Maestro Orchestrator Agent (AMOA) when your task implementation is complete and ready for review.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ This operation describes how to inform the AI Maestro Orchestrator Agent (EOA) w
 
 ## 5.1 Completion Criteria
 
-Before notifying EOA of completion, verify ALL of these criteria are met:
+Before notifying AMOA of completion, verify ALL of these criteria are met:
 
 ### Mandatory Criteria
 
@@ -215,8 +215,8 @@ Follow these steps to notify completion:
 4. **Create PR (if applicable)**: Open pull request
 5. **Self-review**: Review your own changes one more time
 6. **Compose notification**: Use the format from section 5.2
-7. **Send to EOA**: Send the completion notification using the `agent-messaging` skill
-8. **Wait for feedback**: Check your inbox using the `agent-messaging` skill for EOA response
+7. **Send to AMOA**: Send the completion notification using the `agent-messaging` skill
+8. **Wait for feedback**: Check your inbox using the `agent-messaging` skill for AMOA response
 
 ## Checklist
 

@@ -34,7 +34,7 @@ Follow these numbered steps in exact order to set up a new project:
 7. **Set up the testing framework** by reading [op-setup-testing-framework.md](references/op-setup-testing-framework.md) and executing its procedure. Run the test suite once (even if no tests exist yet) to confirm the framework is properly configured.
 8. **Activate SERENA MCP** by reading [op-activate-serena-mcp.md](references/op-activate-serena-mcp.md) and executing its procedure. Verify SERENA responds to a test command such as `find_symbol`.
 9. **Complete the checklist** at the bottom of this file by marking all items as done.
-10. **Report setup status** to the orchestrator agent (EOA) confirming the environment is ready for task execution.
+10. **Report setup status** to the orchestrator agent (AMOA) confirming the environment is ready for task execution.
 
 ## Output
 
@@ -208,13 +208,13 @@ Copy this checklist and track your progress:
 
 When errors occur during project setup, follow these resolution steps:
 
-1. **Language detection returns "unknown"** — If no recognizable project files are found, check that you are in the correct project root directory. Look for hidden configuration files (for example `.python-version`, `.nvmrc`). If the project is truly empty, ask the orchestrator (EOA) for the intended language before proceeding.
-2. **Package manager command exits with non-zero code** — Do not attempt fallback package managers. Read the exact error message, check whether the package manager binary is installed and on PATH, and verify the correct version is available. Report the exact error to EOA if the binary is missing.
-3. **Dependency version conflict during installation** — Read the conflict message to identify which packages have incompatible version requirements. Do not downgrade or remove packages without orchestrator approval. Report the specific conflicting packages and versions to EOA.
+1. **Language detection returns "unknown"** — If no recognizable project files are found, check that you are in the correct project root directory. Look for hidden configuration files (for example `.python-version`, `.nvmrc`). If the project is truly empty, ask the orchestrator (AMOA) for the intended language before proceeding.
+2. **Package manager command exits with non-zero code** — Do not attempt fallback package managers. Read the exact error message, check whether the package manager binary is installed and on PATH, and verify the correct version is available. Report the exact error to AMOA if the binary is missing.
+3. **Dependency version conflict during installation** — Read the conflict message to identify which packages have incompatible version requirements. Do not downgrade or remove packages without orchestrator approval. Report the specific conflicting packages and versions to AMOA.
 4. **Linter produces configuration parse errors** — Verify the configuration file syntax matches the linter version installed. Common cause: using configuration keys from a newer version of the linter than what is installed. Check the installed linter version with its `--version` flag.
 5. **Test framework import errors on first run** — This usually means the testing library was not included in the dependency installation step. Verify the test dependency is listed in the project manifest (for example `[tool.pytest]` in `pyproject.toml`) and re-run dependency installation.
 6. **SERENA MCP activation timeout** — Verify the SERENA MCP server process is running. Check the MCP configuration in `.claude/settings.json`. If the server is not configured, follow the full activation procedure in [op-activate-serena-mcp.md](references/op-activate-serena-mcp.md).
-7. **Permission denied errors on any step** — Do not use `sudo` or change file ownership. Report the permission issue and the exact file path to EOA for resolution.
+7. **Permission denied errors on any step** — Do not use `sudo` or change file ownership. Report the permission issue and the exact file path to AMOA for resolution.
 
 ## Examples
 
@@ -236,7 +236,7 @@ Step 7: Verify [tool.pytest.ini_options] exists in pyproject.toml.
         Run "uv run pytest --co" (collect-only) to verify framework. Output: "no tests ran". Success (framework works, no tests yet).
 Step 8: Activate SERENA MCP. Run find_symbol(name="main") to verify. SERENA responds with results. Success.
 Step 9: Mark all checklist items as done.
-Step 10: Report to EOA: "Project setup complete. Python 3.12, uv, ruff, pytest, SERENA all configured."
+Step 10: Report to AMOA: "Project setup complete. Python 3.12, uv, ruff, pytest, SERENA all configured."
 ```
 
 ### Example 2: Setting Up a TypeScript Project
@@ -258,7 +258,7 @@ Step 7: Check package.json scripts for test command. Found "test": "vitest".
         Run "bun run vitest --run" to verify framework. Output: "Test Files: 3 passed". Success.
 Step 8: Activate SERENA MCP. Run find_symbol(name="App") to verify. SERENA responds. Success.
 Step 9: Mark all checklist items as done.
-Step 10: Report to EOA: "Project setup complete. TypeScript, bun, eslint, vitest, SERENA all configured."
+Step 10: Report to AMOA: "Project setup complete. TypeScript, bun, eslint, vitest, SERENA all configured."
 ```
 
 ### Example 3: Setting Up a Rust Project
@@ -279,7 +279,7 @@ Step 7: Run "cargo test" to verify the test framework.
         Output: "running 5 tests... test result: ok. 5 passed". Success.
 Step 8: Activate SERENA MCP. Run find_symbol(name="main") to verify. SERENA responds. Success.
 Step 9: Mark all checklist items as done.
-Step 10: Report to EOA: "Project setup complete. Rust 1.82, cargo, clippy, cargo test, SERENA all configured."
+Step 10: Report to AMOA: "Project setup complete. Rust 1.82, cargo, clippy, cargo test, SERENA all configured."
 ```
 
 ## Resources

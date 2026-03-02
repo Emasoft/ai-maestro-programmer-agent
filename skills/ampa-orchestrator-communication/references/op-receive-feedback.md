@@ -1,6 +1,6 @@
 ---
 name: op-receive-feedback
-description: Handle feedback from EOA after PR review or task evaluation.
+description: Handle feedback from AMOA after PR review or task evaluation.
 parent-skill: ampa-orchestrator-communication
 workflow-step: "Feedback Loop"
 message-type: feedback-acknowledgment
@@ -9,7 +9,7 @@ priority: high
 
 # Operation: Receive Feedback
 
-This operation describes how to handle feedback from the AI Maestro Orchestrator Agent (EOA) after PR review, task evaluation, or quality assessment.
+This operation describes how to handle feedback from the AI Maestro Orchestrator Agent (AMOA) after PR review, task evaluation, or quality assessment.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ This operation describes how to handle feedback from the AI Maestro Orchestrator
 
 ## 6.1 Monitoring for Feedback
 
-After sending a completion notification, actively monitor for EOA feedback.
+After sending a completion notification, actively monitor for AMOA feedback.
 
 ### Checking for Messages
 
@@ -56,7 +56,7 @@ Before processing feedback:
 
 ## 6.2 Feedback Message Types
 
-EOA may send different types of feedback:
+AMOA may send different types of feedback:
 
 ### Approval Feedback
 
@@ -139,7 +139,7 @@ EOA may send different types of feedback:
   "answers": [
     {
       "question": "[Your question]",
-      "answer": "[EOA's answer]"
+      "answer": "[AMOA's answer]"
     }
   ]
 }
@@ -215,7 +215,7 @@ Follow these steps when receiving feedback:
 7. **Implement changes**: Address all action items
 8. **Test changes**: Verify all changes work
 9. **Commit and push**: Update the branch
-10. **Send update**: Notify EOA of completed revisions
+10. **Send update**: Notify AMOA of completed revisions
 
 ## Checklist
 
@@ -276,7 +276,7 @@ Send a revision complete notification to the orchestrator using the `agent-messa
 
 ### Example 1: Processing Approval
 
-**Situation**: EOA approved the task.
+**Situation**: AMOA approved the task.
 
 Reply to the approval message using the `agent-messaging` skill:
 - **Action**: reply to the original message by its ID
@@ -286,7 +286,7 @@ Reply to the approval message using the `agent-messaging` skill:
 
 ### Example 2: Processing Revision Request
 
-**Situation**: EOA requested changes.
+**Situation**: AMOA requested changes.
 
 Reply to the revision request using the `agent-messaging` skill:
 - **Action**: reply to the original message by its ID
@@ -315,7 +315,7 @@ Reply to the rejection message using the `agent-messaging` skill:
 
 ### Example 4: Processing Clarification Response
 
-**Situation**: EOA answered clarification questions.
+**Situation**: AMOA answered clarification questions.
 
 Reply to the clarification response using the `agent-messaging` skill:
 - **Action**: reply to the original message by its ID

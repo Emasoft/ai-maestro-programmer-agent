@@ -1,6 +1,6 @@
 ---
 name: op-request-clarification
-description: Request task clarification from EOA when requirements are unclear or ambiguous.
+description: Request task clarification from AMOA when requirements are unclear or ambiguous.
 parent-skill: ampa-orchestrator-communication
 workflow-step: "Step 14"
 message-type: clarification-request
@@ -9,7 +9,7 @@ priority: high
 
 # Operation: Request Clarification
 
-This operation describes how to request clarification from the AI Maestro Orchestrator Agent (EOA) when task requirements are unclear, ambiguous, or incomplete.
+This operation describes how to request clarification from the AI Maestro Orchestrator Agent (AMOA) when task requirements are unclear, ambiguous, or incomplete.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ This operation describes how to request clarification from the AI Maestro Orches
 
 ## 1.1 When to Request Clarification
 
-Request clarification from EOA in these situations:
+Request clarification from AMOA in these situations:
 
 | Situation | Example |
 |-----------|---------|
@@ -89,7 +89,7 @@ Follow these steps to request clarification:
 3. **Document your current understanding**: Show what you already know
 4. **Compose the message**: Use the format specified in section 1.2
 5. **Send via the `agent-messaging` skill**: Use the skill's send operation to deliver the request to the orchestrator
-6. **Wait for response**: Check your inbox using the `agent-messaging` skill for EOA reply
+6. **Wait for response**: Check your inbox using the `agent-messaging` skill for AMOA reply
 7. **Acknowledge receipt**: Confirm you received the clarification
 8. **Update task understanding**: Incorporate clarification into your work
 
@@ -119,7 +119,7 @@ Send the clarification request to the orchestrator using the `agent-messaging` s
 
 ## 1.4 Handling the Response
 
-When EOA responds to your clarification request:
+When AMOA responds to your clarification request:
 
 1. **Read the complete response**: Do not skim; read carefully
 2. **Verify understanding**: Ensure the answer addresses your questions
@@ -191,9 +191,9 @@ Send a clarification request to the orchestrator using the `agent-messaging` ski
 | Error | Cause | Resolution |
 |-------|-------|------------|
 | Identity not found | Messaging not initialized | Read the `agent-messaging` skill and follow its initialization instructions |
-| Recipient not found | EOA session not registered | Wait for EOA to start or notify user |
+| Recipient not found | AMOA session not registered | Wait for AMOA to start or notify user |
 | Messaging service offline | Messaging service not running | Use the `agent-messaging` skill's status check, restart AI Maestro |
-| No response within 30 minutes | EOA busy or unavailable | Resend with urgent priority using the `agent-messaging` skill |
+| No response within 30 minutes | AMOA busy or unavailable | Resend with urgent priority using the `agent-messaging` skill |
 | `Response does not answer questions` | Miscommunication | Send follow-up with specific unanswered questions |
 
 ### Retry Logic

@@ -68,7 +68,7 @@ This operation explains how to create handoff documents that transfer work conte
 
 Use this operation when:
 
-1. **Completing a delegated task**: You finished the work and need to return results to EOA
+1. **Completing a delegated task**: You finished the work and need to return results to AMOA
 2. **Passing work to another agent**: Another agent will continue your work
 3. **Session is ending**: Context will be cleared and work must be resumable
 4. **Reaching a milestone**: A significant checkpoint that should be preserved
@@ -285,7 +285,7 @@ Complete these items when creating a handoff document:
 ---
 task: implement-yaml-parser
 from: ampa-programmer-main-agent
-to: eoa-orchestrator-main-agent
+to: amoa-orchestrator-main-agent
 created: 2025-02-06T15:30:00Z
 priority: high
 status: completed
@@ -340,7 +340,7 @@ Implemented a YAML configuration parser with schema validation. All requirements
 ---
 task: integrate-external-api
 from: ampa-programmer-main-agent
-to: eoa-orchestrator-main-agent
+to: amoa-orchestrator-main-agent
 created: 2025-02-06T16:00:00Z
 priority: urgent
 status: blocked

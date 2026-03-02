@@ -1,6 +1,6 @@
 ---
 name: op-report-status
-description: Send development status updates to EOA to keep the orchestrator informed of progress.
+description: Send development status updates to AMOA to keep the orchestrator informed of progress.
 parent-skill: ampa-orchestrator-communication
 workflow-step: "Step 17"
 message-type: status-update
@@ -9,7 +9,7 @@ priority: normal
 
 # Operation: Report Status
 
-This operation describes how to send "in development" status updates to the AI Maestro Orchestrator Agent (EOA) to keep the orchestrator informed of your progress on assigned tasks.
+This operation describes how to send "in development" status updates to the AI Maestro Orchestrator Agent (AMOA) to keep the orchestrator informed of your progress on assigned tasks.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ This operation describes how to send "in development" status updates to the AI M
 
 ## 2.1 When to Report Status
 
-Send status updates to EOA in these situations:
+Send status updates to AMOA in these situations:
 
 | Situation | Frequency | Priority |
 |-----------|-----------|----------|
@@ -198,7 +198,7 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 ### Example 3: Ready for Review
 
-**Situation**: All work complete, ready for EOA review.
+**Situation**: All work complete, ready for AMOA review.
 
 Send a message to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent

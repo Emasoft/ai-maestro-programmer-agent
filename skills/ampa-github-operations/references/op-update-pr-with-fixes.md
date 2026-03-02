@@ -8,7 +8,7 @@ workflow-step: 22
 
 # Update PR with Fixes
 
-Push code fixes to an existing PR after rejection from EIA review. This corresponds to **Step 22** of the AMPA workflow.
+Push code fixes to an existing PR after rejection from AMIA review. This corresponds to **Step 22** of the AMPA workflow.
 
 ## Table of Contents
 
@@ -196,7 +196,7 @@ git push origin feature/123-auth
 
 # Notify
 gh pr comment 123 --body "Added null check as requested. Ready for re-review."
-gh pr edit 123 --add-reviewer "eia-reviewer"
+gh pr edit 123 --add-reviewer "amia-reviewer"
 ```
 
 ### Example 2: Multiple Fixes

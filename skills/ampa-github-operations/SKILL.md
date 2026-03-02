@@ -4,7 +4,7 @@ description: Git and GitHub operations for AMPA. Use when cloning repos, branchi
 license: MIT
 compatibility: Requires gh CLI authenticated.
 metadata:
-  author: Emasoft
+  author: AI Maestro
   version: 1.0.0
 context: fork
 agent: ampa-programmer-main-agent
@@ -17,7 +17,7 @@ procedure: "proc-complete-task, proc-handle-failed-pr"
 
 ## Overview
 
-This skill provides the AI Maestro Programmer Agent (AMPA) with standardized procedures for all Git and GitHub operations. It covers the full lifecycle from cloning a repository, creating feature branches, committing code changes with conventional commit messages, opening pull requests via the gh CLI, and responding to EIA code review feedback. All operations use the gh CLI tool and follow the AI Maestro ecosystem conventions for branch naming, commit formatting, and PR descriptions. This skill is used during workflow Steps 19 (create PR), 21 (respond to review), and 22 (push fixes after rejection).
+This skill provides the AI Maestro Programmer Agent (AMPA) with standardized procedures for all Git and GitHub operations. It covers the full lifecycle from cloning a repository, creating feature branches, committing code changes with conventional commit messages, opening pull requests via the gh CLI, and responding to AMIA code review feedback. All operations use the gh CLI tool and follow the AI Maestro ecosystem conventions for branch naming, commit formatting, and PR descriptions. This skill is used during workflow Steps 19 (create PR), 21 (respond to review), and 22 (push fixes after rejection).
 
 This skill provides procedures for Git and GitHub operations within the AI Maestro Programmer Agent workflow. Use these operations for repository management, branching, commits, and pull request lifecycle.
 
@@ -27,7 +27,7 @@ This skill provides procedures for Git and GitHub operations within the AI Maest
 - **Branching**: When beginning implementation of a task
 - **Committing**: When saving incremental progress or completing work
 - **Pull Requests**: When submitting completed work for review (Step 19)
-- **Review Response**: When addressing EIA review comments (Step 21)
+- **Review Response**: When addressing AMIA review comments (Step 21)
 - **PR Updates**: When pushing fixes after PR rejection (Step 22)
 
 ## Prerequisites
@@ -44,7 +44,7 @@ This skill provides procedures for Git and GitHub operations within the AI Maest
 4. Make code changes and commit incrementally using conventional commit format: `git commit -m "feat(scope): description"`. See [op-commit-changes.md](references/op-commit-changes.md).
 5. Push the feature branch to the remote: `git push -u origin <branch-name>`.
 6. Create a pull request using `gh pr create --title "<type>(scope): description" --body "..."` with a clear description linking to the relevant issue. See [op-create-pull-request.md](references/op-create-pull-request.md).
-7. If the PR receives review feedback from EIA, read the comments with `gh pr view <number> --comments`, address each comment, commit fixes, and push updates. See [op-respond-to-review.md](references/op-respond-to-review.md).
+7. If the PR receives review feedback from AMIA, read the comments with `gh pr view <number> --comments`, address each comment, commit fixes, and push updates. See [op-respond-to-review.md](references/op-respond-to-review.md).
 8. After pushing fixes, update the PR description if needed and request re-review with `gh pr edit <number> --add-reviewer <reviewer>`. See [op-update-pr-with-fixes.md](references/op-update-pr-with-fixes.md).
 
 ## Operations Reference
@@ -87,7 +87,7 @@ This skill provides procedures for Git and GitHub operations within the AI Maest
 | Operation | File | When to Use |
 |-----------|------|-------------|
 | Create Pull Request | [op-create-pull-request.md](references/op-create-pull-request.md) | Submitting completed task for review (Step 19) |
-| Respond to Review | [op-respond-to-review.md](references/op-respond-to-review.md) | Addressing EIA review comments (Step 21) |
+| Respond to Review | [op-respond-to-review.md](references/op-respond-to-review.md) | Addressing AMIA review comments (Step 21) |
 | Update PR with Fixes | [op-update-pr-with-fixes.md](references/op-update-pr-with-fixes.md) | Pushing fixes after rejection (Step 22) |
 
 **Table of Contents - op-create-pull-request.md:**
@@ -153,7 +153,7 @@ When this skill is applied correctly, the following artifacts are produced:
 - **Commit history**: One or more commits with conventional commit messages that clearly describe each change.
 - **Pull request**: An open PR on GitHub with a descriptive title, body linking to the relevant issue, and appropriate reviewers assigned.
 - **Review responses**: If review feedback is received, updated commits addressing each comment, with reply comments acknowledging the feedback.
-- **AI Maestro notification**: A message sent to EOA (Orchestrator) confirming PR creation or update status.
+- **AI Maestro notification**: A message sent to AMOA (Orchestrator) confirming PR creation or update status.
 
 ## Examples
 
@@ -175,7 +175,7 @@ git push -u origin feature/42-add-viewbox-parser
 gh pr create --title "feat(parser): add viewBox attribute parsing" --body "Closes #42. Adds parsing support for the viewBox SVG attribute."
 ```
 
-### Example 2: Responding to EIA Review Comments
+### Example 2: Responding to AMIA Review Comments
 
 ```bash
 # Read the review comments on PR #15
@@ -203,7 +203,7 @@ git commit -m "fix(parser): validate viewBox dimensions are positive numbers"
 # Push fixes and update PR description
 git push origin feature/42-add-viewbox-parser
 gh pr edit 15 --body "Updated: Added dimension validation per reviewer feedback. Closes #42."
-gh pr edit 15 --add-reviewer eia-feature-reviewer
+gh pr edit 15 --add-reviewer amia-feature-reviewer
 ```
 
 ## Checklist - Full GitHub Workflow
@@ -230,14 +230,14 @@ Copy this checklist and track your progress:
 
 ## Related Skills
 
-- **ampa-orchestrator-communication**: For messaging EIA about PR status
+- **ampa-orchestrator-communication**: For messaging AMIA about PR status
 - **ampa-task-execution**: For implementing code changes, writing tests, and validating acceptance criteria before creating a PR
 
 ## Resources
 
 - **Related Skills**:
   - **ampa-task-execution** skill -- For implementing code changes, writing tests, and validating acceptance criteria before creating a PR
-  - **ampa-orchestrator-communication** skill -- For messaging EOA and EIA about PR status and task progress
+  - **ampa-orchestrator-communication** skill -- For messaging AMOA and AMIA about PR status and task progress
 - **Reference Documents** (in this skill's references directory):
   - [op-clone-repository.md](references/op-clone-repository.md) - Cloning and forking procedures
   - [op-create-feature-branch.md](references/op-create-feature-branch.md) - Branch creation and naming

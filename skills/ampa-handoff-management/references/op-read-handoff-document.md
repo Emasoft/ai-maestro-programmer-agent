@@ -1,6 +1,6 @@
 ---
 name: op-read-handoff-document
-description: Parse and process handoff documents received from EOA or previous sessions.
+description: Parse and process handoff documents received from AMOA or previous sessions.
 parent-skill: ampa-handoff-management
 operation-type: input
 ---
@@ -47,7 +47,7 @@ This operation explains how to parse and process handoff documents to understand
 
 Use this operation when:
 
-1. **Receiving delegation from EOA**: The Emasoft Orchestrator Agent has assigned you a task via a handoff document
+1. **Receiving delegation from AMOA**: The AI Maestro Orchestrator Agent has assigned you a task via a handoff document
 2. **Resuming a session**: You need to continue work from a previous session that was interrupted
 3. **Taking over from another agent**: Another programmer agent has passed work to you
 4. **Context was cleared**: The conversation was compacted and you need to restore work state
@@ -186,7 +186,7 @@ The handoff document at `thoughts/shared/handoffs/implement-parser/current.md`:
 ```markdown
 ---
 task: implement-parser
-from: eoa-orchestrator-main-agent
+from: amoa-orchestrator-main-agent
 to: ampa-programmer-main-agent
 created: 2025-02-06T10:00:00Z
 priority: high

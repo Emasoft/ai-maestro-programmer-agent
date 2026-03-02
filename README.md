@@ -29,7 +29,7 @@ The AI Maestro Programmer Agent is a **general-purpose programmer** that execute
 | Skill | Description |
 |-------|-------------|
 | `ampa-task-execution` | Execute programming tasks per requirements |
-| `ampa-orchestrator-communication` | Communication with the Orchestrator (EOA) agent |
+| `ampa-orchestrator-communication` | Communication with the Orchestrator (AMOA) agent |
 | `ampa-github-operations` | Git and GitHub operations (clone, branch, commit, PR) |
 | `ampa-project-setup` | Initialize project configuration and install tooling |
 | `ampa-handoff-management` | Create and receive handoff documents and bug reports |
@@ -160,5 +160,5 @@ uv run python scripts/validate_plugin.py . --verbose
 
 ## See Also
 
-> **Related Plugins**: This agent works with the AI Maestro Orchestrator Agent (EOA), AI Maestro Integrator Agent (EIA), and AI Maestro Architect Agent (EAA). Each agent plugin is installed independently.
+> **Related Plugins**: This agent works with the AI Maestro Orchestrator Agent (AMOA), AI Maestro Integrator Agent (AMIA), and AI Maestro Architect Agent (AMAA). Each agent plugin is installed independently.
 
