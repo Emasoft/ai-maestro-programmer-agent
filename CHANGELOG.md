@@ -2,6 +2,17 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.7] - 2026-03-03
+
+### Fixed
+- Resolved all 27 remaining validation warnings (perfect score: 0 issues)
+- Embedded TOC sections after all list-item reference links for progressive discovery
+- Moved pre-push hook from non-standard git-hooks/ to scripts/pre-push-hook.py
+
+### Changed
+- Updated CPV validation scripts to v1.7.6
+- Bumped plugin version to 1.0.7
+
 ## [1.0.6] - 2026-03-02
 
 ### Fixed
