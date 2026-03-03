@@ -2,6 +2,12 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.9] - 2026-03-03
+
+### Changed
+- Updated CPV validation scripts to v1.8.0 (14 scripts updated)
+- Bumped plugin version to 1.0.9
+
 ## [1.0.8] - 2026-03-03
 
 ### Changed
