@@ -269,9 +269,13 @@ Save this to `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-implement-bbox-c
 Related skills, documents, and tools for handoff management:
 
 - **[op-read-handoff-document.md](references/op-read-handoff-document.md)** -- Detailed guide for parsing and processing incoming handoff documents
+  Sections: When to Use · Prerequisites · Procedure
 - **[op-create-handoff-document.md](references/op-create-handoff-document.md)** -- Detailed guide for creating outgoing handoff documents with proper structure
+  Sections: When to Use · Prerequisites · Procedure
 - **[op-write-bug-report.md](references/op-write-bug-report.md)** -- Detailed guide for structured bug reporting during implementation
+  Sections: When to Use · Prerequisites · Procedure
 - **[op-document-work-state.md](references/op-document-work-state.md)** -- Detailed guide for capturing in-progress work state for session resume
+  Sections: When to Use · Prerequisites · Procedure
 - **AI Maestro messaging API** -- Used for sending handoff notifications between agents (`http://localhost:23000/api/messages`)
 - **Team Registry** (`.ai-maestro/team-registry.json`) -- Contains valid agent session names needed for the `to` field in handoff documents
 - **AMOA Orchestrator Agent** -- The primary source of task delegations and the escalation target for bug reports

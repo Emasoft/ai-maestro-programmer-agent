@@ -51,6 +51,7 @@ The `scripts/` directory contains the CPV (Claude Plugins Validation) suite — 
 | Script | Description |
 |--------|-------------|
 | `validate_plugin.py` | CPV suite entry point — runs all validation checks |
+| `pre-push-hook.py` | Git pre-push hook — runs validation before each push |
 
 ## Workflow
 
@@ -102,10 +103,10 @@ claude --agent ampa-programmer-main-agent
 claude --plugin-dir .
 ```
 
-A pre-push git hook (`git-hooks/pre-push`) runs the validation suite before each push. Install it with:
+A pre-push git hook (`scripts/pre-push-hook.py`) runs the validation suite before each push. Install it with:
 
 ```bash
-cp git-hooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+cp scripts/pre-push-hook.py .git/hooks/pre-push && chmod +x .git/hooks/pre-push
 ```
 
 ## Requirements

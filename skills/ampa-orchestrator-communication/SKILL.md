@@ -320,9 +320,15 @@ The AMPA finishes implementing the feature, all tests pass, and the code is comm
 ## Resources
 
 - [op-request-clarification.md](references/op-request-clarification.md) - Detailed format and procedure for sending clarification requests to AMOA
+  Sections: 1.1 When to Request Clarification · 1.2 Clarification Request Format · 1.3 Sending the Request
 - [op-report-status.md](references/op-report-status.md) - Format and timing guidelines for development status updates
+  Sections: 2.1 When to Report Status · 2.2 Status Message Format · 2.3 Progress Indicators
 - [op-report-blocker.md](references/op-report-blocker.md) - Blocker report format, severity levels, and escalation procedure
+  Sections: 3.1 Identifying Blockers · 3.2 Blocker Report Format · 3.3 Severity Levels
 - [op-propose-improvement.md](references/op-propose-improvement.md) - Format for design and implementation improvement proposals
+  Sections: 4.1 When to Propose Improvements · 4.2 Improvement Proposal Format · 4.3 Justification Requirements
 - [op-notify-completion.md](references/op-notify-completion.md) - Completion notification format and deliverables summary requirements
+  Sections: 5.1 Completion Criteria · 5.2 Completion Notification Format · 5.3 Deliverables Summary
 - [op-receive-feedback.md](references/op-receive-feedback.md) - How to monitor, process, and acknowledge feedback from AMOA
+  Sections: 6.1 Monitoring for Feedback · 6.2 Feedback Message Types · 6.3 Processing Feedback
 - `agent-messaging` skill (globally installed) - Provides the actual messaging commands and syntax used by all operations in this skill

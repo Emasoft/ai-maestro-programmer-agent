@@ -42,12 +42,18 @@ This skill provides procedures for Git and GitHub operations within the AI Maest
 
 1. Verify that the gh CLI is installed and authenticated by running `gh auth status`. If not authenticated, run `gh auth login` and follow the prompts.
 2. Clone or fork the target repository using `gh repo clone <owner>/<repo>` or `gh repo fork <owner>/<repo> --clone`. See [op-clone-repository.md](references/op-clone-repository.md) for details.
+    Sections: 1.1 When to clone vs fork · 1.2 Cloning with gh CLI · 1.3 Forking upstream repositories
 3. Create a feature branch from the latest main branch using the naming convention `<type>/<issue-number>-<short-description>`. Example: `git checkout -b feature/123-add-user-auth main`. See [op-create-feature-branch.md](references/op-create-feature-branch.md).
+    Sections: 2.1 Branch naming conventions · 2.2 Creating branch from main · 2.3 Switching to existing branches
 4. Make code changes and commit incrementally using conventional commit format: `git commit -m "feat(scope): description"`. See [op-commit-changes.md](references/op-commit-changes.md).
+    Sections: 3.1 Staging changes selectively · 3.2 Commit message format · 3.3 Conventional commits syntax
 5. Push the feature branch to the remote: `git push -u origin <branch-name>`.
 6. Create a pull request using `gh pr create --title "<type>(scope): description" --body "..."` with a clear description linking to the relevant issue. See [op-create-pull-request.md](references/op-create-pull-request.md).
+    Sections: 4.1 Preparing branch for PR · 4.2 Writing PR title and description · 4.3 Creating PR with gh CLI
 7. If the PR receives review feedback from AMIA, read the comments with `gh pr view <number> --comments`, address each comment, commit fixes, and push updates. See [op-respond-to-review.md](references/op-respond-to-review.md).
+    Sections: 5.1 Reading review comments · 5.2 Understanding rejection reasons · 5.3 Addressing specific feedback
 8. After pushing fixes, update the PR description if needed and request re-review with `gh pr edit <number> --add-reviewer <reviewer>`. See [op-update-pr-with-fixes.md](references/op-update-pr-with-fixes.md).
+    Sections: 6.1 Making requested changes · 6.2 Committing fixes · 6.3 Pushing updates to PR branch
 
 ## Operations Reference
 
@@ -242,11 +248,17 @@ Copy this checklist and track your progress:
   - **ampa-orchestrator-communication** skill -- For messaging AMOA and AMIA about PR status and task progress
 - **Reference Documents** (in this skill's references directory):
   - [op-clone-repository.md](references/op-clone-repository.md) - Cloning and forking procedures
+    Sections: 1.1 When to clone vs fork · 1.2 Cloning with gh CLI · 1.3 Forking upstream repositories
   - [op-create-feature-branch.md](references/op-create-feature-branch.md) - Branch creation and naming
+    Sections: 2.1 Branch naming conventions · 2.2 Creating branch from main · 2.3 Switching to existing branches
   - [op-commit-changes.md](references/op-commit-changes.md) - Staging and committing changes
+    Sections: 3.1 Staging changes selectively · 3.2 Commit message format · 3.3 Conventional commits syntax
   - [op-create-pull-request.md](references/op-create-pull-request.md) - PR creation procedures
+    Sections: 4.1 Preparing branch for PR · 4.2 Writing PR title and description · 4.3 Creating PR with gh CLI
   - [op-respond-to-review.md](references/op-respond-to-review.md) - Handling review feedback
+    Sections: 5.1 Reading review comments · 5.2 Understanding rejection reasons · 5.3 Addressing specific feedback
   - [op-update-pr-with-fixes.md](references/op-update-pr-with-fixes.md) - Pushing fixes after rejection
+    Sections: 6.1 Making requested changes · 6.2 Committing fixes · 6.3 Pushing updates to PR branch
 - **External Documentation**:
   - [GitHub CLI Manual](https://cli.github.com/manual/) - Full gh CLI reference
   - [Conventional Commits](https://www.conventionalcommits.org/) - Commit message specification

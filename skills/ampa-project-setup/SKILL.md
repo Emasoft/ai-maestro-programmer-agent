@@ -30,11 +30,18 @@ Follow these numbered steps in exact order to set up a new project:
 1. **Read this entire SKILL.md** to understand the operations and their order before executing anything.
 2. **Navigate to the project root directory** and confirm you have write access to the project folder.
 3. **Detect the project language** by reading [op-detect-project-language.md](references/op-detect-project-language.md) and executing its procedure. Record the detected language for subsequent steps.
+    Sections: When to Use · Prerequisites · Procedure
 4. **Initialize the package manager** by reading [op-initialize-package-manager.md](references/op-initialize-package-manager.md) for the detected language and executing its procedure. Verify initialization succeeded by running the package manager's version command.
+    Sections: When to Use · Prerequisites · Procedure
 5. **Install all dependencies** by reading [op-install-dependencies.md](references/op-install-dependencies.md) and executing its procedure. Confirm zero errors in the installation output.
+    Sections: When to Use · Prerequisites · Procedure
 6. **Configure linting tools** by reading [op-configure-linting.md](references/op-configure-linting.md) and executing its procedure. For Python projects, also read [ruff-configuration-patterns.md](references/ruff-configuration-patterns.md). Run the linter once to verify it executes without configuration errors.
+    Sections (op-configure-linting): When to Use · Prerequisites · Procedure
+    Sections (ruff-configuration-patterns): When to configure ruff for a new project · Standard ruff.toml template for AI Maestro Programmer projects · What each rule set does and why it is enabled
 7. **Set up the testing framework** by reading [op-setup-testing-framework.md](references/op-setup-testing-framework.md) and executing its procedure. Run the test suite once (even if no tests exist yet) to confirm the framework is properly configured.
+    Sections: When to Use · Prerequisites · Procedure
 8. **Activate SERENA MCP** by reading [op-activate-serena-mcp.md](references/op-activate-serena-mcp.md) and executing its procedure. Verify SERENA responds to a test command such as `find_symbol`.
+    Sections: When to Use · Prerequisites · Procedure
 9. **Complete the checklist** at the bottom of this file by marking all items as done.
 10. **Report setup status** to the orchestrator agent (AMOA) confirming the environment is ready for task execution.
 
@@ -218,6 +225,7 @@ When errors occur during project setup, follow these resolution steps:
 4. **Linter produces configuration parse errors** — Verify the configuration file syntax matches the linter version installed. Common cause: using configuration keys from a newer version of the linter than what is installed. Check the installed linter version with its `--version` flag.
 5. **Test framework import errors on first run** — This usually means the testing library was not included in the dependency installation step. Verify the test dependency is listed in the project manifest (for example `[tool.pytest]` in `pyproject.toml`) and re-run dependency installation.
 6. **SERENA MCP activation timeout** — Verify the SERENA MCP server process is running. Check the MCP configuration in `.claude/settings.json`. If the server is not configured, follow the full activation procedure in [op-activate-serena-mcp.md](references/op-activate-serena-mcp.md).
+    Sections: When to Use · Prerequisites · Procedure
 7. **Permission denied errors on any step** — Do not use `sudo` or change file ownership. Report the permission issue and the exact file path to AMOA for resolution.
 
 ## Examples
@@ -291,11 +299,18 @@ Step 10: Report to AMOA: "Project setup complete. Rust 1.82, cargo, clippy, carg
 Related skills and documentation for the AMPA programmer agent:
 
 - **[op-detect-project-language.md](references/op-detect-project-language.md)** — Detailed procedure for identifying the programming language of a project based on file patterns and configuration files.
+  Sections: When to Use · Prerequisites · Procedure
 - **[op-initialize-package-manager.md](references/op-initialize-package-manager.md)** — Language-specific package manager initialization procedures for all eight supported languages.
+  Sections: When to Use · Prerequisites · Procedure
 - **[op-install-dependencies.md](references/op-install-dependencies.md)** — Dependency installation procedures, virtual environment management, and conflict resolution.
+  Sections: When to Use · Prerequisites · Procedure
 - **[op-configure-linting.md](references/op-configure-linting.md)** — Linter configuration templates and verification procedures for each supported language.
+  Sections: When to Use · Prerequisites · Procedure
 - **[ruff-configuration-patterns.md](references/ruff-configuration-patterns.md)** — Standard ruff.toml template for Python projects, including rule explanations and customization guidance.
+  Sections: When to configure ruff for a new project · Standard ruff.toml template for AI Maestro Programmer projects · What each rule set does and why it is enabled
 - **[op-setup-testing-framework.md](references/op-setup-testing-framework.md)** — Testing framework configuration for pytest, jest, vitest, cargo test, go test, and others.
+  Sections: When to Use · Prerequisites · Procedure
 - **[op-activate-serena-mcp.md](references/op-activate-serena-mcp.md)** — SERENA MCP activation procedure, verification, and troubleshooting.
+  Sections: When to Use · Prerequisites · Procedure
 - **Coding Standards** — See the project's own coding standards or linting configuration (configured via `op-configure-linting`).
 - **AMPA Task Execution skill** (`ampa-task-execution`) — The next skill to use after project setup, covering how to execute assigned implementation tasks.
