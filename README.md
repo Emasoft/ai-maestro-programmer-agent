@@ -1,6 +1,6 @@
 # AI Maestro Programmer Agent (AMPA)
 
-**Version**: 1.0.10
+**Version**: 1.0.11
 
 ## Overview
 
@@ -78,6 +78,14 @@ Role plugins are installed with `--scope local` inside the specific agent's work
 claude plugin install ai-maestro-programmer-agent --url https://github.com/Emasoft/ai-maestro-programmer-agent
 ```
 
+### Installation (from git subdirectory)
+
+If this plugin lives inside a parent repository, use the `git-subdir` source type:
+
+```bash
+claude plugin install ai-maestro-programmer-agent --url https://github.com/Emasoft/EMASOFT-PROGRAMMER-AGENT --subdir ai-maestro-programmer-agent
+```
+
 Once installed, start a session with the main agent:
 
 ```bash
@@ -103,10 +111,20 @@ claude --agent ampa-programmer-main-agent
 claude --plugin-dir .
 ```
 
+After modifying plugin files, use `/reload-plugins` in your Claude Code session to activate changes without restarting.
+
 A pre-push git hook (`scripts/pre-push-hook.py`) runs the validation suite before each push. Install it with:
 
 ```bash
 cp scripts/pre-push-hook.py .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+```
+
+### Proxy / TLS Note
+
+If you are behind a corporate proxy (MITM) and `gh` CLI fails with TLS errors, enable weaker network isolation in your Claude Code settings:
+
+```json
+{ "sandbox": { "enableWeakerNetworkIsolation": true } }
 ```
 
 ## Requirements

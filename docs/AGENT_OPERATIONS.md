@@ -45,6 +45,7 @@ AMCOS maintains a counter for each project to ensure unique numbering:
 | Variable | Value | Usage |
 |----------|-------|-------|
 | `${CLAUDE_PLUGIN_ROOT}` | Points to `ai-maestro-programmer-agent/` | Use in scripts, hooks, skill references |
+| `${CLAUDE_SKILL_DIR}` | Points to the current skill's directory | Use in SKILL.md to reference files relative to the skill (e.g., `${CLAUDE_SKILL_DIR}/references/op-*.md`) |
 | `${CLAUDE_PROJECT_DIR}` | Points to `~/agents/<session-name>/` | Project root for the programmer instance |
 
 ### Local Plugin Path Structure

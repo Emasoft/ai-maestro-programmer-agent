@@ -2,6 +2,18 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.11] - 2026-03-05
+
+### Added
+- Documented `${CLAUDE_SKILL_DIR}` variable in AGENT_OPERATIONS.md (new in Claude Code 2.1.69)
+- Added `git-subdir` installation method in README for parent-repo installs
+- Added `/reload-plugins` workflow note for plugin development
+- Added proxy/TLS troubleshooting note for `gh` CLI behind corporate proxies
+
+### Changed
+- Bumped plugin version to 1.0.11
+- Updated documentation for Claude Code 2.1.69 compatibility
+
 ## [1.0.10] - 2026-03-03
 
 ### Changed
