@@ -1,6 +1,6 @@
 # AI Maestro Programmer Agent (AMPA)
 
-**Version**: 1.0.11
+**Version**: 1.0.12
 
 ## Overview
 
@@ -198,7 +198,7 @@ The Programmer Agent relies on SERENA MCP for code investigation:
 ## Validation
 
 ```bash
-uv run python scripts/validate_plugin.py . --verbose
+python3 scripts/validate_plugin.py . --verbose
 ```
 
 ### CI/CD

@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires gh CLI authenticated.
 metadata:
   author: AI Maestro
-  version: 1.0.6
+  version: 1.0.12
   workflow-instruction: "Steps 19, 21, 22"
   procedure: "proc-complete-task, proc-handle-failed-pr"
 context: fork
@@ -236,11 +236,6 @@ Copy this checklist and track your progress:
 | `Branch already exists` | Branch name collision | Delete old branch or use different name |
 | `Merge conflicts` | Diverged from main | Rebase or merge main into branch |
 
-## Related Skills
-
-- **ampa-orchestrator-communication**: For messaging AMIA about PR status
-- **ampa-task-execution**: For implementing code changes, writing tests, and validating acceptance criteria before creating a PR
-
 ## Resources
 
 - **Related Skills**:
@@ -262,8 +257,3 @@ Copy this checklist and track your progress:
 - **External Documentation**:
   - [GitHub CLI Manual](https://cli.github.com/manual/) - Full gh CLI reference
   - [Conventional Commits](https://www.conventionalcommits.org/) - Commit message specification
-
-## See Also
-
-- [GitHub CLI Manual](https://cli.github.com/manual/)
-- [Conventional Commits](https://www.conventionalcommits.org/)

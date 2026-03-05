@@ -505,14 +505,28 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 ---
 
-## Recent Changes (2026-02-07)
+## Recent Changes
 
+### 2026-03-05
+- Bumped all skill versions to 1.0.12 to match plugin version
+- Removed duplicate sections from SKILL.md files
+- Fixed validation command in README (python3 instead of uv run)
+- Comprehensive audit: all 29 reference files verified, no broken links
+
+### 2026-03-02
+- Renamed plugin from emasoft-programmer-agent to ai-maestro-programmer-agent
+- Renamed all agent acronyms (EOA→AMOA, EIA→AMIA, EPA→AMPA)
+- Converted all shell scripts to Python for cross-platform compatibility
+- Added CPV (Claude Plugins Validation) sync from upstream
+- Added `${CLAUDE_SKILL_DIR}` environment variable documentation
+- Added git-subdir installation method to README
+- Documented implementer category and subtypes
+
+### 2026-02-07
 - Added 8-column canonical kanban system across all shared docs
 - Added `encoding="utf-8"` to all Python file operations
 - Added `ruff-configuration-patterns.md` reference to `ampa-project-setup` skill
-- Synchronized FULL_PROJECT_WORKFLOW.md, TEAM_REGISTRY_SPECIFICATION.md, ROLE_BOUNDARIES.md across all plugins
-- AMPA now receives TEAM_REGISTRY_SPECIFICATION.md (previously missing)
-- AMPA ROLE_BOUNDARIES.md synchronized with canonical version
+- Synchronized shared docs across all plugins
 
 ---
 
@@ -534,6 +548,6 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 ---
 
-**Document Version**: 1.1.0
-**Last Updated**: 2026-03-02
+**Document Version**: 1.2.0
+**Last Updated**: 2026-03-05
 **Maintained By**: claude-skills-factory

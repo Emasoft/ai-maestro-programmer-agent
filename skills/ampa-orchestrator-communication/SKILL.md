@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires AI Maestro running.
 metadata:
   author: AI Maestro
-  version: 1.0.6
+  version: 1.0.12
   workflow-instruction: "Steps 14, 15, 17, 19"
   procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
 context: fork
@@ -77,6 +77,21 @@ Before using any operation in this skill:
 1. **Messaging identity is initialized**: Read the `agent-messaging` skill and follow its initialization instructions. Verify your identity is set up before sending any messages.
 2. **Messaging service is operational**: Use the `agent-messaging` skill's status check operation to confirm connectivity.
 3. **AMOA is active**: The orchestrator agent session must be available.
+
+## Instructions
+
+Follow these numbered steps whenever you need to communicate with the AI Maestro Orchestrator Agent (AMOA):
+
+1. **Initialize messaging identity**: Read the `agent-messaging` skill and follow its initialization instructions. Verify your session name is registered before proceeding.
+2. **Verify messaging service status**: Use the `agent-messaging` skill's status check operation to confirm the service is running and reachable.
+3. **Confirm AMOA is active**: Check that the orchestrator agent session is registered and available to receive messages.
+4. **Determine the communication type**: Identify which operation applies to your situation using the "When to Use This Skill" table above (clarification request, status update, blocker report, improvement proposal, completion notification, or feedback acknowledgment).
+5. **Read the operation reference file**: Open the corresponding reference file listed in the Operations Reference section to learn the exact message format and required fields for that operation type.
+6. **Compose the message**: Build the message with the correct `type` field, appropriate `priority` level, descriptive `subject` line, and structured `content` body as specified in the reference file.
+7. **Send the message**: Use the `agent-messaging` skill's send operation to deliver the message to your assigned AMOA session name.
+8. **Verify delivery**: Confirm the message appears in your sent messages list using the `agent-messaging` skill.
+9. **Monitor for response**: Periodically check your inbox for replies from AMOA. Process all unread messages before continuing other work.
+10. **Acknowledge receipt**: When you receive a response from AMOA, reply using the `agent-messaging` skill to confirm you received it and state your next planned action.
 
 ## Operations Reference
 
@@ -254,21 +269,6 @@ If message delivery fails:
 2. Check messaging service status using the `agent-messaging` skill
 3. Retry up to 3 times with 5-second delays
 4. Report to user if all retries fail
-
-## Instructions
-
-Follow these numbered steps whenever you need to communicate with the AI Maestro Orchestrator Agent (AMOA):
-
-1. **Initialize messaging identity**: Read the `agent-messaging` skill and follow its initialization instructions. Verify your session name is registered before proceeding.
-2. **Verify messaging service status**: Use the `agent-messaging` skill's status check operation to confirm the service is running and reachable.
-3. **Confirm AMOA is active**: Check that the orchestrator agent session is registered and available to receive messages.
-4. **Determine the communication type**: Identify which operation applies to your situation using the "When to Use This Skill" table above (clarification request, status update, blocker report, improvement proposal, completion notification, or feedback acknowledgment).
-5. **Read the operation reference file**: Open the corresponding reference file listed in the Operations Reference section to learn the exact message format and required fields for that operation type.
-6. **Compose the message**: Build the message with the correct `type` field, appropriate `priority` level, descriptive `subject` line, and structured `content` body as specified in the reference file.
-7. **Send the message**: Use the `agent-messaging` skill's send operation to deliver the message to your assigned AMOA session name.
-8. **Verify delivery**: Confirm the message appears in your sent messages list using the `agent-messaging` skill.
-9. **Monitor for response**: Periodically check your inbox for replies from AMOA. Process all unread messages before continuing other work.
-10. **Acknowledge receipt**: When you receive a response from AMOA, reply using the `agent-messaging` skill to confirm you received it and state your next planned action.
 
 ## Output
 

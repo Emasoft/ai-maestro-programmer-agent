@@ -2,6 +2,19 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.12] - 2026-03-05
+
+### Fixed
+- Removed duplicate `## Instructions` section in orchestrator-communication SKILL.md
+- Removed duplicate "Related Skills" and "See Also" sections in github-operations SKILL.md
+- Fixed README validation command: `python3` instead of `uv run python` (no pyproject.toml)
+- Bumped all skill and agent versions from 1.0.6 to 1.0.12 (were out of sync with plugin)
+- Updated AGENT_OPERATIONS.md "Recent Changes" section (was stale since 2026-02-07)
+- Made sync_cpv_scripts.py executable
+
+### Changed
+- Bumped plugin version to 1.0.12
+
 ## [1.0.11] - 2026-03-05
 
 ### Added
