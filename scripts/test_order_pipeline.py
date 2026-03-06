@@ -17,10 +17,10 @@ test companion for the "Order Processing Pipeline" example
 (see: skills/ampa-orchestrator-communication/references/op-notify-completion.md).
 
 Usage:
-    uv run python scripts/test_order_pipeline.py
-    uv run python scripts/test_order_pipeline.py --batch-size 50
-    uv run python scripts/test_order_pipeline.py --verbose
-    uv run python scripts/test_order_pipeline.py --json
+    python3 scripts/test_order_pipeline.py
+    python3 scripts/test_order_pipeline.py --batch-size 50
+    python3 scripts/test_order_pipeline.py --verbose
+    python3 scripts/test_order_pipeline.py --json
 
 Exit codes:
     0 - All pipeline tests passed

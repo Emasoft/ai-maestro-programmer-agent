@@ -161,7 +161,7 @@ def main() -> int:
     print()
 
     # NOTE: CPV scripts are synced in CI (validate.yml), not during pre-push.
-    # To manually update local validation scripts, run: bash scripts/sync_cpv_scripts.sh
+    # To manually update local validation scripts, run: python3 scripts/sync_cpv_scripts.py
     result = subprocess.run(
         ["uv", "run", "--with", "pyyaml", "python", "scripts/validate_plugin.py", ".", "--verbose"],
         # No shell=True — executable list only

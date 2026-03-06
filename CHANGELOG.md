@@ -2,6 +2,15 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.13] - 2026-03-06
+
+### Fixed
+- Fixed stale `sync_cpv_scripts.sh` reference in pre-push-hook.py comment (now `.py`)
+- Fixed `uv run python` usage in test_order_pipeline.py docstring (now `python3`)
+
+### Changed
+- Bumped plugin version to 1.0.13
+
 ## [1.0.12] - 2026-03-05
 
 ### Fixed

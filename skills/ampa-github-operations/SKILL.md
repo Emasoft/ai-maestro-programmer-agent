@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires gh CLI authenticated.
 metadata:
   author: AI Maestro
-  version: 1.0.12
+  version: 1.0.13
   workflow-instruction: "Steps 19, 21, 22"
   procedure: "proc-complete-task, proc-handle-failed-pr"
 context: fork

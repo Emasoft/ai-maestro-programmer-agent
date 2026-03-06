@@ -507,6 +507,10 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 ## Recent Changes
 
+### 2026-03-06
+- Audited all project-owned scripts; fixed stale bash reference in pre-push-hook.py and usage docs in test_order_pipeline.py
+- Bumped all versions to 1.0.13
+
 ### 2026-03-05
 - Bumped all skill versions to 1.0.12 to match plugin version
 - Removed duplicate sections from SKILL.md files
