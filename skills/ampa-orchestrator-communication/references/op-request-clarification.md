@@ -9,6 +9,8 @@ priority: high
 
 # Operation: Request Clarification
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
 This operation describes how to request clarification from the AI Maestro Orchestrator Agent (AMOA) when task requirements are unclear, ambiguous, or incomplete.
 
 ## Table of Contents

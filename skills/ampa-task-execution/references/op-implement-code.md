@@ -7,6 +7,9 @@ parent-skill: ampa-task-execution
 
 # Operation: Implement Code
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
+
 
 ## Contents
 

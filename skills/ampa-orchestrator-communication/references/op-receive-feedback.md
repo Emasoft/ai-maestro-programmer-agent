@@ -9,6 +9,8 @@ priority: high
 
 # Operation: Receive Feedback
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
 This operation describes how to handle feedback from the AI Maestro Orchestrator Agent (AMOA) after PR review, task evaluation, or quality assessment.
 
 ## Table of Contents

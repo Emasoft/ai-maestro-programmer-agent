@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires AI Maestro running.
 metadata:
   author: AI Maestro
-  version: 1.0.13
+  version: 1.0.14
   workflow-instruction: "support"
   procedure: "proc-handoff-management"
 context: fork
@@ -17,9 +17,7 @@ user-invocable: false
 
 ## Overview
 
-AMPA is an **implementer** agent. This skill handles context transfer between implementer sessions.
-
-This skill enables the AI Maestro Programmer Agent (AMPA) to create and receive handoff documents for seamless context transfer between agents and sessions. Handoff documents are structured Markdown files with YAML frontmatter that capture work state, task context, bug reports, and checkpoint data. The AMPA uses this skill whenever it receives delegated work from the AI Maestro Orchestrator Agent (AMOA), needs to pass completed work to the AI Maestro Integrator Agent (AMIA), discovers bugs during implementation, or must save progress before a session ends. All handoff documents are stored under `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/` in a standardized directory structure that all agents in the ecosystem can read.
+Context transfer between AMPA sessions (see agent definition for role context). Enables creation and consumption of structured handoff documents (Markdown + YAML frontmatter) for seamless work state transfer.
 
 ## Prerequisites
 
@@ -263,6 +261,13 @@ Arc commands retain relative coordinates, causing bbox calculation to be offset 
 ```
 
 Save this to `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-implement-bbox-calculation/bugs/BUG-2026-0214-001.md` and escalate to AMOA for triage.
+
+## Token Budget
+
+- **Lazy reference loading**: Only read a reference file when you are about to execute that specific operation. Do not pre-read all 4 references.
+- **Handoff docs are already files**: No additional file-based reporting needed for the handoff documents themselves.
+- **Creation confirmation**: After writing a handoff, report only: `[DONE] Handoff created: <path>`. Do not echo the handoff content back.
+- **Bug reports**: Write to file, report only: `[DONE] Bug report: <path>`. Never inline the full report.
 
 ## Resources
 

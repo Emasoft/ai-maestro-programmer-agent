@@ -6,6 +6,8 @@ parent-skill: ampa-project-setup
 
 # Ruff Configuration Patterns
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
 ## Contents
 - When to configure ruff for a new project
 - Standard ruff.toml template for AI Maestro Programmer projects

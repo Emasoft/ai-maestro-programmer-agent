@@ -2,6 +2,21 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.14] - 2026-03-07
+
+### Added
+- Token Budget section in agent definition — file-based reporting, lazy reference loading, stdout capture
+- Token Budget section in all 5 SKILL.md files with per-skill guidance
+- Token rule blockquote in all 29 reference files
+- `--report-file` flag to `test_order_pipeline.py` — writes full report to file, prints concise summary
+- `--report-file` flag to `sync_cpv_scripts.py` — writes sync details to file, prints concise summary
+- `AMPA_REPORT_FILE` env var support in `pre-push-hook.py` — captures validator output to file
+- `uv` fallback to `python3` in `pre-push-hook.py` for local dev without uv installed
+
+### Changed
+- Trimmed redundant boilerplate from all 5 SKILL.md overview sections (role context already in agent def)
+- Fixed mypy type error in `pre-push-hook.py` (CompletedProcess[bytes] vs [str])
+
 ## [1.0.13] - 2026-03-06
 
 ### Fixed

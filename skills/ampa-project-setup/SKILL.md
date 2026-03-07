@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:
   author: AI Maestro
-  version: 1.0.13
+  version: 1.0.14
   workflow-instruction: "Step 17 (first task)"
   procedure: "proc-execute-task"
 context: fork
@@ -19,9 +19,7 @@ This skill provides procedures for setting up project configuration and tooling 
 
 ## Overview
 
-AMPA is an **implementer** agent. This skill handles project environment setup for code-producing implementers.
-
-The AMPA Project Setup skill equips the AI Maestro Programmer Agent (AMPA) with a complete, repeatable procedure for initializing any new project workspace. When an AMPA agent receives its first task on a project, it must configure the development environment before writing any code. This skill guides that process across eight supported languages (Python, JavaScript/TypeScript, Rust, Go, .NET, C/C++, Objective-C, Swift) by providing six sequential operations: language detection, package manager initialization, dependency installation, linting configuration, testing framework setup, and SERENA MCP activation. Each operation has its own detailed reference file under the `references/` subdirectory. The skill ensures that every AMPA agent starts from a consistent, fully-configured environment regardless of project language or existing state.
+Project environment setup procedures for AMPA (see agent definition for role context). Covers language detection, package manager initialization, dependency installation, linting configuration, testing framework setup, and SERENA MCP activation across 8 supported languages.
 
 ## Instructions
 
@@ -293,6 +291,13 @@ Step 8: Activate SERENA MCP. Run find_symbol(name="main") to verify. SERENA resp
 Step 9: Mark all checklist items as done.
 Step 10: Report to AMOA: "Project setup complete. Rust 1.82, cargo, clippy, cargo test, SERENA all configured."
 ```
+
+## Token Budget
+
+- **Lazy reference loading**: Only read a reference file when you are about to execute that specific operation. Do not pre-read all 7 references.
+- **Tool output capture**: Redirect all package manager output (npm install, pip install, cargo build, etc.) to a log file. Report only: `[DONE] Dependencies installed (exit 0). Log: <path>`.
+- **Linter setup**: Write lint configuration output to file. Report only pass/fail + path.
+- **Setup completion**: Report only: `[DONE] Project setup complete: <language>, <pkg-manager>, <test-framework>. Log: <path>`.
 
 ## Resources
 

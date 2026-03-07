@@ -9,6 +9,8 @@ priority: normal
 
 # Operation: Report Status
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
 This operation describes how to send "in development" status updates to the AI Maestro Orchestrator Agent (AMOA) to keep the orchestrator informed of your progress on assigned tasks.
 
 ## Table of Contents

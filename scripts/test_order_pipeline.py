@@ -21,6 +21,7 @@ Usage:
     python3 scripts/test_order_pipeline.py --batch-size 50
     python3 scripts/test_order_pipeline.py --verbose
     python3 scripts/test_order_pipeline.py --json
+    python3 scripts/test_order_pipeline.py --report-file /tmp/report.md
 
 Exit codes:
     0 - All pipeline tests passed
@@ -809,6 +810,12 @@ def main() -> int:
         action="store_true",
         help="Output results in JSON format",
     )
+    parser.add_argument(
+        "--report-file",
+        type=str,
+        default=None,
+        help="Write full report to this file; print only a concise summary to stdout",
+    )
     args = parser.parse_args()
 
     # Run all tests
@@ -828,27 +835,60 @@ def main() -> int:
                 )
             )
 
-    # Report results
-    if args.json:
-        _print_json(results)
-    else:
-        _print_table(results)
-        _print_failures(results)
+    total = len(results)
+    passed = sum(1 for r in results if r.passed)
+    failed = total - passed
+    total_ms = sum(r.duration_ms for r in results)
+    all_passed = all(r.passed for r in results)
 
-        total = len(results)
-        passed = sum(1 for r in results if r.passed)
-        failed = total - passed
-        print(f"\nTotal: {total} | Passed: {passed} | Failed: {failed}")
+    # When --report-file is given, write full output to file and print concise summary
+    if args.report_file:
+        import io
+        buf = io.StringIO()
+        if args.json:
+            data = {
+                "total": total, "passed": passed, "failed": failed,
+                "results": [
+                    {"name": r.name, "description": r.description,
+                     "passed": r.passed, "duration_ms": round(r.duration_ms, 2),
+                     "error": r.error}
+                    for r in results
+                ],
+            }
+            buf.write(json.dumps(data, indent=2))
+        else:
+            # Capture table and failures into buffer using temporary stdout redirect
+            old_stdout = sys.stdout
+            sys.stdout = buf
+            _print_table(results)
+            _print_failures(results)
+            print(f"\nTotal: {total} | Passed: {passed} | Failed: {failed}")
+            if all_passed:
+                print("\nAll pipeline tests PASSED.")
+            else:
+                print(f"\n{failed} pipeline test(s) FAILED.")
+            sys.stdout = old_stdout
 
-    # Exit code: 0 if all passed, 1 if any failed
-    if all(r.passed for r in results):
-        if not args.json:
-            print("\nAll pipeline tests PASSED.")
-        return 0
+        from pathlib import Path
+        Path(args.report_file).write_text(buf.getvalue(), encoding="utf-8")
+
+        # Concise terminal summary (2-3 lines max)
+        tag = "[PASS]" if all_passed else "[FAIL]"
+        print(f"{tag} {passed}/{total} tests passed ({total_ms:.1f}ms). Report: {args.report_file}")
     else:
-        if not args.json:
-            print(f"\n{sum(1 for r in results if not r.passed)} pipeline test(s) FAILED.")
-        return 1
+        # Default behavior: full output to terminal
+        if args.json:
+            _print_json(results)
+        else:
+            _print_table(results)
+            _print_failures(results)
+            print(f"\nTotal: {total} | Passed: {passed} | Failed: {failed}")
+            if all_passed:
+                print("\nAll pipeline tests PASSED.")
+            else:
+                print(f"\n{failed} pipeline test(s) FAILED.")
+
+    return 0 if all_passed else 1
 
 
 if __name__ == "__main__":

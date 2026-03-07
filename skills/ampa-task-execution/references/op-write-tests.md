@@ -7,6 +7,9 @@ parent-skill: ampa-task-execution
 
 # Operation: Write Tests
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
+
 
 ## Contents
 

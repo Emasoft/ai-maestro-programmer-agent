@@ -162,13 +162,46 @@ def main() -> int:
 
     # NOTE: CPV scripts are synced in CI (validate.yml), not during pre-push.
     # To manually update local validation scripts, run: python3 scripts/sync_cpv_scripts.py
-    result = subprocess.run(
-        ["uv", "run", "--with", "pyyaml", "python", "scripts/validate_plugin.py", ".", "--verbose"],
-        # No shell=True — executable list only
-    )
+
+    # Determine report file path for concise output when invoked by agents
+    report_file = os.environ.get("AMPA_REPORT_FILE")
+
+    # Try uv first (CI-style), fall back to python3 (local dev without uv)
+    validator_args = ["scripts/validate_plugin.py", ".", "--verbose"]
+    uv_check = subprocess.run(["uv", "--version"], capture_output=True, text=True)
+    if uv_check.returncode == 0:
+        cmd = ["uv", "run", "--with", "pyyaml", "python"] + validator_args
+    else:
+        cmd = ["python3"] + validator_args
+
+    if report_file:
+        # Capture validator output to file, show only concise summary
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        Path(report_file).write_text(
+            result.stdout + ("\n" + result.stderr if result.stderr else ""),
+            encoding="utf-8",
+        )
+    else:
+        # Default: stream validator output directly to terminal (text=True for type consistency)
+        result = subprocess.run(cmd, text=True)
+
     exit_code = result.returncode
 
     print()
+
+    if report_file:
+        # Concise summary for agent consumption
+        tag_map = {0: "[PASS]", 1: "[BLOCKED]", 2: "[BLOCKED]", 3: "[WARN]"}
+        tag = tag_map.get(exit_code, "[UNKNOWN]")
+        msg_map = {
+            0: "All validation checks passed. Push allowed.",
+            1: "CRITICAL issues found. Push blocked.",
+            2: "MAJOR issues found. Push blocked.",
+            3: "MINOR issues found. Push allowed.",
+        }
+        msg = msg_map.get(exit_code, f"Exit code {exit_code}. Push allowed.")
+        print(f"{tag} {msg} Report: {report_file}")
+        return 1 if exit_code in (1, 2) else 0
 
     if exit_code == 0:
         banner(GREEN, [

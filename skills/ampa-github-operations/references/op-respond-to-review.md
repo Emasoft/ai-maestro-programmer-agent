@@ -8,6 +8,8 @@ workflow-step: "Step 21"
 
 # Respond to Review
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
 Address review comments from AMIA (AI Maestro Integrator Agent) after PR rejection. This corresponds to **Step 21** of the AMPA workflow.
 
 ## Table of Contents

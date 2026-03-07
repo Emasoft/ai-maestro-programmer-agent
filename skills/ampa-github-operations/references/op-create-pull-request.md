@@ -8,6 +8,8 @@ workflow-step: "Step 19"
 
 # Create Pull Request
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
 Create a pull request to submit completed work for review. This corresponds to **Step 19** of the AMPA workflow.
 
 ## Table of Contents

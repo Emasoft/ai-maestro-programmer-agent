@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires gh CLI authenticated.
 metadata:
   author: AI Maestro
-  version: 1.0.13
+  version: 1.0.14
   workflow-instruction: "Steps 19, 21, 22"
   procedure: "proc-complete-task, proc-handle-failed-pr"
 context: fork
@@ -17,11 +17,7 @@ user-invocable: false
 
 ## Overview
 
-AMPA is an **implementer** agent. This skill handles GitHub operations for code-producing implementers.
-
-This skill provides the AI Maestro Programmer Agent (AMPA) with standardized procedures for all Git and GitHub operations. It covers the full lifecycle from cloning a repository, creating feature branches, committing code changes with conventional commit messages, opening pull requests via the gh CLI, and responding to AMIA code review feedback. All operations use the gh CLI tool and follow the AI Maestro ecosystem conventions for branch naming, commit formatting, and PR descriptions. This skill is used during workflow Steps 19 (create PR), 21 (respond to review), and 22 (push fixes after rejection).
-
-This skill provides procedures for Git and GitHub operations within the AI Maestro Programmer Agent workflow. Use these operations for repository management, branching, commits, and pull request lifecycle.
+Standardized Git and GitHub operations for AMPA (see agent definition for role context). Covers cloning, branching, committing, PR creation via gh CLI, and responding to AMIA review feedback. Used in workflow Steps 19, 21, and 22.
 
 ## When to Use This Skill
 
@@ -235,6 +231,13 @@ Copy this checklist and track your progress:
 | `Permission denied` | No write access | Request access or fork repository |
 | `Branch already exists` | Branch name collision | Delete old branch or use different name |
 | `Merge conflicts` | Diverged from main | Rebase or merge main into branch |
+
+## Token Budget
+
+- **Lazy reference loading**: Only read a reference file when you are about to execute that specific operation. Do not pre-read all references.
+- **PR descriptions**: Keep inline (required by GitHub), but build/test logs must go to a file.
+- **Git diff output**: Redirect to a file when diffs exceed 50 lines. Report only: `[DONE] X files changed. Diff: <path>`.
+- **Completion report**: Messages to AMOA must be 3 lines max with path to full report file.
 
 ## Resources
 

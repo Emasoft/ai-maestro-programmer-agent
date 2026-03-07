@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:
   author: AI Maestro
-  version: 1.0.13
+  version: 1.0.14
   workflow-instruction: "Step 17 - Task Execution"
   procedure: "proc-execute-task"
 context: fork
@@ -19,9 +19,7 @@ Execute programming tasks according to requirements and acceptance criteria rece
 
 ## Overview
 
-AMPA is an **implementer** (artifact-producing agent). This skill handles the task execution workflow for the programmer subtype.
-
-The AMPA Task Execution skill is the core operational skill for the AI Maestro Programmer Agent (AMPA). It defines the end-to-end workflow a programmer agent follows when assigned a coding task by an orchestrator agent (AMOA). The workflow covers every phase from receiving the task assignment via AI Maestro messaging, through parsing requirements, setting up the development environment, implementing code, writing tests, and validating acceptance criteria. This skill ensures that every task is completed methodically, with full traceability from requirement to implementation to verification. It depends on SERENA MCP for code navigation and AI Maestro for inter-agent communication.
+Core task execution workflow for AMPA (see agent definition for role context). Covers the end-to-end workflow from receiving a task assignment through parsing requirements, setting up the environment, implementing code, writing tests, and validating acceptance criteria. Depends on SERENA MCP for code navigation and AI Maestro for inter-agent communication.
 
 ## Instructions
 
@@ -225,6 +223,13 @@ If any step fails:
 - **ampa-orchestrator-communication** skill -- For messaging the orchestrator agent, sending status updates, blocker reports, and completion notifications via AI Maestro.
 - **ampa-handoff-management** skill -- For managing task handoffs between agents, including structured handoff documents and context transfer.
 - **ampa-github-operations** skill -- For committing code changes, creating branches, opening pull requests, and other GitHub operations.
+
+## Token Budget
+
+- **Lazy reference loading**: Only read a reference file when you are about to execute that specific operation. Do not pre-read all 6 references at once.
+- **Test results to file**: Write full test output (pytest log, table, failure details) to a timestamped `.md` file in `docs_dev/`. Report only: `[PASS/FAIL] X/Y tests passed. Report: <path>`.
+- **Completion report**: Message to AMOA must be 3 lines max: task ID, pass/fail, and path to full report file. Never inline code blocks or test logs.
+- **Build output**: Redirect all build/install/lint stdout to a log file. Report only exit code + summary.
 
 ## Resources
 

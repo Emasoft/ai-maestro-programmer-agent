@@ -9,6 +9,8 @@ priority: high
 
 # Operation: Notify Completion
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
 This operation describes how to inform the AI Maestro Orchestrator Agent (AMOA) when your task implementation is complete and ready for review.
 
 ## Table of Contents

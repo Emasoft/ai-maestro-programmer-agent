@@ -507,6 +507,15 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 ## Recent Changes
 
+### 2026-03-07
+- Added Token Budget section to agent definition and all 5 SKILL.md files
+- Added token rule blockquote to all 29 reference files
+- Added --report-file flag to test_order_pipeline.py and sync_cpv_scripts.py
+- Added AMPA_REPORT_FILE env var support to pre-push-hook.py
+- Added uv→python3 fallback in pre-push-hook.py
+- Trimmed redundant boilerplate from SKILL.md overview sections
+- Bumped all versions to 1.0.14
+
 ### 2026-03-06
 - Audited all project-owned scripts; fixed stale bash reference in pre-push-hook.py and usage docs in test_order_pipeline.py
 - Bumped all versions to 1.0.13

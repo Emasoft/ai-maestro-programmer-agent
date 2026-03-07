@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires AI Maestro running.
 metadata:
   author: AI Maestro
-  version: 1.0.13
+  version: 1.0.14
   workflow-instruction: "Steps 14, 15, 17, 19"
   procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
 context: fork
@@ -19,9 +19,7 @@ This skill defines all communication protocols between the AI Maestro Programmer
 
 ## Overview
 
-AMPA is an **implementer** agent. This skill handles communication between implementers and the orchestrator.
-
-The AMPA-AMOA communication channel uses asynchronous inter-agent messaging provided by the globally installed `agent-messaging` skill. That skill defines the current commands and syntax for sending, receiving, reading, replying to, and checking the status of messages. Always read the `agent-messaging` skill at runtime to determine the exact commands -- never hardcode messaging command names in your workflow.
+Communication protocols between AMPA and AMOA (see agent definition for role context). Uses asynchronous inter-agent messaging via the globally installed `agent-messaging` skill. Always read that skill at runtime to determine current messaging commands.
 
 ## When to Use This Skill
 
@@ -316,6 +314,13 @@ The AMPA finishes implementing the feature, all tests pass, and the code is comm
 - **Content**: "Task PROJ-42 is complete and ready for review. Branch: feature/proj-42-data-validation. Commit: abc1234. Deliverables: (1) src/validators/data_validator.py - new validation module, (2) tests/test_data_validator.py - 12 passing tests, (3) Updated pyproject.toml with pydantic-settings dependency. All tests pass locally. PR created: #87."
 
 **Expected outcome**: AMOA acknowledges receipt and routes the PR to the AI Maestro Integrator Agent (AMIA) for code review.
+
+## Token Budget
+
+- **Lazy reference loading**: Only read a reference file when you are about to execute that specific operation. Do not pre-read all 6 references.
+- **Message content**: Keep messages concise — 3 lines max. Attach detailed context as file paths, not inline text.
+- **Status updates**: Format: `[STATUS] Task #ID - brief state. Details: <path>`. Never inline logs or diffs in messages.
+- **Blocker reports**: Include only: task ID, blocker description, and what action is needed. Full context goes to a file.
 
 ## Resources
 

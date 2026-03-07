@@ -155,20 +155,41 @@ def check_gh_available() -> None:
 
 
 def main() -> None:
-    script_dir = Path(__file__).resolve().parent
-    requested_ref = sys.argv[1] if len(sys.argv) > 1 else ""
+    import argparse
 
-    cprint(BLUE, "========================================")
-    cprint(BLUE, "  CPV Validation Scripts Sync")
-    cprint(BLUE, "========================================")
-    print()
+    parser = argparse.ArgumentParser(description="Sync CPV validation scripts from GitHub.")
+    parser.add_argument("ref", nargs="?", default="", help="Git ref/tag to sync from (default: latest release)")
+    parser.add_argument("--report-file", type=str, default=None,
+                        help="Write full report to this file; print only a concise summary to stdout")
+    args = parser.parse_args()
+
+    script_dir = Path(__file__).resolve().parent
+    requested_ref = args.ref
+
+    # Collect detailed log lines for the report file
+    log_lines: list[str] = []
+
+    def log(msg: str) -> None:
+        log_lines.append(msg)
+
+    log("CPV Validation Scripts Sync")
+    log("=" * 40)
+
+    if not args.report_file:
+        cprint(BLUE, "========================================")
+        cprint(BLUE, "  CPV Validation Scripts Sync")
+        cprint(BLUE, "========================================")
+        print()
 
     check_gh_available()
 
     ref = resolve_ref(REPO, requested_ref)
 
-    cprint(BLUE, f"Source: {REPO}@{ref}")
-    print()
+    log(f"Source: {REPO}@{ref}")
+    log("")
+    if not args.report_file:
+        cprint(BLUE, f"Source: {REPO}@{ref}")
+        print()
 
     synced = 0
     failed = 0
@@ -178,7 +199,9 @@ def main() -> None:
         new_bytes = fetch_script_bytes(REPO, ref, script)
 
         if new_bytes is None:
-            cprint(YELLOW, f"  SKIP: {script} (not found in CPV@{ref})")
+            log(f"  SKIP: {script} (not found in CPV@{ref})")
+            if not args.report_file:
+                cprint(YELLOW, f"  SKIP: {script} (not found in CPV@{ref})")
             failed += 1
             continue
 
@@ -187,29 +210,41 @@ def main() -> None:
         # Skip write if the file content is identical
         if dest.exists():
             if sha256_of_file(dest) == sha256_of_bytes(new_bytes):
+                log(f"  UNCHANGED: {script}")
                 unchanged += 1
                 continue
 
         # Write decoded bytes directly — no string conversion, no newline issues
         dest.write_bytes(new_bytes)
         make_executable(dest)
-        cprint(GREEN, f"  UPDATED: {script}")
+        log(f"  UPDATED: {script}")
+        if not args.report_file:
+            cprint(GREEN, f"  UPDATED: {script}")
         synced += 1
 
-    print()
-    cprint(BLUE, "========================================")
-    print(
-        f"{GREEN}  Synced: {synced}  {NC}"
-        f"Unchanged: {unchanged}  "
-        f"{YELLOW}Skipped: {failed}{NC}"
-    )
-    cprint(BLUE, "========================================")
+    summary = f"Synced: {synced}  Unchanged: {unchanged}  Skipped: {failed}  (from {ref})"
+    log("")
+    log(summary)
 
-    if synced > 0:
+    if args.report_file:
+        # Write full report to file, print concise summary
+        Path(args.report_file).write_text("\n".join(log_lines) + "\n", encoding="utf-8")
+        print(f"[DONE] {summary}. Report: {args.report_file}")
+    else:
         print()
-        cprint(YELLOW, f"NOTE: {synced} script(s) updated. Stage and commit before pushing:")
-        print("  git add scripts/")
-        print(f"  git commit -m 'chore: sync CPV validation scripts from {ref}'")
+        cprint(BLUE, "========================================")
+        print(
+            f"{GREEN}  Synced: {synced}  {NC}"
+            f"Unchanged: {unchanged}  "
+            f"{YELLOW}Skipped: {failed}{NC}"
+        )
+        cprint(BLUE, "========================================")
+
+        if synced > 0:
+            print()
+            cprint(YELLOW, f"NOTE: {synced} script(s) updated. Stage and commit before pushing:")
+            print("  git add scripts/")
+            print(f"  git commit -m 'chore: sync CPV validation scripts from {ref}'")
 
     if failed > 0:
         sys.exit(1)

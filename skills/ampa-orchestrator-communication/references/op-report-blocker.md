@@ -9,6 +9,8 @@ priority: urgent
 
 # Operation: Report Blocker
 
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+
 This operation describes how to report blocking issues to the AI Maestro Orchestrator Agent (AMOA) when you encounter problems that prevent you from making progress on an assigned task.
 
 ## Table of Contents
