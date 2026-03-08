@@ -2,22 +2,21 @@
 name: op-commit-changes
 description: Commit changes with meaningful commit messages
 parent-skill: ampa-github-operations
-operation-type: commit
 ---
 
 # Commit Changes
 
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
+
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Create well-structured commits with meaningful messages following conventional commits specification.
-
-## Table of Contents
-
-- 3.1 Staging changes selectively
-- 3.2 Commit message format
-- 3.3 Conventional commits syntax
-- 3.4 Amending commits (when safe)
-- 3.5 Verifying commit success
 
 ## When to Use
 

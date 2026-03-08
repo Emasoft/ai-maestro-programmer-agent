@@ -1,25 +1,22 @@
 ---
 name: op-receive-feedback
-description: Handle feedback from AMOA after PR review or task evaluation.
+description: Handle feedback from AMOA
 parent-skill: ampa-orchestrator-communication
-workflow-step: "Feedback Loop"
-message-type: feedback-acknowledgment
-priority: high
 ---
 
-# Operation: Receive Feedback
+# Receive Feedback
+
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
 
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation describes how to handle feedback from the AI Maestro Orchestrator Agent (AMOA) after PR review, task evaluation, or quality assessment.
-
-## Table of Contents
-
-- 6.1 Monitoring for Feedback
-- 6.2 Feedback Message Types
-- 6.3 Processing Feedback
-- 6.4 Acknowledgment Protocol
-- 6.5 Examples
 
 ## 6.1 Monitoring for Feedback
 

@@ -1,24 +1,22 @@
 ---
 name: op-respond-to-review
-description: Address AMIA review comments on pull request (Step 21)
+description: Address review comments on pull request
 parent-skill: ampa-github-operations
-operation-type: pr-review-response
-workflow-step: "Step 21"
 ---
 
 # Respond to Review
 
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
+
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Address review comments from AMIA (AI Maestro Integrator Agent) after PR rejection. This corresponds to **Step 21** of the AMPA workflow.
-
-## Table of Contents
-
-- 5.1 Reading review comments
-- 5.2 Understanding rejection reasons
-- 5.3 Addressing specific feedback
-- 5.4 Replying to review comments
-- 5.5 Requesting re-review
 
 ## When to Use
 

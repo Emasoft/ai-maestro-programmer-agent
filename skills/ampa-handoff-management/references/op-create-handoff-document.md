@@ -1,67 +1,21 @@
 ---
 name: op-create-handoff-document
-description: Create handoff documents for transferring work context to other agents or future sessions.
+description: Create handoff documents for context transfer
 parent-skill: ampa-handoff-management
-operation-type: output
 ---
 
 # Create Handoff Document
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 1: Prepare the Handoff Directory](#step-1-prepare-the-handoff-directory)
-  - [Step 2: Archive Previous Handoff (If Exists)](#step-2-archive-previous-handoff-if-exists)
-  - [Step 3: Write the YAML Frontmatter](#step-3-write-the-yaml-frontmatter)
-  - [Step 4: Write the Task Summary](#step-4-write-the-task-summary)
-- [Task Summary](#task-summary)
-  - [Step 5: Document Requirements and Progress](#step-5-document-requirements-and-progress)
-- [Requirements](#requirements)
-  - [Step 6: Document Constraints](#step-6-document-constraints)
-- [Constraints](#constraints)
-  - [Step 7: Provide Codebase Context](#step-7-provide-codebase-context)
-- [Codebase Context](#codebase-context)
-  - [Step 8: Create the Checkpoints Section](#step-8-create-the-checkpoints-section)
-- [Checkpoints](#checkpoints)
-  - [Phase Status](#phase-status)
-  - [Validation State](#validation-state)
-  - [Resume Context](#resume-context)
-  - [Step 9: Add Notes and Decisions](#step-9-add-notes-and-decisions)
-- [Notes](#notes)
-  - [Decisions Made](#decisions-made)
-  - [Observations](#observations)
-  - [Open Questions](#open-questions)
-  - [Step 10: Write the File](#step-10-write-the-file)
-  - [Step 11: Notify the Receiving Agent](#step-11-notify-the-receiving-agent)
 - [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Handoff for Completed Work](#example-1-handoff-for-completed-work)
-- [Task Summary](#task-summary)
-- [Requirements](#requirements)
-- [Codebase Context](#codebase-context)
-- [Checkpoints](#checkpoints)
-  - [Phase Status](#phase-status)
-  - [Validation State](#validation-state)
-- [Notes](#notes)
-  - [Decisions Made](#decisions-made)
-  - [Example 2: Handoff for Blocked Work](#example-2-handoff-for-blocked-work)
-- [Task Summary](#task-summary)
-- [Requirements](#requirements)
-- [Blockers](#blockers)
-  - [BLOCKER-1: Missing API Credentials](#blocker-1-missing-api-credentials)
-  - [BLOCKER-2: Missing Endpoint Documentation](#blocker-2-missing-endpoint-documentation)
-- [Checkpoints](#checkpoints)
-  - [Phase Status](#phase-status)
-  - [Resume Context](#resume-context)
 - [Error Handling](#error-handling)
-  - [Error: Cannot Write to Handoff Directory](#error-cannot-write-to-handoff-directory)
-  - [Error: AI Maestro Not Responding](#error-ai-maestro-not-responding)
-  - [Error: Conflicting Handoff Already Exists](#error-conflicting-handoff-already-exists)
-  - [Error: Large Handoff Document](#error-large-handoff-document)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation explains how to create handoff documents that transfer work context to other agents or preserve state for future sessions.
 

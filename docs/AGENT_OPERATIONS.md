@@ -47,6 +47,7 @@ AMCOS maintains a counter for each project to ensure unique numbering:
 | `${CLAUDE_PLUGIN_ROOT}` | Points to `ai-maestro-programmer-agent/` | Use in scripts, hooks, skill references |
 | `${CLAUDE_SKILL_DIR}` | Points to the current skill's directory | Use in SKILL.md to reference files relative to the skill (e.g., `${CLAUDE_SKILL_DIR}/references/op-*.md`) |
 | `${CLAUDE_PROJECT_DIR}` | Points to `~/agents/<session-name>/` | Project root for the programmer instance |
+| `AMPA_REPORT_FILE` | Path set by caller | When set, `pre-push-hook.py` writes full validation output to this file and prints only a concise summary |
 
 ### Local Plugin Path Structure
 ```
@@ -208,6 +209,8 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 **Verify**: confirm the message appears in your sent messages.
 
+> **Note**: In normal operations, AMPA routes ALL messages through AMOA. The direct-to-AMCOS and direct-to-AMIA templates below are reserved for exceptional scenarios explicitly authorized by AMOA (e.g., AMOA instructs AMPA to send a review request directly to AMIA). When in doubt, send to AMOA and let AMOA route.
+
 #### To AMCOS (Chief of Staff) - For Blockers Only
 
 Send a message to the chief of staff using the `agent-messaging` skill:
@@ -245,8 +248,8 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 | Priority | When to Use | Response Time |
 |----------|-------------|---------------|
 | `urgent` | Blocker, cannot proceed | Immediate |
-| `high` | Clarification needed to continue | Within 5 minutes |
-| `normal` | Task completion, progress update | Within 15 minutes |
+| `high` | Clarification needed to continue | Within 30 minutes |
+| `normal` | Task completion, progress update | Within 2 hours |
 | `low` | FYI, non-actionable information | When convenient |
 
 ### Message Types
@@ -561,6 +564,6 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 ---
 
-**Document Version**: 1.2.0
-**Last Updated**: 2026-03-05
+**Document Version**: 1.3.0
+**Last Updated**: 2026-03-08
 **Maintained By**: claude-skills-factory

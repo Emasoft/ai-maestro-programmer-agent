@@ -20,7 +20,7 @@ from __future__ import annotations
 import argparse
 import configparser
 import json
-import os
+
 import re
 import subprocess
 import sys
@@ -30,8 +30,11 @@ from typing import Any
 from urllib.parse import urlparse
 
 from cpv_validation_common import (
+    MAX_NAME_LENGTH,
+    NAME_PATTERN,
     SEMVER_PATTERN,
     Level,
+    print_compact_summary,
 )
 from cpv_validation_common import (
     ValidationReport as BaseValidationReport,
@@ -157,9 +160,7 @@ RESERVED_MARKETPLACE_NAMES = {
     "life-sciences",
 }
 
-# Name validation pattern (kebab-case)
-NAME_PATTERN = re.compile(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$")
-
+# NAME_PATTERN and MAX_NAME_LENGTH imported from cpv_validation_common
 # VERSION_PATTERN imported from cpv_validation_common as SEMVER_PATTERN
 
 # Required README sections for GitHub deployment
@@ -320,15 +321,35 @@ def validate_marketplace_name(name: Any, json_path: str) -> list[ValidationResul
         )
         return results
 
-    # Warn if not kebab-case
+    # Length check
+    if len(name) > MAX_NAME_LENGTH:
+        results.append(
+            ValidationResult(
+                level="MAJOR",
+                category="manifest",
+                message=f"Marketplace name '{name}' exceeds {MAX_NAME_LENGTH} chars ({len(name)})",
+                file=json_path,
+            )
+        )
+
+    # Naming pattern check (kebab-case, must start and end with letter)
     if not NAME_PATTERN.match(name):
         results.append(
             ValidationResult(
-                level="MINOR",
+                level="CRITICAL",
                 category="manifest",
-                message=f"Marketplace name '{name}' should use kebab-case (lowercase with hyphens)",
+                message=f"Marketplace name '{name}' does not match naming pattern (lowercase letters, digits, hyphens; must start with letter)",
                 file=json_path,
                 suggestion="Use format: my-marketplace-name",
+            )
+        )
+    elif name[-1].isdigit():
+        results.append(
+            ValidationResult(
+                level="CRITICAL",
+                category="manifest",
+                message=f"Marketplace name '{name}' must not end with a digit",
+                file=json_path,
             )
         )
 
@@ -368,17 +389,35 @@ def validate_plugin_entry(
                 )
             )
 
-    # Validate name format
+    # Validate name format (uniform naming rules)
     name = plugin.get("name")
     if isinstance(name, str) and name:
+        if len(name) > MAX_NAME_LENGTH:
+            results.append(
+                ValidationResult(
+                    level="MAJOR",
+                    category="plugin",
+                    message=f"Plugin name '{name}' exceeds {MAX_NAME_LENGTH} chars ({len(name)})",
+                    file=json_path,
+                )
+            )
         if not NAME_PATTERN.match(name):
             results.append(
                 ValidationResult(
-                    level="MINOR",
+                    level="CRITICAL",
                     category="plugin",
-                    message=f"Plugin name '{name}' should use kebab-case",
+                    message=f"Plugin name '{name}' does not match naming pattern (lowercase, hyphens, must start with letter)",
                     file=json_path,
                     suggestion="Use format: my-plugin-name",
+                )
+            )
+        elif name[-1].isdigit():
+            results.append(
+                ValidationResult(
+                    level="CRITICAL",
+                    category="plugin",
+                    message=f"Plugin name '{name}' must not end with a digit",
+                    file=json_path,
                 )
             )
 
@@ -1261,11 +1300,11 @@ def validate_marketplace_private_info(
             ABSOLUTE_PATH_PATTERNS,
             ALLOWED_DOC_PATH_PREFIXES,
             EXAMPLE_USERNAMES,
-            PRIVATE_INFO_SKIP_DIRS,
             PRIVATE_USERNAMES,
             SCANNABLE_EXTENSIONS,
             build_private_path_patterns,
         )
+        from gitignore_filter import GitignoreFilter
     except ImportError:
         # Fallback if cpv_validation_common is not available
         results.append(
@@ -1346,12 +1385,14 @@ def validate_marketplace_private_info(
                 )
 
     def scan_directory(root_dir: Path, base_rel: str = "") -> int:
-        """Recursively scan a directory for private info."""
-        files_scanned = 0
-        for dirpath, dirnames, filenames in os.walk(root_dir):
-            # Skip excluded directories
-            dirnames[:] = [d for d in dirnames if d not in PRIVATE_INFO_SKIP_DIRS]
+        """Recursively scan a directory for private info.
 
+        Uses GitignoreFilter to fully respect .gitignore patterns
+        (wildcards, negations, directory-only rules, etc.).
+        """
+        gi = GitignoreFilter(root_dir)
+        files_scanned = 0
+        for dirpath, dirnames, filenames in gi.walk(root_dir):
             for filename in filenames:
                 filepath = Path(dirpath) / filename
                 if filepath.suffix.lower() not in SCANNABLE_EXTENSIONS:
@@ -1848,6 +1889,9 @@ Examples:
         help="Output results as JSON",
     )
     parser.add_argument("--strict", action="store_true", help="Strict mode — NIT issues also block validation")
+    parser.add_argument(
+        "--report", type=str, default=None, help="Save detailed report to file, print only summary to stdout"
+    )
 
     args = parser.parse_args()
 
@@ -1855,18 +1899,24 @@ Examples:
     marketplace_path = args.marketplace_path.resolve()
 
     # Verify path exists and contains marketplace content
+    early_error = None
     if not marketplace_path.exists():
-        print(f"Error: {marketplace_path} does not exist", file=sys.stderr)
-        return 1
-    if marketplace_path.is_dir() and not (marketplace_path / "marketplace.json").exists():
-        print(
-            f"Error: No marketplace.json found at {marketplace_path}\n"
-            f"Expected a marketplace directory with marketplace.json.",
-            file=sys.stderr,
-        )
-        return 1
-    if marketplace_path.is_file() and marketplace_path.name != "marketplace.json":
-        print(f"Error: {marketplace_path} is not a marketplace.json file", file=sys.stderr)
+        early_error = f"Error: {marketplace_path} does not exist"
+    elif marketplace_path.is_dir() and not (marketplace_path / "marketplace.json").exists():
+        early_error = f"Error: No marketplace.json found at {marketplace_path}. Expected a marketplace directory with marketplace.json."
+    elif marketplace_path.is_file() and marketplace_path.name != "marketplace.json":
+        early_error = f"Error: {marketplace_path} is not a marketplace.json file"
+
+    if early_error:
+        if args.report:
+            report_path = Path(args.report)
+            report_path.parent.mkdir(parents=True, exist_ok=True)
+            report_path.write_text(f"# Marketplace Validation\n\nCRITICAL: {early_error}\n", encoding="utf-8")
+            print("Marketplace Validation: FAIL (critical)")
+            print("  CRITICAL:1")
+            print(f"  Report: {report_path}")
+        else:
+            print(early_error, file=sys.stderr)
         return 1
 
     # Run validation
@@ -1899,6 +1949,10 @@ Examples:
             "exit_code": report.exit_code_strict() if args.strict else report.exit_code,
         }
         print(json.dumps(output, indent=2))
+    elif args.report:
+        Path(args.report).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.report).write_text(format_report(report, args.verbose))
+        print_compact_summary(report, "Marketplace Validation", Path(args.report), plugin_path=args.marketplace_path)
     else:
         print(format_report(report, args.verbose))
 

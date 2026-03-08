@@ -2,21 +2,21 @@
 name: op-create-feature-branch
 description: Create a feature branch for task implementation
 parent-skill: ampa-github-operations
-operation-type: branching
 ---
 
 # Create Feature Branch
 
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
+
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Create a properly named feature branch for implementing a task.
-
-## Table of Contents
-
-- 2.1 Branch naming conventions
-- 2.2 Creating branch from main
-- 2.3 Switching to existing branches
-- 2.4 Pushing new branch to remote
 
 ## When to Use
 

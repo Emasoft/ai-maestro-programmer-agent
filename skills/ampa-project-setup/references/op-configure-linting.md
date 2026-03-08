@@ -1,37 +1,20 @@
 ---
 name: op-configure-linting
-description: Configure linting tools for code quality checks.
+description: Configure linting tools for code quality
 parent-skill: ampa-project-setup
-workflow-step: "Step 4"
 ---
 
-# Operation: Configure Linting
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
+# Configure Linting
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Python: ruff and mypy Configuration](#python-ruff-and-mypy-configuration)
-  - [JavaScript/TypeScript: eslint Configuration](#javascripttypescript-eslint-configuration)
-  - [Rust: clippy Configuration](#rust-clippy-configuration)
-  - [Go: staticcheck Configuration](#go-staticcheck-configuration)
-  - [.NET: Built-in Analyzers](#net-built-in-analyzers)
-  - [C/C++: clang-tidy Configuration](#cc-clang-tidy-configuration)
-  - [Swift: swiftlint Configuration](#swift-swiftlint-configuration)
-- [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Python ruff + mypy Setup](#example-1-python-ruff-mypy-setup)
-  - [Example 2: TypeScript eslint Setup](#example-2-typescript-eslint-setup)
-  - [Example 3: Rust clippy Setup](#example-3-rust-clippy-setup)
 - [Error Handling](#error-handling)
-  - [Linter Not Found](#linter-not-found)
-  - [Configuration Syntax Error](#configuration-syntax-error)
-  - [Too Many Errors on Existing Code](#too-many-errors-on-existing-code)
-  - [Type Checking Fails](#type-checking-fails)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation sets up linting tools appropriate for the project language to ensure code quality and consistency.
 

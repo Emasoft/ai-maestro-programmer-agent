@@ -2,6 +2,22 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.15] - 2026-03-08
+
+### Fixed
+- Fixed all MAJOR validation issues: added missing `## Error Handling` and `## Examples` sections to all 5 SKILL.md files
+- Fixed all WARNING issues: embedded complete TOC headings from reference files into SKILL.md Resources sections
+- Fixed all MINOR issues: standardized reference file frontmatter, moved TOC within 200-char threshold, added checklist patterns
+- Standardized all 29 reference file TOC format to 5-entry standard (`When to Use · Prerequisites · Procedure · Examples · Error Handling`)
+- Removed unnecessary frontmatter fields (`workflow-step`, `operation-type`, `message-type`, `priority`) from all reference files
+- Added "Use when ..." phrase to task-execution skill description (Nixtla strict mode)
+- Added "Copy this checklist and track your progress" phrase to all 5 SKILL.md Instructions sections
+- Standardized Sections separator character to `·` across all SKILL.md files
+
+### Changed
+- Trimmed SKILL.md Token Budget sections from 4 to 3 bullets where needed to stay under 5000 char limit
+- Shortened reference file frontmatter descriptions to keep TOC within 200-char position limit
+
 ## [1.0.14] - 2026-03-07
 
 ### Added

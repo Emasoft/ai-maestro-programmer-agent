@@ -1,25 +1,22 @@
 ---
 name: op-notify-completion
-description: Notify AMOA when task implementation is complete and ready for review.
+description: Notify AMOA when task is complete
 parent-skill: ampa-orchestrator-communication
-workflow-step: "Step 19"
-message-type: completion-notification
-priority: high
 ---
 
-# Operation: Notify Completion
+# Notify Completion
+
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
 
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation describes how to inform the AI Maestro Orchestrator Agent (AMOA) when your task implementation is complete and ready for review.
-
-## Table of Contents
-
-- 5.1 Completion Criteria
-- 5.2 Completion Notification Format
-- 5.3 Deliverables Summary
-- 5.4 Sending Notification
-- 5.5 Examples
 
 ## 5.1 Completion Criteria
 

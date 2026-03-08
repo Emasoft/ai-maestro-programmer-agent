@@ -2,22 +2,21 @@
 name: op-clone-repository
 description: Clone or fork a repository to local machine
 parent-skill: ampa-github-operations
-operation-type: setup
 ---
 
 # Clone Repository
 
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
+
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Clone or fork the project repository to your local machine for development.
-
-## Table of Contents
-
-- 1.1 When to clone vs fork
-- 1.2 Cloning with gh CLI
-- 1.3 Forking upstream repositories
-- 1.4 Setting up remotes for forks
-- 1.5 Verifying clone success
 
 ## When to Use
 

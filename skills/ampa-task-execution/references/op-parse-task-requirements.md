@@ -1,31 +1,20 @@
 ---
 name: op-parse-task-requirements
-description: Parse task issue content to extract requirements and acceptance criteria
-workflow-step: "Step 17.2 - Parse Task Requirements"
+description: Extract requirements and acceptance criteria from task issues
 parent-skill: ampa-task-execution
 ---
 
-# Operation: Parse Task Requirements
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
-
+# Parse Task Requirements
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 2.1: Extract Acceptance Criteria List](#step-21-extract-acceptance-criteria-list)
-  - [Step 2.2: Identify Dependencies on Other Tasks](#step-22-identify-dependencies-on-other-tasks)
-  - [Step 2.3: Determine Target Files and Components](#step-23-determine-target-files-and-components)
-  - [Step 2.4: Clarify Ambiguities with Orchestrator](#step-24-clarify-ambiguities-with-orchestrator)
-- [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Complete Requirements Analysis](#example-1-complete-requirements-analysis)
-  - [Example 2: Blocked by Dependency](#example-2-blocked-by-dependency)
 - [Error Handling](#error-handling)
-- [Related Operations](#related-operations)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Understand acceptance criteria, dependencies, and scope of the assigned task.
 

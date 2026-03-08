@@ -30,7 +30,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install uv
-        uses: astral-sh/setup-uv@e58605a9b6da7c637471fab8847a5e5a6b8df081 # v5
+        uses: astral-sh/setup-uv@0ca8f610542aa7f4acaf39e65cf4eb3c35091883 # v7
 
       - name: Sync CPV validation scripts
         run: |
@@ -43,7 +43,7 @@ jobs:
 
       - name: Validate plugin
         run: |
-          echo "=== Plugin Validation (strict mode) ==="
+          echo "=== Plugin Validation ==="
           echo ""
 
           # Check that validator script exists
@@ -54,7 +54,7 @@ jobs:
 
           # Run validator with pyyaml dependency
           # Exit codes: 0=pass, 1=CRITICAL, 2=MAJOR, 3=MINOR
-          # Strict mode: ALL non-zero exit codes block
+          # CI blocks on CRITICAL (1) and MAJOR (2); MINOR (3) passes with warning
           set +e
           uv run --with pyyaml python scripts/validate_plugin.py . --verbose
           exit_code=$?

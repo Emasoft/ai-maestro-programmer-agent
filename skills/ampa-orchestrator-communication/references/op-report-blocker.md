@@ -1,25 +1,22 @@
 ---
 name: op-report-blocker
-description: Report blocking issues to AMOA that prevent task progress.
+description: Report blocking issues to AMOA
 parent-skill: ampa-orchestrator-communication
-workflow-step: "Escalation Path"
-message-type: blocker-report
-priority: urgent
 ---
 
-# Operation: Report Blocker
+# Report Blocker
+
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
 
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation describes how to report blocking issues to the AI Maestro Orchestrator Agent (AMOA) when you encounter problems that prevent you from making progress on an assigned task.
-
-## Table of Contents
-
-- 3.1 Identifying Blockers
-- 3.2 Blocker Report Format
-- 3.3 Severity Levels
-- 3.4 Escalation Procedure
-- 3.5 Examples
 
 ## 3.1 Identifying Blockers
 

@@ -1,31 +1,20 @@
 ---
 name: op-implement-code
-description: Implement code changes according to task requirements
-workflow-step: "Step 17.4 - Implement Code"
+description: Implement code changes per task requirements
 parent-skill: ampa-task-execution
 ---
 
-# Operation: Implement Code
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
-
+# Implement Code
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 4.1: Analyze Existing Code Structure with SERENA](#step-41-analyze-existing-code-structure-with-serena)
-  - [Step 4.2: Plan Implementation Approach](#step-42-plan-implementation-approach)
-  - [Step 4.3: Write Code in Small, Testable Increments](#step-43-write-code-in-small-testable-increments)
-  - [Step 4.4: Add Documentation and Comments](#step-44-add-documentation-and-comments)
-- [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Implementing a Service Function](#example-1-implementing-a-service-function)
-  - [Example 2: Creating a New Module](#example-2-creating-a-new-module)
 - [Error Handling](#error-handling)
-- [Related Operations](#related-operations)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Write code that fulfills the task requirements and acceptance criteria.
 

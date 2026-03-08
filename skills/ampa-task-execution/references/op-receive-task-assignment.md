@@ -1,31 +1,20 @@
 ---
 name: op-receive-task-assignment
 description: Receive and validate task assignments from the Orchestrator
-workflow-step: "Step 17.1 - Receive Task Assignment"
 parent-skill: ampa-task-execution
 ---
 
-# Operation: Receive Task Assignment
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
-
+# Receive Task Assignment
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 1.1: Read Incoming AI Maestro Message](#step-11-read-incoming-ai-maestro-message)
-  - [Step 1.2: Extract Task Identifier and Metadata](#step-12-extract-task-identifier-and-metadata)
-  - [Step 1.3: Validate Message Format and Required Fields](#step-13-validate-message-format-and-required-fields)
-  - [Step 1.4: Acknowledge Receipt to Orchestrator](#step-14-acknowledge-receipt-to-orchestrator)
-- [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Valid Task Assignment](#example-1-valid-task-assignment)
-  - [Example 2: Invalid Task Assignment](#example-2-invalid-task-assignment)
 - [Error Handling](#error-handling)
-- [Related Operations](#related-operations)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Parse and validate incoming task assignments from AI Maestro messages.
 

@@ -1,32 +1,20 @@
 ---
 name: op-setup-development-environment
 description: Set up the development environment for the assigned task
-workflow-step: "Step 17.3 - Setup Development Environment"
 parent-skill: ampa-task-execution
 ---
 
-# Operation: Setup Development Environment
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
-
+# Setup Development Environment
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 3.1: Navigate to Target Project Directory](#step-31-navigate-to-target-project-directory)
-  - [Step 3.2: Activate Required Virtual Environment](#step-32-activate-required-virtual-environment)
-  - [Step 3.3: Verify Dependencies Are Installed](#step-33-verify-dependencies-are-installed)
-  - [Step 3.4: Initialize SERENA MCP for Code Navigation](#step-34-initialize-serena-mcp-for-code-navigation)
-- [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Python Project Setup](#example-1-python-project-setup)
-  - [Example 2: New Python Project (No venv)](#example-2-new-python-project-no-venv)
-  - [Example 3: Node.js Project Setup](#example-3-nodejs-project-setup)
 - [Error Handling](#error-handling)
-- [Related Operations](#related-operations)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Configure the development tooling required for the specific task.
 

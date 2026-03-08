@@ -1,25 +1,22 @@
 ---
 name: op-propose-improvement
-description: Propose design or task improvements to AMOA during implementation.
+description: Propose improvements to AMOA
 parent-skill: ampa-orchestrator-communication
-workflow-step: "Step 15"
-message-type: improvement-proposal
-priority: normal
 ---
 
-# Operation: Propose Improvement
+# Propose Improvement
+
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
 
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation describes how to propose design or task improvements to the AI Maestro Orchestrator Agent (AMOA) when you identify opportunities to enhance the implementation during development.
-
-## Table of Contents
-
-- 4.1 When to Propose Improvements
-- 4.2 Improvement Proposal Format
-- 4.3 Justification Requirements
-- 4.4 Awaiting Approval
-- 4.5 Examples
 
 ## 4.1 When to Propose Improvements
 

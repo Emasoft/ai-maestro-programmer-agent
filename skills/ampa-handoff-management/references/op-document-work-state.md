@@ -1,70 +1,21 @@
 ---
 name: op-document-work-state
-description: Save current work state for later continuation, enabling resume after session clears.
+description: Save work state for later continuation
 parent-skill: ampa-handoff-management
-operation-type: output
 ---
 
 # Document Work State
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 1: Prepare the Handoff Directory](#step-1-prepare-the-handoff-directory)
-  - [Step 2: Run Current Validation](#step-2-run-current-validation)
-  - [Step 3: Capture Modified Files](#step-3-capture-modified-files)
-  - [Step 4: Archive Previous State (If Exists)](#step-4-archive-previous-state-if-exists)
-  - [Step 5: Write the Work State Document](#step-5-write-the-work-state-document)
-- [Task Summary](#task-summary)
-- [Current Progress](#current-progress)
-  - [Requirements Status](#requirements-status)
-  - [Phase Status](#phase-status)
-- [Checkpoints](#checkpoints)
-  - [Validation State](#validation-state)
-  - [Resume Context](#resume-context)
-  - [In-Progress Code](#in-progress-code)
-  - [Mental Context](#mental-context)
-- [Codebase State](#codebase-state)
-  - [Modified Files](#modified-files)
-  - [Uncommitted Changes](#uncommitted-changes)
-- [Notes](#notes)
-  - [Step 6: Save the Work State](#step-6-save-the-work-state)
-  - [Step 7: Verify the Save](#step-7-verify-the-save)
 - [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Mid-Implementation Work State](#example-1-mid-implementation-work-state)
-- [Task Summary](#task-summary)
-- [Current Progress](#current-progress)
-  - [Requirements Status](#requirements-status)
-  - [Phase Status](#phase-status)
-- [Checkpoints](#checkpoints)
-  - [Validation State](#validation-state)
-  - [Resume Context](#resume-context)
-  - [In-Progress Code](#in-progress-code)
-  - [Mental Context](#mental-context)
-- [Codebase State](#codebase-state)
-  - [Modified Files](#modified-files)
-- [Notes](#notes)
-  - [Example 2: Work State Before Risky Change](#example-2-work-state-before-risky-change)
-- [Task Summary](#task-summary)
-- [Current Progress](#current-progress)
-  - [Requirements Status](#requirements-status)
-  - [Phase Status](#phase-status)
-- [Checkpoints](#checkpoints)
-  - [Validation State](#validation-state)
-  - [Resume Context](#resume-context)
-  - [IMPORTANT: State Before Change](#important-state-before-change)
-  - [Mental Context](#mental-context)
-- [Notes](#notes)
 - [Error Handling](#error-handling)
-  - [Error: Tests Cannot Be Run](#error-tests-cannot-be-run)
-  - [Error: Cannot Determine Current Focus](#error-cannot-determine-current-focus)
-  - [Error: Work State Too Large](#error-work-state-too-large)
-  - [Error: Conflicting Work States](#error-conflicting-work-states)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation explains how to save the current work state so that work can be resumed after a session clear or interruption.
 

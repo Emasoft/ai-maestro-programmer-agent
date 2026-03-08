@@ -1,6 +1,6 @@
 # AI Maestro Programmer Agent (AMPA)
 
-**Version**: 1.0.14
+**Version**: 1.0.15
 
 ## Overview
 
@@ -46,12 +46,24 @@ None. The `hooks/hooks.json` is empty -- AMPA uses globally installed hooks.
 
 ### Scripts
 
-The `scripts/` directory contains the CPV (Claude Plugins Validation) suite — 21 validation scripts covering plugin structure, agents, skills, hooks, security, encoding, documentation, and more. The entry point is `validate_plugin.py`. Scripts are auto-synced from `Emasoft/claude-plugins-validation` via `sync_cpv_scripts.py`.
+The `scripts/` directory contains 24 Python scripts: 17 CPV (Claude Plugins Validation) scripts covering plugin structure, agents, skills, hooks, security, encoding, documentation, and more, plus 7 project utility scripts. The entry point is `validate_plugin.py`. CPV scripts are auto-synced from `Emasoft/claude-plugins-validation` via `sync_cpv_scripts.py`.
 
 | Script | Description |
 |--------|-------------|
 | `validate_plugin.py` | CPV suite entry point — runs all validation checks |
 | `pre-push-hook.py` | Git pre-push hook — runs validation before each push |
+| `sync_cpv_scripts.py` | Sync CPV validation scripts from upstream GitHub releases |
+| `test_order_pipeline.py` | OrderPipeline validation test suite |
+
+### Token-Efficient Reporting
+
+Project scripts support file-based reporting to minimize terminal output:
+
+| Script | Flag | Description |
+|--------|------|-------------|
+| `test_order_pipeline.py` | `--report-file PATH` | Write full test report to file; terminal gets concise summary |
+| `sync_cpv_scripts.py` | `--report-file PATH` | Write full sync log to file; terminal gets concise summary |
+| `pre-push-hook.py` | `AMPA_REPORT_FILE=PATH` (env var) | Write validation output to file; terminal gets concise summary |
 
 ## Workflow
 
@@ -198,8 +210,10 @@ The Programmer Agent relies on SERENA MCP for code investigation:
 ## Validation
 
 ```bash
-python3 scripts/validate_plugin.py . --verbose
+uv run --with pyyaml python scripts/validate_plugin.py . --verbose
 ```
+
+If `uv` is not available, use `python3 scripts/validate_plugin.py . --verbose` with PyYAML installed.
 
 ### CI/CD
 

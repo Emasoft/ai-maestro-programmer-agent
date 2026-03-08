@@ -1,41 +1,20 @@
 ---
 name: op-activate-serena-mcp
-description: Activate SERENA MCP for code navigation and semantic analysis.
+description: Activate SERENA MCP for code navigation
 parent-skill: ampa-project-setup
-workflow-step: "Step 6"
 ---
 
-# Operation: Activate SERENA MCP
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
+# Activate SERENA MCP
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 1: Verify SERENA Availability](#step-1-verify-serena-availability)
-  - [Step 2: Activate SERENA for the Project](#step-2-activate-serena-for-the-project)
-  - [Step 3: Verify SERENA Connection](#step-3-verify-serena-connection)
-  - [Step 4: Index the Project (if needed)](#step-4-index-the-project-if-needed)
-  - [Step 5: Verify Tool Availability](#step-5-verify-tool-availability)
-- [SERENA Tool Reference](#serena-tool-reference)
-  - [find_symbol](#find_symbol)
-  - [find_references](#find_references)
-  - [get_file_structure](#get_file_structure)
-  - [search_code](#search_code)
-- [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Activating SERENA for Python Project](#example-1-activating-serena-for-python-project)
-  - [Example 2: Activating SERENA for TypeScript Project](#example-2-activating-serena-for-typescript-project)
-  - [Example 3: Large Project Indexing](#example-3-large-project-indexing)
 - [Error Handling](#error-handling)
-  - [SERENA Not Available](#serena-not-available)
-  - [Project Open Failed](#project-open-failed)
-  - [Symbol Not Found](#symbol-not-found)
-  - [Slow Response Times](#slow-response-times)
-  - [Connection Lost](#connection-lost)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation activates the SERENA MCP (Model Context Protocol) server to enable advanced code navigation and semantic analysis capabilities.
 

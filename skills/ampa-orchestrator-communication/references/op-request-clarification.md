@@ -1,25 +1,22 @@
 ---
 name: op-request-clarification
-description: Request task clarification from AMOA when requirements are unclear or ambiguous.
+description: Request task clarification from AMOA
 parent-skill: ampa-orchestrator-communication
-workflow-step: "Step 14"
-message-type: clarification-request
-priority: high
 ---
 
-# Operation: Request Clarification
+# Request Clarification
+
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
 
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation describes how to request clarification from the AI Maestro Orchestrator Agent (AMOA) when task requirements are unclear, ambiguous, or incomplete.
-
-## Table of Contents
-
-- 1.1 When to Request Clarification
-- 1.2 Clarification Request Format
-- 1.3 Sending the Request
-- 1.4 Handling the Response
-- 1.5 Examples
 
 ## 1.1 When to Request Clarification
 

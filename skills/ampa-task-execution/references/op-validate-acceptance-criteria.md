@@ -1,37 +1,20 @@
 ---
 name: op-validate-acceptance-criteria
-description: Validate that implementation meets all acceptance criteria
-workflow-step: "Step 17.6 - Validate Acceptance Criteria"
+description: Validate implementation meets all acceptance criteria
 parent-skill: ampa-task-execution
 ---
 
-# Operation: Validate Acceptance Criteria
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
-
+# Validate Acceptance Criteria
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 6.1: Review Each Acceptance Criterion](#step-61-review-each-acceptance-criterion)
-  - [Step 6.2: Verify Implementation Satisfies Criterion](#step-62-verify-implementation-satisfies-criterion)
-  - [Step 6.3: Document Validation Evidence](#step-63-document-validation-evidence)
-- [Validation Record: TASK-001](#validation-record-task-001)
-  - [AC-001: Email format is validated on submit](#ac-001-email-format-is-validated-on-submit)
-  - [AC-002: Invalid email shows error message](#ac-002-invalid-email-shows-error-message)
-  - [AC-003: Valid email allows form submission](#ac-003-valid-email-allows-form-submission)
-  - [Step 6.4: Report Completion to Orchestrator](#step-64-report-completion-to-orchestrator)
-- [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: All Criteria Passed](#example-1-all-criteria-passed)
-  - [Example 2: Criterion Failed](#example-2-criterion-failed)
-  - [Example 3: Partial Evidence](#example-3-partial-evidence)
-  - [AC-001: Error message visible](#ac-001-error-message-visible)
 - [Error Handling](#error-handling)
-- [Related Operations](#related-operations)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Verify all acceptance criteria are met before marking the task complete.
 

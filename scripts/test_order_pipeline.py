@@ -18,7 +18,6 @@ test companion for the "Order Processing Pipeline" example
 
 Usage:
     python3 scripts/test_order_pipeline.py
-    python3 scripts/test_order_pipeline.py --batch-size 50
     python3 scripts/test_order_pipeline.py --verbose
     python3 scripts/test_order_pipeline.py --json
     python3 scripts/test_order_pipeline.py --report-file /tmp/report.md
@@ -793,12 +792,6 @@ def _print_json(results: list[TestResult]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Manual integration test for order processing pipeline."
-    )
-    parser.add_argument(
-        "--batch-size",
-        type=int,
-        default=100,
-        help="Batch size used by the pipeline (default: 100)",
     )
     parser.add_argument(
         "--verbose",

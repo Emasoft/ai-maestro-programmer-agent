@@ -1,24 +1,22 @@
 ---
 name: op-create-pull-request
-description: Create a pull request with proper description (Step 19)
+description: Create a pull request with proper description
 parent-skill: ampa-github-operations
-operation-type: pr-creation
-workflow-step: "Step 19"
 ---
 
 # Create Pull Request
 
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
+
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Create a pull request to submit completed work for review. This corresponds to **Step 19** of the AMPA workflow.
-
-## Table of Contents
-
-- 4.1 Preparing branch for PR
-- 4.2 Writing PR title and description
-- 4.3 Creating PR with gh CLI
-- 4.4 Setting reviewers and labels
-- 4.5 Linking to issues
 
 ## When to Use
 

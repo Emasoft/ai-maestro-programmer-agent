@@ -6,7 +6,7 @@
 #
 # Usage:
 #   python scripts/sync_cpv_scripts.py           # Sync from GitHub (latest release)
-#   python scripts/sync_cpv_scripts.py v1.7.3    # Sync from a specific tag
+#   python scripts/sync_cpv_scripts.py v1.8.5    # Sync from a specific tag
 #
 # Requirements: gh (GitHub CLI), authenticated
 
@@ -142,13 +142,16 @@ def make_executable(path: Path) -> None:
 
 
 def check_gh_available() -> None:
-    """Exit with a helpful message if the gh CLI is not installed."""
-    result = subprocess.run(
-        ["gh", "--version"],
-        capture_output=True,
-        text=True,
-    )
-    if result.returncode != 0:
+    """Exit with a helpful message if the gh CLI is not installed or not on PATH."""
+    try:
+        result = subprocess.run(
+            ["gh", "--version"],
+            capture_output=True,
+            text=True,
+        )
+    except FileNotFoundError:
+        result = None
+    if result is None or result.returncode != 0:
         cprint(RED, "ERROR: gh (GitHub CLI) is required but not installed.")
         print("Install gh CLI: https://cli.github.com/ (macOS: brew install gh)")
         sys.exit(1)

@@ -1,69 +1,21 @@
 ---
 name: op-write-bug-report
-description: Document bugs discovered during implementation with reproduction steps and context.
+description: Document bugs with reproduction steps
 parent-skill: ampa-handoff-management
-operation-type: output
 ---
 
 # Write Bug Report
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 1: Create the Bugs Directory](#step-1-create-the-bugs-directory)
-  - [Step 2: Generate a Bug ID](#step-2-generate-a-bug-id)
-  - [Step 3: Write the Bug Report Header](#step-3-write-the-bug-report-header)
-  - [Step 4: Write the Summary](#step-4-write-the-summary)
-- [Summary](#summary)
-  - [Step 5: Document Expected vs Actual Behavior](#step-5-document-expected-vs-actual-behavior)
-- [Expected Behavior](#expected-behavior)
-- [Actual Behavior](#actual-behavior)
-  - [Step 6: Write Reproduction Steps](#step-6-write-reproduction-steps)
-- [Reproduction Steps](#reproduction-steps)
-  - [Step 7: Include Minimal Reproduction Code](#step-7-include-minimal-reproduction-code)
-- [Minimal Reproduction](#minimal-reproduction)
-  - [Step 8: Add Stack Trace or Error Output](#step-8-add-stack-trace-or-error-output)
-- [Error Output](#error-output)
-  - [Step 9: Document Root Cause Analysis (If Known)](#step-9-document-root-cause-analysis-if-known)
-- [Root Cause Analysis](#root-cause-analysis)
-  - [Step 10: Suggest a Fix (If Known)](#step-10-suggest-a-fix-if-known)
-- [Proposed Fix](#proposed-fix)
-  - [Step 11: Link Related Items](#step-11-link-related-items)
-- [Related Items](#related-items)
-  - [Step 12: Save the Bug Report](#step-12-save-the-bug-report)
-  - [Step 13: Update the Handoff Document](#step-13-update-the-handoff-document)
-- [Bugs Discovered](#bugs-discovered)
-  - [Step 14: Notify If Critical](#step-14-notify-if-critical)
 - [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Medium Severity Bug Report](#example-1-medium-severity-bug-report)
-- [Summary](#summary)
-- [Expected Behavior](#expected-behavior)
-- [Actual Behavior](#actual-behavior)
-- [Reproduction Steps](#reproduction-steps)
-- [Minimal Reproduction](#minimal-reproduction)
-- [Error Output](#error-output)
-- [Root Cause Analysis](#root-cause-analysis)
-- [Proposed Fix](#proposed-fix)
-- [Related Items](#related-items)
-  - [Example 2: Critical Security Bug Report](#example-2-critical-security-bug-report)
-- [Summary](#summary)
-- [Expected Behavior](#expected-behavior)
-- [Actual Behavior](#actual-behavior)
-- [Reproduction Steps](#reproduction-steps)
-- [Minimal Reproduction](#minimal-reproduction)
-- [Root Cause Analysis](#root-cause-analysis)
-- [Proposed Fix](#proposed-fix)
-- [Related Items](#related-items)
 - [Error Handling](#error-handling)
-  - [Error: Cannot Determine Bug Severity](#error-cannot-determine-bug-severity)
-  - [Error: Cannot Reproduce the Bug](#error-cannot-reproduce-the-bug)
-  - [Error: Bug Is in Third-Party Code](#error-bug-is-in-third-party-code)
-  - [Error: Bug Report Too Long](#error-bug-report-too-long)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation explains how to document bugs discovered during implementation work with proper reproduction steps, expected versus actual behavior, and relevant context.
 

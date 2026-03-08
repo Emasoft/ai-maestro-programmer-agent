@@ -1,15 +1,11 @@
 {
   "name": "ai-maestro-programmer-agent",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "General-purpose programmer agent that writes code, runs tests, and creates PRs. Works standalone or as part of the AI Maestro ecosystem. Ships 5 bundled skills and uses SERENA MCP for code navigation.",
   "author": {
     "name": "Emasoft",
     "email": "713559+Emasoft@users.noreply.github.com"
   },
   "repository": "https://github.com/Emasoft/ai-maestro-programmer-agent",
-  "license": "MIT",
-  "agents": [
-    "./agents/ampa-programmer-main-agent.md"
-  ],
-  "skills": "./skills/"
+  "license": "MIT"
 }

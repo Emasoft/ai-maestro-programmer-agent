@@ -1,38 +1,20 @@
 ---
 name: op-install-dependencies
-description: Install project dependencies using the initialized package manager.
+description: Install project dependencies
 parent-skill: ampa-project-setup
-workflow-step: "Step 3"
 ---
 
-# Operation: Install Dependencies
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
+# Install Dependencies
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Python: uv Dependencies](#python-uv-dependencies)
-  - [JavaScript/TypeScript: bun or pnpm Dependencies](#javascripttypescript-bun-or-pnpm-dependencies)
-  - [Rust: cargo Dependencies](#rust-cargo-dependencies)
-  - [Go: go mod Dependencies](#go-go-mod-dependencies)
-  - [.NET: dotnet Dependencies](#net-dotnet-dependencies)
-  - [C/C++: Manual or Package Manager](#cc-manual-or-package-manager)
-  - [Swift: swift package Dependencies](#swift-swift-package-dependencies)
-- [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Python uv Install](#example-1-python-uv-install)
-  - [Example 2: TypeScript bun Install](#example-2-typescript-bun-install)
-  - [Example 3: Rust cargo Build](#example-3-rust-cargo-build)
 - [Error Handling](#error-handling)
-  - [Network Errors](#network-errors)
-  - [Version Conflicts](#version-conflicts)
-  - [Missing System Dependencies](#missing-system-dependencies)
-  - [Disk Space Issues](#disk-space-issues)
-  - [Authentication Required](#authentication-required)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation installs all project dependencies using the package manager that was initialized in the previous operation.
 

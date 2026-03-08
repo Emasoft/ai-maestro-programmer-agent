@@ -1,46 +1,21 @@
 ---
 name: op-read-handoff-document
-description: Parse and process handoff documents received from AMOA or previous sessions.
+description: Parse and process incoming handoff documents
 parent-skill: ampa-handoff-management
-operation-type: input
 ---
 
 # Read Handoff Document
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 1: Locate the Handoff Document](#step-1-locate-the-handoff-document)
-  - [Step 2: Verify the Document Exists](#step-2-verify-the-document-exists)
-  - [Step 3: Parse the YAML Frontmatter](#step-3-parse-the-yaml-frontmatter)
-  - [Step 4: Read the Task Description](#step-4-read-the-task-description)
-  - [Step 5: Check for Checkpoints](#step-5-check-for-checkpoints)
-- [Checkpoints](#checkpoints)
-  - [Phase Status](#phase-status)
-  - [Resume Context](#resume-context)
-  - [Step 6: Verify Validation State](#step-6-verify-validation-state)
-  - [Step 7: Acknowledge Receipt](#step-7-acknowledge-receipt)
 - [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Reading a Fresh Delegation](#example-1-reading-a-fresh-delegation)
-- [Task Summary](#task-summary)
-- [Requirements](#requirements)
-- [Constraints](#constraints)
-- [Codebase Context](#codebase-context)
-  - [Example 2: Resuming from Checkpoint](#example-2-resuming-from-checkpoint)
-- [Checkpoints](#checkpoints)
-  - [Phase Status](#phase-status)
-  - [Validation State](#validation-state)
-  - [Resume Context](#resume-context)
 - [Error Handling](#error-handling)
-  - [Error: Handoff File Not Found](#error-handoff-file-not-found)
-  - [Error: Invalid YAML Frontmatter](#error-invalid-yaml-frontmatter)
-  - [Error: Checkpoint Validation Fails](#error-checkpoint-validation-fails)
-  - [Error: Missing Required Sections](#error-missing-required-sections)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation explains how to parse and process handoff documents to understand delegated work and resume from checkpoints.
 

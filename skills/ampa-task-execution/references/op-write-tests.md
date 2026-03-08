@@ -1,32 +1,20 @@
 ---
 name: op-write-tests
 description: Write tests for implemented code changes
-workflow-step: "Step 17.5 - Write Tests"
 parent-skill: ampa-task-execution
 ---
 
-# Operation: Write Tests
-
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
-
+# Write Tests
 
 ## Contents
 
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-  - [Step 5.1: Identify Test Scenarios from Requirements](#step-51-identify-test-scenarios-from-requirements)
-  - [Step 5.2: Write Unit Tests for New Functions](#step-52-write-unit-tests-for-new-functions)
-  - [Step 5.3: Write Integration Tests if Applicable](#step-53-write-integration-tests-if-applicable)
-  - [Step 5.4: Run Tests and Fix Failures](#step-54-run-tests-and-fix-failures)
-- [Checklist](#checklist)
 - [Examples](#examples)
-  - [Example 1: Unit Test for Validator](#example-1-unit-test-for-validator)
-  - [Example 2: Integration Test for Service](#example-2-integration-test-for-service)
-  - [Example 3: Test Output Format](#example-3-test-output-format)
 - [Error Handling](#error-handling)
-- [Related Operations](#related-operations)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Create tests that verify the implementation meets acceptance criteria.
 

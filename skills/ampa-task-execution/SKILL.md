@@ -1,11 +1,11 @@
 ---
 name: ampa-task-execution
-description: Execute programming tasks per requirements. Use when implementing assigned tasks. Trigger with /ampa-task-execution or when receiving task assignments.
+description: Execute programming tasks. Use when implementing code, writing tests, or validating acceptance criteria. Trigger with /ampa-task-execution or on task assignment.
 license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:
   author: AI Maestro
-  version: 1.0.14
+  version: 1.0.15
   workflow-instruction: "Step 17 - Task Execution"
   procedure: "proc-execute-task"
 context: fork
@@ -15,226 +15,74 @@ user-invocable: false
 
 # AMPA Task Execution Skill
 
-Execute programming tasks according to requirements and acceptance criteria received from the orchestrator.
-
 ## Overview
 
-Core task execution workflow for AMPA (see agent definition for role context). Covers the end-to-end workflow from receiving a task assignment through parsing requirements, setting up the environment, implementing code, writing tests, and validating acceptance criteria. Depends on SERENA MCP for code navigation and AI Maestro for inter-agent communication.
-
-## Instructions
-
-Follow these numbered steps in order for every assigned task:
-
-1. **Receive the task assignment** -- Read the incoming AI Maestro message from the orchestrator agent, extract the task identifier and metadata, validate all required fields are present, and send an acknowledgment back to the orchestrator.
-2. **Parse the task requirements** -- Extract the full list of acceptance criteria, identify any dependencies on other tasks that must be completed first, determine which files and components will be modified, and ask the orchestrator for clarification on anything ambiguous.
-3. **Set up the development environment** -- Navigate to the target project directory, activate the correct virtual environment (using `uv venv` or `source .venv/bin/activate` (Windows: `.venv/Scripts/activate.bat` or `.venv/Scripts/Activate.ps1`)), verify all dependencies are installed, and initialize SERENA MCP for code navigation.
-4. **Implement the code** -- Use SERENA MCP to analyze the existing code structure, plan the implementation approach in small increments, write code in testable chunks, and add documentation and comments explaining the "why" of each change.
-5. **Write tests** -- Identify test scenarios directly from the requirements, write unit tests for all new functions, write integration tests where applicable, run all tests, and fix any failures before proceeding.
-6. **Validate acceptance criteria** -- Review each acceptance criterion one by one, verify the implementation satisfies it, document the evidence of validation, and report task completion to the orchestrator via AI Maestro.
-7. **Report completion** -- Send a structured completion message to the orchestrator that includes the task identifier, list of files modified, test results summary, and confirmation that all acceptance criteria passed.
-
-## Output
-
-This skill produces the following artifacts upon successful task completion:
-
-- **Implemented code changes** -- New or modified source files in the target project, with inline comments explaining the purpose of each change.
-- **Test suite** -- Unit tests and integration tests covering all new functionality, located in the project's `tests/` directory.
-- **Validation report** -- A structured message sent to the orchestrator via AI Maestro confirming each acceptance criterion was met, including evidence (test results, code references).
-- **Updated checklist** -- The master checklist (defined below) with all items checked, serving as the task completion record.
-- **Git commit** -- A commit containing all code and test changes, with a descriptive commit message referencing the task identifier.
-
-## Examples
-
-### Example 1: Implementing a New Utility Function
-
-The orchestrator assigns task `TASK-042: Add a string sanitization function to utils.py`. The programmer agent:
-1. Receives the AI Maestro message, extracts task ID `TASK-042` and reads the acceptance criteria: "Function `sanitize_input(text: str) -> str` must strip HTML tags, normalize whitespace, and return a clean string."
-2. Uses SERENA MCP to find `utils.py` and understand existing utility patterns.
-3. Implements `sanitize_input()` following the existing code style in `utils.py`.
-4. Writes 4 unit tests in `tests/test_utils.py`: empty string, normal text, HTML-laden text, and whitespace-heavy text.
-5. Runs `uv run pytest tests/test_utils.py -v`, confirms all 4 pass.
-6. Sends completion message to orchestrator: "TASK-042 complete. Modified: src/utils.py, tests/test_utils.py. All 4 tests passing. Acceptance criteria met."
-
-### Example 2: Fixing a Bug in an Existing Module
-
-The orchestrator assigns task `BUG-017: Fix off-by-one error in pagination logic`. The programmer agent:
-1. Reads the task requirements: "The `paginate()` function in `src/api/pagination.py` returns one fewer item than expected on the last page."
-2. Uses SERENA MCP to locate `paginate()`, reads the function body, and traces the logic to find the off-by-one error at the boundary calculation.
-3. Fixes the boundary calculation, adds a comment explaining why `<=` is correct instead of `<`.
-4. Adds a regression test specifically for the last-page edge case.
-5. Runs the full test suite to confirm no regressions.
-6. Reports completion with the fix description and test evidence.
-
-### Example 3: Handling a Blocked Task
-
-The orchestrator assigns task `TASK-055: Add caching layer to data fetcher`. The programmer agent:
-1. Parses requirements and discovers dependency on `TASK-054: Implement Redis client wrapper`, which is not yet complete.
-2. Does NOT proceed with implementation. Instead, sends a blocker report to the orchestrator: "TASK-055 blocked by TASK-054 (Redis client wrapper not yet available). Awaiting guidance."
-3. Waits for orchestrator response before taking any action.
-
-### Example Input/Output
-
-**Input:** Task assignment message from orchestrator:
-
-```
-Subject: "Task TASK-042: Add string sanitization to utils"
-Content: {
-  "type": "task-assignment",
-  "task_id": "TASK-042",
-  "requirements": "Add sanitize_input(text: str) -> str that strips HTML tags and normalizes whitespace.",
-  "acceptance_criteria": ["Function exists in src/utils.py", "All HTML tags removed", "Whitespace normalized", "Unit tests pass"],
-  "priority": "normal"
-}
-```
-
-**Output:** Completed implementation report sent back to orchestrator:
-
-```
-Subject: "Task TASK-042 complete: string sanitization added"
-Content: {
-  "type": "completion-notification",
-  "task_id": "TASK-042",
-  "files_modified": ["src/utils.py", "tests/test_utils.py"],
-  "tests": "4 passed, 0 failed",
-  "acceptance_criteria_met": ["Function exists in src/utils.py: YES", "All HTML tags removed: YES", "Whitespace normalized: YES", "Unit tests pass: YES"],
-  "branch": "feature/task-042-sanitize-input",
-  "commit": "feat(utils): add sanitize_input function"
-}
-```
-
-## Purpose
-
-This skill provides the complete workflow for receiving, understanding, implementing, testing, and validating programming tasks. It ensures all acceptance criteria are met before marking a task as complete.
-
-## When to Use
-
-Use this skill when:
-- You receive a task assignment via AI Maestro message
-- You need to implement code changes according to specifications
-- You must validate your implementation against acceptance criteria
+Core task execution workflow for AMPA. Covers receiving a task assignment through implementing code, writing tests, and validating acceptance criteria. Requires SERENA MCP and AI Maestro.
 
 ## Prerequisites
 
-Before using this skill:
-1. SERENA MCP must be activated for code navigation
-2. Development environment must be configured for the target project
-3. You must have received a valid task assignment with requirements
+- Task assignment received from orchestrator via AI Maestro with valid requirements and acceptance criteria
+- Target project set up (for first-time setup, use **ampa-project-setup** skill)
+- SERENA MCP activated for code navigation
 
-## Task Execution Workflow
-
-The task execution process follows these ordered steps:
-
-### Step 1: Receive Task Assignment
-Parse and validate the incoming task from AI Maestro.
-
-**Reference**: [op-receive-task-assignment.md](references/op-receive-task-assignment.md)
-
-**Sections in op-receive-task-assignment.md:** When to Use · Prerequisites · Procedure · Step 1.1: Read Incoming AI Maestro Message · Step 1.2: Extract Task Identifier and Metadata · Step 1.3: Validate Message Format and Required Fields · Step 1.4: Acknowledge Receipt to Orchestrator · Checklist · Examples · Error Handling · Related Operations
-
-**Contents**:
-- 1.1 Read Incoming AI Maestro Message
-- 1.2 Extract Task Identifier and Metadata
-- 1.3 Validate Message Format and Required Fields
-- 1.4 Acknowledge Receipt to Orchestrator
-
-### Step 2: Parse Task Requirements
-Understand what needs to be implemented.
-
-**Reference**: [op-parse-task-requirements.md](references/op-parse-task-requirements.md)
-
-**Sections in op-parse-task-requirements.md:** When to Use · Prerequisites · Procedure · Step 2.1: Extract Acceptance Criteria List · Step 2.2: Identify Dependencies on Other Tasks · Step 2.3: Determine Target Files and Components · Step 2.4: Clarify Ambiguities with Orchestrator · Checklist · Examples · Error Handling · Related Operations
-
-**Contents**:
-- 2.1 Extract Acceptance Criteria List
-- 2.2 Identify Dependencies on Other Tasks
-- 2.3 Determine Target Files and Components
-- 2.4 Clarify Ambiguities with Orchestrator
-
-### Step 3: Setup Development Environment
-Configure tooling for the specific task.
-
-**Reference**: [op-setup-development-environment.md](references/op-setup-development-environment.md)
-
-**Sections in op-setup-development-environment.md:** When to Use · Prerequisites · Procedure · Step 3.1: Navigate to Target Project Directory · Step 3.2: Activate Required Virtual Environment · Step 3.3: Verify Dependencies Are Installed · Step 3.4: Initialize SERENA MCP for Code Navigation · Checklist · Examples · Error Handling · Related Operations
-
-**Contents**:
-- 3.1 Navigate to Target Project Directory
-- 3.2 Activate Required Virtual Environment
-- 3.3 Verify Dependencies Are Installed
-- 3.4 Initialize SERENA MCP for Code Navigation
-
-> **Note**: For first-time project setup (language detection, package manager, dependencies, linting), see the **ampa-project-setup** skill. This step covers per-task environment verification only.
-
-### Step 4: Implement Code
-Write the code following requirements.
-
-**Reference**: [op-implement-code.md](references/op-implement-code.md)
-
-**Contents**:
-- 4.1 Analyze Existing Code Structure with SERENA
-- 4.2 Plan Implementation Approach
-- 4.3 Write Code in Small, Testable Increments
-- 4.4 Add Documentation and Comments
-
-### Step 5: Write Tests
-Create tests for the implementation.
-
-**Reference**: [op-write-tests.md](references/op-write-tests.md)
-
-**Contents**:
-- 5.1 Identify Test Scenarios from Requirements
-- 5.2 Write Unit Tests for New Functions
-- 5.3 Write Integration Tests if Applicable
-- 5.4 Run Tests and Fix Failures
-
-### Step 6: Validate Acceptance Criteria
-Verify all criteria are met before completion.
-
-**Reference**: [op-validate-acceptance-criteria.md](references/op-validate-acceptance-criteria.md)
-
-**Contents**:
-- 6.1 Review Each Acceptance Criterion
-- 6.2 Verify Implementation Satisfies Criterion
-- 6.3 Document Validation Evidence
-- 6.4 Report Completion to Orchestrator
-
-## Master Checklist
+## Instructions
 
 Copy this checklist and track your progress:
 
-- [ ] Task assignment received and acknowledged
-- [ ] Requirements parsed and understood
-- [ ] Development environment ready
-- [ ] Code implementation complete
-- [ ] Tests written and passing
-- [ ] All acceptance criteria validated
-- [ ] Completion reported to orchestrator
+1. **Receive task assignment** -- Read the AI Maestro message, extract task ID and metadata, validate required fields, acknowledge receipt to the orchestrator.
+2. **Parse requirements** -- Extract acceptance criteria, identify dependencies on other tasks, determine target files/components, ask the orchestrator to clarify any ambiguities.
+3. **Set up dev environment** -- Navigate to project directory, activate venv (`uv venv` / `source .venv/bin/activate`), verify dependencies, initialize SERENA MCP.
+4. **Implement code** -- Use SERENA to analyze existing structure, plan in small increments, write testable code, add comments explaining the "why" of each change.
+5. **Write tests** -- Identify scenarios from requirements, write unit and integration tests, run all tests, fix failures before proceeding.
+6. **Validate acceptance criteria** -- Review each criterion, verify the implementation satisfies it, document validation evidence.
+7. **Report completion** -- Send structured message to orchestrator: task ID, files modified, test results summary, confirmation all acceptance criteria passed.
 
-## Error Handling
+> **Interruption handling**: If an AI Maestro message arrives during implementation, pause at the nearest safe point (after current commit or test run), process the message using `ampa-orchestrator-communication`, then resume.
 
-If any step fails:
-1. Document the failure reason
-2. Report the blocker to orchestrator via AI Maestro
-3. Wait for guidance before proceeding
-4. Do not mark task complete with failing criteria
+## Output
 
-## Related Skills
-
-- **ampa-orchestrator-communication** skill -- For messaging the orchestrator agent, sending status updates, blocker reports, and completion notifications via AI Maestro.
-- **ampa-handoff-management** skill -- For managing task handoffs between agents, including structured handoff documents and context transfer.
-- **ampa-github-operations** skill -- For committing code changes, creating branches, opening pull requests, and other GitHub operations.
+- **Implemented code** -- New/modified source files with inline comments explaining each change
+- **Test suite** -- Unit and integration tests in the project's `tests/` directory
+- **Completion report** -- Structured AI Maestro message confirming each acceptance criterion was met
 
 ## Token Budget
 
-- **Lazy reference loading**: Only read a reference file when you are about to execute that specific operation. Do not pre-read all 6 references at once.
-- **Test results to file**: Write full test output (pytest log, table, failure details) to a timestamped `.md` file in `docs_dev/`. Report only: `[PASS/FAIL] X/Y tests passed. Report: <path>`.
-- **Completion report**: Message to AMOA must be 3 lines max: task ID, pass/fail, and path to full report file. Never inline code blocks or test logs.
-- **Build output**: Redirect all build/install/lint stdout to a log file. Report only exit code + summary.
+- **Lazy loading**: Only read a reference file when executing that step. Do not pre-read all 6.
+- **Test output to file**: Write pytest output to `docs_dev/`. Report only: `[PASS/FAIL] X/Y. Report: <path>`.
+- **Completion report**: 3 lines max to AMOA: task ID, pass/fail, path to full report.
+
+## Error Handling
+
+On failure: document it, report to orchestrator, wait for guidance, do not mark complete.
+
+| Condition | Action |
+|-----------|--------|
+| Missing required fields | Report validation error, request corrected assignment |
+| Dependency on incomplete task | Report blocker, do not proceed |
+| Tests failing after 3 attempts | Report persistent failure with diagnostics |
+| Context running low | Use `ampa-handoff-management` to save progress |
+
+## Examples
+
+- [ ] Input: Task #42 assignment message from AMOA
+- [x] Output: 3 modified files, 5 passing tests, completion report sent
 
 ## Resources
 
-- **SERENA MCP documentation** -- Required for code navigation operations used in Steps 3 and 4 of the workflow. SERENA provides symbol search, function body reading, and code structure analysis.
-- **AI Maestro messaging guide** -- Covers the message format and API used for all inter-agent communication in Steps 1, 2 (clarification), 6, and 7 (completion reporting). See the `agent-messaging` skill installed globally by AI Maestro.
-- **uv documentation** -- The Python package manager used for virtual environment setup and dependency management in Step 3. Use `uv venv --python 3.12` to create environments and `uv run pytest` to execute tests.
-- **pytest documentation** -- The test framework used in Step 5 for writing and running unit and integration tests. Use `uv run pytest -v` for verbose output.
-- **GitHub CLI (gh) documentation** -- Used by the ampa-github-operations skill for creating branches, commits, and pull requests after task completion.
+- **[op-receive-task-assignment.md](references/op-receive-task-assignment.md)** -- Parse and validate incoming task
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-parse-task-requirements.md](references/op-parse-task-requirements.md)** -- Extract criteria, dependencies, target files
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-setup-development-environment.md](references/op-setup-development-environment.md)** -- Configure tooling and verify environment
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-implement-code.md](references/op-implement-code.md)** -- Analyze structure, write implementation
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-write-tests.md](references/op-write-tests.md)** -- Create unit and integration tests
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-validate-acceptance-criteria.md](references/op-validate-acceptance-criteria.md)** -- Verify criteria and document evidence
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+
+## Related Skills
+
+- **ampa-orchestrator-communication** -- Status updates, blocker reports, completion notifications.
+- **ampa-github-operations** -- Committing, branching, pull requests.

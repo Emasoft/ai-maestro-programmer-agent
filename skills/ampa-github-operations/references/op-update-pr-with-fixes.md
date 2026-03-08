@@ -1,24 +1,22 @@
 ---
 name: op-update-pr-with-fixes
-description: Push fixes to PR after rejection (Step 22)
+description: Push fixes to PR after rejection
 parent-skill: ampa-github-operations
-operation-type: pr-update
-workflow-step: "Step 22"
 ---
 
 # Update PR with Fixes
 
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
+
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 Push code fixes to an existing PR after rejection from AMIA review. This corresponds to **Step 22** of the AMPA workflow.
-
-## Table of Contents
-
-- 6.1 Making requested changes
-- 6.2 Committing fixes
-- 6.3 Pushing updates to PR branch
-- 6.4 Updating PR description
-- 6.5 Notifying reviewer of updates
 
 ## When to Use
 

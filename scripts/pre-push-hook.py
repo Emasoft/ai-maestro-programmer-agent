@@ -16,6 +16,7 @@
 # To bypass (NOT RECOMMENDED):
 #   git push --no-verify
 
+import os
 import sys
 import subprocess
 from pathlib import Path
@@ -52,11 +53,13 @@ def git(*args: str, check: bool = True) -> subprocess.CompletedProcess:
 
 
 def get_repo_root() -> Path:
+    """Return the absolute path to the git repository root."""
     result = git("rev-parse", "--show-toplevel")
     return Path(result.stdout.strip())
 
 
 def get_base_branch() -> str:
+    """Return the name of the default remote branch (e.g. 'main')."""
     result = git("symbolic-ref", "refs/remotes/origin/HEAD", check=False)
     if result.returncode == 0:
         # e.g. refs/remotes/origin/main -> main
@@ -96,6 +99,7 @@ def is_plugin_file(path: str) -> bool:
 
 
 def banner(color: str, lines: list[str]) -> None:
+    """Print a colored banner with separator lines above and below."""
     sep = f"{color}{'=' * 40}{NC}"
     print(sep)
     for line in lines:
@@ -104,6 +108,7 @@ def banner(color: str, lines: list[str]) -> None:
 
 
 def main() -> int:
+    """Run plugin validation before push; block on CRITICAL/MAJOR issues."""
     # git passes remote name and URL as argv[1] and argv[2]
     remote = sys.argv[1] if len(sys.argv) > 1 else "origin"
     url = sys.argv[2] if len(sys.argv) > 2 else ""
@@ -127,7 +132,7 @@ def main() -> int:
         parts = line.split()
         if len(parts) != 4:
             continue
-        local_ref, local_sha, remote_ref, remote_sha = parts
+        _local_ref, local_sha, _remote_ref, remote_sha = parts
 
         if local_sha == NULL_SHA:
             # Branch deletion — no validation needed
@@ -148,7 +153,6 @@ def main() -> int:
         return 0
 
     # Change to repo root before running the validator
-    import os
     os.chdir(repo_root)
 
     validator = repo_root / "scripts" / "validate_plugin.py"

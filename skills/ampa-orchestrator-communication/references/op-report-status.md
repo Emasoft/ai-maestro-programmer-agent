@@ -1,25 +1,22 @@
 ---
 name: op-report-status
-description: Send development status updates to AMOA to keep the orchestrator informed of progress.
+description: Send status updates to AMOA
 parent-skill: ampa-orchestrator-communication
-workflow-step: "Step 17"
-message-type: status-update
-priority: normal
 ---
 
-# Operation: Report Status
+# Report Status
+
+## Contents
+
+- [When to Use](#when-to-use)
+- [Prerequisites](#prerequisites)
+- [Procedure](#procedure)
+- [Examples](#examples)
+- [Error Handling](#error-handling)
 
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 This operation describes how to send "in development" status updates to the AI Maestro Orchestrator Agent (AMOA) to keep the orchestrator informed of your progress on assigned tasks.
-
-## Table of Contents
-
-- 2.1 When to Report Status
-- 2.2 Status Message Format
-- 2.3 Progress Indicators
-- 2.4 Sending Status Updates
-- 2.5 Examples
 
 ## 2.1 When to Report Status
 

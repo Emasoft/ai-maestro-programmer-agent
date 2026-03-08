@@ -6,17 +6,18 @@ parent-skill: ampa-project-setup
 
 # Ruff Configuration Patterns
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
-
 ## Contents
-- When to configure ruff for a new project
-- Standard ruff.toml template for AI Maestro Programmer projects
-- What each rule set does and why it is enabled
-- What each ignored rule means and why it is ignored
-- Per-file ignore patterns and when to use them
-- Formatter settings (quote style, indent, line endings)
-- How to run ruff check and ruff format
-- Customizing ruff for specific project types
+
+- [When to Configure Ruff for a New Project](#when-to-configure-ruff-for-a-new-project)
+- [Standard ruff.toml Template for AI Maestro Programmer Projects](#standard-rufftoml-template-for-ai-maestro-programmer-projects)
+- [What Each Rule Set Does](#what-each-rule-set-does)
+- [What Each Ignored Rule Means](#what-each-ignored-rule-means)
+- [Per-File Ignore Patterns](#per-file-ignore-patterns)
+- [Formatter Settings](#formatter-settings)
+- [How to Run Ruff](#how-to-run-ruff)
+- [Customizing Ruff for Specific Project Types](#customizing-ruff-for-specific-project-types)
+
+> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
 ---
 
