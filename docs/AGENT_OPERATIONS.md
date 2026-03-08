@@ -504,11 +504,27 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/validate_plugin.py` | Plugin structure validation |
+| `scripts/validate_plugin.py` | CPV suite entry point — runs all validation checks |
+| `scripts/pre-push-hook.py` | Git pre-push hook — runs validation before each push |
+| `scripts/sync_cpv_scripts.py` | Sync CPV validation scripts from upstream GitHub releases |
+| `scripts/test_order_pipeline.py` | OrderPipeline validation test suite |
+| `scripts/lint_files.py` | Lint and format Python source files |
+| `scripts/gitignore_filter.py` | Filter file lists against .gitignore patterns |
+| `scripts/smart_exec.py` | Cross-platform script executor with timeout support |
 
 ---
 
 ## Recent Changes
+
+### 2026-03-08
+- Resolved all CPV MAJOR and WARNING validation issues (0 CRITICAL, 0 MAJOR, 0 WARNING)
+- Added missing ## Error Handling and ## Examples sections to all 5 SKILL.md files
+- Standardized all 29 reference file TOC format (5-entry standard with markdown links)
+- Removed unnecessary frontmatter fields from all reference files
+- Added checklist patterns and "Copy this checklist" phrase to all SKILL.md files
+- Synced CPV scripts from master v1.10.5
+- Updated Scripts Reference to list all 6 project utility scripts
+- Bumped all versions to 1.0.15
 
 ### 2026-03-07
 - Added Token Budget section to agent definition and all 5 SKILL.md files
@@ -564,6 +580,6 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 
 ---
 
-**Document Version**: 1.3.0
+**Document Version**: 1.4.0
 **Last Updated**: 2026-03-08
 **Maintained By**: claude-skills-factory

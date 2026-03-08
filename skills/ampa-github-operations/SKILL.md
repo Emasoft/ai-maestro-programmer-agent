@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires gh CLI authenticated.
 metadata:
   author: AI Maestro
-  version: 1.0.15
+  version: 1.0.16
   workflow-instruction: "Steps 14 (clone/fork), 17 (branch/commit), 19 (PR creation). Also handles AMPA response portions of Steps 21 (PR review feedback) and 22 (fixing failed PRs)."
   procedure: "proc-complete-task, proc-handle-failed-pr"
 context: fork

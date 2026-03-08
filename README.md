@@ -1,6 +1,6 @@
 # AI Maestro Programmer Agent (AMPA)
 
-**Version**: 1.0.15
+**Version**: 1.0.16
 
 ## Overview
 
@@ -46,7 +46,7 @@ None. The `hooks/hooks.json` is empty -- AMPA uses globally installed hooks.
 
 ### Scripts
 
-The `scripts/` directory contains 24 Python scripts: 17 CPV (Claude Plugins Validation) scripts covering plugin structure, agents, skills, hooks, security, encoding, documentation, and more, plus 7 project utility scripts. The entry point is `validate_plugin.py`. CPV scripts are auto-synced from `Emasoft/claude-plugins-validation` via `sync_cpv_scripts.py`.
+The `scripts/` directory contains 24 Python scripts: 18 CPV (Claude Plugins Validation) scripts covering plugin structure, agents, skills, hooks, security, encoding, documentation, and more, plus 6 project utility scripts. The entry point is `validate_plugin.py`. CPV scripts are auto-synced from `Emasoft/claude-plugins-validation` via `sync_cpv_scripts.py`.
 
 | Script | Description |
 |--------|-------------|
@@ -54,6 +54,9 @@ The `scripts/` directory contains 24 Python scripts: 17 CPV (Claude Plugins Vali
 | `pre-push-hook.py` | Git pre-push hook — runs validation before each push |
 | `sync_cpv_scripts.py` | Sync CPV validation scripts from upstream GitHub releases |
 | `test_order_pipeline.py` | OrderPipeline validation test suite |
+| `lint_files.py` | Lint and format Python source files |
+| `gitignore_filter.py` | Filter file lists against .gitignore patterns |
+| `smart_exec.py` | Cross-platform script executor with timeout support |
 
 ### Token-Efficient Reporting
 

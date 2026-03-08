@@ -2,6 +2,13 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.16] - 2026-03-08
+
+### Changed
+- Updated README: fixed script counts (18 CPV + 6 project), added missing project scripts to table
+- Updated AGENT_OPERATIONS.md: added v1.0.15 Recent Changes entry, expanded Scripts Reference to all 6 project scripts, bumped doc version to 1.4.0
+- Verified docs/ROLE_BOUNDARIES.md, docs/FULL_PROJECT_WORKFLOW.md, docs/TEAM_REGISTRY_SPECIFICATION.md are current and accurate
+
 ## [1.0.15] - 2026-03-08
 
 ### Fixed
