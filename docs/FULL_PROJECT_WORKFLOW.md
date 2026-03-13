@@ -69,33 +69,28 @@ AMOA ◄────────────────────────
 
 ## Kanban Column System
 
-All projects use an **8-column kanban system** on GitHub Projects. Every agent must understand these columns and use the canonical code format consistently.
+All projects use a **5-status kanban system** on GitHub Projects. Every agent must understand these statuses and use the canonical code format consistently.
 
-### Canonical Columns
+### Canonical Statuses
 
-| # | Column | Code Format | Label | Description |
-|---|--------|-------------|-------|-------------|
+| # | Status | Code | Label | Description |
+|---|--------|------|-------|-------------|
 | 1 | Backlog | `backlog` | `status:backlog` | Entry point for all new issues |
-| 2 | Todo | `todo` | `status:todo` | Ready to start, prioritized |
-| 3 | In Progress | `in-progress` | `status:in-progress` | Active work by assigned agent |
-| 4 | AI Review | `ai-review` | `status:ai-review` | Integrator (AMIA) reviews the PR |
-| 5 | Human Review | `human-review` | `status:human-review` | User reviews (big tasks only) |
-| 6 | Merge/Release | `merge-release` | `status:merge-release` | Approved and ready to merge |
-| 7 | Done | `done` | `status:done` | Completed and merged |
-| 8 | Blocked | `blocked` | `status:blocked` | Blocked at any stage |
+| 2 | Pending | `pending` | `status:pending` | Ready to start, prioritized |
+| 3 | In Progress | `in_progress` | `status:in_progress` | Active work by assigned agent |
+| 4 | Review | `review` | `status:review` | Under review (AI or human) |
+| 5 | Completed | `completed` | `status:completed` | Done and merged |
 
 ### Task Routing
 
-- **Small tasks**: In Progress → AI Review → Merge/Release → Done
-- **Big tasks**: In Progress → AI Review → Human Review → Merge/Release → Done
-- **Human Review** is requested via AMAMA (Assistant Manager asks the user to test/review)
-- **Blocked** can be set from any column; task returns to its previous column when unblocked
+- **All tasks**: Pending → In Progress → Review → Completed
+- **Blocking**: Handled via labels/flags, not a separate column
 
 ### Code Format Rules
 
-- **Always use dashes**: `in-progress`, `ai-review`, `merge-release` (NOT underscores)
-- **Labels use `status:` prefix**: `status:in-progress`, `status:ai-review`
-- **Display names use title case**: "In Progress", "AI Review", "Merge/Release"
+- **Always use underscores**: `in_progress`, not `in-progress`
+- **Labels use `status:` prefix**: `status:in_progress`, `status:review`
+- **Display names use title case**: "In Progress", "Review", "Completed"
 
 ---
 
@@ -239,7 +234,7 @@ All projects use an **8-column kanban system** on GitHub Projects. Every agent m
 #### Step 13: Kanban Population
 **Actor**: AMOA (Orchestrator)
 **Action**:
-- Add tasks to the GitHub Project kanban `todo` column
+- Add tasks to the GitHub Project kanban with `pending` status
 - For each task:
   - Set the "Assigned Agent" custom field
   - Attach the task-requirements-document
@@ -304,7 +299,7 @@ All projects use an **8-column kanban system** on GitHub Projects. Every agent m
 #### Step 18: Kanban Status Update
 **Actor**: AMOA (Orchestrator)
 **Action**:
-- Move tasks on project kanban from `todo` column to `in-progress` column
+- Move tasks on project kanban from `pending` status to `in_progress` status
 
 **Communication**:
 - GitHub: Update project item status
@@ -356,7 +351,7 @@ All projects use an **8-column kanban system** on GitHub Projects. Every agent m
 - Communicate to agents the issues and shortcomings
 - Instruct agents to fix or improve the code
 - Provide extended/improved task-requirements-document if needed
-- Move task back to `in-progress` column
+- Move task back to `in_progress` status
 - Ask agent if they need anything to complete the task
 - If OK: implementer agent resumes work on task
 
@@ -371,15 +366,15 @@ All projects use an **8-column kanban system** on GitHub Projects. Every agent m
 #### Step 23: Successful PR Handling
 **Actor**: AMOA (Orchestrator)
 **Action**:
-- When Integrator reports successful PR merge, move task to `ai-review` column
-  - If AI review passes for small tasks: move to `merge-release`, then `done`
-  - If AI review passes for big tasks: move to `human-review` first, then `merge-release`, then `done`
+- When Integrator reports successful PR merge, move task to `review` status
+  - Review encompasses both AI review (AMIA) and human review (user, for significant tasks)
+  - If review passes: move to `completed`
   - Report to Manager (AMAMA) for approval
   - If Manager approves: assign new task to the agent that finished
   - Keep implementer agents always working, never idle
 
 **Communication**:
-- GitHub: Update project item status through kanban columns
+- GitHub: Update project item status through kanban statuses
 - AI Maestro: Completion report to AMAMA
 - AI Maestro: New task assignment to agent
 
@@ -433,10 +428,10 @@ All projects use an **8-column kanban system** on GitHub Projects. Every agent m
 | 8 | Attach design document | AMAA |
 | 13 | Create task issues, add to project | AMOA |
 | 13 | Set "Assigned Agent" field | AMOA |
-| 18 | Move to "In Progress" column | AMOA |
+| 18 | Move to "In Progress" status | AMOA |
 | 19 | Create PR | Agent |
 | 21 | Review and merge/reject PR | AMIA |
-| 23 | Move to "Done" column | AMOA |
+| 23 | Move to "Completed" status | AMOA |
 
 ---
 

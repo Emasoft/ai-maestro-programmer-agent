@@ -481,22 +481,19 @@ This prevents AMPA from consuming resources while waiting for review feedback.
 
 ## Kanban Column System
 
-All projects use the canonical **8-column kanban system** on GitHub Projects:
+All projects use the canonical **5-status kanban system** on GitHub Projects:
 
-| Column | Code | Label |
-|--------|------|-------|
-| Backlog | `backlog` | `status:backlog` |
-| Todo | `todo` | `status:todo` |
-| In Progress | `in-progress` | `status:in-progress` |
-| AI Review | `ai-review` | `status:ai-review` |
-| Human Review | `human-review` | `status:human-review` |
-| Merge/Release | `merge-release` | `status:merge-release` |
-| Done | `done` | `status:done` |
-| Blocked | `blocked` | `status:blocked` |
+| Column | Code | Label | Description |
+|--------|------|-------|-------------|
+| Backlog | `backlog` | `status:backlog` | Entry point for new tasks |
+| Pending | `pending` | `status:pending` | Ready to start, prioritized |
+| In Progress | `in_progress` | `status:in_progress` | Active work by assigned agent |
+| Review | `review` | `status:review` | Under review (AI or human) |
+| Completed | `completed` | `status:completed` | Done and merged |
 
 **Task routing**:
-- Small tasks: In Progress → AI Review → Merge/Release → Done
-- Big tasks: In Progress → AI Review → Human Review → Merge/Release → Done
+- All tasks: Backlog → Pending → In Progress → Review → Completed
+- Blocking issues are tracked via labels/flags, not as a separate column
 
 ---
 
@@ -555,7 +552,7 @@ All projects use the canonical **8-column kanban system** on GitHub Projects:
 - Documented implementer category and subtypes
 
 ### 2026-02-07
-- Added 8-column canonical kanban system across all shared docs
+- Added 5-status canonical kanban system across all shared docs
 - Added `encoding="utf-8"` to all Python file operations
 - Added `ruff-configuration-patterns.md` reference to `ampa-project-setup` skill
 - Synchronized shared docs across all plugins
