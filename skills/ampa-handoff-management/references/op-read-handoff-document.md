@@ -163,7 +163,7 @@ The handoff document at `thoughts/shared/handoffs/implement-parser/current.md`:
 ---
 task: implement-parser
 from: amoa-orchestrator-main-agent
-to: ampa-programmer-main-agent
+to: ai-maestro-programmer-agent-main-agent
 created: 2025-02-06T10:00:00Z
 priority: high
 status: pending

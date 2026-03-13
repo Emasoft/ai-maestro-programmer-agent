@@ -28,7 +28,7 @@ In the AI Maestro ecosystem, **implementers** are agents that produce artifacts.
 
 | Agent | File | Description |
 |-------|------|-------------|
-| `ampa-programmer-main-agent` | `agents/ampa-programmer-main-agent.md` | Main general-purpose programmer agent |
+| `ai-maestro-programmer-agent-main-agent` | `agents/ai-maestro-programmer-agent-main-agent.md` | Main general-purpose programmer agent |
 
 ### Skills (5)
 
@@ -104,7 +104,7 @@ claude plugin install ai-maestro-programmer-agent --url https://github.com/Emaso
 Once installed, start a session with the main agent:
 
 ```bash
-claude --agent ampa-programmer-main-agent
+claude --agent ai-maestro-programmer-agent-main-agent
 ```
 
 ## Getting Started
@@ -113,7 +113,7 @@ claude --agent ampa-programmer-main-agent
 2. **Launch the agent** in your project directory:
    ```bash
    cd your-project/
-   claude --agent ampa-programmer-main-agent
+   claude --agent ai-maestro-programmer-agent-main-agent
    ```
 3. **In standalone mode** (no orchestrator), describe your task directly in the conversation. The agent will set up the project environment, implement the code, write tests, and commit the changes.
 4. **In orchestrated mode** (with AI Maestro running), the agent receives tasks automatically from the AMOA orchestrator via inter-agent messaging. See `docs/FULL_PROJECT_WORKFLOW.md` for the complete multi-agent workflow.

@@ -102,8 +102,8 @@ Create the work state document with all necessary context:
 ```markdown
 ---
 task: <task-name>
-from: ampa-programmer-main-agent
-to: ampa-programmer-main-agent
+from: ai-maestro-programmer-agent-main-agent
+to: ai-maestro-programmer-agent-main-agent
 created: <current-ISO-timestamp>
 priority: <current-priority>
 status: in-progress
@@ -250,8 +250,8 @@ Complete these items when documenting work state:
 ```markdown
 ---
 task: implement-yaml-parser
-from: ampa-programmer-main-agent
-to: ampa-programmer-main-agent
+from: ai-maestro-programmer-agent-main-agent
+to: ai-maestro-programmer-agent-main-agent
 created: 2025-02-06T14:45:00Z
 priority: high
 status: in-progress
@@ -348,8 +348,8 @@ def validate_against_schema(data: dict, schema_path: str) -> bool:
 ```markdown
 ---
 task: refactor-config-loader
-from: ampa-programmer-main-agent
-to: ampa-programmer-main-agent
+from: ai-maestro-programmer-agent-main-agent
+to: ai-maestro-programmer-agent-main-agent
 created: 2025-02-06T16:30:00Z
 priority: normal
 status: in-progress

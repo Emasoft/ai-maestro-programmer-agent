@@ -78,7 +78,7 @@ bug-id: <bug-id>
 title: <short-descriptive-title>
 severity: <critical|high|medium|low>
 status: <new|confirmed|in-progress|fixed|wont-fix>
-discovered-by: ampa-programmer-main-agent
+discovered-by: ai-maestro-programmer-agent-main-agent
 discovered-date: <ISO-timestamp>
 related-task: <task-name>
 affected-files:
@@ -293,7 +293,7 @@ bug-id: bug-001
 title: IndexError on empty YAML input
 severity: medium
 status: new
-discovered-by: ampa-programmer-main-agent
+discovered-by: ai-maestro-programmer-agent-main-agent
 discovered-date: 2025-02-06T14:30:00Z
 related-task: implement-yaml-parser
 affected-files:
@@ -367,7 +367,7 @@ bug-id: bug-002
 title: Path traversal vulnerability in file loader
 severity: critical
 status: new
-discovered-by: ampa-programmer-main-agent
+discovered-by: ai-maestro-programmer-agent-main-agent
 discovered-date: 2025-02-06T15:00:00Z
 related-task: implement-yaml-parser
 affected-files:

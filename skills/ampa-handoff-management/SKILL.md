@@ -9,7 +9,7 @@ metadata:
   workflow-instruction: "support"
   procedure: "proc-handoff-management"
 context: fork
-agent: ampa-programmer-main-agent
+agent: ai-maestro-programmer-agent-main-agent
 user-invocable: false
 ---
 

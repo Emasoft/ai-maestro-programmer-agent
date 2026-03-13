@@ -1,5 +1,5 @@
 ---
-name: ampa-programmer-main-agent
+name: ai-maestro-programmer-agent-main-agent
 description: General-purpose programmer agent that executes tasks assigned by the Orchestrator. Uses SERENA MCP for code navigation and globally installed AI Maestro skills for inter-agent communication.
 model: opus
 skills:

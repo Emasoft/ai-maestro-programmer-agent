@@ -76,7 +76,7 @@ The handoff document must begin with metadata:
 ```yaml
 ---
 task: <task-name>
-from: ampa-programmer-main-agent
+from: ai-maestro-programmer-agent-main-agent
 to: <receiving-agent-or-future-self>
 created: <current-ISO-timestamp>
 priority: <low|normal|high|urgent>
@@ -239,7 +239,7 @@ Complete these items when creating a handoff document:
 ```markdown
 ---
 task: implement-yaml-parser
-from: ampa-programmer-main-agent
+from: ai-maestro-programmer-agent-main-agent
 to: amoa-orchestrator-main-agent
 created: 2025-02-06T15:30:00Z
 priority: high
@@ -294,7 +294,7 @@ Implemented a YAML configuration parser with schema validation. All requirements
 ```markdown
 ---
 task: integrate-external-api
-from: ampa-programmer-main-agent
+from: ai-maestro-programmer-agent-main-agent
 to: amoa-orchestrator-main-agent
 created: 2025-02-06T16:00:00Z
 priority: urgent

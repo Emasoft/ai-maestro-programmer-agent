@@ -9,7 +9,7 @@ metadata:
   workflow-instruction: "Steps 14 (clone/fork), 17 (branch/commit), 19 (PR creation). Also handles AMPA response portions of Steps 21 (PR review feedback) and 22 (fixing failed PRs)."
   procedure: "proc-complete-task, proc-handle-failed-pr"
 context: fork
-agent: ampa-programmer-main-agent
+agent: ai-maestro-programmer-agent-main-agent
 user-invocable: false
 ---
 

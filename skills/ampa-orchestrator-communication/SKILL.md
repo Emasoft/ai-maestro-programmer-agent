@@ -9,7 +9,7 @@ metadata:
   workflow-instruction: "Steps 14, 15, 17, 19"
   procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
 context: fork
-agent: ampa-programmer-main-agent
+agent: ai-maestro-programmer-agent-main-agent
 user-invocable: false
 ---
 

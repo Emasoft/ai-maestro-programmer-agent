@@ -1,0 +1,34 @@
+# AI Maestro Programmer Agent - Agent Profile
+# Quad-match: plugin.json name == TOML [agent].name == agents/<name>-main-agent.md
+
+[agent]
+name = "ai-maestro-programmer-agent"
+source = "plugin:ai-maestro-programmer-agent"
+path = "agents/ai-maestro-programmer-agent-main-agent.md"
+
+[requirements]
+project_type = "plugin"
+tech_stack = ["python", "typescript", "rust", "go"]
+
+[skills]
+primary = ["ampa-task-execution", "ampa-orchestrator-communication", "ampa-github-operations"]
+secondary = ["ampa-project-setup", "ampa-handoff-management"]
+specialized = []
+
+[agents]
+recommended = []
+
+[commands]
+recommended = []
+
+[rules]
+recommended = []
+
+[mcp]
+recommended = ["serena-mcp"]
+
+[hooks]
+recommended = []
+
+[lsp]
+recommended = []

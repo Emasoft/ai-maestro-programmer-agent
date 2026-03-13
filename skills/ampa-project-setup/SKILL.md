@@ -9,7 +9,7 @@ metadata:
   workflow-instruction: "Step 17 (first task)"
   procedure: "proc-execute-task"
 context: fork
-agent: ampa-programmer-main-agent
+agent: ai-maestro-programmer-agent-main-agent
 user-invocable: false
 ---
 

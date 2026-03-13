@@ -80,7 +80,7 @@ This loads ONLY the ai-maestro-programmer-agent plugin into that Claude Code ses
 │   │       ├── .claude-plugin/
 │   │       │   └── plugin.json
 │   │       ├── agents/
-│   │       │   └── ampa-programmer-main-agent.md
+│   │       │   └── ai-maestro-programmer-agent-main-agent.md
 │   │       ├── skills/  ← Contains 5 bundled AMPA skills (task-execution, orchestrator-communication, github-operations, project-setup, handoff-management)
 │   │       ├── hooks/
 │   │       │   └── hooks.json
@@ -111,7 +111,7 @@ The AMCOS (Chief of Staff) agent spawns AMPA instances using the `ai-maestro-age
 - **Working directory**: `~/agents/<project>-programmer-001/`
 - **Task**: "Implement feature X for <project>"
 - **Plugin**: load `ai-maestro-programmer-agent` (must be copied to agent's local plugins directory first)
-- **Main agent**: `ampa-programmer-main-agent`
+- **Main agent**: `ai-maestro-programmer-agent-main-agent`
 
 **Verify**: confirm the agent appears in the agent list with active status.
 
@@ -122,7 +122,7 @@ The AMCOS (Chief of Staff) agent spawns AMPA instances using the `ai-maestro-age
 | Working directory | `~/agents/$SESSION_NAME` | Sets working directory for the programmer |
 | Task | Task description | Initial task prompt (from AMOA or AMCOS) |
 | Plugin | `ai-maestro-programmer-agent` | Load AMPA plugin |
-| Main agent | `ampa-programmer-main-agent` | Start with this agent from the plugin |
+| Main agent | `ai-maestro-programmer-agent-main-agent` | Start with this agent from the plugin |
 
 ### Pre-Spawn Setup
 Before spawning, AMCOS must:
