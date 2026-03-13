@@ -1,24 +1,22 @@
 # Notify marketplace repo when this plugin is updated
-# Place this in each plugin repo: .github/workflows/notify-marketplace.yml
 #
 # SETUP INSTRUCTIONS:
 # 1. Create a Personal Access Token (PAT):
-#    - Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+#    - Go to GitHub Settings > Developer settings > Personal access tokens > Tokens (classic)
 #    - Click "Generate new token (classic)"
 #    - Give it a descriptive name like "Plugin Marketplace Notification"
 #    - Select scope: 'repo' (Full control of private repositories)
 #    - Click "Generate token" and COPY the token (you won't see it again!)
 #
 # 2. Add the PAT as a secret to THIS plugin repository:
-#    - Go to your plugin repo → Settings → Secrets and variables → Actions
+#    - Go to your plugin repo > Settings > Secrets and variables > Actions
 #    - Click "New repository secret"
-#    - Name: MARKETPLACE_PAT
+#    - Name: MARKETPLACE_DISPATCH_TOKEN
 #    - Value: paste the PAT you copied in step 1
 #    - Click "Add secret"
 #
-# 3. Update the MARKETPLACE_OWNER and MARKETPLACE_REPO variables below:
-#    - MARKETPLACE_OWNER: Your GitHub username or org that owns the marketplace repo
-#    - MARKETPLACE_REPO: The name of your marketplace repository
+# 3. Enable the workflow:
+#    - Change `if: false` to `if: true` on the notify job below
 #
 # IMPORTANT: Do NOT use GITHUB_TOKEN - it lacks permissions to trigger workflows in other repos!
 
@@ -26,53 +24,38 @@ name: Notify Marketplace
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
     paths:
       - '.claude-plugin/plugin.json'
-      - 'hooks/**'
-      - 'commands/**'
-      - 'agents/**'
-      - 'skills/**'
-      - 'scripts/**'
-
-# ⚠️ REQUIRED: To enable, uncomment the env block below and set your marketplace repo:
-#   MARKETPLACE_OWNER: 'your-github-username'
-#   MARKETPLACE_REPO: 'your-marketplace-repo'
-# Then set `if: true` on the notify job.
 
 jobs:
   notify:
-    if: false  # DISABLED: No marketplace configured yet. To enable, set if to true and uncomment env below.
+    if: false  # DISABLED: Set to true after configuring MARKETPLACE_DISPATCH_TOKEN secret
     runs-on: ubuntu-latest
-    env:
-      # TODO: Set these to your marketplace repository coordinates
-      MARKETPLACE_OWNER: 'your-github-username'
-      MARKETPLACE_REPO: 'your-marketplace-repo'
     steps:
-      - name: Get plugin info
-        id: plugin
-        run: |
-          echo "name=${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
-          echo "ref=${{ github.sha }}" >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v4
 
-      - name: Trigger marketplace update
+      - name: Extract version from plugin.json
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
+          NAME=$(jq -r '.name' .claude-plugin/plugin.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Notify marketplace
         uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3
         with:
-          token: ${{ secrets.MARKETPLACE_PAT }}
-          repository: ${{ env.MARKETPLACE_OWNER }}/${{ env.MARKETPLACE_REPO }}
-          event-type: plugin-updated
-          client-payload: |
-            {
-              "plugin": "${{ steps.plugin.outputs.name }}",
-              "ref": "${{ steps.plugin.outputs.ref }}",
-              "triggered_by": "${{ github.actor }}"
-            }
+          token: ${{ secrets.MARKETPLACE_DISPATCH_TOKEN }}
+          repository: 23blocks-OS/ai-maestro-plugins
+          event-type: plugin-version-update
+          client-payload: '{"plugin_name": "${{ steps.version.outputs.name }}", "version": "${{ steps.version.outputs.version }}"}'
 
       - name: Summary
         run: |
           echo "## Marketplace Notification" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Triggered update in ${{ env.MARKETPLACE_OWNER }}/${{ env.MARKETPLACE_REPO }}" >> $GITHUB_STEP_SUMMARY
+          echo "Triggered update in 23blocks-OS/ai-maestro-plugins" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- Plugin: ${{ steps.plugin.outputs.name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Commit: ${{ steps.plugin.outputs.ref }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Plugin: ${{ steps.version.outputs.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Version: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
