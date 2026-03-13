@@ -1,6 +1,6 @@
 # AI Maestro Programmer Agent (AMPA)
 
-**Version**: 1.0.17
+**Version**: 1.0.18
 
 ## Overview
 

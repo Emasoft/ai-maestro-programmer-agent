@@ -2,6 +2,15 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.18] - 2026-03-13
+
+### Fixed
+- **Issue #4**: Removed hardcoded `localhost:23000` and `/api/health` from handoff skill; uses `$AIMAESTRO_API` env var and correct `/api/sessions` endpoint
+- **Issue #5**: Updated kanban system from 8 columns to AI Maestro's actual 5 statuses (`backlog`/`pending`/`in_progress`/`review`/`completed`) across all 4 docs + PR reference
+
+### Added
+- **Issue #6**: Task verification step in receive-task-assignment (optional kanban read-back via `$AIMAESTRO_API`); standardized task ID format (UUID + optional `externalRef` for GitHub issue numbers)
+
 ## [1.0.17] - 2026-03-13
 
 ### Fixed
