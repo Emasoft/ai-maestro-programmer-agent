@@ -2,6 +2,13 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.17] - 2026-03-13
+
+### Fixed
+- **Issue #3**: Updated ROLE_BOUNDARIES.md to current 3-role governance model (manager/chief-of-staff/member), synced from upstream
+- **Issue #2**: Created `ai-maestro-programmer-agent.agent.toml` for quad-match rule compliance; renamed main agent from `ampa-programmer-main-agent` to `ai-maestro-programmer-agent-main-agent`; updated all 13 referencing files
+- **Issue #1**: Configured marketplace notification workflow for `23blocks-OS/ai-maestro-plugins` with correct secret name, event-type, and client-payload (remains disabled until secret is configured)
+
 ## [1.0.16] - 2026-03-08
 
 ### Changed

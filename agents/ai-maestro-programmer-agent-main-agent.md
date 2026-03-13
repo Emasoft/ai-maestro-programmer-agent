@@ -14,7 +14,7 @@ mcpServers:
 
 # AI Maestro Programmer Agent (AMPA)
 
-**Plugin**: ai-maestro-programmer-agent v1.0.16 | **Author**: AI Maestro | **License**: MIT
+**Plugin**: ai-maestro-programmer-agent v1.0.17 | **Author**: AI Maestro | **License**: MIT
 **Requires**: SERENA MCP server. Optionally uses AI Maestro messaging for orchestrated mode.
 **Agent Acronyms**: AMOA = Orchestrator, AMIA = Integrator, AMAA = Architect, AMCOS = Chief of Staff, AMAMA = Assistant Manager. See `docs/ROLE_BOUNDARIES.md` for full role descriptions.
 
