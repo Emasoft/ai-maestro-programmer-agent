@@ -21,7 +21,7 @@ Context transfer between AMPA sessions via structured handoff documents (Markdow
 
 ## Prerequisites
 
-- **AI Maestro running** on `localhost:23000` for inter-agent messaging notifications.
+- **AI Maestro running** for inter-agent messaging notifications (uses `$AIMAESTRO_API` environment variable).
 - **Handoff directory exists** at `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/` (create with `mkdir -p` if needed).
 - **Valid session name** registered with AI Maestro (format: `<project>-programmer-<number>`).
 - **`$CLAUDE_PROJECT_DIR` set** to the project root (set automatically by Claude Code).
@@ -53,7 +53,7 @@ Copy this checklist and track your progress:
 | Error | Resolution |
 |-------|------------|
 | Handoff directory missing | Run `mkdir -p "$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-<task-name>/"` |
-| AI Maestro notification fails | Verify running with `curl -s "http://localhost:23000/api/health"`, start if needed |
+| AI Maestro notification fails | Verify running with `curl -s "$AIMAESTRO_API/api/sessions"`, check `agent-messaging` skill for connectivity troubleshooting |
 | YAML frontmatter parse error | Ensure `---` delimiters on own lines, quote special characters in values |
 | Receiving agent not found | Use the `agent-messaging` skill to list registered agents |
 | Handoff document is stale | Archive existing `current.md` to `archive/` with timestamp, then create new |
