@@ -106,7 +106,7 @@ from: ai-maestro-programmer-agent-main-agent
 to: ai-maestro-programmer-agent-main-agent
 created: <current-ISO-timestamp>
 priority: <current-priority>
-status: in-progress
+status: in_progress
 state-type: work-state
 ---
 
@@ -254,7 +254,7 @@ from: ai-maestro-programmer-agent-main-agent
 to: ai-maestro-programmer-agent-main-agent
 created: 2025-02-06T14:45:00Z
 priority: high
-status: in-progress
+status: in_progress
 state-type: work-state
 ---
 
@@ -352,7 +352,7 @@ from: ai-maestro-programmer-agent-main-agent
 to: ai-maestro-programmer-agent-main-agent
 created: 2025-02-06T16:30:00Z
 priority: normal
-status: in-progress
+status: in_progress
 state-type: work-state
 ---
 

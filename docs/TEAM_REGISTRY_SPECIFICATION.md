@@ -153,7 +153,7 @@ Team names must be **globally unique** across all projects managed by AMCOS. AMC
       "plugin": "ai-maestro-chief-of-staff-agent",
       "host": "macbook-main",
       "ai_maestro_address": "amcos-chief-of-staff",
-      "note": "Organization-wide, not team-specific"
+      "note": "Team-scoped, one per closed team"
     }
   ],
   "github_bot": {
@@ -200,7 +200,7 @@ Team names must be **globally unique** across all projects managed by AMCOS. AMC
 | Role | Plugin | Count per Team | Description |
 |------|--------|----------------|-------------|
 | `manager` | ai-maestro-assistant-manager-agent | 0 (org-wide) | User interface, approvals |
-| `chief-of-staff` | ai-maestro-chief-of-staff-agent | 0 (org-wide) | Agent lifecycle |
+| `chief-of-staff` | ai-maestro-chief-of-staff-agent | 1 (per closed team) | Agent lifecycle |
 | `orchestrator` | ai-maestro-orchestrator-agent | **Exactly 1** | Task management, kanban, agent replacement, remote coordination, messaging templates |
 | `architect` | ai-maestro-architect-agent | **Exactly 1** | Design documents |
 | `integrator` | ai-maestro-integrator-agent | 1+ (can be shared) | PR review, merge, CI/CD pipeline, release management, quality gates, kanban sync |

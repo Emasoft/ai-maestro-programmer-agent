@@ -2,6 +2,18 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.19] - 2026-03-15
+
+### Fixed
+- **R2 kanban dashes**: Replaced all `in-progress` status values with `in_progress` (underscore) in 5 reference files across handoff-management, orchestrator-communication, and task-execution skills
+- **R2 kanban statuses**: Updated handoff document status lists from `pending|in-progress|blocked|completed` to the correct 5-status system `backlog|pending|in_progress|review|completed`
+- **R7 task ID format**: Replaced all legacy `TASK-xxx` and `AMPA-xxx` task IDs with UUID format across 9 reference files in orchestrator-communication and task-execution skills
+- **R1 governance**: Fixed COS role in TEAM_REGISTRY_SPECIFICATION.md Role Types table from "0 (org-wide)" to "1 (per closed team)"
+- **R11 TOC**: Removed extra "Checklist" entry from op-read-handoff-document.md TOC to match standard 5-entry format
+
+### Verified
+- Full-repo prefix scan: no wrong e-prefixes (EAMA/ECOS/EOA/EIA/EPA/EAA) or emasoft-role patterns found — all "Emasoft" occurrences are legitimate (author name, GitHub URLs, historical changelog)
+
 ## [1.0.18] - 2026-03-13
 
 ### Fixed

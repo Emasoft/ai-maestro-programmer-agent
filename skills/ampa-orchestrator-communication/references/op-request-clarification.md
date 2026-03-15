@@ -152,7 +152,7 @@ Alternatively, send a new acknowledgment message using the `agent-messaging` ski
 
 Send a clarification request to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "CLARIFICATION: TASK-456 - Database Optimization Targets"
+- **Subject**: "CLARIFICATION: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Database Optimization Targets"
 - **Content**: "I need clarification on the performance targets for database query optimization. Questions: 1) What is the target query response time? 2) Which specific queries should be prioritized? 3) Are there memory usage constraints to consider? Context: The task mentions optimizing database queries but does not specify performance targets or which queries are problematic. Current slowest query takes 2.3 seconds. Impact: Cannot determine optimization success criteria or prioritization without targets."
 - **Type**: request
 - **Priority**: high
@@ -165,7 +165,7 @@ Send a clarification request to the orchestrator using the `agent-messaging` ski
 
 Send a clarification request to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "CLARIFICATION: TASK-789 - PaymentGateway Service Details"
+- **Subject**: "CLARIFICATION: c3d4e5f6-a7b8-9012-cdef-345678901234 - PaymentGateway Service Details"
 - **Content**: "I need details about the PaymentGateway service for integration. Questions: 1) What is the PaymentGateway API endpoint URL? 2) Is there existing client code I should reuse? 3) What test environment is available? Context: Task references PaymentGateway service but I found no documentation or existing code for it in the codebase. Impact: Cannot begin integration work without service details."
 - **Type**: request
 - **Priority**: high
@@ -178,7 +178,7 @@ Send a clarification request to the orchestrator using the `agent-messaging` ski
 
 Send a clarification request to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "CLARIFICATION: TASK-101 - Conflicting Error Handling Requirements"
+- **Subject**: "CLARIFICATION: d4e5f6a7-b8c9-0123-defa-456789012345 - Conflicting Error Handling Requirements"
 - **Content**: "The task contains conflicting requirements for error handling. Questions: 1) Should errors fail fast (as stated in section 2) or be silently logged (as stated in section 4)? 2) Which requirement takes precedence? Context: Section 2 says to implement fail-fast error handling. Section 4 says errors should be logged silently without disrupting the user. These approaches are mutually exclusive. Impact: Cannot implement error handling without knowing which approach to use."
 - **Type**: request
 - **Priority**: high

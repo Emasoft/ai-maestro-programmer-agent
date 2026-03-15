@@ -57,19 +57,19 @@ Structure your status update with these components:
 ```json
 {
   "to": "orchestrator-master",
-  "subject": "STATUS: [Task ID] - [Current Phase]",
+  "subject": "STATUS: [UUID] - [Current Phase]",
   "priority": "normal",
   "content": {
     "type": "status-update",
     "message": "[Brief status summary]",
-    "task_id": "[TASK-ID]",
+    "task_id": "[UUID-FORMAT]",
     "phase": "[current-phase]",
     "progress_percent": [0-100],
     "completed": [
       "[Completed item 1]",
       "[Completed item 2]"
     ],
-    "in-progress": "[Current work item]",
+    "in_progress": "[Current work item]",
     "remaining": [
       "[Remaining item 1]",
       "[Remaining item 2]"
@@ -84,11 +84,11 @@ Structure your status update with these components:
 
 | Field | Description | Required |
 |-------|-------------|----------|
-| `task_id` | The identifier of the task | Yes |
+| `task_id` | The identifier of the task (UUID format) | Yes |
 | `phase` | Current development phase (see section 2.3) | Yes |
 | `progress_percent` | Percentage complete (0-100) | Yes |
 | `completed` | Array of completed items | Yes |
-| `in-progress` | Current work item | Yes |
+| `in_progress` | Current work item | Yes |
 | `remaining` | Array of remaining items | Yes |
 | `blockers` | Array of blocking issues (empty if none) | Yes |
 | `estimated_completion` | Time estimate to completion | No |
@@ -149,7 +149,7 @@ Use this checklist before sending a status update:
 
 Send a status update to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent (e.g., "orchestrator-master")
-- **Subject**: "STATUS: [TASK-ID] - [Current Phase]"
+- **Subject**: "STATUS: [UUID] - [Current Phase]"
 - **Content**: include all fields from the format in section 2.2 (phase, progress percentage, completed items, in-progress items, remaining items, blockers, estimated completion)
 - **Type**: status
 - **Priority**: normal
@@ -175,8 +175,8 @@ If progress is slower than expected, send a delayed status update using the `age
 
 Send a message to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "STATUS: TASK-456 - Starting Development"
-- **Content**: "Starting work on TASK-456. Analyzed requirements, beginning test writing. Phase: test-writing. Progress: 5%. Completed: Requirements analysis, Approach planning. In progress: Writing unit tests. Remaining: Complete test suite, Implementation, Refactoring, Documentation. Blockers: none. Estimated completion: 3 hours."
+- **Subject**: "STATUS: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Starting Development"
+- **Content**: "Starting work on b2c3d4e5-f6a7-8901-bcde-f23456789012. Analyzed requirements, beginning test writing. Phase: test-writing. Progress: 5%. Completed: Requirements analysis, Approach planning. In progress: Writing unit tests. Remaining: Complete test suite, Implementation, Refactoring, Documentation. Blockers: none. Estimated completion: 3 hours."
 - **Type**: status
 - **Priority**: normal
 
@@ -188,8 +188,8 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 Send a message to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "STATUS: TASK-456 - Tests Complete"
-- **Content**: "All tests written and implementation complete. Moving to refactoring. Phase: refactoring. Progress: 65%. Completed: Unit tests (15 tests), Core implementation, Edge case handling, Error handling. In progress: Code cleanup and refactoring. Remaining: Refactoring, Documentation update, Final review prep. Blockers: none. Estimated completion: 1 hour."
+- **Subject**: "STATUS: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Tests Complete"
+- **Content**: "All tests written and implementation complete. Moving to refactoring. Phase: refactoring. Progress: 65%. Completed: Unit tests (15 tests), Core implementation, Edge case handling, Error handling. In progress: Code cleanup and refactoring. Remaining: Refactoring, Documentation update, Final review prep. Blockers: none. Estimated completion: 1 hour. Task: b2c3d4e5-f6a7-8901-bcde-f23456789012"
 - **Type**: status
 - **Priority**: normal
 
@@ -201,8 +201,8 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 Send a message to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "STATUS: TASK-456 - Ready for Review"
-- **Content**: "Task complete. All tests passing, code refactored, documentation updated. Phase: review-prep. Progress: 100%. Completed: Unit tests (15 tests, all passing), Core implementation, Edge case handling, Error handling, Refactoring, Documentation update. In progress: None - awaiting review. Remaining: none. Blockers: none."
+- **Subject**: "STATUS: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Ready for Review"
+- **Content**: "Task complete. All tests passing, code refactored, documentation updated. Phase: review-prep. Progress: 100%. Completed: Unit tests (15 tests, all passing), Core implementation, Edge case handling, Error handling, Refactoring, Documentation update. In progress: None - awaiting review. Remaining: none. Blockers: none. Task: b2c3d4e5-f6a7-8901-bcde-f23456789012"
 - **Type**: status
 - **Priority**: normal
 
@@ -214,8 +214,8 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 Send a message to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "STATUS: TASK-789 - Partially Blocked"
-- **Content**: "Implementation partially blocked. Completed independent work, waiting on API access. Phase: implementation. Progress: 40%. Completed: Unit tests written, Local logic implemented, Mock integration tests. In progress: Blocked - cannot complete API integration. Remaining: Real API integration, End-to-end testing, Refactoring, Documentation. Blockers: Waiting for API credentials from external team (ETA unknown). Estimated completion: Unknown until blocker resolved."
+- **Subject**: "STATUS: c3d4e5f6-a7b8-9012-cdef-345678901234 - Partially Blocked"
+- **Content**: "Implementation partially blocked. Completed independent work, waiting on API access. Phase: implementation. Progress: 40%. Completed: Unit tests written, Local logic implemented, Mock integration tests. In progress: Blocked - cannot complete API integration. Remaining: Real API integration, End-to-end testing, Refactoring, Documentation. Blockers: Waiting for API credentials from external team (ETA unknown). Estimated completion: Unknown until blocker resolved. Task: c3d4e5f6-a7b8-9012-cdef-345678901234"
 - **Type**: status
 - **Priority**: high
 

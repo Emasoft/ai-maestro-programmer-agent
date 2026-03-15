@@ -133,7 +133,7 @@ Include these statistics:
 
 ```json
 "code": {
-  "branch": "feature/TASK-123-user-auth",
+  "branch": "feature/a1b2c3d4-e5f6-7890-abcd-ef1234567890-user-auth",
   "commits": 5,
   "files_changed": 8,
   "lines_added": 342,
@@ -255,8 +255,8 @@ Send the completion notification to the orchestrator using the `agent-messaging`
 
 Send a completion notification to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "COMPLETE: TASK-456 - Order Processing Pipeline"
-- **Content**: "Order processing pipeline implementation complete with full test coverage. Branch: feature/TASK-456-order-pipeline (8 commits, 12 files changed, +567/-23 lines). Tests: 35/35 passing, 94% coverage. Docs updated: docs/architecture/order-pipeline.md, docs/api/orders.md. PR: https://github.com/org/repo/pull/789 - feat(orders): Add order processing pipeline. Implementation notes: Implemented async pipeline with retry logic, orders processed in batches of 100 for efficiency. Testing: uv run pytest tests/ -v or manually: uv run python scripts/test_order_pipeline.py"
+- **Subject**: "COMPLETE: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Order Processing Pipeline"
+- **Content**: "Order processing pipeline implementation complete with full test coverage. Branch: feature/b2c3d4e5-f6a7-8901-bcde-f23456789012-order-pipeline (8 commits, 12 files changed, +567/-23 lines). Tests: 35/35 passing, 94% coverage. Docs updated: docs/architecture/order-pipeline.md, docs/api/orders.md. PR: https://github.com/org/repo/pull/789 - feat(orders): Add order processing pipeline. Implementation notes: Implemented async pipeline with retry logic, orders processed in batches of 100 for efficiency. Testing: uv run pytest tests/ -v or manually: uv run python scripts/test_order_pipeline.py"
 - **Type**: notification
 - **Priority**: high
 
@@ -268,8 +268,8 @@ Send a completion notification to the orchestrator using the `agent-messaging` s
 
 Send a completion notification to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "COMPLETE: TASK-789 - Fix Race Condition in Cache Update"
-- **Content**: "Race condition in cache update fixed. Added mutex lock and regression tests. Branch: fix/TASK-789-cache-race-condition (3 commits, 2 files changed, +45/-12 lines). Tests: 8/8 passing, 100% coverage. PR: https://github.com/org/repo/pull/101 - fix(cache): Add mutex lock to prevent race condition. Implementation notes: Added threading.Lock() around cache write operations, verified fix under concurrent load testing. Testing: uv run pytest tests/unit/test_cache.py::test_concurrent_updates -v --count=100"
+- **Subject**: "COMPLETE: c3d4e5f6-a7b8-9012-cdef-345678901234 - Fix Race Condition in Cache Update"
+- **Content**: "Race condition in cache update fixed. Added mutex lock and regression tests. Branch: fix/c3d4e5f6-a7b8-9012-cdef-345678901234-cache-race-condition (3 commits, 2 files changed, +45/-12 lines). Tests: 8/8 passing, 100% coverage. PR: https://github.com/org/repo/pull/101 - fix(cache): Add mutex lock to prevent race condition. Implementation notes: Added threading.Lock() around cache write operations, verified fix under concurrent load testing. Testing: uv run pytest tests/unit/test_cache.py::test_concurrent_updates -v --count=100"
 - **Type**: notification
 - **Priority**: high
 
@@ -281,8 +281,8 @@ Send a completion notification to the orchestrator using the `agent-messaging` s
 
 Send a completion notification to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "COMPLETE: TASK-101 - Refactor Payment Module"
-- **Content**: "Payment module refactored. Reduced complexity, improved testability. Branch: refactor/TASK-101-payment-module (6 commits, 5 files changed, +234/-312 lines). Tests: 28/28 passing, 96% coverage. Docs updated: docs/architecture/payment-module.md. PR: https://github.com/org/repo/pull/202 - refactor(payment): Simplify payment processing module. Implementation notes: Split monolithic PaymentProcessor into PaymentValidator, PaymentExecutor, and PaymentNotifier. Reduced cyclomatic complexity from 32 to 8. Testing: All existing tests pass, new unit tests added for each extracted class."
+- **Subject**: "COMPLETE: d4e5f6a7-b8c9-0123-defa-456789012345 - Refactor Payment Module"
+- **Content**: "Payment module refactored. Reduced complexity, improved testability. Branch: refactor/d4e5f6a7-b8c9-0123-defa-456789012345-payment-module (6 commits, 5 files changed, +234/-312 lines). Tests: 28/28 passing, 96% coverage. Docs updated: docs/architecture/payment-module.md. PR: https://github.com/org/repo/pull/202 - refactor(payment): Simplify payment processing module. Implementation notes: Split monolithic PaymentProcessor into PaymentValidator, PaymentExecutor, and PaymentNotifier. Reduced cyclomatic complexity from 32 to 8. Testing: All existing tests pass, new unit tests added for each extracted class."
 - **Type**: notification
 - **Priority**: high
 

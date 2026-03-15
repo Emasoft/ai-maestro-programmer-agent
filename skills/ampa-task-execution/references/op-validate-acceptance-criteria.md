@@ -87,7 +87,7 @@ mcp__serena__get_symbol_details("validate_email")
 Create a validation record for each criterion:
 
 ```markdown
-## Validation Record: TASK-001
+## Validation Record: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
 ### AC-001: Email format is validated on submit
 - **Status**: PASSED
@@ -156,10 +156,10 @@ Completion message sent:
 ```json
 {
   "to": "orchestrator-master",
-  "subject": "COMPLETE: AMPA-001",
+  "subject": "COMPLETE: a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "content": {
     "type": "completion",
-    "task_id": "AMPA-001",
+    "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     "status": "complete",
     "validation_summary": {
       "total_criteria": 3,
@@ -207,7 +207,7 @@ For manual criteria:
 ### AC-001: Error message visible
 - **Status**: PASSED (Manual)
 - **Evidence**: Screenshot saved to docs_dev/validation/error-message.png
-- **Verified By**: AMPA Agent
+- **Verified By**: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 - **Verified At**: 2024-01-15T10:45:00Z
 ```
 

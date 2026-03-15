@@ -63,7 +63,7 @@ Check if the task message includes dependency information:
 ```json
 {
   "dependencies": {
-    "required_tasks": ["TASK-001", "TASK-002"],
+    "required_tasks": ["a1b2c3d4-e5f6-7890-abcd-ef1234567890", "b2c3d4e5-f6a7-8901-bcde-f23456789012"],
     "required_files": ["src/utils/helper.py"],
     "required_apis": ["UserService", "AuthService"]
   }
@@ -142,7 +142,7 @@ Task: "Add password reset functionality"
 | AC-004 | User receives confirmation after reset | UX |
 
 **Dependencies Identified:**
-- Task Dependency: User email verification (TASK-045) - COMPLETED
+- Task Dependency: User email verification (c3d4e5f6-a7b8-9012-cdef-345678901234) - COMPLETED
 - API Dependency: EmailService - AVAILABLE
 - File Dependency: src/auth/user.py - EXISTS
 
@@ -168,10 +168,10 @@ Task: "Integrate payment gateway"
 ```json
 {
   "to": "orchestrator-master",
-  "subject": "BLOCKED: AMPA-005 - Missing dependency",
+  "subject": "BLOCKED: d4e5f6a7-b8c9-0123-defa-456789012345 - Missing dependency",
   "content": {
     "type": "blocker",
-    "task_id": "AMPA-005",
+    "task_id": "d4e5f6a7-b8c9-0123-defa-456789012345",
     "message": "Cannot proceed: PaymentService API is not configured",
     "resolution_needed": "Configure PaymentService credentials",
     "status": "blocked"

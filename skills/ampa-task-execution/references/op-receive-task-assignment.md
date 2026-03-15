@@ -148,7 +148,7 @@ Incoming message:
   "priority": "high",
   "content": {
     "type": "task",
-    "task_id": "AMPA-001",
+    "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     "message": "Add email validation to the user registration form",
     "acceptance_criteria": [
       "Email format is validated on submit",
@@ -166,12 +166,12 @@ Response:
 ```json
 {
   "to": "orchestrator-master",
-  "subject": "ACK: AMPA-001 received",
+  "subject": "ACK: a1b2c3d4-e5f6-7890-abcd-ef1234567890 received",
   "content": {
     "type": "acknowledgment",
-    "task_id": "AMPA-001",
+    "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     "message": "Task received. 3 acceptance criteria identified.",
-    "status": "in-progress"
+    "status": "in_progress"
   }
 }
 ```
@@ -187,7 +187,7 @@ Incoming message missing acceptance criteria:
   "from": "orchestrator-master",
   "content": {
     "type": "task",
-    "task_id": "AMPA-002",
+    "task_id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
     "message": "Fix the bug"
   }
 }
@@ -200,11 +200,11 @@ Response:
 ```json
 {
   "to": "orchestrator-master",
-  "subject": "INVALID: AMPA-002 missing required fields",
+  "subject": "INVALID: b2c3d4e5-f6a7-8901-bcde-f23456789012 missing required fields",
   "priority": "high",
   "content": {
     "type": "error",
-    "task_id": "AMPA-002",
+    "task_id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
     "message": "Task assignment missing required field: acceptance_criteria",
     "status": "blocked"
   }

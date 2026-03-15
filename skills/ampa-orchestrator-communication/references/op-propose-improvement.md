@@ -259,7 +259,7 @@ When AMOA responds:
 
 Send a proposal to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "PROPOSAL: TASK-123 - Use Binary Search Instead of Linear Search"
+- **Subject**: "PROPOSAL: a1b2c3d4-e5f6-7890-abcd-ef1234567890 - Use Binary Search Instead of Linear Search"
 - **Content**: "Proposing to use binary search instead of linear search for order lookup. Current approach: linear search O(n). Proposed: binary search O(log n) on already-sorted order list. Benefits: For 100,000 orders reduces from 100,000 to 17 comparisons, no additional memory. Risk: Requires sorted list - already guaranteed by existing code. Effort: 30 minutes. Timeline impact: none. Alternative considered: Hash table lookup (rejected - additional memory not justified). Approval required: yes, will auto-proceed after 30 minutes if no objection."
 - **Type**: request
 - **Priority**: normal
@@ -272,7 +272,7 @@ Send a proposal to the orchestrator using the `agent-messaging` skill:
 
 Send a proposal to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "PROPOSAL: TASK-456 - Reuse Existing Validation Module"
+- **Subject**: "PROPOSAL: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Reuse Existing Validation Module"
 - **Content**: "Proposing to reuse existing InputValidator instead of writing new validation logic. Current approach: implement input validation from scratch. Proposed: reuse InputValidator from src/utils/validation.py (already handles all required types, well-tested at 95% coverage). Benefits: Saves 2 hours, leverages tested code, maintains consistency. Code lines: ~200 -> 10. Risk: none. Effort: 15 minutes. Timeline impact: saves 1.75 hours. Approval required: yes, will auto-proceed after 30 minutes if no objection."
 - **Type**: request
 - **Priority**: normal
@@ -285,7 +285,7 @@ Send a proposal to the orchestrator using the `agent-messaging` skill:
 
 Send a proposal to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "PROPOSAL: TASK-789 - Add Input Sanitization for SQL Queries"
+- **Subject**: "PROPOSAL: c3d4e5f6-a7b8-9012-cdef-345678901234 - Add Input Sanitization for SQL Queries"
 - **Content**: "Proposing to add parameterized queries to prevent SQL injection. Current approach: string concatenation for SQL query building. Proposed: use parameterized queries with database library built-in escaping. Benefits: Prevents SQL injection (industry standard), no performance overhead. Security risk: high -> eliminated. Effort: 45 minutes. Timeline impact: adds 45 minutes but strongly recommended. Approval required: yes, will NOT auto-proceed."
 - **Type**: request
 - **Priority**: high

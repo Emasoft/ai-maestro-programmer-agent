@@ -80,14 +80,15 @@ from: ai-maestro-programmer-agent-main-agent
 to: <receiving-agent-or-future-self>
 created: <current-ISO-timestamp>
 priority: <low|normal|high|urgent>
-status: <pending|in-progress|blocked|completed>
+status: <backlog|pending|in_progress|review|completed>
 ---
 ```
 
 Status values:
+- `backlog`: Work is queued but not yet scheduled
 - `pending`: Work has not started yet
-- `in-progress`: Work is partially complete
-- `blocked`: Cannot proceed without external input
+- `in_progress`: Work is partially complete
+- `review`: Work is done, awaiting review
 - `completed`: All work is finished
 
 ### Step 4: Write the Task Summary

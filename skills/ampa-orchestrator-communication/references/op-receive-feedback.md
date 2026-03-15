@@ -59,7 +59,7 @@ AMOA may send different types of feedback:
 
 ### Approval Feedback
 
-**Subject Pattern**: `APPROVED: [Task ID]`
+**Subject Pattern**: `APPROVED: a1b2c3d4-e5f6-7890-abcd-ef1234567890`
 
 > **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
 
@@ -67,7 +67,7 @@ AMOA may send different types of feedback:
 {
   "type": "approval",
   "message": "Task implementation approved. PR can be merged.",
-  "task_id": "TASK-123",
+  "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "decision": "approved",
   "notes": "[Optional notes]"
 }
@@ -85,7 +85,7 @@ AMOA may send different types of feedback:
 {
   "type": "revision-request",
   "message": "Changes requested before approval.",
-  "task_id": "TASK-123",
+  "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "decision": "revision-required",
   "changes_required": [
     {
@@ -112,7 +112,7 @@ AMOA may send different types of feedback:
 {
   "type": "rejection",
   "message": "Implementation does not meet requirements.",
-  "task_id": "TASK-123",
+  "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "decision": "rejected",
   "reasons": [
     "[Reason 1]",
@@ -134,7 +134,7 @@ AMOA may send different types of feedback:
 {
   "type": "clarification-response",
   "message": "Response to your clarification request.",
-  "task_id": "TASK-123",
+  "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "answers": [
     {
       "question": "[Your question]",
@@ -156,7 +156,7 @@ AMOA may send different types of feedback:
 {
   "type": "improvement-decision",
   "message": "Decision on your improvement proposal.",
-  "task_id": "TASK-123",
+  "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "decision": "[approved|rejected|modified]",
   "notes": "[Decision reasoning]",
   "modifications": "[If modified, what changes]"
@@ -295,7 +295,7 @@ Reply to the revision request using the `agent-messaging` skill:
 
 After completing revisions, send a notification to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "REVISED: TASK-456 - Revisions Complete"
+- **Subject**: "REVISED: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Revisions Complete"
 - **Content**: "All 3 requested revisions have been completed and tested. Changes: 1) Add input validation for order quantity - completed (commit a1b2c3d) - Added validation to reject quantities < 1. 2) Fix edge case when order total is zero - completed (commit e4f5g6h) - Now returns 400 error for zero-total orders. 3) Update error message for clarity - completed (commit i7j8k9l) - Error messages now include specific field names. All tests passing. Ready for review."
 - **Type**: notification
 - **Priority**: high

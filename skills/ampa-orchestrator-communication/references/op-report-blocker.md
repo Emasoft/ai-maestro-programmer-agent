@@ -218,7 +218,7 @@ Send an escalation message to the orchestrator using the `agent-messaging` skill
 
 Send a blocker report to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "BLOCKER: TASK-123 - Missing PaymentGateway API Credentials"
+- **Subject**: "BLOCKER: a1b2c3d4-e5f6-7890-abcd-ef1234567890 - Missing PaymentGateway API Credentials"
 - **Content**: "Cannot proceed with PaymentGateway integration - API credentials not found. Severity: critical. Blocker type: missing-credentials. The task requires integration with PaymentGateway API. I searched the codebase, environment variables, and secrets store but found no credentials. API returns 401 Unauthorized. Impact: Cannot implement, test, or verify any API integration functionality. Task is 100% blocked. Attempted: Searched .env files, checked secrets manager, searched codebase, checked project docs. Proposed solutions: 1) Provide API credentials via secrets manager 2) Provide test/sandbox credentials 3) Grant access to credentials documentation. Unblocking requirement: PaymentGateway API key and secret. Progress before block: Unit tests written with mocks, local logic implemented, ready for real integration."
 - **Type**: alert
 - **Priority**: urgent
@@ -231,7 +231,7 @@ Send a blocker report to the orchestrator using the `agent-messaging` skill:
 
 Send a blocker report to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "BLOCKER: TASK-456 - AuthService Down"
+- **Subject**: "BLOCKER: b2c3d4e5-f6a7-8901-bcde-f23456789012 - AuthService Down"
 - **Content**: "AuthService is returning 503 errors. Cannot test authentication flow. Severity: high. Blocker type: external-dependency. The AuthService at auth.internal.example.com returns 503 Service Unavailable. Checked service status page - no reported outages. Issue started approximately 30 minutes ago. Impact: Cannot test any authentication functionality. Can continue writing code but cannot verify it works. Attempted: Verified service URL, checked network connectivity, tried different endpoints, checked status page. Proposed solutions: 1) Wait for service recovery 2) Use staging AuthService if available 3) Contact infrastructure team. Unblocking requirement: AuthService restored to operational status. Progress before block: Authentication module 80% complete, blocked on integration testing."
 - **Type**: alert
 - **Priority**: urgent
@@ -244,7 +244,7 @@ Send a blocker report to the orchestrator using the `agent-messaging` skill:
 
 Send a blocker report to the orchestrator using the `agent-messaging` skill:
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "BLOCKER: TASK-789 - Technical Impossibility in Specification"
+- **Subject**: "BLOCKER: c3d4e5f6-a7b8-9012-cdef-345678901234 - Technical Impossibility in Specification"
 - **Content**: "The specified requirement is technically impossible with the current architecture. Severity: critical. Blocker type: technical-impossibility. Task requires real-time synchronous response within 50ms, but the required data source has minimum latency of 200ms. This is a fundamental constraint of the external system that cannot be reduced. Impact: Cannot implement the feature as specified. Either the timing requirement or the data source must change. Attempted: Researched data source performance limits, tested with caching (still exceeds 50ms on cache miss), consulted data source documentation, tested connection pooling and optimization. Proposed solutions: 1) Relax timing requirement to 250ms 2) Use cached/stale data for real-time response 3) Change to asynchronous pattern 4) Use alternative data source. Unblocking requirement: Revised specification with achievable timing requirements."
 - **Type**: alert
 - **Priority**: urgent

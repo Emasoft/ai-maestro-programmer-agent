@@ -11,7 +11,6 @@ parent-skill: ampa-handoff-management
 - [When to Use](#when-to-use)
 - [Prerequisites](#prerequisites)
 - [Procedure](#procedure)
-- [Checklist](#checklist)
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
@@ -78,7 +77,7 @@ from: <delegating-agent>
 to: <receiving-agent>
 created: <ISO-timestamp>
 priority: <low|normal|high|urgent>
-status: <pending|in-progress|blocked|completed>
+status: <backlog|pending|in_progress|review|completed>
 ---
 ```
 
