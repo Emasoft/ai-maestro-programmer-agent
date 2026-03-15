@@ -48,6 +48,7 @@ Copy this checklist and track your progress:
 ## Token Budget
 
 - **Lazy loading**: Only read a reference file when executing that step. Do not pre-read all 6.
+- **LLM Externalizer**: When `llm-externalizer` MCP is available, use `code_task` to analyze files before editing (instead of reading them into your context), `scan_folder` for codebase-wide checks, and `check_references` after refactoring. Always pass `input_files_paths` — never paste file contents.
 - **Test output to file**: Write pytest output to `docs_dev/`. Report only: `[PASS/FAIL] X/Y. Report: <path>`.
 - **Completion report**: 3 lines max to AMOA: task ID, pass/fail, path to full report.
 

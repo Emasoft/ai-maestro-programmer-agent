@@ -107,6 +107,14 @@ Once installed, start a session with the main agent:
 claude --agent ai-maestro-programmer-agent-main-agent
 ```
 
+## Recommended Companion Plugins
+
+| Plugin | Purpose | Install |
+|--------|---------|---------|
+| `llm-externalizer` | Offload file analysis, scanning, and comparison to cheaper local/remote LLMs — saves orchestrator context tokens | `claude plugin install llm-externalizer` |
+
+When `llm-externalizer` is installed alongside this plugin, the agent automatically uses it for code analysis (`code_task`), codebase scanning (`scan_folder`), batch checking (`batch_check`), and post-refactoring validation (`check_references`, `check_imports`).
+
 ## Getting Started
 
 1. **Install the plugin** using the command from the Installation section above.

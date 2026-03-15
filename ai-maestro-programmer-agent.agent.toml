@@ -25,7 +25,7 @@ recommended = []
 recommended = []
 
 [mcp]
-recommended = ["serena-mcp"]
+recommended = ["serena-mcp", "llm-externalizer"]
 
 [hooks]
 recommended = []
