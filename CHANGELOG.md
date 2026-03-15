@@ -2,6 +2,15 @@
 
 All notable changes to the AI Maestro Programmer Agent plugin are documented in this file.
 
+## [1.0.20] - 2026-03-15
+
+### Added
+- **LLM Externalizer integration**: Added `llm-externalizer` as recommended MCP in `.agent.toml` and agent frontmatter
+- New "LLM Externalizer (Token Saver)" section in main agent definition with tool table and usage rules
+- LLM Externalizer guidance in Token Budget sections (agent definition + task-execution SKILL)
+- "Recommended Companion Plugins" section in README with install instructions
+- Updated "Remember" list: item #5 "Use LLM Externalizer to save tokens"
+
 ## [1.0.19] - 2026-03-15
 
 ### Fixed

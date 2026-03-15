@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires AI Maestro running.
 metadata:
   author: AI Maestro
-  version: 1.0.19
+  version: 1.0.20
   workflow-instruction: "support"
   procedure: "proc-handoff-management"
 context: fork
