@@ -17,7 +17,7 @@ user-invocable: false
 
 ## Overview
 
-Core task execution workflow for AMPA. Covers receiving a task assignment through implementing code, writing tests, and validating acceptance criteria. Requires SERENA MCP and AI Maestro.
+Core task execution workflow for AMPA. Covers receiving a task, implementing code, writing tests, and validating acceptance criteria.
 
 ## Prerequisites
 
@@ -45,13 +45,6 @@ Copy this checklist and track your progress:
 - **Test suite** -- Unit and integration tests in the project's `tests/` directory
 - **Completion report** -- Structured AI Maestro message confirming each acceptance criterion was met
 
-## Token Budget
-
-- **Lazy loading**: Only read a reference file when executing that step. Do not pre-read all 6.
-- **LLM Externalizer**: When `llm-externalizer` MCP is available, use `code_task` to analyze files before editing (instead of reading them into your context), `scan_folder` for codebase-wide checks, and `check_references` after refactoring. Always pass `input_files_paths` — never paste file contents.
-- **Test output to file**: Write pytest output to `docs_dev/`. Report only: `[PASS/FAIL] X/Y. Report: <path>`.
-- **Completion report**: 3 lines max to AMOA: task ID, pass/fail, path to full report.
-
 ## Error Handling
 
 On failure: document it, report to orchestrator, wait for guidance, do not mark complete.
@@ -70,20 +63,14 @@ On failure: document it, report to orchestrator, wait for guidance, do not mark 
 
 ## Resources
 
-- **[op-receive-task-assignment.md](references/op-receive-task-assignment.md)** -- Parse and validate incoming task
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-parse-task-requirements.md](references/op-parse-task-requirements.md)** -- Extract criteria, dependencies, target files
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-setup-development-environment.md](references/op-setup-development-environment.md)** -- Configure tooling and verify environment
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-implement-code.md](references/op-implement-code.md)** -- Analyze structure, write implementation
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-write-tests.md](references/op-write-tests.md)** -- Create unit and integration tests
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-validate-acceptance-criteria.md](references/op-validate-acceptance-criteria.md)** -- Verify criteria and document evidence
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-receive-task-assignment.md](references/op-receive-task-assignment.md)** -- Parse incoming task
+- **[op-parse-task-requirements.md](references/op-parse-task-requirements.md)** -- Extract criteria and deps
+- **[op-setup-development-environment.md](references/op-setup-development-environment.md)** -- Configure tooling
+- **[op-implement-code.md](references/op-implement-code.md)** -- Write implementation
+- **[op-write-tests.md](references/op-write-tests.md)** -- Create tests
+- **[op-validate-acceptance-criteria.md](references/op-validate-acceptance-criteria.md)** -- Verify criteria
 
-## Related Skills
+## Related
 
-- **ampa-orchestrator-communication** -- Status updates, blocker reports, completion notifications.
-- **ampa-github-operations** -- Committing, branching, pull requests.
+- **ampa-orchestrator-communication** -- Status updates, blockers, completions.
+- **ampa-github-operations** -- Committing, branching, PRs.

@@ -43,13 +43,6 @@ Copy this checklist and track your progress:
 
 Sent/received messages to/from AMOA via agent-messaging skill.
 
-## Token Budget
-
-- **Lazy loading**: Only read a reference file when executing that operation. Do not pre-read all 6.
-- **Concise messages**: 3 lines max. Attach detailed context as file paths, not inline text.
-- **Status format**: `[STATUS] Task #ID - brief state. Details: <path>`. Never inline logs or diffs.
-- **Blocker format**: Task ID + blocker description + action needed. Full context goes to a file.
-
 ## Error Handling
 
 If message delivery fails after 3 retries, write the message content to `docs_dev/unsent-<timestamp>.md` and report the delivery failure to your local log. Resume when connectivity is restored.
@@ -61,21 +54,15 @@ If message delivery fails after 3 retries, write the message content to `docs_de
 
 ## Resources
 
-- **[op-request-clarification.md](references/op-request-clarification.md)** — Clarification requests to AMOA when task requirements are unclear
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-report-status.md](references/op-report-status.md)** — Development status updates and progress reporting
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-report-blocker.md](references/op-report-blocker.md)** — Blocker reports with severity levels and escalation
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-propose-improvement.md](references/op-propose-improvement.md)** — Design and implementation improvement proposals
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-notify-completion.md](references/op-notify-completion.md)** — Task completion notifications with deliverables summary
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-receive-feedback.md](references/op-receive-feedback.md)** — Monitor, process, and acknowledge AMOA feedback
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- `agent-messaging` skill (globally installed) — Provides the actual messaging commands used by all operations
+- **[op-request-clarification.md](references/op-request-clarification.md)** — Clarification requests
+- **[op-report-status.md](references/op-report-status.md)** — Status updates and progress
+- **[op-report-blocker.md](references/op-report-blocker.md)** — Blocker reports and escalation
+- **[op-propose-improvement.md](references/op-propose-improvement.md)** — Improvement proposals
+- **[op-notify-completion.md](references/op-notify-completion.md)** — Completion notifications
+- **[op-receive-feedback.md](references/op-receive-feedback.md)** — Process AMOA feedback
+- `agent-messaging` skill (global) — Messaging commands
 
-## Related Skills
+## Related
 
-- **ampa-task-execution** — Core task implementation workflow that triggers communication at key steps.
-- **ampa-handoff-management** — Manages task handoff protocols that depend on completion notifications from this skill.
+- **ampa-task-execution** — Core task implementation workflow triggering communication.
+- **ampa-handoff-management** — Task handoff protocols depending on completion notifications.

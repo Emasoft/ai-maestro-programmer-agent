@@ -43,12 +43,6 @@ Copy this checklist and track your progress:
 - **Committed code on feature branch**: One or more commits with conventional messages, pushed to remote.
 - **Pull request created**: An open PR on GitHub with descriptive title, body linking to the issue, and reviewers assigned.
 
-## Token Budget
-
-- **Lazy loading**: Only read a reference file when executing that operation. Do not pre-read all.
-- **PR descriptions**: Inline (required by GitHub), but build/test logs to file.
-- **Reports**: 3 lines max to AMOA. Diffs >50 lines go to file.
-
 ## Error Handling
 
 On failure: retry once. If still failing, report to AMOA and wait. Never force-push without AMOA approval.
@@ -60,20 +54,14 @@ On failure: retry once. If still failing, report to AMOA and wait. Never force-p
 
 ## Resources
 
-- **[op-clone-repository.md](references/op-clone-repository.md)** -- Cloning and forking procedures
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-create-feature-branch.md](references/op-create-feature-branch.md)** -- Branch creation and naming
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-commit-changes.md](references/op-commit-changes.md)** -- Staging and committing changes
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
-- **[op-create-pull-request.md](references/op-create-pull-request.md)** -- PR creation procedures
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-clone-repository.md](references/op-clone-repository.md)** -- Cloning and forking
+- **[op-create-feature-branch.md](references/op-create-feature-branch.md)** -- Branch creation
+- **[op-commit-changes.md](references/op-commit-changes.md)** -- Staging and committing
+- **[op-create-pull-request.md](references/op-create-pull-request.md)** -- PR creation
 - **[op-respond-to-review.md](references/op-respond-to-review.md)** -- Handling review feedback
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
 - **[op-update-pr-with-fixes.md](references/op-update-pr-with-fixes.md)** -- Pushing fixes after rejection
-  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
 
-## Related Skills
+## Related
 
-- **ampa-task-execution** -- For implementing code changes, writing tests, and validating acceptance criteria before creating a PR.
-- **ampa-orchestrator-communication** -- For messaging AMOA and AMIA about PR status and task progress.
+- **ampa-task-execution** -- Implementing code and tests before creating a PR.
+- **ampa-orchestrator-communication** -- Messaging AMOA about PR status.
