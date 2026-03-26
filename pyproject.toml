@@ -1,0 +1,13 @@
+[project]
+name = "ai-maestro-programmer-agent"
+version = "1.0.15"
+description = "Programmer Agent plugin for AI Maestro"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = ["pyyaml"]
+
+[tool.ruff]
+line-length = 320
+
+[tool.mypy]
+ignore_missing_imports = true
