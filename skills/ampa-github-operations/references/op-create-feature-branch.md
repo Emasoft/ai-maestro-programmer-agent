@@ -18,6 +18,8 @@ parent-skill: ampa-github-operations
 
 Create a properly named feature branch for implementing a task.
 
+> **Multi-repo rule**: All git commands must use `git -C "$REPO_PATH"` where `REPO_PATH=$AGENT_DIR/repos/<repo-name>`. Never rely on the current working directory.
+
 ## When to Use
 
 - Starting work on a new task or issue
@@ -67,31 +69,31 @@ chore/303-update-dependencies
 
 ### 2.2 Creating Branch from Main
 
-Always create feature branches from an up-to-date main:
+Always create feature branches from an up-to-date main. Use `git -C "$REPO_PATH"` to target the correct repo:
 
 ```bash
 # Ensure you are on main
-git checkout main
+git -C "$REPO_PATH" checkout main
 
 # Pull latest changes
-git pull origin main
+git -C "$REPO_PATH" pull origin main
 
 # Create and switch to new branch
-git checkout -b <branch-name>
+git -C "$REPO_PATH" checkout -b <branch-name>
 ```
 
 Example:
 ```bash
-git checkout main
-git pull origin main
-git checkout -b feature/123-add-user-auth
+git -C "$REPO_PATH" checkout main
+git -C "$REPO_PATH" pull origin main
+git -C "$REPO_PATH" checkout -b feature/123-add-user-auth
 ```
 
 Alternative using git switch (Git 2.23+):
 ```bash
-git switch main
-git pull origin main
-git switch -c feature/123-add-user-auth
+git -C "$REPO_PATH" switch main
+git -C "$REPO_PATH" pull origin main
+git -C "$REPO_PATH" switch -c feature/123-add-user-auth
 ```
 
 ### 2.3 Switching to Existing Branches
@@ -100,13 +102,13 @@ If a branch already exists:
 
 ```bash
 # List all branches
-git branch -a
+git -C "$REPO_PATH" branch -a
 
 # Switch to existing local branch
-git checkout <branch-name>
+git -C "$REPO_PATH" checkout <branch-name>
 
 # Switch to remote branch (creates local tracking branch)
-git checkout -b <branch-name> origin/<branch-name>
+git -C "$REPO_PATH" checkout -b <branch-name> origin/<branch-name>
 ```
 
 ### 2.4 Pushing New Branch to Remote
@@ -115,41 +117,41 @@ After creating and committing on the branch:
 
 ```bash
 # Push and set upstream tracking
-git push -u origin <branch-name>
+git -C "$REPO_PATH" push -u origin <branch-name>
 ```
 
 Example:
 ```bash
-git push -u origin feature/123-add-user-auth
+git -C "$REPO_PATH" push -u origin feature/123-add-user-auth
 ```
 
 The `-u` flag sets up tracking so future `git push` and `git pull` work without specifying the remote.
 
 ## Checklist
 
-- [ ] Verify working tree is clean: `git status`
-- [ ] Switch to main branch: `git checkout main`
-- [ ] Pull latest changes: `git pull origin main`
+- [ ] Verify working tree is clean: `git -C "$REPO_PATH" status`
+- [ ] Switch to main branch: `git -C "$REPO_PATH" checkout main`
+- [ ] Pull latest changes: `git -C "$REPO_PATH" pull origin main`
 - [ ] Create branch with proper naming convention
-- [ ] Verify you are on the new branch: `git branch`
-- [ ] Push branch to remote with tracking: `git push -u origin <branch>`
+- [ ] Verify you are on the new branch: `git -C "$REPO_PATH" branch`
+- [ ] Push branch to remote with tracking: `git -C "$REPO_PATH" push -u origin <branch>`
 
 ## Examples
 
 ### Example 1: Create Feature Branch
 
 ```bash
-git status
+git -C "$REPO_PATH" status
 # On branch main
 # nothing to commit, working tree clean
 
-git pull origin main
+git -C "$REPO_PATH" pull origin main
 # Already up to date.
 
-git checkout -b feature/456-add-payment-gateway
+git -C "$REPO_PATH" checkout -b feature/456-add-payment-gateway
 # Switched to a new branch 'feature/456-add-payment-gateway'
 
-git branch
+git -C "$REPO_PATH" branch
 # * feature/456-add-payment-gateway
 #   main
 ```
@@ -157,26 +159,26 @@ git branch
 ### Example 2: Create Branch and Push Immediately
 
 ```bash
-git checkout main
-git pull origin main
-git checkout -b fix/789-null-pointer-exception
+git -C "$REPO_PATH" checkout main
+git -C "$REPO_PATH" pull origin main
+git -C "$REPO_PATH" checkout -b fix/789-null-pointer-exception
 # Make initial changes
-git add .
-git commit -m "fix(core): add null check for user object"
-git push -u origin fix/789-null-pointer-exception
+git -C "$REPO_PATH" add .
+git -C "$REPO_PATH" commit -m "fix(core): add null check for user object"
+git -C "$REPO_PATH" push -u origin fix/789-null-pointer-exception
 ```
 
 ### Example 3: Create Branch for Forked Repository
 
 ```bash
 # Sync with upstream first
-git fetch upstream
-git checkout main
-git merge upstream/main
-git push origin main
+git -C "$REPO_PATH" fetch upstream
+git -C "$REPO_PATH" checkout main
+git -C "$REPO_PATH" merge upstream/main
+git -C "$REPO_PATH" push origin main
 
 # Now create feature branch
-git checkout -b feature/101-contribute-feature
+git -C "$REPO_PATH" checkout -b feature/101-contribute-feature
 ```
 
 ## Error Handling
@@ -195,22 +197,22 @@ If you created a branch with wrong name:
 
 ```bash
 # If no commits yet, just delete and recreate
-git checkout main
-git branch -d <wrong-name>
-git checkout -b <correct-name>
+git -C "$REPO_PATH" checkout main
+git -C "$REPO_PATH" branch -d <wrong-name>
+git -C "$REPO_PATH" checkout -b <correct-name>
 
 # If commits exist, rename the branch
-git branch -m <old-name> <new-name>
+git -C "$REPO_PATH" branch -m <old-name> <new-name>
 
 # If already pushed, delete remote and push renamed
-git push origin --delete <old-name>
-git push -u origin <new-name>
+git -C "$REPO_PATH" push origin --delete <old-name>
+git -C "$REPO_PATH" push -u origin <new-name>
 ```
 
 If you created branch from wrong base:
 
 ```bash
 # Rebase onto correct base
-git checkout <your-branch>
-git rebase main
+git -C "$REPO_PATH" checkout <your-branch>
+git -C "$REPO_PATH" rebase main
 ```

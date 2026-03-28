@@ -45,6 +45,11 @@ Copy this checklist and track your progress:
 
 - Initialized package manager, installed dependencies, linter config, test framework config, active SERENA MCP connection.
 
+## Token Budget
+
+- **Lazy loading**: Only read a reference file when executing that operation. Do not pre-read all 7 references.
+- **Tool output capture**: Redirect package manager output to a log file. Report only: `[DONE] <step> (exit 0). Log: <path>`.
+
 ## Error Handling
 
 If any setup step fails, do not proceed to the next step. Report the failure to AMOA with the step name, error output, and the log file path. Wait for guidance before retrying.
@@ -56,14 +61,21 @@ If any setup step fails, do not proceed to the next step. Report the failure to 
 
 ## Resources
 
-- **[op-detect-project-language.md](references/op-detect-project-language.md)** — Identify project language
-- **[op-initialize-package-manager.md](references/op-initialize-package-manager.md)** — Package manager init
-- **[op-install-dependencies.md](references/op-install-dependencies.md)** — Dependency installation
-- **[op-configure-linting.md](references/op-configure-linting.md)** — Linter configuration
-- **[ruff-configuration-patterns.md](references/ruff-configuration-patterns.md)** — Standard ruff.toml template
-- **[op-setup-testing-framework.md](references/op-setup-testing-framework.md)** — Test framework setup
-- **[op-activate-serena-mcp.md](references/op-activate-serena-mcp.md)** — SERENA MCP activation
+- **[op-detect-project-language.md](references/op-detect-project-language.md)** — Identify project language from file patterns
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-initialize-package-manager.md](references/op-initialize-package-manager.md)** — Language-specific package manager initialization
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-install-dependencies.md](references/op-install-dependencies.md)** — Dependency installation and virtual environment setup
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-configure-linting.md](references/op-configure-linting.md)** — Linter configuration for each supported language
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[ruff-configuration-patterns.md](references/ruff-configuration-patterns.md)** — Standard ruff.toml template for Python projects
+  Sections: When to Configure Ruff for a New Project · Standard ruff.toml Template for AI Maestro Programmer Projects · What Each Rule Set Does · What Each Ignored Rule Means · Per-File Ignore Patterns · Formatter Settings · How to Run Ruff · Customizing Ruff for Specific Project Types
+- **[op-setup-testing-framework.md](references/op-setup-testing-framework.md)** — Test framework config for pytest, jest, vitest, cargo test, etc.
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
+- **[op-activate-serena-mcp.md](references/op-activate-serena-mcp.md)** — SERENA MCP activation, verification, and troubleshooting
+  Sections: When to Use · Prerequisites · Procedure · Examples · Error Handling
 
-## Related
+## Related Skills
 
-- **ampa-task-execution** — Next skill after project setup.
+- **ampa-task-execution** — Next skill after project setup, covering task implementation workflow.

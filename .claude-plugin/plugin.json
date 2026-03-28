@@ -1,6 +1,6 @@
 {
   "name": "ai-maestro-programmer-agent",
-  "version": "1.0.22",
+  "version": "1.0.20",
   "description": "General-purpose programmer agent that writes code, runs tests, and creates PRs. Works standalone or as part of the AI Maestro ecosystem. Ships 5 bundled skills and uses SERENA MCP for code navigation.",
   "author": {
     "name": "Emasoft",

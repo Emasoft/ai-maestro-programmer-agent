@@ -16,7 +16,9 @@ parent-skill: ampa-github-operations
 
 > **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
 
-Clone or fork the project repository to your local machine for development.
+Clone or fork the project repository to your local agent folder for development.
+
+> **Multi-repo rule**: Always clone into `$AGENT_DIR/repos/<repo-name>`. Use `amp-clone-repo.sh <repo-url>` (preferred) which clones to the correct location automatically. All subsequent git commands must use `git -C "$REPO_PATH"` to target the correct repo.
 
 ## When to Use
 
@@ -49,34 +51,43 @@ Clone or fork the project repository to your local machine for development.
 - Contributing to an open source project
 - You want to make changes without affecting the original
 
-### 1.2 Cloning with gh CLI
+### 1.2 Cloning with amp-clone-repo.sh (Preferred)
 
-Clone a repository you have access to:
+Use the amp script which clones to the correct agent folder automatically:
 
 ```bash
-# Clone to current directory
-gh repo clone <owner>/<repo>
+# Preferred: clones to $AGENT_DIR/repos/<repo-name>
+amp-clone-repo.sh <repo-url>
+```
 
-# Clone to specific directory
-gh repo clone <owner>/<repo> <directory>
+### 1.3 Cloning with gh CLI (Manual)
+
+Clone a repository you have access to, always specifying the target directory inside the agent folder:
+
+```bash
+# Clone to agent repos directory (ALWAYS specify destination)
+REPO_PATH="$AGENT_DIR/repos/<repo-name>"
+gh repo clone <owner>/<repo> "$REPO_PATH"
 
 # Clone with SSH (if configured)
-gh repo clone <owner>/<repo> -- --config core.sshCommand="ssh -i ~/.ssh/id_rsa"
+gh repo clone <owner>/<repo> "$REPO_PATH" -- --config core.sshCommand="ssh -i ~/.ssh/id_rsa"
 ```
 
 Example:
 ```bash
-gh repo clone <owner>/<project>
-cd <project>
+REPO_PATH="$AGENT_DIR/repos/<project>"
+gh repo clone <owner>/<project> "$REPO_PATH"
 ```
 
-### 1.3 Forking Upstream Repositories
+### 1.4 Forking Upstream Repositories
 
-Fork and clone in one command:
+Fork and clone in one command, always specifying the clone destination:
 
 ```bash
+REPO_PATH="$AGENT_DIR/repos/<repo-name>"
+
 # Fork to your account and clone locally
-gh repo fork <owner>/<repo> --clone=true
+gh repo fork <owner>/<repo> --clone=true -- "$REPO_PATH"
 
 # Fork without cloning
 gh repo fork <owner>/<repo> --clone=false
@@ -87,17 +98,17 @@ gh repo fork <owner>/<repo> --org=<org-name> --clone=true
 
 Example:
 ```bash
-gh repo fork kubernetes/kubernetes --clone=true
-cd kubernetes
+REPO_PATH="$AGENT_DIR/repos/kubernetes"
+gh repo fork kubernetes/kubernetes --clone=true -- "$REPO_PATH"
 ```
 
-### 1.4 Setting Up Remotes for Forks
+### 1.5 Setting Up Remotes for Forks
 
-After forking, verify remotes are configured correctly:
+After forking, verify remotes are configured correctly (always use `git -C` to target the repo):
 
 ```bash
 # List remotes
-git remote -v
+git -C "$REPO_PATH" remote -v
 ```
 
 Expected output for a fork:
@@ -110,36 +121,36 @@ upstream  https://github.com/<original-owner>/<repo>.git (push)
 
 If upstream is missing, add it:
 ```bash
-git remote add upstream https://github.com/<original-owner>/<repo>.git
+git -C "$REPO_PATH" remote add upstream https://github.com/<original-owner>/<repo>.git
 ```
 
 Sync fork with upstream:
 ```bash
-git fetch upstream
-git checkout main
-git merge upstream/main
-git push origin main
+git -C "$REPO_PATH" fetch upstream
+git -C "$REPO_PATH" checkout main
+git -C "$REPO_PATH" merge upstream/main
+git -C "$REPO_PATH" push origin main
 ```
 
-### 1.5 Verifying Clone Success
+### 1.6 Verifying Clone Success
 
-After cloning, verify the setup:
+After cloning, verify the setup (always use `git -C` to target the repo):
 
 ```bash
-# Check you are in the repo directory
-pwd
+# Verify repo directory exists
+[ -d "$REPO_PATH/.git" ] || { echo "Repo not found at $REPO_PATH"; exit 1; }
 
 # Verify git status
-git status
+git -C "$REPO_PATH" status
 
 # Check remote configuration
-git remote -v
+git -C "$REPO_PATH" remote -v
 
 # Verify branch
-git branch -a
+git -C "$REPO_PATH" branch -a
 
 # Check recent commits
-git log --oneline -5
+git -C "$REPO_PATH" log --oneline -5
 ```
 
 ## Checklist
@@ -153,12 +164,12 @@ git log --oneline -5
 
 ## Examples
 
-### Example 1: Clone Own Repository
+### Example 1: Clone Own Repository (amp script)
 
 ```bash
-gh repo clone <owner>/<project>
-cd <project>
-git status
+amp-clone-repo.sh https://github.com/<owner>/<project>
+REPO_PATH="$AGENT_DIR/repos/<project>"
+git -C "$REPO_PATH" status
 # On branch main
 # Your branch is up to date with 'origin/main'.
 ```
@@ -166,20 +177,20 @@ git status
 ### Example 2: Fork and Clone Open Source Project
 
 ```bash
-gh repo fork facebook/react --clone=true
-cd react
-git remote -v
+REPO_PATH="$AGENT_DIR/repos/react"
+gh repo fork facebook/react --clone=true -- "$REPO_PATH"
+git -C "$REPO_PATH" remote -v
 # origin    https://github.com/<owner>/react.git (fetch)
 # origin    https://github.com/<owner>/react.git (push)
 # upstream  https://github.com/facebook/react.git (fetch)
 # upstream  https://github.com/facebook/react.git (push)
 ```
 
-### Example 3: Clone to Specific Directory
+### Example 3: Clone to Agent Repos Directory
 
 ```bash
-gh repo clone <owner>/<project> ~/projects/<project>
-cd ~/projects/<project>
+REPO_PATH="$AGENT_DIR/repos/<project>"
+gh repo clone <owner>/<project> "$REPO_PATH"
 ```
 
 ## Error Handling
@@ -196,7 +207,7 @@ cd ~/projects/<project>
 
 If clone fails:
 
-1. Delete partial clone if exists: `rm -rf <repo-name>`
+1. Delete partial clone if exists: `rm -rf "$REPO_PATH"`
 2. Verify authentication: `gh auth status`
 3. Verify repository exists: `gh repo view <owner>/<repo>`
-4. Try with HTTPS explicitly: `git clone https://github.com/<owner>/<repo>.git`
+4. Try with HTTPS explicitly: `git clone https://github.com/<owner>/<repo>.git "$REPO_PATH"`

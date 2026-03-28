@@ -6,87 +6,90 @@
 
 ---
 
-## 3-Role System
+## 4-Title Governance System
 
-| Role | Singleton | Scope | Primary Function |
-|------|-----------|-------|------------------|
-| `manager` | Yes (per host) | Organization-wide | User interface, approval authority |
-| `chief-of-staff` | One per closed team | Team-scoped | Agent coordination within team |
-| `member` | Many per team | Task-scoped | Execution; skills determine specialization |
+| Title | Singleton | Scope | Primary Function |
+|-------|-----------|-------|------------------|
+| `MANAGER` | Yes (per host) | Organization-wide | User interface, approval authority |
+| `CHIEF-OF-STAFF` | One per team | Team-scoped | Agent coordination within team |
+| `ORCHESTRATOR` | One per team | Team-scoped | Primary kanban manager, task distribution, direct MANAGER communication |
+| `MEMBER` | Many per team | Task-scoped | Execution; skills determine specialization |
 
-## Role Hierarchy
+## Title Hierarchy
 
 ```
-User <-> manager <-> chief-of-staff <-> member(s)
+User <-> MANAGER <-> CHIEF-OF-STAFF <-> ORCHESTRATOR <-> MEMBER(s)
 ```
+
+> **Note**: ORCHESTRATOR can message MANAGER directly (no COS relay needed).
 
 ---
 
 ## Permission Matrix
 
-| Action | manager | chief-of-staff | member |
-|--------|---------|----------------|--------|
-| Talk to user | YES | NO | NO |
-| Create teams | YES | NO | NO |
-| Assign COS to team | YES | NO | NO |
-| Approve GovernanceRequests | YES | NO | NO |
-| Coordinate team members | NO | YES | NO |
-| Submit GovernanceRequests | NO | YES | NO |
-| Assign tasks to members | NO | YES | NO |
-| Manage kanban | NO | YES | NO |
-| Request agent replacement | NO | YES | NO |
-| Execute tasks | NO | NO | YES |
-| Create PRs | NO | NO | YES |
-| Report progress to COS | NO | NO | YES |
+| Action | MANAGER | CHIEF-OF-STAFF | ORCHESTRATOR | MEMBER |
+|--------|---------|----------------|--------------|--------|
+| Talk to user | YES | NO | NO | NO |
+| Create teams | YES | NO | NO | NO |
+| Assign COS to team | YES | NO | NO | NO |
+| Approve GovernanceRequests | YES | NO | NO | NO |
+| Coordinate team members | NO | YES | YES | NO |
+| Submit GovernanceRequests | NO | YES | NO | NO |
+| Assign tasks to members | NO | NO | YES | NO |
+| Manage kanban (primary) | NO | NO | YES | NO |
+| Manage kanban (secondary) | YES | YES | — | NO |
+| Request agent replacement | NO | YES | NO | NO |
+| Execute tasks | NO | NO | NO | YES |
+| Create PRs | NO | NO | NO | YES |
+| Report progress to Orchestrator | NO | NO | — | YES |
 
 ---
 
 ## Governance Flow
 
 ```
-member needs X -> COS submits GovernanceRequest -> manager approves/rejects
+MEMBER needs X -> ORCHESTRATOR escalates to COS -> COS submits GovernanceRequest -> MANAGER approves/rejects
 ```
 
-All significant operations require GovernanceRequest approval from manager.
+All significant operations require GovernanceRequest approval from MANAGER.
 
 ---
 
-## Team Types
+## Team Structure
 
-| Type | COS Required | Description |
-|------|-------------|-------------|
-| `open` | No | Loose coordination, no COS |
-| `closed` | Yes | Formal coordination via assigned COS |
+All teams are **closed** — there are no "open" teams. Every team requires a CHIEF-OF-STAFF. Each agent belongs to **at most one team** at a time.
 
 ---
 
 ## Key Constraints
 
-- Manager NEVER executes technical work
-- COS NEVER communicates with user directly
-- Members NEVER bypass COS to reach manager
-- Skills on a member determine its specialization (architect, implementer, tester, etc.)
-- One COS per closed team; manager can reassign COS between teams
+- MANAGER NEVER executes technical work
+- CHIEF-OF-STAFF NEVER communicates with user directly
+- MEMBERS NEVER bypass ORCHESTRATOR/COS to reach MANAGER
+- ORCHESTRATOR is the primary kanban manager; COS and MANAGER are secondary
+- Skills on a MEMBER determine its specialization (architect, implementer, tester, etc.)
+- One COS per team; MANAGER can reassign COS between teams
+- Each agent belongs to at most one team
 
 ---
 
-## Agent-to-Role Mapping (AI Maestro Ecosystem)
+## Agent-to-Title Mapping (AI Maestro Ecosystem)
 
-The following table maps specific AI Maestro agent plugins to the 3-role system:
+The following table maps specific AI Maestro agent plugins to the 4-title governance system:
 
-| Agent Plugin | Acronym | Role | Specialization |
-|-------------|---------|------|----------------|
-| ai-maestro-assistant-manager-agent | AMAMA | `manager` | User interface, approvals |
-| ai-maestro-chief-of-staff | AMCOS | `chief-of-staff` | Team coordination |
-| ai-maestro-orchestrator-agent | AMOA | `chief-of-staff` | Task orchestration, kanban |
-| ai-maestro-programmer-agent | AMPA | `member` | Code implementation |
-| ai-maestro-integrator-agent | AMIA | `member` | PR review, merging |
-| ai-maestro-architect-agent | AMAA | `member` | Architecture, design |
+| Agent Plugin | Acronym | Title | Specialization |
+|-------------|---------|-------|----------------|
+| ai-maestro-assistant-manager-agent | AMAMA | `MANAGER` | User interface, approvals |
+| ai-maestro-chief-of-staff | AMCOS | `CHIEF-OF-STAFF` | Team coordination |
+| ai-maestro-orchestrator-agent | AMOA | `ORCHESTRATOR` | Task orchestration, kanban (primary manager) |
+| ai-maestro-programmer-agent | AMPA | `MEMBER` | Code implementation |
+| ai-maestro-integrator-agent | AMIA | `MEMBER` | PR review, merging |
+| ai-maestro-architect-agent | AMAA | `MEMBER` | Architecture, design |
 
-> **Note**: AMPA (this plugin) operates as a `member` with implementer specialization. In standalone mode (no COS/manager present), AMPA receives tasks directly from the user and may take on expanded responsibilities.
+> **Note**: AMPA (this plugin) operates as a `MEMBER` with implementer specialization. In standalone mode (no ORCHESTRATOR/MANAGER present), AMPA receives tasks directly from the user and may take on expanded responsibilities.
 
 ---
 
-**Document Version**: 2.0.0
-**Last Updated**: 2026-03-13
+**Document Version**: 3.0.0
+**Last Updated**: 2026-03-28
 **Source**: Synced from upstream `ai-maestro-assistant-manager-agent/docs/ROLE_BOUNDARIES.md`

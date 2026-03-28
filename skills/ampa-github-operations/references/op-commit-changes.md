@@ -18,6 +18,8 @@ parent-skill: ampa-github-operations
 
 Create well-structured commits with meaningful messages following conventional commits specification.
 
+> **Multi-repo rule**: All git commands must use `git -C "$REPO_PATH"` where `REPO_PATH=$AGENT_DIR/repos/<repo-name>`. Never rely on the current working directory.
+
 ## When to Use
 
 - Saving incremental progress on a task
@@ -37,36 +39,36 @@ Create well-structured commits with meaningful messages following conventional c
 
 ### 3.1 Staging Changes Selectively
 
-Review what changed before staging:
+Review what changed before staging (always use `git -C "$REPO_PATH"`):
 
 ```bash
 # See all changes
-git status
+git -C "$REPO_PATH" status
 
 # See detailed diff
-git diff
+git -C "$REPO_PATH" diff
 
 # See diff for specific file
-git diff <file>
+git -C "$REPO_PATH" diff <file>
 ```
 
 Stage changes:
 
 ```bash
 # Stage specific file
-git add <file>
+git -C "$REPO_PATH" add <file>
 
 # Stage multiple specific files
-git add <file1> <file2> <file3>
+git -C "$REPO_PATH" add <file1> <file2> <file3>
 
 # Stage all changes in a directory
-git add <directory>/
+git -C "$REPO_PATH" add <directory>/
 
 # Stage all changes (use with caution)
-git add -A
+git -C "$REPO_PATH" add -A
 
 # Stage interactively (review each change)
-git add -p
+git -C "$REPO_PATH" add -p
 ```
 
 **Best Practice:** Stage specific files rather than using `git add -A` to avoid accidentally including sensitive files or unrelated changes.
@@ -135,10 +137,10 @@ Examples:
 
 ```bash
 # Simple commit
-git commit -m "feat(auth): add login endpoint"
+git -C "$REPO_PATH" commit -m "feat(auth): add login endpoint"
 
 # Multi-line commit using heredoc
-git commit -m "$(cat <<'EOF'
+git -C "$REPO_PATH" commit -m "$(cat <<'EOF'
 feat(auth): add OAuth2 login support
 
 Implement OAuth2 authentication flow with support for Google and GitHub
@@ -157,15 +159,15 @@ EOF
 
 ```bash
 # Add more changes to last commit
-git add <file>
-git commit --amend --no-edit
+git -C "$REPO_PATH" add <file>
+git -C "$REPO_PATH" commit --amend --no-edit
 
 # Change the commit message
-git commit --amend -m "new message"
+git -C "$REPO_PATH" commit --amend -m "new message"
 
 # Amend both changes and message
-git add <file>
-git commit --amend -m "updated message"
+git -C "$REPO_PATH" add <file>
+git -C "$REPO_PATH" commit --amend -m "updated message"
 ```
 
 **Never amend after pushing** unless you are certain no one else has pulled your changes.
@@ -176,25 +178,25 @@ After committing:
 
 ```bash
 # See the commit you just made
-git log -1
+git -C "$REPO_PATH" log -1
 
 # See commit with diff
-git log -1 -p
+git -C "$REPO_PATH" log -1 -p
 
 # Verify working tree is clean
-git status
+git -C "$REPO_PATH" status
 
 # See commit in one line
-git log --oneline -1
+git -C "$REPO_PATH" log --oneline -1
 ```
 
 ## Checklist
 
-- [ ] Review changes with `git status` and `git diff`
+- [ ] Review changes with `git -C "$REPO_PATH" status` and `git -C "$REPO_PATH" diff`
 - [ ] Stage only relevant files
 - [ ] Write commit message following conventional format
 - [ ] Include issue reference in footer if applicable
-- [ ] Verify commit with `git log -1`
+- [ ] Verify commit with `git -C "$REPO_PATH" log -1`
 - [ ] Ensure working tree is clean after commit
 
 ## Examples
@@ -202,23 +204,23 @@ git log --oneline -1
 ### Example 1: Simple Feature Commit
 
 ```bash
-git status
+git -C "$REPO_PATH" status
 # Changes not staged for commit:
 #   modified:   src/auth.js
 #   modified:   src/routes.js
 
-git add src/auth.js src/routes.js
-git commit -m "feat(auth): add password reset functionality"
+git -C "$REPO_PATH" add src/auth.js src/routes.js
+git -C "$REPO_PATH" commit -m "feat(auth): add password reset functionality"
 
-git log -1 --oneline
+git -C "$REPO_PATH" log -1 --oneline
 # a1b2c3d feat(auth): add password reset functionality
 ```
 
 ### Example 2: Bug Fix with Issue Reference
 
 ```bash
-git add src/utils/validation.js
-git commit -m "$(cat <<'EOF'
+git -C "$REPO_PATH" add src/utils/validation.js
+git -C "$REPO_PATH" commit -m "$(cat <<'EOF'
 fix(validation): handle empty string input
 
 Previously, empty strings passed validation incorrectly. Now they are
@@ -232,9 +234,9 @@ EOF
 ### Example 3: Multiple Files with Detailed Message
 
 ```bash
-git add src/components/Button.jsx src/styles/button.css tests/Button.test.js
+git -C "$REPO_PATH" add src/components/Button.jsx src/styles/button.css tests/Button.test.js
 
-git commit -m "$(cat <<'EOF'
+git -C "$REPO_PATH" commit -m "$(cat <<'EOF'
 feat(ui): add primary button variant
 
 Add new primary button style with hover and active states.
@@ -265,26 +267,26 @@ If you committed with wrong message:
 
 ```bash
 # Amend if not pushed
-git commit --amend -m "correct message"
+git -C "$REPO_PATH" commit --amend -m "correct message"
 ```
 
 If you committed wrong files:
 
 ```bash
 # If not pushed, reset the commit but keep changes
-git reset --soft HEAD~1
+git -C "$REPO_PATH" reset --soft HEAD~1
 
 # Re-stage correct files and commit again
-git add <correct-files>
-git commit -m "message"
+git -C "$REPO_PATH" add <correct-files>
+git -C "$REPO_PATH" commit -m "message"
 ```
 
 If you need to undo the last commit entirely:
 
 ```bash
 # Keep changes in working directory
-git reset --soft HEAD~1
+git -C "$REPO_PATH" reset --soft HEAD~1
 
 # Discard changes entirely (DANGEROUS)
-git reset --hard HEAD~1
+git -C "$REPO_PATH" reset --hard HEAD~1
 ```

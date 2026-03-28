@@ -43,6 +43,11 @@ Copy this checklist and track your progress:
 - **Handoff documents** stored at `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-<task-name>/current.md`.
 - **Notification** sent to receiving agent via agent-messaging skill.
 
+## Token Budget
+
+- **Lazy reference loading**: Only read a reference file when executing that specific operation.
+- **Creation confirmation**: Report only `[DONE] Handoff created: <path>`. Do not echo content back.
+
 ## Error Handling
 
 | Error | Resolution |
@@ -60,13 +65,19 @@ Copy this checklist and track your progress:
 
 ## Resources
 
-- **[op-read-handoff-document.md](references/op-read-handoff-document.md)** — Parse incoming handoffs
-- **[op-create-handoff-document.md](references/op-create-handoff-document.md)** — Create outgoing handoffs
-- **[op-write-bug-report.md](references/op-write-bug-report.md)** — Structured bug reporting
-- **[op-document-work-state.md](references/op-document-work-state.md)** — Capture work state for session resume
-- **`agent-messaging` skill** (global) — Send notifications, list agents
+- **[op-read-handoff-document.md](references/op-read-handoff-document.md)** — Parse and process incoming handoffs
+  Sections: When to Use · Prerequisites · Procedure · Checklist · Examples · Error Handling
+- **[op-create-handoff-document.md](references/op-create-handoff-document.md)** — Create outgoing handoff documents
+  Sections: When to Use · Prerequisites · Procedure · Checklist · Examples · Error Handling
+- **[op-write-bug-report.md](references/op-write-bug-report.md)** — Structured bug reporting during implementation
+  Sections: When to Use · Prerequisites · Procedure · Checklist · Examples · Error Handling
+- **[op-document-work-state.md](references/op-document-work-state.md)** — Capture in-progress work state for session resume
+  Sections: When to Use · Prerequisites · Procedure · Checklist · Examples · Error Handling
+- **`agent-messaging` skill** (globally installed) — Send handoff notifications, list registered agents
+- **AMOA Orchestrator Agent** — Source of task delegations, escalation target for bug reports
+- **AMIA Integrator Agent** — Recipient of implementation-complete handoffs for code review
 
-## Related
+## Related Skills
 
-- **ampa-task-execution** — Core implementation workflow producing handoff-worthy work state.
-- **ampa-orchestrator-communication** — Messaging patterns for AMOA coordination.
+- **ampa-task-execution** — Core implementation workflow that produces handoff-worthy work state.
+- **ampa-orchestrator-communication** — Messaging patterns for AMOA coordination and status reporting.

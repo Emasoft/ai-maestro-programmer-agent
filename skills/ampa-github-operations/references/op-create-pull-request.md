@@ -18,6 +18,8 @@ parent-skill: ampa-github-operations
 
 Create a pull request to submit completed work for review. This corresponds to **Step 19** of the AMPA workflow.
 
+> **Multi-repo rule**: All gh commands must use `--repo "$OWNER_REPO"`. All git commands must use `git -C "$REPO_PATH"`. Use `amp-submit-pr.sh "$REPO_PATH" "<title>"` as the preferred method.
+
 ## When to Use
 
 - Task implementation is complete
@@ -36,19 +38,19 @@ Create a pull request to submit completed work for review. This corresponds to *
 
 ### 4.1 Preparing Branch for PR
 
-Before creating PR, ensure branch is ready:
+Before creating PR, ensure branch is ready (always use `git -C "$REPO_PATH"`):
 
 ```bash
 # Ensure all changes are committed
-git status
+git -C "$REPO_PATH" status
 # Should show: nothing to commit, working tree clean
 
 # Ensure branch is pushed
-git push origin <branch-name>
+git -C "$REPO_PATH" push origin <branch-name>
 
 # Sync with main to check for conflicts
-git fetch origin main
-git merge origin/main
+git -C "$REPO_PATH" fetch origin main
+git -C "$REPO_PATH" merge origin/main
 # Resolve any conflicts if needed
 
 # Run tests one final time
@@ -84,10 +86,15 @@ Closes #123
 
 ### 4.3 Creating PR with gh CLI
 
-Create PR using heredoc for proper formatting:
+**Preferred**: Use the amp script:
+```bash
+amp-submit-pr.sh "$REPO_PATH" "<type>(<scope>): <description>"
+```
+
+Or create PR manually using heredoc (always include `--repo`):
 
 ```bash
-gh pr create --title "<type>(<scope>): <description>" --body "$(cat <<'EOF'
+gh pr create --repo "$OWNER_REPO" --title "<type>(<scope>): <description>" --body "$(cat <<'EOF'
 ## Summary
 <1-3 sentences describing the change>
 
@@ -110,7 +117,7 @@ EOF
 **Full example:**
 
 ```bash
-gh pr create --title "feat(auth): add OAuth2 login support" --body "$(cat <<'EOF'
+gh pr create --repo "$OWNER_REPO" --title "feat(auth): add OAuth2 login support" --body "$(cat <<'EOF'
 ## Summary
 Implements OAuth2 authentication flow with support for Google and GitHub providers.
 
@@ -133,10 +140,10 @@ EOF
 
 ### 4.4 Setting Reviewers and Labels
 
-Add reviewers and labels at creation time:
+Add reviewers and labels at creation time (always include `--repo`):
 
 ```bash
-gh pr create \
+gh pr create --repo "$OWNER_REPO" \
   --title "feat(auth): add OAuth2 login" \
   --body "..." \
   --reviewer "username1,username2" \
@@ -147,13 +154,13 @@ Or add after creation:
 
 ```bash
 # Add reviewer
-gh pr edit <pr-number> --add-reviewer "username"
+gh pr edit <pr-number> --repo "$OWNER_REPO" --add-reviewer "username"
 
 # Add label
-gh pr edit <pr-number> --add-label "enhancement"
+gh pr edit <pr-number> --repo "$OWNER_REPO" --add-label "enhancement"
 
 # Add assignee
-gh pr edit <pr-number> --add-assignee "@me"
+gh pr edit <pr-number> --repo "$OWNER_REPO" --add-assignee "@me"
 ```
 
 ### 4.5 Linking to Issues
@@ -189,7 +196,7 @@ Related to #126
 ### Example 1: Simple Feature PR
 
 ```bash
-gh pr create \
+gh pr create --repo "$OWNER_REPO" \
   --title "feat(api): add user profile endpoint" \
   --body "$(cat <<'EOF'
 ## Summary
@@ -213,7 +220,7 @@ EOF
 ### Example 2: Bug Fix PR with Reviewer
 
 ```bash
-gh pr create \
+gh pr create --repo "$OWNER_REPO" \
   --title "fix(ui): correct date picker timezone handling" \
   --body "$(cat <<'EOF'
 ## Summary
@@ -239,7 +246,7 @@ EOF
 ### Example 3: Draft PR for Early Feedback
 
 ```bash
-gh pr create \
+gh pr create --repo "$OWNER_REPO" \
   --title "feat(payments): integrate Stripe API" \
   --body "WIP: Initial Stripe integration. Looking for early feedback on approach." \
   --draft
@@ -247,7 +254,7 @@ gh pr create \
 
 Convert draft to ready for review:
 ```bash
-gh pr ready <pr-number>
+gh pr ready <pr-number> --repo "$OWNER_REPO"
 ```
 
 ## Error Handling
@@ -256,7 +263,7 @@ gh pr ready <pr-number>
 |-------|-------|----------|
 | `no commits between main and branch` | Branch not diverged | Make commits on feature branch |
 | `pull request already exists` | PR exists for this branch | Use existing PR or close it first |
-| `branch not found on remote` | Not pushed | `git push -u origin <branch>` |
+| `branch not found on remote` | Not pushed | `git -C "$REPO_PATH" push -u origin <branch>` |
 | `validation failed` | Missing required fields | Check repo PR template requirements |
 | `user not found` | Wrong reviewer username | Verify username spelling |
 
@@ -264,12 +271,12 @@ gh pr ready <pr-number>
 
 If PR was created with wrong title:
 ```bash
-gh pr edit <pr-number> --title "correct title"
+gh pr edit <pr-number> --repo "$OWNER_REPO" --title "correct title"
 ```
 
 If PR was created with wrong description:
 ```bash
-gh pr edit <pr-number> --body "$(cat <<'EOF'
+gh pr edit <pr-number> --repo "$OWNER_REPO" --body "$(cat <<'EOF'
 new description
 EOF
 )"
@@ -277,14 +284,14 @@ EOF
 
 If PR was created against wrong base branch:
 ```bash
-gh pr edit <pr-number> --base correct-branch
+gh pr edit <pr-number> --repo "$OWNER_REPO" --base correct-branch
 ```
 
 If you need to completely redo:
 ```bash
 # Close the PR
-gh pr close <pr-number>
+gh pr close <pr-number> --repo "$OWNER_REPO"
 
 # Create new PR
-gh pr create ...
+gh pr create --repo "$OWNER_REPO" ...
 ```

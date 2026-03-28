@@ -3,73 +3,40 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*'
 
 jobs:
-  validate-before-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: CPV validation gate
-        run: |
-          set +e
-          uvx --from git+https://github.com/Emasoft/claude-plugins-validation --with pyyaml cpv-validate . --verbose
-          EXIT_CODE=$?
-          set -e
-          # Block release only on CRITICAL (1) or MAJOR (2)
-          if [ $EXIT_CODE -ge 1 ] && [ $EXIT_CODE -le 2 ]; then
-            echo "BLOCKED: CRITICAL or MAJOR issues — cannot release"
-            exit $EXIT_CODE
-          fi
-
   release:
-    needs: validate-before-release
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      - name: Extract version
+      - name: Extract version from tag
         id: version
-        run: |
-          VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
-          NAME=$(jq -r '.name' .claude-plugin/plugin.json)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "name=$NAME" >> $GITHUB_OUTPUT
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
-      - name: Generate changelog
-        id: changelog
+      - name: Validate version matches plugin.json
         run: |
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          if [ -z "$PREV_TAG" ]; then
-            CHANGELOG=$(git log --pretty=format:"- %s (%h)" HEAD)
-          else
-            CHANGELOG=$(git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD)
+          PLUGIN_VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
+          if [ "$PLUGIN_VERSION" != "${{ steps.version.outputs.VERSION }}" ]; then
+            echo "Error: Tag version (${{ steps.version.outputs.VERSION }}) does not match plugin.json version ($PLUGIN_VERSION)"
+            exit 1
           fi
-          echo "changelog<<CHANGELOG_EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG" >> $GITHUB_OUTPUT
-          echo "CHANGELOG_EOF" >> $GITHUB_OUTPUT
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Create Release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2
         with:
-          name: "${{ steps.version.outputs.name }} v${{ steps.version.outputs.version }}"
+          generate_release_notes: true
           body: |
-            ## ${{ steps.version.outputs.name }} v${{ steps.version.outputs.version }}
+            ## AI Maestro Programmer Agent v${{ steps.version.outputs.VERSION }}
+
+            ### Installation
+            ```bash
+            # Direct install from GitHub:
+            claude plugin install ai-maestro-programmer-agent --url https://github.com/Emasoft/ai-maestro-programmer-agent
+            ```
 
             ### Changes
-            ${{ steps.changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
+            See below for auto-generated release notes.

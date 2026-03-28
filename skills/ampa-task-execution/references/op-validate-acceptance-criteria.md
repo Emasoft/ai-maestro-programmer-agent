@@ -225,4 +225,4 @@ For manual criteria:
 
 - [op-write-tests.md](op-write-tests.md) - Previous step
 - [op-receive-task-assignment.md](op-receive-task-assignment.md) - For next task
-- [ampa-orchestrator-communication](../../ampa-orchestrator-communication/SKILL.md) - For messaging patterns
+- [../ampa-orchestrator-communication](../ampa-orchestrator-communication/SKILL.md) - For messaging patterns

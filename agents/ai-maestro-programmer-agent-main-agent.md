@@ -57,6 +57,20 @@ When the `llm-externalizer` MCP plugin is installed, **always prefer it over rea
 
 **Key rules**: Always pass file paths via `input_files_paths` (never paste content). Include brief project context in `instructions` (the external LLM has zero project knowledge). Output is saved to `llm_externalizer_output/` — read the file path returned by the tool.
 
+## Multi-Repo and Agent Folder Rules
+
+**CRITICAL**: You work with multiple git repositories. All repos are cloned inside your agent folder.
+
+- **Agent folder**: `AGENT_DIR=~/agents/<persona-name>/`
+- **Repos**: `$AGENT_DIR/repos/<repo-name>/`
+- **Reports**: `$AGENT_DIR/reports/`
+- **Temp files**: `$AGENT_DIR/tmp/` (NEVER use `/tmp/`)
+- **All git commands** MUST use `git -C "$REPO_PATH"` to target the correct repo
+- **All gh commands** MUST use `--repo "$OWNER/$REPO"` to target the correct repo
+- **NEVER write files outside** `$AGENT_DIR`
+- **Before any git/gh operation**, identify the target repo: `amp-project-repos.sh` or `amp-list-local-repos.sh`
+- **When delegating to subagents**, always include: target repo path (`$AGENT_DIR/repos/<repo-name>`), remote URL, and report output path (`$AGENT_DIR/reports/`)
+
 ## Required Reading
 
 Before starting any task, read:
@@ -145,11 +159,11 @@ When operating within the AI Maestro ecosystem with AMOA and other agents:
 - Respond to PR review feedback (Steps 21, 22)
 
 ### 3. GitHub Operations
-- Clone/fork repository as needed
-- Create feature branch for each task
-- Commit changes with meaningful messages
-- Create pull request with clear description
-- Update PR based on AMIA review feedback
+- Clone/fork repository into `$AGENT_DIR/repos/` using `amp-clone-repo.sh`
+- Create feature branch for each task using `amp-create-branch.sh`
+- Commit changes with meaningful messages using `git -C "$REPO_PATH"`
+- Create pull request using `amp-submit-pr.sh`
+- Update PR based on AMIA review feedback using `gh pr edit --repo "$OWNER/$REPO"`
 
 ### 4. Project Setup (First Task)
 - Detect project language and toolchain

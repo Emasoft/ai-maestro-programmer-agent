@@ -1,7 +1,7 @@
 # Full Project Workflow: From Requirements to Delivery
 
-**Version**: 1.2.0
-**Last Updated**: 2026-03-08
+**Version**: 1.3.0
+**Last Updated**: 2026-03-28
 
 This document describes the complete workflow for how the AI Maestro agent system handles a project from initial requirements to delivery. All agents must understand this workflow to coordinate effectively.
 
@@ -405,14 +405,25 @@ All projects use a **5-status kanban system** on GitHub Projects. Every agent mu
 
 ---
 
+## Governance Model (4 Titles)
+
+| Title | Agent | Description |
+|-------|-------|-------------|
+| **MANAGER** | AMAMA | Singleton. Full authority over all teams and agents. |
+| **CHIEF-OF-STAFF** | AMCOS | Leads a team. Manages membership, routes external messages. |
+| **ORCHESTRATOR** | AMOA | Primary kanban manager. Direct MANAGER communication. Task distribution. |
+| **MEMBER** | AMPA, AMIA, AMAA | Default. Standard team member. Reports to Orchestrator. |
+
+> All teams are **closed** (no "open" teams). Each agent belongs to **at most one team**. ORCHESTRATOR can message MANAGER directly.
+
 ## Role Boundaries Summary
 
 | Role | Creates | Manages | Cannot Do |
 |------|---------|---------|-----------|
 | **AMAMA** | Projects | Approvals, user communication | Task assignment |
 | **AMCOS** | Agents, teams | Agent lifecycle | Task assignment, projects |
+| **AMOA** | Tasks, plans | Kanban (primary), agent coordination | Agents, projects |
 | **AMAA** | Designs | Architecture | Task assignment |
-| **AMOA** | Tasks, plans | Kanban, agent coordination | Agents, projects |
 | **AMIA** | Nothing | PR reviews, merges | Task assignment |
 | **Agents** | Code, PRs | Their assigned tasks | Everything else |
 

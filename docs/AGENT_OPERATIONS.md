@@ -86,8 +86,13 @@ This loads ONLY the ai-maestro-programmer-agent plugin into that Claude Code ses
 │   │       │   └── hooks.json
 │   │       └── scripts/
 │   └── settings.json  ← Session-specific settings
-├── work/  ← Working directory for assigned tasks
-├── reports/  ← Task completion reports, blocker reports
+├── repos/  ← All git repos cloned here (one subfolder per repo)
+│   ├── <repo-1>/
+│   └── <repo-2>/
+├── reports/  ← Task completion reports, blocker reports, subagent reports
+├── tmp/  ← Temporary files (NEVER use /tmp/)
+├── teams/  ← Local cache of team data
+├── db/  ← CozoDB and other databases
 └── logs/  ← Session logs
 ```
 
@@ -96,9 +101,14 @@ This loads ONLY the ai-maestro-programmer-agent plugin into that Claude Code ses
 | Directory | Purpose |
 |-----------|---------|
 | `.claude/plugins/` | Plugin installation location |
-| `work/` | Task implementation files, scratch work |
+| `repos/` | All git repositories cloned here (multi-repo support) |
 | `reports/` | Markdown reports for AMOA/AMCOS (task completion, blockers, test results) |
+| `tmp/` | Temporary files (NEVER write to /tmp/) |
+| `teams/` | Local cache of team data (NOT ~/.aimaestro/teams/) |
+| `db/` | CozoDB and other databases (NOT ~/.aimaestro/agents/) |
 | `logs/` | Session activity logs, AI Maestro message logs |
+
+> **CRITICAL**: NEVER write files outside `~/agents/<persona-name>/`. Use `$AGENT_DIR` as the root for all operations.
 
 ---
 
@@ -129,8 +139,8 @@ Before spawning, AMCOS must:
 1. Copy the plugin to `~/agents/$SESSION_NAME/.claude/plugins/ai-maestro-programmer-agent/`
 2. Initialize messaging identity for the session (using the `agent-messaging` skill)
 3. Create initial task description (from AMOA task breakdown)
-4. Set up working directories
-5. Clone project repository into `work/` directory
+4. Set up working directories (`repos/`, `reports/`, `tmp/`, `logs/`)
+5. Clone project repository into `repos/` directory using `amp-clone-repo.sh`
 
 ---
 
@@ -577,6 +587,6 @@ All projects use the canonical **5-status kanban system** on GitHub Projects:
 
 ---
 
-**Document Version**: 1.4.0
-**Last Updated**: 2026-03-08
+**Document Version**: 1.5.0
+**Last Updated**: 2026-03-28
 **Maintained By**: claude-skills-factory

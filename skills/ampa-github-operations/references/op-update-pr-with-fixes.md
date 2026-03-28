@@ -18,6 +18,8 @@ parent-skill: ampa-github-operations
 
 Push code fixes to an existing PR after rejection from AMIA review. This corresponds to **Step 22** of the AMPA workflow.
 
+> **Multi-repo rule**: All gh commands must use `--repo "$OWNER_REPO"`. All git commands must use `git -C "$REPO_PATH"`.
+
 ## When to Use
 
 - After receiving PR review feedback
@@ -36,25 +38,25 @@ Push code fixes to an existing PR after rejection from AMIA review. This corresp
 
 ### 6.1 Making Requested Changes
 
-Ensure you are on the correct branch:
+Ensure you are on the correct branch (always use `--repo` and `git -C`):
 
 ```bash
 # List PRs and find the branch
-gh pr list --author "@me"
-gh pr view <pr-number>
+gh pr list --repo "$OWNER_REPO" --author "@me"
+gh pr view <pr-number> --repo "$OWNER_REPO"
 
 # Check out the PR branch
-git checkout <branch-name>
+git -C "$REPO_PATH" checkout <branch-name>
 
-# Or checkout PR directly
-gh pr checkout <pr-number>
+# Or checkout PR directly (from within the repo)
+gh pr checkout <pr-number> --repo "$OWNER_REPO"
 ```
 
 Update branch with latest main (to avoid conflicts):
 
 ```bash
-git fetch origin main
-git merge origin/main
+git -C "$REPO_PATH" fetch origin main
+git -C "$REPO_PATH" merge origin/main
 # Resolve conflicts if any
 ```
 
@@ -62,42 +64,42 @@ Make the requested changes in your editor.
 
 ### 6.2 Committing Fixes
 
-Commit each logical fix separately for clear history:
+Commit each logical fix separately for clear history (always use `git -C "$REPO_PATH"`):
 
 ```bash
 # Stage specific files for this fix
-git add <files>
+git -C "$REPO_PATH" add <files>
 
 # Commit with message referencing the review
-git commit -m "fix(scope): address review comment about X"
+git -C "$REPO_PATH" commit -m "fix(scope): address review comment about X"
 ```
 
 **Commit message patterns for fixes:**
 
 ```bash
 # For a specific review comment
-git commit -m "fix(auth): add null check per review feedback"
+git -C "$REPO_PATH" commit -m "fix(auth): add null check per review feedback"
 
 # For multiple related fixes
-git commit -m "fix(api): address security concerns from review
+git -C "$REPO_PATH" commit -m "fix(api): address security concerns from review
 
 - Add input validation
 - Sanitize user input
 - Add rate limiting"
 
 # For test additions
-git commit -m "test(auth): add unit tests per review request"
+git -C "$REPO_PATH" commit -m "test(auth): add unit tests per review request"
 ```
 
 **Do not squash commits** when pushing fixes. Keep separate commits so reviewer can see what changed since last review.
 
 ### 6.3 Pushing Updates to PR Branch
 
-Push changes to update the PR:
+Push changes to update the PR (always use `git -C "$REPO_PATH"`):
 
 ```bash
 # Push to the same branch (PR updates automatically)
-git push origin <branch-name>
+git -C "$REPO_PATH" push origin <branch-name>
 ```
 
 The PR will automatically update with new commits.
@@ -106,17 +108,17 @@ If you rebased and need to force push:
 
 ```bash
 # Only if you rebased (avoid if possible)
-git push --force-with-lease origin <branch-name>
+git -C "$REPO_PATH" push --force-with-lease origin <branch-name>
 ```
 
 **Note:** Prefer merge over rebase to preserve review context. Force pushing can lose review comments.
 
 ### 6.4 Updating PR Description
 
-If changes affect the PR scope, update the description:
+If changes affect the PR scope, update the description (always include `--repo`):
 
 ```bash
-gh pr edit <pr-number> --body "$(cat <<'EOF'
+gh pr edit <pr-number> --repo "$OWNER_REPO" --body "$(cat <<'EOF'
 ## Summary
 <updated summary>
 
@@ -148,7 +150,7 @@ After pushing all fixes, notify the reviewer:
 
 ```bash
 # Add comment summarizing what was fixed
-gh pr comment <pr-number> --body "$(cat <<'EOF'
+gh pr comment <pr-number> --repo "$OWNER_REPO" --body "$(cat <<'EOF'
 ## Updates Pushed
 
 All review comments have been addressed:
@@ -164,7 +166,7 @@ EOF
 )"
 
 # Request re-review
-gh pr edit <pr-number> --add-reviewer "<reviewer-username>"
+gh pr edit <pr-number> --repo "$OWNER_REPO" --add-reviewer "<reviewer-username>"
 ```
 
 ## Checklist
@@ -183,44 +185,44 @@ gh pr edit <pr-number> --add-reviewer "<reviewer-username>"
 ### Example 1: Single Fix Push
 
 ```bash
-# Checkout PR
-gh pr checkout 123
+# Checkout PR branch
+git -C "$REPO_PATH" checkout feature/123-auth
 
 # Make fix
 # ... edit files ...
 
 # Commit and push
-git add src/auth.js
-git commit -m "fix(auth): add null check per review"
-git push origin feature/123-auth
+git -C "$REPO_PATH" add src/auth.js
+git -C "$REPO_PATH" commit -m "fix(auth): add null check per review"
+git -C "$REPO_PATH" push origin feature/123-auth
 
 # Notify
-gh pr comment 123 --body "Added null check as requested. Ready for re-review."
-gh pr edit 123 --add-reviewer "amia-reviewer"
+gh pr comment 123 --repo "$OWNER_REPO" --body "Added null check as requested. Ready for re-review."
+gh pr edit 123 --repo "$OWNER_REPO" --add-reviewer "amia-reviewer"
 ```
 
 ### Example 2: Multiple Fixes
 
 ```bash
-gh pr checkout 456
+git -C "$REPO_PATH" checkout feature/456-api-security
 
 # Fix 1
-git add src/validation.js
-git commit -m "fix(validation): add input sanitization"
+git -C "$REPO_PATH" add src/validation.js
+git -C "$REPO_PATH" commit -m "fix(validation): add input sanitization"
 
 # Fix 2
-git add tests/validation.test.js
-git commit -m "test(validation): add edge case tests"
+git -C "$REPO_PATH" add tests/validation.test.js
+git -C "$REPO_PATH" commit -m "test(validation): add edge case tests"
 
 # Fix 3
-git add src/api.js
-git commit -m "fix(api): add rate limiting"
+git -C "$REPO_PATH" add src/api.js
+git -C "$REPO_PATH" commit -m "fix(api): add rate limiting"
 
 # Push all
-git push origin feature/456-api-security
+git -C "$REPO_PATH" push origin feature/456-api-security
 
 # Summary comment
-gh pr comment 456 --body "$(cat <<'EOF'
+gh pr comment 456 --repo "$OWNER_REPO" --body "$(cat <<'EOF'
 Pushed 3 commits addressing review:
 1. Input sanitization (abc123)
 2. Edge case tests (def456)
@@ -234,21 +236,21 @@ EOF
 ### Example 3: Fix After Rebase
 
 ```bash
-gh pr checkout 789
+git -C "$REPO_PATH" checkout feature/789-refactor
 
 # Rebase on main
-git fetch origin main
-git rebase origin/main
+git -C "$REPO_PATH" fetch origin main
+git -C "$REPO_PATH" rebase origin/main
 
 # Make fixes
-git add .
-git commit -m "fix(core): address all review comments"
+git -C "$REPO_PATH" add .
+git -C "$REPO_PATH" commit -m "fix(core): address all review comments"
 
 # Force push (with lease for safety)
-git push --force-with-lease origin feature/789-refactor
+git -C "$REPO_PATH" push --force-with-lease origin feature/789-refactor
 
 # Explain in comment
-gh pr comment 789 --body "$(cat <<'EOF'
+gh pr comment 789 --repo "$OWNER_REPO" --body "$(cat <<'EOF'
 Rebased on main and addressed all review comments.
 
 Note: Force pushed due to rebase. All review comments should still be visible.
@@ -278,43 +280,43 @@ If you pushed broken code:
 
 ```bash
 # Revert immediately
-git revert HEAD
-git push origin <branch>
+git -C "$REPO_PATH" revert HEAD
+git -C "$REPO_PATH" push origin <branch>
 
 # Comment on PR
-gh pr comment <pr-number> --body "Reverted broken commit. Investigating issue."
+gh pr comment <pr-number> --repo "$OWNER_REPO" --body "Reverted broken commit. Investigating issue."
 ```
 
 If push failed due to conflicts:
 
 ```bash
 # Pull and merge
-git pull origin <branch>
+git -C "$REPO_PATH" pull origin <branch>
 
 # Or fetch and merge main
-git fetch origin main
-git merge origin/main
+git -C "$REPO_PATH" fetch origin main
+git -C "$REPO_PATH" merge origin/main
 
 # Resolve conflicts
 # ... edit conflicted files ...
-git add <resolved-files>
-git commit -m "resolve merge conflicts"
-git push origin <branch>
+git -C "$REPO_PATH" add <resolved-files>
+git -C "$REPO_PATH" commit -m "resolve merge conflicts"
+git -C "$REPO_PATH" push origin <branch>
 ```
 
 If you need to completely redo fixes:
 
 ```bash
 # Reset to state before your fixes
-git log --oneline
-git reset --hard <commit-before-fixes>
+git -C "$REPO_PATH" log --oneline
+git -C "$REPO_PATH" reset --hard <commit-before-fixes>
 
 # Make fixes correctly
 # ... edit files ...
-git add .
-git commit -m "fix: corrected implementation"
-git push --force-with-lease origin <branch>
+git -C "$REPO_PATH" add .
+git -C "$REPO_PATH" commit -m "fix: corrected implementation"
+git -C "$REPO_PATH" push --force-with-lease origin <branch>
 
 # Explain in comment
-gh pr comment <pr-number> --body "Reset and redid fixes. Previous approach was incorrect."
+gh pr comment <pr-number> --repo "$OWNER_REPO" --body "Reset and redid fixes. Previous approach was incorrect."
 ```

@@ -74,11 +74,11 @@ TESTS_TOTAL=$((TESTS_PASSING + TESTS_FAILING))
 
 ### Step 3: Capture Modified Files
 
-List files that have been modified:
+List files that have been modified (always use `git -C` to target the correct repo):
 
 ```bash
-# If in a git repository
-MODIFIED_FILES=$(git diff --name-only 2>/dev/null || echo "Not in git repo")
+# If in a git repository (always specify the repo path)
+MODIFIED_FILES=$(git -C "$REPO_PATH" diff --name-only 2>/dev/null || echo "Not in git repo")
 
 # Or track manually
 MODIFIED_FILES="src/feature.py, tests/test_feature.py"

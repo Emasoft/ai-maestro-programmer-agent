@@ -42,12 +42,3 @@ logs/
 *.tmp
 *.temp
 .cache/
-
-# Claude Code
-.claude/
-
-# LLM Externalizer
-llm_externalizer_output/
-
-# TLDR
-.tldr/

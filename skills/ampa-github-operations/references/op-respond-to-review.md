@@ -18,6 +18,8 @@ parent-skill: ampa-github-operations
 
 Address review comments from AMIA (AI Maestro Integrator Agent) after PR rejection. This corresponds to **Step 21** of the AMPA workflow.
 
+> **Multi-repo rule**: All gh commands must use `--repo "$OWNER_REPO"`. All git commands must use `git -C "$REPO_PATH"`.
+
 ## When to Use
 
 - PR has been reviewed and changes requested
@@ -36,25 +38,25 @@ Address review comments from AMIA (AI Maestro Integrator Agent) after PR rejecti
 
 ### 5.1 Reading Review Comments
 
-View all review comments on a PR:
+View all review comments on a PR (always include `--repo`):
 
 ```bash
 # List all reviews on PR
-gh pr view <pr-number> --comments
+gh pr view <pr-number> --repo "$OWNER_REPO" --comments
 
 # View detailed PR information
-gh pr view <pr-number>
+gh pr view <pr-number> --repo "$OWNER_REPO"
 
 # View review comments via API for more detail
-gh api repos/<owner>/<repo>/pulls/<pr-number>/reviews
+gh api repos/$OWNER_REPO/pulls/<pr-number>/reviews
 
 # View inline comments
-gh api repos/<owner>/<repo>/pulls/<pr-number>/comments
+gh api repos/$OWNER_REPO/pulls/<pr-number>/comments
 ```
 
 Using gh pr checks to see status:
 ```bash
-gh pr checks <pr-number>
+gh pr checks <pr-number> --repo "$OWNER_REPO"
 ```
 
 ### 5.2 Understanding Rejection Reasons
@@ -116,7 +118,7 @@ Reply to individual comments:
 
 ```bash
 # Reply to a specific review comment
-gh api repos/<owner>/<repo>/pulls/<pr-number>/comments/<comment-id>/replies \
+gh api repos/$OWNER_REPO/pulls/<pr-number>/comments/<comment-id>/replies \
   -f body="Fixed in commit abc123. Added null check as suggested."
 ```
 
@@ -147,17 +149,17 @@ it handles X edge case better. Happy to discuss further.
 
 ### 5.5 Requesting Re-review
 
-After making all changes, request re-review:
+After making all changes, request re-review (always include `--repo`):
 
 ```bash
 # Add reviewer request
-gh pr edit <pr-number> --add-reviewer "<reviewer-username>"
+gh pr edit <pr-number> --repo "$OWNER_REPO" --add-reviewer "<reviewer-username>"
 ```
 
 Add a comment summarizing changes made:
 
 ```bash
-gh pr comment <pr-number> --body "$(cat <<'EOF'
+gh pr comment <pr-number> --repo "$OWNER_REPO" --body "$(cat <<'EOF'
 ## Changes Made in Response to Review
 
 I've addressed all the review comments:
@@ -189,23 +191,23 @@ EOF
 
 ```bash
 # View the review comments
-gh pr view 123 --comments
+gh pr view 123 --repo "$OWNER_REPO" --comments
 
 # Output shows:
 # @amia-reviewer: SECURITY: SQL injection vulnerability in query builder.
 # Use parameterized queries instead of string concatenation.
 
 # After fixing, reply:
-gh pr comment 123 --body "Fixed SQL injection vulnerability in commit abc123. Now using parameterized queries throughout."
+gh pr comment 123 --repo "$OWNER_REPO" --body "Fixed SQL injection vulnerability in commit abc123. Now using parameterized queries throughout."
 
 # Request re-review
-gh pr edit 123 --add-reviewer "amia-reviewer"
+gh pr edit 123 --repo "$OWNER_REPO" --add-reviewer "amia-reviewer"
 ```
 
 ### Example 2: Handling Multiple Comments
 
 ```bash
-gh pr comment 456 --body "$(cat <<'EOF'
+gh pr comment 456 --repo "$OWNER_REPO" --body "$(cat <<'EOF'
 ## Review Response
 
 Addressed all comments from the review:
@@ -230,7 +232,7 @@ EOF
 ### Example 3: Declining a Suggestion
 
 ```bash
-gh pr comment 789 --body "$(cat <<'EOF'
+gh pr comment 789 --repo "$OWNER_REPO" --body "$(cat <<'EOF'
 Regarding the suggestion to use async/await instead of Promises:
 
 I've kept the Promise-based approach for this specific case because:
@@ -247,7 +249,7 @@ EOF
 
 | Error | Cause | Solution |
 |-------|-------|----------|
-| `Could not resolve to a PullRequest` | Wrong PR number | Verify PR number with `gh pr list` |
+| `Could not resolve to a PullRequest` | Wrong PR number | Verify PR number with `gh pr list --repo "$OWNER_REPO"` |
 | `Resource not accessible` | No permission | Check repo access |
 | `comment not found` | Wrong comment ID | Get correct ID from API |
 | `Review not found` | PR has no reviews | Wait for review or check correct PR |
@@ -257,15 +259,15 @@ EOF
 If you pushed a broken fix:
 ```bash
 # Revert the commit
-git revert <commit-hash>
-git push origin <branch>
+git -C "$REPO_PATH" revert <commit-hash>
+git -C "$REPO_PATH" push origin <branch>
 
 # Comment on PR
-gh pr comment <pr-number> --body "Reverted broken fix in commit xyz. Working on correct solution."
+gh pr comment <pr-number> --repo "$OWNER_REPO" --body "Reverted broken fix in commit xyz. Working on correct solution."
 ```
 
 If you addressed wrong comment:
 ```bash
 # Reply to clarify
-gh pr comment <pr-number> --body "My previous comment addressed the wrong issue. Working on the correct fix now."
+gh pr comment <pr-number> --repo "$OWNER_REPO" --body "My previous comment addressed the wrong issue. Working on the correct fix now."
 ```
