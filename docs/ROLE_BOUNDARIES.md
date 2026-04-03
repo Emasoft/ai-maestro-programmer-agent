@@ -53,9 +53,10 @@ All significant operations require GovernanceRequest approval from manager.
 
 ## Team Types
 
+All teams are **closed** (isolated messaging with COS gateway). Open teams were removed. Use **groups** for lightweight, unstructured agent collections.
+
 | Type | COS Required | Description |
 |------|-------------|-------------|
-| `open` | No | Loose coordination, no COS |
 | `closed` | Yes | Formal coordination via assigned COS |
 
 ---
@@ -78,15 +79,15 @@ The following table maps specific AI Maestro agent plugins to the 3-role system:
 |-------------|---------|------|----------------|
 | ai-maestro-assistant-manager-agent | AMAMA | `manager` | User interface, approvals |
 | ai-maestro-chief-of-staff | AMCOS | `chief-of-staff` | Team coordination |
-| ai-maestro-orchestrator-agent | AMOA | `chief-of-staff` | Task orchestration, kanban |
+| ai-maestro-orchestrator-agent | AMOA | `orchestrator` | Task orchestration, kanban |
 | ai-maestro-programmer-agent | AMPA | `member` | Code implementation |
-| ai-maestro-integrator-agent | AMIA | `member` | PR review, merging |
-| ai-maestro-architect-agent | AMAA | `member` | Architecture, design |
+| ai-maestro-integrator-agent | AMIA | `integrator` | PR review, merging |
+| ai-maestro-architect-agent | AMAA | `architect` | Architecture, design |
 
 > **Note**: AMPA (this plugin) operates as a `member` with implementer specialization. In standalone mode (no COS/manager present), AMPA receives tasks directly from the user and may take on expanded responsibilities.
 
 ---
 
-**Document Version**: 2.0.0
+**Document Version**: 2.0.1
 **Last Updated**: 2026-03-13
 **Source**: Synced from upstream `ai-maestro-assistant-manager-agent/docs/ROLE_BOUNDARIES.md`
