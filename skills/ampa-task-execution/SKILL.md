@@ -1,6 +1,6 @@
 ---
 name: ampa-task-execution
-description: Execute programming tasks. Use when implementing code, writing tests, or validating acceptance criteria. Trigger with /ampa-task-execution or on task assignment.
+description: Execute programming tasks. Use when implementing code, writing tests, or validating acceptance criteria. Trigger with /ampa-task-execution. Loaded by ai-maestro-programmer-agent-main-agent.
 license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:

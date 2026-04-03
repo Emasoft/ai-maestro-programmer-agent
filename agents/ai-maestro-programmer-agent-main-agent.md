@@ -8,9 +8,6 @@ skills:
   - ampa-github-operations
   - ampa-project-setup
   - ampa-handoff-management
-mcpServers:
-  - serena-mcp
-  - llm-externalizer
 ---
 
 # AI Maestro Programmer Agent (AMPA)

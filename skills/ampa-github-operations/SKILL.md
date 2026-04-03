@@ -1,6 +1,6 @@
 ---
 name: ampa-github-operations
-description: Git and GitHub operations for AMPA. Use when cloning repos, branching, committing, opening PRs, or handling review feedback. Trigger with /ampa-github-operations.
+description: Git and GitHub operations for AMPA. Use when cloning repos, branching, committing, opening PRs, or handling review feedback. Trigger with /ampa-github-operations. Loaded by ai-maestro-programmer-agent-main-agent.
 license: MIT
 compatibility: Requires gh CLI authenticated.
 metadata:

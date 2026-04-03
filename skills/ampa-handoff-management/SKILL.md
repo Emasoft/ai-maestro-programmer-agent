@@ -1,6 +1,6 @@
 ---
 name: ampa-handoff-management
-description: Create and receive handoff documents for context transfer. Use when transferring work, resuming sessions, or filing bug reports. Trigger with /ampa-handoff.
+description: Create and receive handoff documents. Use when transferring work, resuming sessions, or filing bug reports. Trigger with /ampa-handoff. Loaded by ai-maestro-programmer-agent-main-agent.
 license: MIT
 compatibility: Requires AI Maestro running.
 metadata:

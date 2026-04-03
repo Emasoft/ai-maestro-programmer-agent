@@ -1,6 +1,6 @@
 ---
 name: ampa-orchestrator-communication
-description: Communication with AMOA Orchestrator via AI Maestro. Use when sending clarifications, status updates, blockers, or completions. Trigger with /ampa-orchestrator-comm.
+description: Communication with AMOA Orchestrator via AI Maestro. Use when sending clarifications, status updates, blockers, or completions. Trigger with /ampa-orchestrator-comm. Loaded by ai-maestro-programmer-agent-main-agent.
 license: MIT
 compatibility: Requires AI Maestro running.
 metadata:

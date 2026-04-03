@@ -1,6 +1,6 @@
 ---
 name: ampa-project-setup
-description: Setup project configuration and tooling. Use when starting work on new project. Trigger with /ampa-project-setup or when initializing a new project.
+description: Setup project configuration and tooling. Use when starting work on new project. Trigger with /ampa-project-setup or when initializing a new project. Loaded by ai-maestro-programmer-agent-main-agent.
 license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:
