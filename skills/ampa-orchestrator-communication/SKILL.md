@@ -75,12 +75,12 @@ log. Resume when connectivity is restored.
 
 | Document | Description |
 |----------|-------------|
-| [op-request-clarification.md](references/op-request-clarification.md) | 1.1 When to Request Clarification, Prerequisites, 1.2 Clarification Request Format, Procedure, Checklist, 1.3 Sending the Request, 1.4 Handling the Response, 1.5 Examples, Error Handling |
-| [op-report-status.md](references/op-report-status.md) | 2.1 When to Report Status, Prerequisites, 2.2 Status Message Format, 2.3 Progress Indicators, Procedure, Checklist, 2.4 Sending Status Updates, 2.5 Examples, Error Handling |
-| [op-report-blocker.md](references/op-report-blocker.md) | 3.1 Identifying Blockers, Prerequisites, 3.2 Blocker Report Format, 3.3 Severity Levels, Procedure, Checklist, 3.4 Escalation Procedure, 3.5 Examples, Error Handling |
-| [op-propose-improvement.md](references/op-propose-improvement.md) | 4.1 When to Propose Improvements, Prerequisites, 4.2 Improvement Proposal Format, 4.3 Justification Requirements, Procedure, Checklist, 4.4 Awaiting Approval, 4.5 Examples, Error Handling |
-| [op-notify-completion.md](references/op-notify-completion.md) | 5.1 Completion Criteria, Prerequisites, 5.2 Completion Notification Format, 5.3 Deliverables Summary, Procedure, Checklist, 5.4 Sending Notification, 5.5 Examples, Error Handling |
-| [op-receive-feedback.md](references/op-receive-feedback.md) | 6.1 Monitoring for Feedback, Prerequisites, 6.2 Feedback Message Types, 6.3 Processing Feedback, Procedure, Checklist, 6.4 Acknowledgment Protocol, 6.5 Examples, Error Handling |
+| [op-request-clarification.md](references/op-request-clarification.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-report-status.md](references/op-report-status.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-report-blocker.md](references/op-report-blocker.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-propose-improvement.md](references/op-propose-improvement.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-notify-completion.md](references/op-notify-completion.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-receive-feedback.md](references/op-receive-feedback.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 
 **`agent-messaging` skill** (global) — Messaging commands.
 

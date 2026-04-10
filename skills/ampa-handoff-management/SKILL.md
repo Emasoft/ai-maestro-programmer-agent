@@ -84,7 +84,7 @@ Copy this checklist and track your progress:
 
 | Document | Description |
 |----------|-------------|
-| [op-read-handoff-document.md](references/op-read-handoff-document.md) | When to Use, Prerequisites, Procedure, Checklist, Error Handling |
+| [op-read-handoff-document.md](references/op-read-handoff-document.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 | [op-create-handoff-document.md](references/op-create-handoff-document.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
 | [op-write-bug-report.md](references/op-write-bug-report.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
 | [op-document-work-state.md](references/op-document-work-state.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |

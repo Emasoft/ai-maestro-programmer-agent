@@ -89,12 +89,12 @@ complete.
 
 | Document | Description |
 |----------|-------------|
-| [op-receive-task-assignment.md](references/op-receive-task-assignment.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
-| [op-parse-task-requirements.md](references/op-parse-task-requirements.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
-| [op-setup-development-environment.md](references/op-setup-development-environment.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
-| [op-implement-code.md](references/op-implement-code.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
-| [op-write-tests.md](references/op-write-tests.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
-| [op-validate-acceptance-criteria.md](references/op-validate-acceptance-criteria.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
+| [op-receive-task-assignment.md](references/op-receive-task-assignment.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-parse-task-requirements.md](references/op-parse-task-requirements.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-setup-development-environment.md](references/op-setup-development-environment.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-implement-code.md](references/op-implement-code.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-write-tests.md](references/op-write-tests.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-validate-acceptance-criteria.md](references/op-validate-acceptance-criteria.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 
 ## Related
 

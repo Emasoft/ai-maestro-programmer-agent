@@ -71,13 +71,13 @@ before retrying.
 
 | Document | Description |
 |----------|-------------|
-| [op-detect-project-language.md](references/op-detect-project-language.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
-| [op-initialize-package-manager.md](references/op-initialize-package-manager.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
-| [op-install-dependencies.md](references/op-install-dependencies.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
-| [op-configure-linting.md](references/op-configure-linting.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
+| [op-detect-project-language.md](references/op-detect-project-language.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-initialize-package-manager.md](references/op-initialize-package-manager.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-install-dependencies.md](references/op-install-dependencies.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-configure-linting.md](references/op-configure-linting.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 | [ruff-configuration-patterns.md](references/ruff-configuration-patterns.md) | When to Configure Ruff for a New Project, Standard ruff.toml Template for AI Maestro Programmer Projects, What Each Rule Set Does, What Each Ignored Rule Means, Per-File Ignore Patterns, Formatter Settings, How to Run Ruff, Customizing Ruff for Specific Project Types |
-| [op-setup-testing-framework.md](references/op-setup-testing-framework.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
-| [op-activate-serena-mcp.md](references/op-activate-serena-mcp.md) | When to Use, Prerequisites, Procedure, SERENA Tool Reference, Checklist, Examples, Error Handling |
+| [op-setup-testing-framework.md](references/op-setup-testing-framework.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-activate-serena-mcp.md](references/op-activate-serena-mcp.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 
 ## Related
 
