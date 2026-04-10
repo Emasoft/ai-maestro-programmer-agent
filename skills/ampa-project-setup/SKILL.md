@@ -41,33 +41,13 @@ Copy this checklist and track your progress:
 
 1. **Read this SKILL.md** to understand the operations before executing.
 2. **Navigate to the project root** and confirm write access.
-3. **Detect language**: Read and execute
-   [op-detect-project-language.md](references/op-detect-project-language.md):
-   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling.
-   Record the result.
-4. **Init package manager**: Read and execute
-   [op-initialize-package-manager.md](references/op-initialize-package-manager.md):
-   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling.
-   Verify with version command.
-5. **Install dependencies**: Read and execute
-   [op-install-dependencies.md](references/op-install-dependencies.md):
-   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling.
-   Confirm zero errors.
-6. **Configure linting**: Read and execute
-   [op-configure-linting.md](references/op-configure-linting.md):
-   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling.
-   For Python, also read
-   [ruff-configuration-patterns.md](references/ruff-configuration-patterns.md):
-   When to Configure Ruff for a New Project, Standard ruff.toml Template for AI Maestro Programmer Projects, What Each Rule Set Does, What Each Ignored Rule Means, Per-File Ignore Patterns, Formatter Settings, How to Run Ruff, Customizing Ruff for Specific Project Types.
-   Verify linter runs.
-7. **Setup testing**: Read and execute
-   [op-setup-testing-framework.md](references/op-setup-testing-framework.md):
-   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling.
-   Run test suite once.
-8. **Activate SERENA**: Read and execute
-   [op-activate-serena-mcp.md](references/op-activate-serena-mcp.md):
-   When to Use, Prerequisites, Procedure, SERENA Tool Reference, Checklist, Examples, Error Handling.
-   Verify with `find_symbol`.
+3. **Detect language** — see Resources table. Record the result.
+4. **Init package manager** — see Resources table. Verify with version command.
+5. **Install dependencies** — see Resources table. Confirm zero errors.
+6. **Configure linting** — see Resources table. For Python, also read
+   ruff-configuration-patterns.md. Verify linter runs.
+7. **Setup testing** — see Resources table. Run test suite once.
+8. **Activate SERENA** — see Resources table. Verify with `find_symbol`.
 9. **Report setup status** to AMOA confirming the environment is ready.
 
 ## Output
@@ -87,7 +67,7 @@ before retrying.
 - [x] Output: uv init, deps installed, ruff configured, pytest ready, SERENA
       active
 
-## Reference Documents
+## Resources
 
 | Document | Description |
 |----------|-------------|

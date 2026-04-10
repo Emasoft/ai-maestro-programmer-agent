@@ -43,28 +43,28 @@ Copy this checklist and track your progress:
 1. **Clone or fork** the target repository using `gh repo clone <owner>/<repo>`
    or `gh repo fork <owner>/<repo> --clone`. See
    [op-clone-repository.md](references/op-clone-repository.md):
-   When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps.
+   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps.
 2. **Create a feature branch** from the latest main:
    `git checkout -b <type>/<issue-number>-<short-description> main`. See
    [op-create-feature-branch.md](references/op-create-feature-branch.md):
-   When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps.
+   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps.
 3. **Implement changes** and commit incrementally using conventional commit
    format: `git commit -m "feat(scope): description"`. See
    [op-commit-changes.md](references/op-commit-changes.md):
-   When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps.
+   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps.
 4. **Push the branch** to the remote: `git push -u origin <branch-name>`.
 5. **Create a pull request** using `gh pr create --title "..." --body "..."`
    with a description linking to the relevant issue. See
    [op-create-pull-request.md](references/op-create-pull-request.md):
-   When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps.
+   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps.
 6. **Respond to review feedback**: Read comments with
    `gh pr view <number> --comments`, address each comment, commit fixes, and
    push. See [op-respond-to-review.md](references/op-respond-to-review.md):
-   When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps.
+   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps.
 7. **Handle failed PRs**: After pushing fixes, update the PR description if
    needed and request re-review. See
    [op-update-pr-with-fixes.md](references/op-update-pr-with-fixes.md):
-   When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps.
+   When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps.
 8. **Notify AMOA** of PR creation or update status via
    ampa-orchestrator-communication skill.
 
@@ -86,16 +86,16 @@ force-push without AMOA approval.
 - [x] Output:
       `gh pr create --title "feat(auth): add JWT validation (#42)" --body "Closes #42"`
 
-## Reference Documents
+## Resources
 
 | Document | Description |
 |----------|-------------|
-| [op-clone-repository.md](references/op-clone-repository.md) | When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps |
-| [op-create-feature-branch.md](references/op-create-feature-branch.md) | When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps |
-| [op-commit-changes.md](references/op-commit-changes.md) | When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps |
-| [op-create-pull-request.md](references/op-create-pull-request.md) | When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps |
-| [op-respond-to-review.md](references/op-respond-to-review.md) | When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps |
-| [op-update-pr-with-fixes.md](references/op-update-pr-with-fixes.md) | When to Use, Prerequisites, Procedure, Error Handling, Recovery Steps |
+| [op-clone-repository.md](references/op-clone-repository.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps |
+| [op-create-feature-branch.md](references/op-create-feature-branch.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps |
+| [op-commit-changes.md](references/op-commit-changes.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps |
+| [op-create-pull-request.md](references/op-create-pull-request.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps |
+| [op-respond-to-review.md](references/op-respond-to-review.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps |
+| [op-update-pr-with-fixes.md](references/op-update-pr-with-fixes.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Recovery Steps |
 
 ## Related
 

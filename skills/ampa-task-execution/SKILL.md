@@ -85,7 +85,7 @@ complete.
 - [ ] Input: Task #42 assignment message from AMOA
 - [x] Output: 3 modified files, 5 passing tests, completion report sent
 
-## Reference Documents
+## Resources
 
 | Document | Description |
 |----------|-------------|

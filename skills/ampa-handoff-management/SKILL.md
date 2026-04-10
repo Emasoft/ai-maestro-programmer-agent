@@ -80,7 +80,7 @@ Copy this checklist and track your progress:
 - [x] Output: `current.md` with YAML frontmatter, modified files, test status,
       next steps. Notification sent.
 
-## Reference Documents
+## Resources
 
 | Document | Description |
 |----------|-------------|
