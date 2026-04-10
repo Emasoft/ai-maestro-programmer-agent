@@ -85,19 +85,16 @@ complete.
 - [ ] Input: Task #42 assignment message from AMOA
 - [x] Output: 3 modified files, 5 passing tests, completion report sent
 
-## Resources
+## Reference Documents
 
-- **[op-receive-task-assignment.md](references/op-receive-task-assignment.md)**
-  -- Parse incoming task
-- **[op-parse-task-requirements.md](references/op-parse-task-requirements.md)**
-  -- Extract criteria and deps
-- **[op-setup-development-environment.md](references/op-setup-development-environment.md)**
-  -- Configure tooling
-- **[op-implement-code.md](references/op-implement-code.md)** -- Write
-  implementation
-- **[op-write-tests.md](references/op-write-tests.md)** -- Create tests
-- **[op-validate-acceptance-criteria.md](references/op-validate-acceptance-criteria.md)**
-  -- Verify criteria
+| Document | Description |
+|----------|-------------|
+| [op-receive-task-assignment.md](references/op-receive-task-assignment.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
+| [op-parse-task-requirements.md](references/op-parse-task-requirements.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
+| [op-setup-development-environment.md](references/op-setup-development-environment.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
+| [op-implement-code.md](references/op-implement-code.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
+| [op-write-tests.md](references/op-write-tests.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
+| [op-validate-acceptance-criteria.md](references/op-validate-acceptance-criteria.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling, Related Operations |
 
 ## Related
 

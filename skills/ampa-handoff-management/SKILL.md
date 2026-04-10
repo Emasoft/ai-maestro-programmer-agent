@@ -80,17 +80,16 @@ Copy this checklist and track your progress:
 - [x] Output: `current.md` with YAML frontmatter, modified files, test status,
       next steps. Notification sent.
 
-## Resources
+## Reference Documents
 
-- **[op-read-handoff-document.md](references/op-read-handoff-document.md)** —
-  Parse incoming handoffs
-- **[op-create-handoff-document.md](references/op-create-handoff-document.md)**
-  — Create outgoing handoffs
-- **[op-write-bug-report.md](references/op-write-bug-report.md)** — Structured
-  bug reporting
-- **[op-document-work-state.md](references/op-document-work-state.md)** —
-  Capture work state for session resume
-- **`agent-messaging` skill** (global) — Send notifications, list agents
+| Document | Description |
+|----------|-------------|
+| [op-read-handoff-document.md](references/op-read-handoff-document.md) | When to Use, Prerequisites, Procedure, Checklist, Error Handling |
+| [op-create-handoff-document.md](references/op-create-handoff-document.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
+| [op-write-bug-report.md](references/op-write-bug-report.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
+| [op-document-work-state.md](references/op-document-work-state.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
+
+**`agent-messaging` skill** (global) — Send notifications, list agents.
 
 ## Related
 

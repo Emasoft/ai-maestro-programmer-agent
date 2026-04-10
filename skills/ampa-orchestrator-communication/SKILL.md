@@ -71,21 +71,18 @@ log. Resume when connectivity is restored.
 - [x] Output:
       `{"type": "status-update", "message": "Task #42: 3/5 criteria met. Details: docs_dev/status-42.md"}`
 
-## Resources
+## Reference Documents
 
-- **[op-request-clarification.md](references/op-request-clarification.md)** —
-  Clarification requests
-- **[op-report-status.md](references/op-report-status.md)** — Status updates and
-  progress
-- **[op-report-blocker.md](references/op-report-blocker.md)** — Blocker reports
-  and escalation
-- **[op-propose-improvement.md](references/op-propose-improvement.md)** —
-  Improvement proposals
-- **[op-notify-completion.md](references/op-notify-completion.md)** — Completion
-  notifications
-- **[op-receive-feedback.md](references/op-receive-feedback.md)** — Process AMOA
-  feedback
-- `agent-messaging` skill (global) — Messaging commands
+| Document | Description |
+|----------|-------------|
+| [op-request-clarification.md](references/op-request-clarification.md) | When to Request Clarification, Prerequisites, Clarification Request Format, Procedure, Checklist, Sending the Request, Handling the Response, Examples, Error Handling |
+| [op-report-status.md](references/op-report-status.md) | When to Report Status, Prerequisites, Status Message Format, Progress Indicators, Procedure, Checklist, Sending Status Updates, Examples, Error Handling |
+| [op-report-blocker.md](references/op-report-blocker.md) | Identifying Blockers, Prerequisites, Blocker Report Format, Severity Levels, Procedure, Checklist, Escalation Procedure, Examples, Error Handling |
+| [op-propose-improvement.md](references/op-propose-improvement.md) | When to Propose Improvements, Prerequisites, Improvement Proposal Format, Justification Requirements, Procedure, Checklist, Awaiting Approval, Examples, Error Handling |
+| [op-notify-completion.md](references/op-notify-completion.md) | Completion Criteria, Prerequisites, Completion Notification Format, Deliverables Summary, Procedure, Checklist, Sending Notification, Examples, Error Handling |
+| [op-receive-feedback.md](references/op-receive-feedback.md) | Monitoring for Feedback, Prerequisites, Feedback Message Types, Processing Feedback, Procedure, Checklist, Acknowledgment Protocol, Examples, Error Handling |
+
+**`agent-messaging` skill** (global) — Messaging commands.
 
 ## Related
 
