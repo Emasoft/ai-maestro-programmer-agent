@@ -51,3 +51,6 @@ llm_externalizer_output/
 
 # TLDR
 .tldr/
+
+# SERENA MCP state (local project metadata, not published)
+.serena/
