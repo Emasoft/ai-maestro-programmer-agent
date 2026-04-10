@@ -203,7 +203,7 @@ If PR was created:
 ```json
 "pr": {
   "created": true,
-  "url": "https://github.com/org/repo/pull/123",
+  "url": "https://github.example.com/org/repo/pull/123",
   "title": "feat(auth): Add user authentication module"
 }
 ```
@@ -273,7 +273,7 @@ skill:
   coverage. Branch: feature/b2c3d4e5-f6a7-8901-bcde-f23456789012-order-pipeline
   (8 commits, 12 files changed, +567/-23 lines). Tests: 35/35 passing, 94%
   coverage. Docs updated: docs/architecture/order-pipeline.md,
-  docs/api/orders.md. PR: https://github.com/org/repo/pull/789 - feat(orders):
+  docs/api/orders.md. PR: https://github.example.com/org/repo/pull/789 - feat(orders):
   Add order processing pipeline. Implementation notes: Implemented async
   pipeline with retry logic, orders processed in batches of 100 for efficiency.
   Testing: uv run pytest tests/ -v or manually: uv run python
@@ -297,7 +297,7 @@ skill:
   regression tests. Branch:
   fix/c3d4e5f6-a7b8-9012-cdef-345678901234-cache-race-condition (3 commits, 2
   files changed, +45/-12 lines). Tests: 8/8 passing, 100% coverage. PR:
-  https://github.com/org/repo/pull/101 - fix(cache): Add mutex lock to prevent
+  https://github.example.com/org/repo/pull/101 - fix(cache): Add mutex lock to prevent
   race condition. Implementation notes: Added threading.Lock() around cache
   write operations, verified fix under concurrent load testing. Testing: uv run
   pytest tests/unit/test_cache.py::test_concurrent_updates -v --count=100"
@@ -321,7 +321,7 @@ skill:
   refactor/d4e5f6a7-b8c9-0123-defa-456789012345-payment-module (6 commits, 5
   files changed, +234/-312 lines). Tests: 28/28 passing, 96% coverage. Docs
   updated: docs/architecture/payment-module.md. PR:
-  https://github.com/org/repo/pull/202 - refactor(payment): Simplify payment
+  https://github.example.com/org/repo/pull/202 - refactor(payment): Simplify payment
   processing module. Implementation notes: Split monolithic PaymentProcessor
   into PaymentValidator, PaymentExecutor, and PaymentNotifier. Reduced
   cyclomatic complexity from 32 to 8. Testing: All existing tests pass, new unit
