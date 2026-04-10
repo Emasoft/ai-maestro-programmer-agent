@@ -9,7 +9,7 @@
 ## 1. Session Naming Convention
 
 ### Format
-```
+```text
 <project>-programmer-<number>
 ```
 
@@ -50,12 +50,12 @@ AMCOS maintains a counter for each project to ensure unique numbering:
 | `AMPA_REPORT_FILE` | Path set by caller | When set, `pre-push-hook.py` writes full validation output to this file and prints only a concise summary |
 
 ### Local Plugin Path Structure
-```
+```text
 ~/agents/<project>-programmer-<number>/.claude/plugins/ai-maestro-programmer-agent/
 ```
 
 **Example**:
-```
+```text
 ~/agents/svgbbox-programmer-001/.claude/plugins/ai-maestro-programmer-agent/
 ```
 
@@ -72,7 +72,7 @@ This loads ONLY the ai-maestro-programmer-agent plugin into that Claude Code ses
 ## 3. Agent Directory Structure
 
 ### Complete Layout
-```
+```text
 ~/agents/<project>-programmer-<number>/
 ├── .claude/
 │   ├── plugins/
@@ -172,7 +172,7 @@ AMPA uses the globally configured **SERENA MCP** for code navigation and analysi
 All cross-role communication happens via **inter-agent messages** sent through the `agent-messaging` skill, not skill sharing.
 
 **Example**:
-```
+```text
 AMPA encounters architectural question
 → AMPA sends a blocker message to AMOA using the `agent-messaging` skill
   (Recipient: orchestrator, Subject: "BLOCKER: ...", Type: alert, Priority: urgent)
@@ -321,7 +321,7 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 
 ### Workflow Pattern
 
-```
+```text
 AMOA → [Task Assignment] → AMPA
 AMPA → [Acknowledge] → AMOA
     ↓ (implement)
@@ -337,7 +337,7 @@ AMOA → [Kanban Updated] → GitHub
 
 ### Blocker Pattern
 
-```
+```text
 AMOA → [Task Assignment] → AMPA
 AMPA → [Acknowledge] → AMOA
     ↓ (encounter blocker)

@@ -15,9 +15,11 @@ parent-skill: ampa-handoff-management
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-This operation explains how to save the current work state so that work can be resumed after a session clear or interruption.
+This operation explains how to save the current work state so that work can be
+resumed after a session clear or interruption.
 
 ## When to Use
 
@@ -26,10 +28,12 @@ Use this operation when:
 1. **Context is running low**: The conversation is about to be compacted
 2. **Taking a break**: Work will continue in a future session
 3. **Reaching a checkpoint**: A natural pause point in the work
-4. **Before risky operations**: Saving state before attempting something that might fail
+4. **Before risky operations**: Saving state before attempting something that
+   might fail
 5. **Periodically during long tasks**: Every 30-60 minutes of active work
 
 Do NOT use this operation when:
+
 - Work is complete (use Create Handoff Document instead)
 - Handing off to another agent (use Create Handoff Document instead)
 - Just reporting a bug (use Write Bug Report instead)
@@ -41,7 +45,8 @@ Before documenting work state:
 
 1. **Tests should be runnable**: Know the command to verify current state
 2. **Changes should be saved**: Ensure edited files are written to disk
-3. **Handoff directory must exist**: `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/`
+3. **Handoff directory must exist**:
+   `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/`
 
 ## Procedure
 
@@ -99,7 +104,7 @@ fi
 
 Create the work state document with all necessary context:
 
-```markdown
+````markdown
 ---
 task: <task-name>
 from: ai-maestro-programmer-agent-main-agent
@@ -113,17 +118,20 @@ state-type: work-state
 # <Task Title> - Work State
 
 ## Task Summary
+
 <Brief reminder of what this task is about.>
 
 ## Current Progress
 
 ### Requirements Status
+
 1. [x] <Completed requirement>
 2. [x] <Completed requirement>
 3. [ ] <In-progress requirement> <- CURRENT
 4. [ ] <Pending requirement>
 
 ### Phase Status
+
 - Phase 1 (Tests Written): VALIDATED
 - Phase 2 (Implementation): IN_PROGRESS
 - Phase 3 (Refactoring): PENDING
@@ -133,6 +141,7 @@ state-type: work-state
 **Last Updated:** <current-ISO-timestamp>
 
 ### Validation State
+
 ```json
 {
   "test_count": <total>,
@@ -143,8 +152,10 @@ state-type: work-state
   "last_test_exit_code": <exit-code>
 }
 ```
+````
 
 ### Resume Context
+
 - **Current focus**: <exact step or function being worked on>
 - **Next action**: <specific next thing to do>
 - **Blockers**: <any blockers, or "None">
@@ -178,14 +189,16 @@ def parse_config(path: str) -> Config:
 ## Codebase State
 
 ### Modified Files
-| File | Status | Notes |
-|------|--------|-------|
-| `src/feature.py` | In progress | Missing error handling |
-| `tests/test_feature.py` | Complete | 8 tests defined |
-| `src/models.py` | Complete | Added Config dataclass |
+
+| File                    | Status      | Notes                  |
+| ----------------------- | ----------- | ---------------------- |
+| `src/feature.py`        | In progress | Missing error handling |
+| `tests/test_feature.py` | Complete    | 8 tests defined        |
+| `src/models.py`         | Complete    | Added Config dataclass |
 
 ### Uncommitted Changes
-```
+
+```text
 <output of git status or equivalent>
 ```
 
@@ -195,7 +208,8 @@ def parse_config(path: str) -> Config:
 
 - <Note 1>
 - <Note 2>
-```
+
+````
 
 ### Step 6: Save the Work State
 
@@ -207,7 +221,7 @@ cat > "$TASK_DIR/current.md" << 'EOF'
 EOF
 
 echo "Work state saved: $TASK_DIR/current.md"
-```
+````
 
 ### Step 7: Verify the Save
 
@@ -247,7 +261,7 @@ Complete these items when documenting work state:
 
 ### Example 1: Mid-Implementation Work State
 
-```markdown
+````markdown
 ---
 task: implement-yaml-parser
 from: ai-maestro-programmer-agent-main-agent
@@ -261,17 +275,21 @@ state-type: work-state
 # Implement YAML Parser - Work State
 
 ## Task Summary
-Implementing a YAML configuration parser with schema validation per AMOA delegation.
+
+Implementing a YAML configuration parser with schema validation per AMOA
+delegation.
 
 ## Current Progress
 
 ### Requirements Status
+
 1. [x] Parse YAML files using PyYAML library
 2. [ ] Validate against JSON schema <- CURRENT
 3. [ ] Return typed dataclass objects
 4. [ ] Handle parsing errors gracefully
 
 ### Phase Status
+
 - Phase 1 (Tests Written): VALIDATED
 - Phase 2 (Implementation): IN_PROGRESS (requirement 2)
 - Phase 3 (Refactoring): PENDING
@@ -281,18 +299,24 @@ Implementing a YAML configuration parser with schema validation per AMOA delegat
 **Last Updated:** 2025-02-06T14:45:00Z
 
 ### Validation State
+
 ```json
 {
   "test_count": 12,
   "tests_passing": 5,
   "tests_failing": 7,
-  "files_modified": ["src/parsers/yaml_parser.py", "tests/unit/test_yaml_parser.py"],
+  "files_modified": [
+    "src/parsers/yaml_parser.py",
+    "tests/unit/test_yaml_parser.py"
+  ],
   "last_test_command": "uv run pytest tests/unit/test_yaml_parser.py -v",
   "last_test_exit_code": 1
 }
 ```
+````
 
 ### Resume Context
+
 - **Current focus**: Implementing `validate_against_schema()` function
 - **Next action**: Add jsonschema validation logic to the function stub
 - **Blockers**: None
@@ -322,26 +346,32 @@ def validate_against_schema(data: dict, schema_path: str) -> bool:
 
 ### Mental Context
 
-1. **Why this approach**: Using jsonschema library because it is already a project dependency
+1. **Why this approach**: Using jsonschema library because it is already a
+   project dependency
 2. **Alternatives considered**: Manual validation, but jsonschema is more robust
-3. **Key insight**: The schema file uses draft-07, must specify this in validator
-4. **Gotcha to remember**: Schema path is relative to project root, not caller location
+3. **Key insight**: The schema file uses draft-07, must specify this in
+   validator
+4. **Gotcha to remember**: Schema path is relative to project root, not caller
+   location
 
 ## Codebase State
 
 ### Modified Files
-| File | Status | Notes |
-|------|--------|-------|
-| `src/parsers/yaml_parser.py` | In progress | validate_against_schema is a stub |
-| `tests/unit/test_yaml_parser.py` | Complete | 12 tests, 7 waiting for implementation |
-| `src/errors.py` | Complete | Added SchemaValidationError |
+
+| File                             | Status      | Notes                                  |
+| -------------------------------- | ----------- | -------------------------------------- |
+| `src/parsers/yaml_parser.py`     | In progress | validate_against_schema is a stub      |
+| `tests/unit/test_yaml_parser.py` | Complete    | 12 tests, 7 waiting for implementation |
+| `src/errors.py`                  | Complete    | Added SchemaValidationError            |
 
 ## Notes
 
-- The existing JSON parser in `src/parsers/json_parser.py` has a similar validation function that can be referenced
+- The existing JSON parser in `src/parsers/json_parser.py` has a similar
+  validation function that can be referenced
 - Schema file is at `src/schemas/config_schema.json`
 - Remember to handle FileNotFoundError for missing schema files
-```
+
+````
 
 ### Example 2: Work State Before Risky Change
 
@@ -389,33 +419,40 @@ Refactoring the config loader to support multiple file formats. About to make a 
   "last_test_command": "uv run pytest tests/unit/test_loaders.py -v",
   "last_test_exit_code": 0
 }
-```
+````
 
 ### Resume Context
+
 - **Current focus**: About to implement loader factory pattern
 - **Next action**: Create LoaderFactory class in src/loaders/factory.py
 - **Blockers**: None
 
 ### IMPORTANT: State Before Change
 
-All 24 tests are currently passing. About to make significant changes to how loaders are instantiated. If this breaks things, revert to this commit:
+All 24 tests are currently passing. About to make significant changes to how
+loaders are instantiated. If this breaks things, revert to this commit:
 
 ```
 Current HEAD: abc123def (all tests green)
-```
+```text
 
 ### Mental Context
 
-1. **Why this approach**: Factory pattern allows runtime loader selection by file extension
-2. **Alternatives considered**: Registry pattern, but factory is simpler for this use case
-3. **Key insight**: Loaders should be lazy-loaded to avoid importing all dependencies upfront
-4. **Gotcha to remember**: The TOML loader needs tomllib (Python 3.11+) or tomli fallback
+1. **Why this approach**: Factory pattern allows runtime loader selection by
+   file extension
+2. **Alternatives considered**: Registry pattern, but factory is simpler for
+   this use case
+3. **Key insight**: Loaders should be lazy-loaded to avoid importing all
+   dependencies upfront
+4. **Gotcha to remember**: The TOML loader needs tomllib (Python 3.11+) or tomli
+   fallback
 
 ## Notes
 
 - SAVING STATE BEFORE RISKY CHANGE
 - If the factory implementation breaks things, can restore from current state
 - All tests passing, code is in a known good state
+
 ```
 
 ## Error Handling
@@ -461,3 +498,4 @@ Current HEAD: abc123def (all tests green)
 3. If conflicts exist, merge the most recent information
 4. Ensure archiving is happening correctly in future saves
 5. Add timestamps to distinguish which is more recent
+```text

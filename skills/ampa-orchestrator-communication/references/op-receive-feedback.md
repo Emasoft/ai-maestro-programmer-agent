@@ -14,9 +14,11 @@ parent-skill: ampa-orchestrator-communication
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-This operation describes how to handle feedback from the AI Maestro Orchestrator Agent (AMOA) after PR review, task evaluation, or quality assessment.
+This operation describes how to handle feedback from the AI Maestro Orchestrator
+Agent (AMOA) after PR review, task evaluation, or quality assessment.
 
 ## 6.1 Monitoring for Feedback
 
@@ -24,17 +26,19 @@ After sending a completion notification, actively monitor for AMOA feedback.
 
 ### Checking for Messages
 
-Check your inbox using the `agent-messaging` skill. Look for unread messages from the orchestrator.
+Check your inbox using the `agent-messaging` skill. Look for unread messages
+from the orchestrator.
 
-To read a specific message, use the `agent-messaging` skill's read operation with the message ID to see its full content.
+To read a specific message, use the `agent-messaging` skill's read operation
+with the message ID to see its full content.
 
 ### Polling Interval
 
-| After Event | Poll Interval | Duration |
-|-------------|---------------|----------|
-| Completion notification | Every 5 minutes | 2 hours |
-| Urgent blocker report | Every 2 minutes | 30 minutes |
-| Status update | Every 15 minutes | 4 hours |
+| After Event             | Poll Interval    | Duration   |
+| ----------------------- | ---------------- | ---------- |
+| Completion notification | Every 5 minutes  | 2 hours    |
+| Urgent blocker report   | Every 2 minutes  | 30 minutes |
+| Status update           | Every 15 minutes | 4 hours    |
 
 ### Message Priority Handling
 
@@ -61,7 +65,9 @@ AMOA may send different types of feedback:
 
 **Subject Pattern**: `APPROVED: a1b2c3d4-e5f6-7890-abcd-ef1234567890`
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -79,7 +85,9 @@ AMOA may send different types of feedback:
 
 **Subject Pattern**: `REVISION: [Task ID]`
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -106,7 +114,9 @@ AMOA may send different types of feedback:
 
 **Subject Pattern**: `REJECTED: [Task ID]`
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -114,21 +124,21 @@ AMOA may send different types of feedback:
   "message": "Implementation does not meet requirements.",
   "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "decision": "rejected",
-  "reasons": [
-    "[Reason 1]",
-    "[Reason 2]"
-  ],
+  "reasons": ["[Reason 1]", "[Reason 2]"],
   "next_steps": "[What to do next]"
 }
 ```
 
-**Action**: Acknowledge, understand reasons, request clarification if needed, rework.
+**Action**: Acknowledge, understand reasons, request clarification if needed,
+rework.
 
 ### Clarification Response
 
 **Subject Pattern**: `RE: CLARIFICATION: [Task ID]`
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -150,7 +160,9 @@ AMOA may send different types of feedback:
 
 **Subject Pattern**: `RE: PROPOSAL: [Task ID]`
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -163,7 +175,8 @@ AMOA may send different types of feedback:
 }
 ```
 
-**Action**: Acknowledge, implement approved/modified proposal or continue with original.
+**Action**: Acknowledge, implement approved/modified proposal or continue with
+original.
 
 ## 6.3 Processing Feedback
 
@@ -182,14 +195,14 @@ AMOA may send different types of feedback:
 
 For each change request:
 
-| Step | Action |
-|------|--------|
-| 1 | Read the issue description |
-| 2 | Locate the relevant code |
-| 3 | Understand why the change is needed |
-| 4 | Implement the suggested fix (or better alternative) |
-| 5 | Test the change |
-| 6 | Commit with descriptive message |
+| Step | Action                                              |
+| ---- | --------------------------------------------------- |
+| 1    | Read the issue description                          |
+| 2    | Locate the relevant code                            |
+| 3    | Understand why the change is needed                 |
+| 4    | Implement the suggested fix (or better alternative) |
+| 5    | Test the change                                     |
+| 6    | Commit with descriptive message                     |
 
 ### Handling Multiple Changes
 
@@ -235,16 +248,22 @@ Use this checklist when processing feedback:
 
 ### Immediate Acknowledgment
 
-Send acknowledgment within 5 minutes of receiving feedback. Reply directly to the feedback message using the `agent-messaging` skill:
+Send acknowledgment within 5 minutes of receiving feedback. Reply directly to
+the feedback message using the `agent-messaging` skill:
+
 - **Action**: reply to the original message by its ID
-- **Content**: "Feedback received and understood. Processing now. Action items: [number]. Estimated completion: [Time estimate]."
+- **Content**: "Feedback received and understood. Processing now. Action items:
+  [number]. Estimated completion: [Time estimate]."
 
 **Verify**: confirm the reply appears in your sent messages.
 
-Alternatively, send a new acknowledgment message using the `agent-messaging` skill:
+Alternatively, send a new acknowledgment message using the `agent-messaging`
+skill:
+
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "ACK: [Original Subject]"
-- **Content**: "Feedback received and understood. Processing now. Action items: [number]. Estimated completion: [Time estimate]."
+- **Content**: "Feedback received and understood. Processing now. Action items:
+  [number]. Estimated completion: [Time estimate]."
 - **Type**: ack
 - **Priority**: normal
 
@@ -252,20 +271,23 @@ Alternatively, send a new acknowledgment message using the `agent-messaging` ski
 
 ### Acknowledgment Components
 
-| Field | Description | Required |
-|-------|-------------|----------|
-| `original_subject` | Subject of the feedback message | Yes |
-| `task_id` | Task identifier | Yes |
-| `action_items_count` | Number of items to address | Yes |
-| `estimated_completion` | When revisions will be done | Yes |
-| `questions` | Any clarifications needed | No |
+| Field                  | Description                     | Required |
+| ---------------------- | ------------------------------- | -------- |
+| `original_subject`     | Subject of the feedback message | Yes      |
+| `task_id`              | Task identifier                 | Yes      |
+| `action_items_count`   | Number of items to address      | Yes      |
+| `estimated_completion` | When revisions will be done     | Yes      |
+| `questions`            | Any clarifications needed       | No       |
 
 ### After Completing Revisions
 
-Send a revision complete notification to the orchestrator using the `agent-messaging` skill:
+Send a revision complete notification to the orchestrator using the
+`agent-messaging` skill:
+
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "REVISED: [Task ID] - Revisions Complete"
-- **Content**: list all completed revisions with commit hashes and confirm the work is ready for review
+- **Content**: list all completed revisions with commit hashes and confirm the
+  work is ready for review
 - **Type**: notification
 - **Priority**: high
 
@@ -278,8 +300,10 @@ Send a revision complete notification to the orchestrator using the `agent-messa
 **Situation**: AMOA approved the task.
 
 Reply to the approval message using the `agent-messaging` skill:
+
 - **Action**: reply to the original message by its ID
-- **Content**: "Approval received. Thank you for the review. Awaiting merge authorization or will merge if authorized."
+- **Content**: "Approval received. Thank you for the review. Awaiting merge
+  authorization or will merge if authorized."
 
 **Verify**: confirm the reply was sent.
 
@@ -288,15 +312,27 @@ Reply to the approval message using the `agent-messaging` skill:
 **Situation**: AMOA requested changes.
 
 Reply to the revision request using the `agent-messaging` skill:
+
 - **Action**: reply to the original message by its ID
-- **Content**: "Revision request received. Will address all 3 items: 1) Add input validation for order quantity 2) Fix edge case when order total is zero 3) Update error message for clarity. Estimated completion: 1 hour."
+- **Content**: "Revision request received. Will address all 3 items: 1) Add
+  input validation for order quantity 2) Fix edge case when order total is
+  zero 3) Update error message for clarity. Estimated completion: 1 hour."
 
 **Verify**: confirm the acknowledgment was sent.
 
-After completing revisions, send a notification to the orchestrator using the `agent-messaging` skill:
+After completing revisions, send a notification to the orchestrator using the
+`agent-messaging` skill:
+
 - **Recipient**: your assigned orchestrator agent
-- **Subject**: "REVISED: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Revisions Complete"
-- **Content**: "All 3 requested revisions have been completed and tested. Changes: 1) Add input validation for order quantity - completed (commit a1b2c3d) - Added validation to reject quantities < 1. 2) Fix edge case when order total is zero - completed (commit e4f5g6h) - Now returns 400 error for zero-total orders. 3) Update error message for clarity - completed (commit i7j8k9l) - Error messages now include specific field names. All tests passing. Ready for review."
+- **Subject**: "REVISED: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Revisions
+  Complete"
+- **Content**: "All 3 requested revisions have been completed and tested.
+  Changes: 1) Add input validation for order quantity - completed (commit
+  a1b2c3d) - Added validation to reject quantities < 1. 2) Fix edge case when
+  order total is zero - completed (commit e4f5g6h) - Now returns 400 error for
+  zero-total orders. 3) Update error message for clarity - completed (commit
+  i7j8k9l) - Error messages now include specific field names. All tests passing.
+  Ready for review."
 - **Type**: notification
 - **Priority**: high
 
@@ -307,8 +343,13 @@ After completing revisions, send a notification to the orchestrator using the `a
 **Situation**: Task was rejected, need to rework.
 
 Reply to the rejection message using the `agent-messaging` skill:
+
 - **Action**: reply to the original message by its ID
-- **Content**: "Rejection received. I understand the issues and will rework the implementation. Understanding: The implementation did not handle the required multi-currency support. Will rework to include currency conversion. Question: Should I use the existing CurrencyConverter service or implement new conversion logic? Estimated rework time: 3 hours."
+- **Content**: "Rejection received. I understand the issues and will rework the
+  implementation. Understanding: The implementation did not handle the required
+  multi-currency support. Will rework to include currency conversion. Question:
+  Should I use the existing CurrencyConverter service or implement new
+  conversion logic? Estimated rework time: 3 hours."
 
 **Verify**: confirm the reply was sent.
 
@@ -317,26 +358,32 @@ Reply to the rejection message using the `agent-messaging` skill:
 **Situation**: AMOA answered clarification questions.
 
 Reply to the clarification response using the `agent-messaging` skill:
+
 - **Action**: reply to the original message by its ID
-- **Content**: "Clarification received and understood. Will use PostgreSQL JSONB columns for flexible metadata storage as clarified. Resuming implementation with clarified approach."
+- **Content**: "Clarification received and understood. Will use PostgreSQL JSONB
+  columns for flexible metadata storage as clarified. Resuming implementation
+  with clarified approach."
 
 **Verify**: confirm the reply was sent.
 
 ## Error Handling
 
-| Error | Cause | Resolution |
-|-------|-------|------------|
-| `Feedback message unclear` | Incomplete or ambiguous | Request clarification |
-| `Cannot implement change` | Technical constraint | Report blocker |
-| `Conflicting feedback` | Multiple contradictory items | Request prioritization |
-| `Deadline too short` | Insufficient time | Negotiate timeline |
+| Error                      | Cause                        | Resolution             |
+| -------------------------- | ---------------------------- | ---------------------- |
+| `Feedback message unclear` | Incomplete or ambiguous      | Request clarification  |
+| `Cannot implement change`  | Technical constraint         | Report blocker         |
+| `Conflicting feedback`     | Multiple contradictory items | Request prioritization |
+| `Deadline too short`       | Insufficient time            | Negotiate timeline     |
 
 ### Requesting Clarification on Feedback
 
-If feedback is unclear, send a clarification request to the orchestrator using the `agent-messaging` skill:
+If feedback is unclear, send a clarification request to the orchestrator using
+the `agent-messaging` skill:
+
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "RE: REVISION: [TASK_ID] - Clarification Needed"
-- **Content**: describe which revision item is unclear and list specific questions
+- **Content**: describe which revision item is unclear and list specific
+  questions
 - **Type**: request
 - **Priority**: high
 
@@ -344,10 +391,13 @@ If feedback is unclear, send a clarification request to the orchestrator using t
 
 ### Reporting Inability to Implement
 
-If a requested change cannot be implemented, send an alert to the orchestrator using the `agent-messaging` skill:
+If a requested change cannot be implemented, send an alert to the orchestrator
+using the `agent-messaging` skill:
+
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "CANNOT IMPLEMENT: [TASK_ID] - [Revision Item]"
-- **Content**: describe the technical constraint preventing implementation, explain why it is impossible, and propose an alternative approach
+- **Content**: describe the technical constraint preventing implementation,
+  explain why it is impossible, and propose an alternative approach
 - **Type**: alert
 - **Priority**: urgent
 

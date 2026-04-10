@@ -14,19 +14,23 @@ parent-skill: ampa-project-setup
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-This operation installs all project dependencies using the package manager that was initialized in the previous operation.
+This operation installs all project dependencies using the package manager that
+was initialized in the previous operation.
 
 ## When to Use
 
 Use this operation when:
+
 - Package manager has been initialized but dependencies not installed
 - Dependencies need to be refreshed after configuration changes
 - New dependencies have been added to the project
 - Lock file needs to be regenerated
 
 Do NOT use when:
+
 - Dependencies are already installed and up to date
 - Working in an offline environment without cached packages
 - The project has no dependencies defined
@@ -34,6 +38,7 @@ Do NOT use when:
 ## Prerequisites
 
 Before executing this operation:
+
 1. Package manager has been initialized (see op-initialize-package-manager.md)
 2. Dependency file exists (pyproject.toml, package.json, Cargo.toml, etc.)
 3. Network access is available for downloading packages
@@ -45,12 +50,14 @@ Before executing this operation:
 **Step 1: Read dependency file**
 
 Check pyproject.toml for dependencies:
+
 ```bash
 # View dependencies section
 grep -A 20 "\[project\]" pyproject.toml | grep -A 10 "dependencies"
 ```
 
 Or check requirements.txt if present:
+
 ```bash
 cat requirements.txt
 ```
@@ -58,6 +65,7 @@ cat requirements.txt
 **Step 2: Install dependencies**
 
 With pyproject.toml:
+
 ```bash
 # Ensure venv is activated
 source .venv/bin/activate
@@ -70,11 +78,13 @@ uv add <package-name>
 ```
 
 With requirements.txt:
+
 ```bash
 uv pip install -r requirements.txt
 ```
 
 **Step 3: Install dev dependencies**
+
 ```bash
 # Sync including dev dependencies
 uv sync --dev
@@ -84,6 +94,7 @@ uv add --dev <package-name>
 ```
 
 **Step 4: Verify installation**
+
 ```bash
 uv pip list
 ```
@@ -91,6 +102,7 @@ uv pip list
 ### JavaScript/TypeScript: bun or pnpm Dependencies
 
 **Step 1: Read package.json**
+
 ```bash
 # View dependencies
 cat package.json | grep -A 20 '"dependencies"'
@@ -98,6 +110,7 @@ cat package.json | grep -A 20 '"devDependencies"'
 ```
 
 **Step 2: Install with bun**
+
 ```bash
 # Install all dependencies
 bun install
@@ -110,6 +123,7 @@ bun add -d <package-name>
 ```
 
 **Step 2 (alternative): Install with pnpm**
+
 ```bash
 # Install all dependencies
 pnpm install
@@ -122,6 +136,7 @@ pnpm add -D <package-name>
 ```
 
 **Step 3: Verify installation**
+
 ```bash
 # List installed packages
 bun pm ls
@@ -132,12 +147,14 @@ pnpm list
 ### Rust: cargo Dependencies
 
 **Step 1: Read Cargo.toml**
+
 ```bash
 # View dependencies
 grep -A 20 "\[dependencies\]" Cargo.toml
 ```
 
 **Step 2: Install dependencies**
+
 ```bash
 # Fetch and compile dependencies
 cargo build
@@ -147,11 +164,13 @@ cargo fetch
 ```
 
 **Step 3: Add new dependency**
+
 ```bash
 cargo add <crate-name>
 ```
 
 **Step 4: Verify installation**
+
 ```bash
 cargo tree
 ```
@@ -159,11 +178,13 @@ cargo tree
 ### Go: go mod Dependencies
 
 **Step 1: Read go.mod**
+
 ```bash
 cat go.mod
 ```
 
 **Step 2: Install dependencies**
+
 ```bash
 # Download all dependencies
 go mod download
@@ -173,11 +194,13 @@ go mod tidy
 ```
 
 **Step 3: Add new dependency**
+
 ```bash
 go get <module-path>
 ```
 
 **Step 4: Verify installation**
+
 ```bash
 go list -m all
 ```
@@ -185,22 +208,26 @@ go list -m all
 ### .NET: dotnet Dependencies
 
 **Step 1: Read project file**
+
 ```bash
 # Find and read .csproj file
 cat *.csproj | grep -A 5 "PackageReference"
 ```
 
 **Step 2: Install dependencies**
+
 ```bash
 dotnet restore
 ```
 
 **Step 3: Add new dependency**
+
 ```bash
 dotnet add package <package-name>
 ```
 
 **Step 4: Verify installation**
+
 ```bash
 dotnet list package
 ```
@@ -210,6 +237,7 @@ dotnet list package
 C/C++ projects typically use system packages or vendored dependencies.
 
 **Step 1: Check for package managers**
+
 ```bash
 # Check for vcpkg
 vcpkg --version
@@ -219,6 +247,7 @@ conan --version
 ```
 
 **Step 2: Install system dependencies (Linux/macOS)**
+
 ```bash
 # Linux (apt)
 sudo apt install <package>
@@ -228,6 +257,7 @@ brew install <package>
 ```
 
 **Step 3: Build to verify**
+
 ```bash
 # CMake
 cd build && cmake .. && make
@@ -239,11 +269,13 @@ make
 ### Swift: swift package Dependencies
 
 **Step 1: Read Package.swift**
+
 ```bash
 cat Package.swift | grep -A 10 "dependencies"
 ```
 
 **Step 2: Resolve dependencies**
+
 ```bash
 swift package resolve
 ```
@@ -251,11 +283,13 @@ swift package resolve
 **Step 3: Add new dependency**
 
 Edit Package.swift to add dependency, then:
+
 ```bash
 swift package update
 ```
 
 **Step 4: Verify installation**
+
 ```bash
 swift package show-dependencies
 ```
@@ -335,6 +369,7 @@ cargo tree --depth 1
 **Symptom**: Package download fails with connection errors.
 
 **Action**:
+
 1. Check internet connectivity
 2. Check if package registry is accessible
 3. Check for proxy settings if behind corporate firewall
@@ -345,6 +380,7 @@ cargo tree --depth 1
 **Symptom**: Package manager reports conflicting version requirements.
 
 **Action**:
+
 1. Read the conflict message carefully
 2. Identify which packages have conflicting requirements
 3. Try updating the conflicting packages to compatible versions
@@ -352,9 +388,11 @@ cargo tree --depth 1
 
 ### Missing System Dependencies
 
-**Symptom**: Build fails due to missing system libraries (common in C/C++ or native extensions).
+**Symptom**: Build fails due to missing system libraries (common in C/C++ or
+native extensions).
 
 **Action**:
+
 1. Read the error message to identify missing library
 2. Install the system package (apt, brew, etc.)
 3. Retry the installation
@@ -364,6 +402,7 @@ cargo tree --depth 1
 **Symptom**: Installation fails due to insufficient disk space.
 
 **Action**:
+
 1. Check available disk space: `df -h`
 2. Clean package caches:
    - Python: `uv cache clean`
@@ -376,6 +415,7 @@ cargo tree --depth 1
 **Symptom**: Private package requires authentication.
 
 **Action**:
+
 1. Set up authentication for the package registry
 2. Configure credentials in the appropriate config file
 3. For npm/bun: `.npmrc`

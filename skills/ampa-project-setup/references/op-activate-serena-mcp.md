@@ -14,19 +14,23 @@ parent-skill: ampa-project-setup
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-This operation activates the SERENA MCP (Model Context Protocol) server to enable advanced code navigation and semantic analysis capabilities.
+This operation activates the SERENA MCP (Model Context Protocol) server to
+enable advanced code navigation and semantic analysis capabilities.
 
 ## When to Use
 
 Use this operation when:
+
 - Starting work on a project that benefits from code navigation
 - You need to search for symbols, functions, or classes
 - You need to understand code relationships and dependencies
 - The project is large enough that manual navigation is inefficient
 
 Do NOT use when:
+
 - SERENA is already activated and responding
 - The project is trivially small (a few files)
 - SERENA MCP is not available in the environment
@@ -34,6 +38,7 @@ Do NOT use when:
 ## Prerequisites
 
 Before executing this operation:
+
 1. Project setup is complete (language detected, dependencies installed)
 2. SERENA MCP server is available and configured
 3. The project contains source code that SERENA can index
@@ -45,6 +50,7 @@ Before executing this operation:
 Check if SERENA MCP tools are available:
 
 The following SERENA tools should be accessible:
+
 - `mcp__serena__find_symbol` - Find symbol definitions
 - `mcp__serena__find_references` - Find symbol references
 - `mcp__serena__get_file_structure` - Get file structure
@@ -54,11 +60,12 @@ The following SERENA tools should be accessible:
 
 SERENA operates on a per-project basis. Activate it by opening the project:
 
-```
+```text
 Use the SERENA open_project tool with the project root path
 ```
 
 The project root is typically the directory containing:
+
 - `pyproject.toml` (Python)
 - `package.json` (JavaScript/TypeScript)
 - `Cargo.toml` (Rust)
@@ -70,12 +77,14 @@ The project root is typically the directory containing:
 Test SERENA by performing a simple search:
 
 1. Search for a known symbol in the project:
-```
+
+```text
 Use mcp__serena__find_symbol with a known function or class name
 ```
 
 2. Get the structure of a known file:
-```
+
+```text
 Use mcp__serena__get_file_structure with a known source file path
 ```
 
@@ -91,12 +100,12 @@ For large projects, SERENA may need to build an index:
 
 Confirm all SERENA tools are responding:
 
-| Tool | Purpose | Test Query |
-|------|---------|------------|
-| `find_symbol` | Locate definitions | Search for `main` or entry point |
-| `find_references` | Find usages | Search for a common function |
-| `get_file_structure` | Show file outline | Query a known source file |
-| `search_code` | Pattern search | Search for a unique string |
+| Tool                 | Purpose            | Test Query                       |
+| -------------------- | ------------------ | -------------------------------- |
+| `find_symbol`        | Locate definitions | Search for `main` or entry point |
+| `find_references`    | Find usages        | Search for a common function     |
+| `get_file_structure` | Show file outline  | Query a known source file        |
+| `search_code`        | Pattern search     | Search for a unique string       |
 
 ## SERENA Tool Reference
 
@@ -112,7 +121,8 @@ Finds where a symbol (function, class, variable) is defined.
 
 Finds all locations where a symbol is used.
 
-**Use when**: You need to understand how a function/class is used throughout the codebase.
+**Use when**: You need to understand how a function/class is used throughout the
+codebase.
 
 **Example**: Find all calls to `validate_input` function.
 
@@ -120,7 +130,8 @@ Finds all locations where a symbol is used.
 
 Returns the structure of a file (functions, classes, methods).
 
-**Use when**: You need an overview of what a file contains without reading the whole file.
+**Use when**: You need an overview of what a file contains without reading the
+whole file.
 
 **Example**: Get structure of `src/main.py` to see available functions.
 
@@ -145,7 +156,7 @@ Searches for code patterns using regex or literal strings.
 
 ### Example 1: Activating SERENA for Python Project
 
-```
+```text
 1. Open project:
    mcp__serena__open_project path="/path/to/python-project"
 
@@ -163,7 +174,7 @@ Searches for code patterns using regex or literal strings.
 
 ### Example 2: Activating SERENA for TypeScript Project
 
-```
+```text
 1. Open project:
    mcp__serena__open_project path="/path/to/ts-project"
 
@@ -181,7 +192,7 @@ Searches for code patterns using regex or literal strings.
 
 ### Example 3: Large Project Indexing
 
-```
+```text
 1. Open large project:
    mcp__serena__open_project path="/path/to/large-project"
    Note: Initial indexing may take 5-10 seconds
@@ -202,6 +213,7 @@ Searches for code patterns using regex or literal strings.
 **Symptom**: SERENA MCP tools are not recognized or unavailable.
 
 **Action**:
+
 1. Check if SERENA MCP is configured in the environment
 2. Verify MCP server is running
 3. Check Claude Code settings for MCP configuration
@@ -212,6 +224,7 @@ Searches for code patterns using regex or literal strings.
 **Symptom**: SERENA fails to open the project with an error.
 
 **Action**:
+
 1. Verify the project path is correct and accessible
 2. Check that the project contains recognized source files
 3. Ensure there are no permission issues on the project directory
@@ -222,6 +235,7 @@ Searches for code patterns using regex or literal strings.
 **Symptom**: SERENA returns no results for a known symbol.
 
 **Action**:
+
 1. Verify the symbol name spelling and case
 2. Check that the file containing the symbol is in the indexed directories
 3. Try a broader search pattern
@@ -232,6 +246,7 @@ Searches for code patterns using regex or literal strings.
 **Symptom**: SERENA queries take a long time to complete.
 
 **Action**:
+
 1. Wait for initial indexing to complete
 2. For very large projects, allow more time for first queries
 3. Use more specific search patterns to reduce result set
@@ -242,6 +257,7 @@ Searches for code patterns using regex or literal strings.
 **Symptom**: SERENA stops responding mid-session.
 
 **Action**:
+
 1. Check if MCP server process is still running
 2. Try reopening the project
 3. Restart Claude Code if necessary

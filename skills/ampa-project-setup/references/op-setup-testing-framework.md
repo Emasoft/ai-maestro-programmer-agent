@@ -14,19 +14,23 @@ parent-skill: ampa-project-setup
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-This operation configures the testing framework appropriate for the project language, enabling test execution and coverage reporting.
+This operation configures the testing framework appropriate for the project
+language, enabling test execution and coverage reporting.
 
 ## When to Use
 
 Use this operation when:
+
 - Setting up a new project that needs testing
 - Existing project lacks testing configuration
 - Migrating to a different testing framework
 - Adding test coverage reporting
 
 Do NOT use when:
+
 - Testing framework is already configured and working
 - Project has no need for automated tests
 - Working in a read-only environment
@@ -34,6 +38,7 @@ Do NOT use when:
 ## Prerequisites
 
 Before executing this operation:
+
 1. Package manager has been initialized (see op-initialize-package-manager.md)
 2. Dependencies have been installed (see op-install-dependencies.md)
 3. You have write access to create configuration files and test directories
@@ -43,6 +48,7 @@ Before executing this operation:
 ### Python: pytest Configuration
 
 **Step 1: Install pytest and plugins**
+
 ```bash
 source .venv/bin/activate
 uv add --dev pytest pytest-cov pytest-asyncio
@@ -51,6 +57,7 @@ uv add --dev pytest pytest-cov pytest-asyncio
 **Step 2: Create pytest configuration**
 
 Add to `pyproject.toml`:
+
 ```toml
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -77,6 +84,7 @@ exclude_lines = [
 ```
 
 **Step 3: Create tests directory structure**
+
 ```bash
 mkdir -p tests/unit tests/integration
 touch tests/__init__.py
@@ -87,6 +95,7 @@ touch tests/integration/__init__.py
 **Step 4: Create sample test**
 
 Create `tests/unit/test_sample.py`:
+
 ```python
 """Sample test to verify pytest is working."""
 
@@ -100,6 +109,7 @@ def test_addition():
 ```
 
 **Step 5: Verify pytest works**
+
 ```bash
 uv run pytest tests/ -v
 ```
@@ -113,6 +123,7 @@ uv run pytest tests/ -v
 **Step 1: Install vitest**
 
 With bun:
+
 ```bash
 bun add -d vitest @vitest/coverage-v8
 ```
@@ -120,23 +131,25 @@ bun add -d vitest @vitest/coverage-v8
 **Step 2: Create vitest configuration**
 
 Create `vitest.config.ts`:
+
 ```typescript
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'node',
-    include: ['tests/**/*.test.ts'],
+    environment: "node",
+    include: ["tests/**/*.test.ts"],
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html'],
+      provider: "v8",
+      reporter: ["text", "html"],
     },
   },
 });
 ```
 
 **Step 3: Create tests directory**
+
 ```bash
 mkdir -p tests
 ```
@@ -144,21 +157,23 @@ mkdir -p tests
 **Step 4: Create sample test**
 
 Create `tests/sample.test.ts`:
-```typescript
-import { describe, it, expect } from 'vitest';
 
-describe('Sample', () => {
-  it('should pass', () => {
+```typescript
+import { describe, it, expect } from "vitest";
+
+describe("Sample", () => {
+  it("should pass", () => {
     expect(true).toBe(true);
   });
 
-  it('should add numbers', () => {
+  it("should add numbers", () => {
     expect(1 + 1).toBe(2);
   });
 });
 ```
 
 **Step 5: Add test script to package.json**
+
 ```json
 {
   "scripts": {
@@ -170,6 +185,7 @@ describe('Sample', () => {
 ```
 
 **Step 6: Verify vitest works**
+
 ```bash
 bun run test
 ```
@@ -177,21 +193,24 @@ bun run test
 #### jest Setup (Alternative)
 
 **Step 1: Install jest**
+
 ```bash
 bun add -d jest @types/jest ts-jest
 ```
 
 **Step 2: Create jest.config.js**
+
 ```javascript
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  testMatch: ['**/tests/**/*.test.ts'],
-  collectCoverageFrom: ['src/**/*.ts'],
+  preset: "ts-jest",
+  testEnvironment: "node",
+  testMatch: ["**/tests/**/*.test.ts"],
+  collectCoverageFrom: ["src/**/*.ts"],
 };
 ```
 
 **Step 3: Verify jest works**
+
 ```bash
 bun run jest
 ```
@@ -203,6 +222,7 @@ bun run jest
 No installation needed. Cargo includes a test runner.
 
 **Step 2: Create tests directory**
+
 ```bash
 mkdir -p tests
 ```
@@ -210,6 +230,7 @@ mkdir -p tests
 **Step 3: Create integration test**
 
 Create `tests/integration_test.rs`:
+
 ```rust
 #[test]
 fn sample_test() {
@@ -225,6 +246,7 @@ fn addition_test() {
 **Step 4: Add unit tests to modules**
 
 In `src/lib.rs` or any module:
+
 ```rust
 #[cfg(test)]
 mod tests {
@@ -238,6 +260,7 @@ mod tests {
 ```
 
 **Step 5: Verify cargo test works**
+
 ```bash
 cargo test
 ```
@@ -251,6 +274,7 @@ No installation needed. Go includes a test runner.
 **Step 2: Create test file**
 
 Create `sample_test.go` next to the code file:
+
 ```go
 package main
 
@@ -271,6 +295,7 @@ func TestAddition(t *testing.T) {
 ```
 
 **Step 3: Verify go test works**
+
 ```bash
 go test ./...
 ```
@@ -278,6 +303,7 @@ go test ./...
 ### .NET: dotnet test Configuration
 
 **Step 1: Add test project**
+
 ```bash
 dotnet new xunit -o tests
 dotnet sln add tests/tests.csproj
@@ -287,6 +313,7 @@ dotnet add tests/tests.csproj reference src/MyProject.csproj
 **Step 2: Create sample test**
 
 Create `tests/SampleTests.cs`:
+
 ```csharp
 using Xunit;
 
@@ -307,6 +334,7 @@ public class SampleTests
 ```
 
 **Step 3: Verify dotnet test works**
+
 ```bash
 dotnet test
 ```
@@ -314,6 +342,7 @@ dotnet test
 ### C/C++: gtest Configuration
 
 **Step 1: Install Google Test**
+
 ```bash
 # macOS
 brew install googletest
@@ -323,6 +352,7 @@ sudo apt install libgtest-dev
 ```
 
 **Step 2: Add to CMakeLists.txt**
+
 ```cmake
 enable_testing()
 find_package(GTest REQUIRED)
@@ -335,6 +365,7 @@ add_test(NAME SampleTests COMMAND tests)
 **Step 3: Create test file**
 
 Create `tests/sample_test.cpp`:
+
 ```cpp
 #include <gtest/gtest.h>
 
@@ -348,6 +379,7 @@ TEST(SampleTest, Addition) {
 ```
 
 **Step 4: Build and run tests**
+
 ```bash
 cd build && cmake .. && make && ctest
 ```
@@ -361,6 +393,7 @@ For Swift Package Manager projects, tests go in `Tests/` directory.
 **Step 2: Create test file**
 
 Create `Tests/MyProjectTests/SampleTests.swift`:
+
 ```swift
 import XCTest
 @testable import MyProject
@@ -377,6 +410,7 @@ final class SampleTests: XCTestCase {
 ```
 
 **Step 3: Verify swift test works**
+
 ```bash
 swift test
 ```
@@ -457,15 +491,17 @@ cargo test
 **Symptom**: Test runner reports no tests found.
 
 **Action**:
+
 1. Verify test file naming conventions match configuration
 2. Check testpaths or include patterns in configuration
-3. Ensure test functions follow naming conventions (test_*, Test*)
+3. Ensure test functions follow naming conventions (test\__, Test_)
 
 ### Import Errors in Tests
 
 **Symptom**: Tests fail with import or module not found errors.
 
 **Action**:
+
 1. Ensure the package is installed in editable/development mode
 2. Check that `__init__.py` files exist in Python packages
 3. Verify tsconfig paths configuration for TypeScript
@@ -476,6 +512,7 @@ cargo test
 **Symptom**: Tests never complete or timeout.
 
 **Action**:
+
 1. Check for infinite loops or blocking calls in test code
 2. Add timeout configuration to test runner
 3. Use async test mode for async code
@@ -486,6 +523,7 @@ cargo test
 **Symptom**: Coverage reports show 0% or fail to generate.
 
 **Action**:
+
 1. Verify coverage tool is installed
 2. Check source path configuration in coverage settings
 3. Ensure tests actually exercise the source code

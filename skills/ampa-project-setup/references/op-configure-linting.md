@@ -14,19 +14,23 @@ parent-skill: ampa-project-setup
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-This operation sets up linting tools appropriate for the project language to ensure code quality and consistency.
+This operation sets up linting tools appropriate for the project language to
+ensure code quality and consistency.
 
 ## When to Use
 
 Use this operation when:
+
 - Setting up a new project that needs linting
 - Existing project lacks linting configuration
 - Updating linting rules to match team standards
 - Adding type checking to a project
 
 Do NOT use when:
+
 - Linting is already configured and working
 - The project explicitly avoids linting tools
 - Working in a read-only environment
@@ -34,6 +38,7 @@ Do NOT use when:
 ## Prerequisites
 
 Before executing this operation:
+
 1. Dependencies have been installed (see op-install-dependencies.md)
 2. You have write access to create configuration files
 3. The package manager can install additional dev dependencies
@@ -43,6 +48,7 @@ Before executing this operation:
 ### Python: ruff and mypy Configuration
 
 **Step 1: Install linting tools**
+
 ```bash
 source .venv/bin/activate
 uv add --dev ruff mypy
@@ -51,6 +57,7 @@ uv add --dev ruff mypy
 **Step 2: Create ruff configuration**
 
 Add to `pyproject.toml`:
+
 ```toml
 [tool.ruff]
 line-length = 88
@@ -75,6 +82,7 @@ known-first-party = ["your_package_name"]
 **Step 3: Create mypy configuration**
 
 Add to `pyproject.toml`:
+
 ```toml
 [tool.mypy]
 python_version = "3.12"
@@ -85,6 +93,7 @@ disallow_untyped_defs = true
 ```
 
 **Step 4: Verify linting works**
+
 ```bash
 # Run ruff
 uv run ruff check .
@@ -101,11 +110,13 @@ uv run mypy src/
 **Step 1: Install eslint**
 
 With bun:
+
 ```bash
 bun add -d eslint @eslint/js typescript-eslint
 ```
 
 With pnpm:
+
 ```bash
 pnpm add -D eslint @eslint/js typescript-eslint
 ```
@@ -113,38 +124,41 @@ pnpm add -D eslint @eslint/js typescript-eslint
 **Step 2: Create eslint.config.js**
 
 For TypeScript projects:
+
 ```javascript
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
     rules: {
-      '@typescript-eslint/no-unused-vars': 'error',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-explicit-any": "warn",
     },
   },
 );
 ```
 
 For JavaScript projects:
+
 ```javascript
-import eslint from '@eslint/js';
+import eslint from "@eslint/js";
 
 export default [
   eslint.configs.recommended,
   {
     rules: {
-      'no-unused-vars': 'error',
-      'no-console': 'warn',
+      "no-unused-vars": "error",
+      "no-console": "warn",
     },
   },
 ];
 ```
 
 **Step 3: Verify eslint works**
+
 ```bash
 # With bun
 bun run eslint .
@@ -162,6 +176,7 @@ No installation needed. Clippy comes with rustup.
 **Step 2: Configure clippy**
 
 Add to `Cargo.toml`:
+
 ```toml
 [lints.clippy]
 pedantic = "warn"
@@ -169,11 +184,13 @@ nursery = "warn"
 ```
 
 Or create `clippy.toml`:
+
 ```toml
 cognitive-complexity-threshold = 25
 ```
 
 **Step 3: Verify clippy works**
+
 ```bash
 cargo clippy
 ```
@@ -181,6 +198,7 @@ cargo clippy
 ### Go: staticcheck Configuration
 
 **Step 1: Install linter**
+
 ```bash
 go install honnef.co/go/tools/cmd/staticcheck@latest
 ```
@@ -188,11 +206,13 @@ go install honnef.co/go/tools/cmd/staticcheck@latest
 **Step 2: Configure staticcheck**
 
 Create `.staticcheck.conf`:
-```
+
+```text
 checks = ["all", "-ST1000"]
 ```
 
 **Step 3: Verify linting works**
+
 ```bash
 staticcheck ./...
 ```
@@ -202,6 +222,7 @@ staticcheck ./...
 **Step 1: Enable analyzers in project file**
 
 Add to `.csproj`:
+
 ```xml
 <PropertyGroup>
   <EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -211,6 +232,7 @@ Add to `.csproj`:
 ```
 
 **Step 2: Verify analysis works**
+
 ```bash
 dotnet build
 ```
@@ -218,24 +240,22 @@ dotnet build
 ### C/C++: clang-tidy Configuration
 
 **Step 1: Check clang-tidy is installed**
+
 ```bash
 clang-tidy --version
 ```
 
 **Step 2: Create .clang-tidy**
+
 ```yaml
 Checks: >
-  -*,
-  clang-analyzer-*,
-  bugprone-*,
-  modernize-*,
-  performance-*,
-  readability-*
-WarningsAsErrors: ''
-HeaderFilterRegex: '.*'
+  -*, clang-analyzer-*, bugprone-*, modernize-*, performance-*, readability-*
+WarningsAsErrors: ""
+HeaderFilterRegex: ".*"
 ```
 
 **Step 3: Verify clang-tidy works**
+
 ```bash
 clang-tidy src/*.cpp
 ```
@@ -243,11 +263,13 @@ clang-tidy src/*.cpp
 ### Swift: swiftlint Configuration
 
 **Step 1: Install swiftlint**
+
 ```bash
 brew install swiftlint
 ```
 
 **Step 2: Create .swiftlint.yml**
+
 ```yaml
 disabled_rules:
   - trailing_whitespace
@@ -258,6 +280,7 @@ line_length: 120
 ```
 
 **Step 3: Verify swiftlint works**
+
 ```bash
 swiftlint
 ```
@@ -338,6 +361,7 @@ cargo clippy
 **Symptom**: Command not found when running linter.
 
 **Action**:
+
 1. Verify the linter is installed: check dev dependencies
 2. For Go/Rust tools, ensure they are in PATH
 3. Reinstall the linter package
@@ -347,6 +371,7 @@ cargo clippy
 **Symptom**: Linter fails to parse configuration file.
 
 **Action**:
+
 1. Validate the configuration file syntax
 2. Check for typos in rule names
 3. Ensure the config format matches the linter version
@@ -356,6 +381,7 @@ cargo clippy
 **Symptom**: Linter reports hundreds of errors on existing codebase.
 
 **Action**:
+
 1. Start with fewer/less strict rules
 2. Use ignore comments for legacy code
 3. Fix errors incrementally
@@ -366,6 +392,7 @@ cargo clippy
 **Symptom**: mypy or TypeScript compiler reports many type errors.
 
 **Action**:
+
 1. Start with lenient settings and gradually increase strictness
 2. Add type annotations incrementally
 3. Use `# type: ignore` or `// @ts-ignore` for complex legacy code

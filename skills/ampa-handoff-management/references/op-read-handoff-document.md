@@ -14,20 +14,27 @@ parent-skill: ampa-handoff-management
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-This operation explains how to parse and process handoff documents to understand delegated work and resume from checkpoints.
+This operation explains how to parse and process handoff documents to understand
+delegated work and resume from checkpoints.
 
 ## When to Use
 
 Use this operation when:
 
-1. **Receiving delegation from AMOA**: The AI Maestro Orchestrator Agent has assigned you a task via a handoff document
-2. **Resuming a session**: You need to continue work from a previous session that was interrupted
-3. **Taking over from another agent**: Another programmer agent has passed work to you
-4. **Context was cleared**: The conversation was compacted and you need to restore work state
+1. **Receiving delegation from AMOA**: The AI Maestro Orchestrator Agent has
+   assigned you a task via a handoff document
+2. **Resuming a session**: You need to continue work from a previous session
+   that was interrupted
+3. **Taking over from another agent**: Another programmer agent has passed work
+   to you
+4. **Context was cleared**: The conversation was compacted and you need to
+   restore work state
 
 Do NOT use this operation when:
+
 - Starting fresh work with no prior context
 - The task is fully described in the user prompt without a handoff file
 
@@ -35,9 +42,12 @@ Do NOT use this operation when:
 
 Before reading a handoff document:
 
-1. **AI Maestro must be running**: The messaging system enables handoff notifications
-2. **Handoff directory must exist**: Check `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/`
-3. **You must know the task name**: Either from the delegation message or resume instruction
+1. **AI Maestro must be running**: The messaging system enables handoff
+   notifications
+2. **Handoff directory must exist**: Check
+   `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/`
+3. **You must know the task name**: Either from the delegation message or resume
+   instruction
 
 ## Procedure
 
@@ -51,7 +61,8 @@ TASK_NAME="<task-name-from-delegation>"
 HANDOFF_FILE="$HANDOFF_DIR/$TASK_NAME/current.md"
 ```
 
-If you received a delegation via AI Maestro, the message will contain the exact path.
+If you received a delegation via AI Maestro, the message will contain the exact
+path.
 
 ### Step 2: Verify the Document Exists
 
@@ -100,11 +111,13 @@ If resuming work, look for the `## Checkpoints` section:
 ## Checkpoints
 
 ### Phase Status
+
 - Phase 1 (Tests Written): VALIDATED (15 tests passing)
 - Phase 2 (Implementation): IN_PROGRESS (started 2025-12-31T14:00:00Z)
 - Phase 3 (Refactoring): PENDING
 
 ### Resume Context
+
 - Current focus: Implementing the parse_config function
 - Next action: Add validation for empty input
 - Blockers: None
@@ -125,12 +138,16 @@ If there is a `### Validation State` section with JSON:
 }
 ```
 
-Re-run the `last_test_command` to verify the checkpoint is still valid before continuing.
+Re-run the `last_test_command` to verify the checkpoint is still valid before
+continuing.
 
 ### Step 7: Acknowledge Receipt
 
-After successfully reading the handoff, notify the delegating agent using the `agent-messaging` skill:
-- **Recipient**: the delegating agent's session name (from the handoff's `from` field)
+After successfully reading the handoff, notify the delegating agent using the
+`agent-messaging` skill:
+
+- **Recipient**: the delegating agent's session name (from the handoff's `from`
+  field)
 - **Subject**: "Handoff received: [task-name]"
 - **Content**: confirm receipt, state which phase you are resuming from
 - **Type**: acknowledgment
@@ -142,7 +159,8 @@ After successfully reading the handoff, notify the delegating agent using the `a
 
 Complete these items when reading a handoff document:
 
-- [ ] Located handoff file at `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/<task>/current.md`
+- [ ] Located handoff file at
+      `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/<task>/current.md`
 - [ ] Verified file exists before reading
 - [ ] Parsed YAML frontmatter for metadata (task, from, to, priority, status)
 - [ ] Read task description, requirements, and constraints
@@ -171,26 +189,32 @@ status: pending
 # Implement Config Parser
 
 ## Task Summary
-Implement a configuration file parser that reads YAML files and validates them against a schema.
+
+Implement a configuration file parser that reads YAML files and validates them
+against a schema.
 
 ## Requirements
+
 1. Parse YAML files using PyYAML library
 2. Validate against JSON schema
 3. Return typed dataclass objects
 4. Handle parsing errors gracefully
 
 ## Constraints
+
 - Must use existing error handling patterns in src/errors.py
 - Must follow TDD approach (tests first)
 - Maximum file size: 10MB
 
 ## Codebase Context
+
 - Schema location: src/schemas/config_schema.json
 - Output types: src/models/config.py
 - Existing parser reference: src/parsers/json_parser.py
 ```
 
 After reading this, you would:
+
 1. Note this is a fresh task (status: pending, no checkpoints)
 2. Understand the four requirements
 3. Check the codebase paths mentioned
@@ -200,15 +224,17 @@ After reading this, you would:
 
 The handoff document contains a checkpoint section:
 
-```markdown
+````markdown
 ## Checkpoints
 
 ### Phase Status
+
 - Phase 1 (Tests Written): VALIDATED
 - Phase 2 (Implementation): IN_PROGRESS
 - Phase 3 (Refactoring): PENDING
 
 ### Validation State
+
 ```json
 {
   "test_count": 8,
@@ -217,11 +243,14 @@ The handoff document contains a checkpoint section:
   "last_test_exit_code": 1
 }
 ```
+````
 
 ### Resume Context
+
 - Current focus: parse_yaml function
 - Next action: Fix handling of nested dictionaries
 - Blockers: None
+
 ```
 
 After reading this, you would:
@@ -281,3 +310,4 @@ After reading this, you would:
 2. Check if there is an archived version with more complete information
 3. If the task is clear from context, proceed and document assumptions
 4. Update the handoff document with the missing sections once clarified
+```text

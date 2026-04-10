@@ -9,7 +9,7 @@ This document describes the complete workflow for how the AI Maestro agent syste
 
 ## Workflow Overview
 
-```
+```text
 USER
   │
   ▼

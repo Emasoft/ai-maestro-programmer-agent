@@ -14,13 +14,15 @@ parent-skill: ampa-task-execution
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
 Write code that fulfills the task requirements and acceptance criteria.
 
 ## When to Use
 
 Use this operation when:
+
 - Development environment is configured and ready
 - Requirements are fully understood
 - You are ready to write the actual implementation
@@ -28,7 +30,9 @@ Use this operation when:
 ## Prerequisites
 
 Before executing this operation:
-1. Environment setup must be complete (op-setup-development-environment completed)
+
+1. Environment setup must be complete (op-setup-development-environment
+   completed)
 2. Acceptance criteria must be documented
 3. Target files and components must be identified
 4. SERENA MCP must be active for code navigation
@@ -39,7 +43,7 @@ Before executing this operation:
 
 Before writing any code, understand the existing codebase:
 
-```
+```text
 # Get overall structure
 mcp__serena__get_codebase_structure()
 
@@ -52,12 +56,12 @@ mcp__serena__get_symbol_details("RelatedClass")
 
 Document patterns to follow:
 
-| Pattern | Example Location | Description |
-|---------|------------------|-------------|
+| Pattern           | Example Location             | Description              |
+| ----------------- | ---------------------------- | ------------------------ |
 | Naming convention | src/services/user_service.py | snake_case for functions |
-| Error handling | src/core/exceptions.py | Custom exception classes |
-| Logging pattern | src/utils/logger.py | Structured logging |
-| Testing pattern | tests/unit/test_user.py | pytest with fixtures |
+| Error handling    | src/core/exceptions.py       | Custom exception classes |
+| Logging pattern   | src/utils/logger.py          | Structured logging       |
+| Testing pattern   | tests/unit/test_user.py      | pytest with fixtures     |
 
 ### Step 4.2: Plan Implementation Approach
 
@@ -70,11 +74,11 @@ Create an implementation plan before writing code:
 
 Implementation plan template:
 
-| Order | Component | File | Dependencies | Testable |
-|-------|-----------|------|--------------|----------|
-| 1 | Data model | src/models/session.py | None | Yes |
-| 2 | Service layer | src/services/auth.py | models/session | Yes |
-| 3 | API endpoint | src/api/routes.py | services/auth | Yes |
+| Order | Component     | File                  | Dependencies   | Testable |
+| ----- | ------------- | --------------------- | -------------- | -------- |
+| 1     | Data model    | src/models/session.py | None           | Yes      |
+| 2     | Service layer | src/services/auth.py  | models/session | Yes      |
+| 3     | API endpoint  | src/api/routes.py     | services/auth  | Yes      |
 
 ### Step 4.3: Write Code in Small, Testable Increments
 
@@ -85,6 +89,7 @@ Follow this incremental process:
    - Complete it fully before moving on
 
 2. **Use the Read-Edit-Verify cycle**
+
    ```
    Read: View existing file with Read tool
    Edit: Make changes with Edit tool
@@ -92,6 +97,7 @@ Follow this incremental process:
    ```
 
 3. **Run verification after each change**
+
    ```bash
    # Lint the changed file
    uv run ruff check src/path/to/file.py
@@ -106,11 +112,11 @@ Follow this incremental process:
 
 Code quality requirements:
 
-| Requirement | Tool | Command |
-|-------------|------|---------|
-| No lint errors | ruff | `uv run ruff check src/` |
-| No type errors | mypy | `uv run mypy src/` |
-| Formatting | ruff | `uv run ruff format src/` |
+| Requirement    | Tool | Command                   |
+| -------------- | ---- | ------------------------- |
+| No lint errors | ruff | `uv run ruff check src/`  |
+| No type errors | mypy | `uv run mypy src/`        |
+| Formatting     | ruff | `uv run ruff format src/` |
 
 ### Step 4.4: Add Documentation and Comments
 
@@ -168,12 +174,14 @@ Every implementation must include:
 Task: Add a function to validate email addresses
 
 **Step 1: Analyze existing code**
-```
+
+```text
 mcp__serena__find_symbol("validate_")
 # Found: validate_username in src/validators/user.py
 ```
 
 **Step 2: Read the existing pattern**
+
 ```python
 # From src/validators/user.py
 def validate_username(username: str) -> bool:
@@ -190,6 +198,7 @@ def validate_username(username: str) -> bool:
 ```
 
 **Step 3: Implement following the pattern**
+
 ```python
 def validate_email(email: str) -> bool:
     """Validate email address format.
@@ -209,6 +218,7 @@ def validate_email(email: str) -> bool:
 ```
 
 **Step 4: Verify**
+
 ```bash
 uv run ruff check src/validators/user.py
 # All checks passed
@@ -224,6 +234,7 @@ Task: Create a password reset service
 **Step 1: Create the file with Edit tool**
 
 File: `src/services/password_reset.py`
+
 ```python
 """Password reset service.
 
@@ -283,15 +294,17 @@ class PasswordResetService:
 
 ## Error Handling
 
-| Error | Cause | Resolution |
-|-------|-------|------------|
-| Ruff errors | Code style violations | Fix violations, do not skip |
-| Mypy errors | Type mismatches | Add proper types, do not use Any |
-| Import errors | Missing dependencies | Add to pyproject.toml with uv add |
-| SERENA not finding symbol | Wrong name or scope | Try alternative names or browse structure |
+| Error                     | Cause                 | Resolution                                |
+| ------------------------- | --------------------- | ----------------------------------------- |
+| Ruff errors               | Code style violations | Fix violations, do not skip               |
+| Mypy errors               | Type mismatches       | Add proper types, do not use Any          |
+| Import errors             | Missing dependencies  | Add to pyproject.toml with uv add         |
+| SERENA not finding symbol | Wrong name or scope   | Try alternative names or browse structure |
 
 ## Related Operations
 
-- [op-setup-development-environment.md](op-setup-development-environment.md) - Previous step
+- [op-setup-development-environment.md](op-setup-development-environment.md) -
+  Previous step
 - [op-write-tests.md](op-write-tests.md) - Next step
-- [op-validate-acceptance-criteria.md](op-validate-acceptance-criteria.md) - Verification step
+- [op-validate-acceptance-criteria.md](op-validate-acceptance-criteria.md) -
+  Verification step

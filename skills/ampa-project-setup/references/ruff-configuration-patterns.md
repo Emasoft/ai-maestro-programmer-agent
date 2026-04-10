@@ -17,13 +17,16 @@ parent-skill: ampa-project-setup
 - [How to Run Ruff](#how-to-run-ruff)
 - [Customizing Ruff for Specific Project Types](#customizing-ruff-for-specific-project-types)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
 ---
 
 ## When to Configure Ruff for a New Project
 
-Configure ruff when setting up any new Python project. Ruff replaces multiple tools:
+Configure ruff when setting up any new Python project. Ruff replaces multiple
+tools:
+
 - **pycodestyle** (E, W rules) -- style checking
 - **Pyflakes** (F rules) -- logical error detection
 - **isort** (I rules) -- import sorting
@@ -80,74 +83,96 @@ line-ending = "auto"
 
 ## What Each Rule Set Does
 
-| Rule Set | Code | Purpose | Example Catch |
-|----------|------|---------|---------------|
-| pycodestyle errors | `E` | PEP 8 style violations | Missing whitespace, wrong indentation |
-| pycodestyle warnings | `W` | PEP 8 style warnings | Trailing whitespace, blank lines |
-| Pyflakes | `F` | Logical errors | Undefined names, unused imports |
-| isort | `I` | Import order | Unsorted imports, missing sections |
-| flake8-bugbear | `B` | Bug-prone patterns | Mutable default arguments, bare except |
-| flake8-comprehensions | `C4` | Comprehension style | Unnecessary list() around generator |
-| pyupgrade | `UP` | Version upgrades | Old-style string formatting, type hints |
+| Rule Set              | Code | Purpose                | Example Catch                           |
+| --------------------- | ---- | ---------------------- | --------------------------------------- |
+| pycodestyle errors    | `E`  | PEP 8 style violations | Missing whitespace, wrong indentation   |
+| pycodestyle warnings  | `W`  | PEP 8 style warnings   | Trailing whitespace, blank lines        |
+| Pyflakes              | `F`  | Logical errors         | Undefined names, unused imports         |
+| isort                 | `I`  | Import order           | Unsorted imports, missing sections      |
+| flake8-bugbear        | `B`  | Bug-prone patterns     | Mutable default arguments, bare except  |
+| flake8-comprehensions | `C4` | Comprehension style    | Unnecessary list() around generator     |
+| pyupgrade             | `UP` | Version upgrades       | Old-style string formatting, type hints |
 
 ### pycodestyle errors (E)
 
-These rules enforce PEP 8 style conventions. They catch formatting issues like missing whitespace around operators, incorrect indentation levels, and missing blank lines between functions or classes. Example: `E111` catches indentation that is not a multiple of four spaces.
+These rules enforce PEP 8 style conventions. They catch formatting issues like
+missing whitespace around operators, incorrect indentation levels, and missing
+blank lines between functions or classes. Example: `E111` catches indentation
+that is not a multiple of four spaces.
 
 ### pycodestyle warnings (W)
 
-These are less severe PEP 8 style issues. They catch trailing whitespace on lines, deprecated features, and minor formatting inconsistencies. Example: `W291` catches trailing whitespace at the end of a line.
+These are less severe PEP 8 style issues. They catch trailing whitespace on
+lines, deprecated features, and minor formatting inconsistencies. Example:
+`W291` catches trailing whitespace at the end of a line.
 
 ### Pyflakes (F)
 
-Pyflakes detects logical errors without checking style. It finds undefined variable names, imported modules that are never used, redefined unused variables, and other programming mistakes. Example: `F821` catches usage of an undefined name.
+Pyflakes detects logical errors without checking style. It finds undefined
+variable names, imported modules that are never used, redefined unused
+variables, and other programming mistakes. Example: `F821` catches usage of an
+undefined name.
 
 ### isort (I)
 
-The isort rules enforce a consistent import ordering. Python imports are sorted into sections: standard library, third-party packages, and local imports. Each section is separated by a blank line. Example: `I001` catches unsorted imports within a section.
+The isort rules enforce a consistent import ordering. Python imports are sorted
+into sections: standard library, third-party packages, and local imports. Each
+section is separated by a blank line. Example: `I001` catches unsorted imports
+within a section.
 
 ### flake8-bugbear (B)
 
-Bugbear catches common programming mistakes and design problems that are not syntax errors but lead to bugs. It detects mutable default arguments, bare `except:` clauses, and other dangerous patterns. Example: `B006` catches using a mutable data structure as a default argument value.
+Bugbear catches common programming mistakes and design problems that are not
+syntax errors but lead to bugs. It detects mutable default arguments, bare
+`except:` clauses, and other dangerous patterns. Example: `B006` catches using a
+mutable data structure as a default argument value.
 
 ### flake8-comprehensions (C4)
 
-These rules suggest simpler comprehension or generator expressions. They catch cases where code uses unnecessary `list()`, `set()`, or `dict()` calls around generators when a comprehension would be clearer and faster. Example: `C400` catches `list(x for x in items)` which should be `[x for x in items]`.
+These rules suggest simpler comprehension or generator expressions. They catch
+cases where code uses unnecessary `list()`, `set()`, or `dict()` calls around
+generators when a comprehension would be clearer and faster. Example: `C400`
+catches `list(x for x in items)` which should be `[x for x in items]`.
 
 ### pyupgrade (UP)
 
-Pyupgrade suggests modern Python syntax. It catches old-style string formatting (`%`-style or `.format()`), outdated type annotations, and other patterns that have been superseded by newer Python features. Example: `UP031` catches `"%s" % name` which should be an f-string.
+Pyupgrade suggests modern Python syntax. It catches old-style string formatting
+(`%`-style or `.format()`), outdated type annotations, and other patterns that
+have been superseded by newer Python features. Example: `UP031` catches
+`"%s" % name` which should be an f-string.
 
 ---
 
 ## What Each Ignored Rule Means
 
-| Rule | Name | Why Ignored |
-|------|------|-------------|
-| `E501` | Line too long | The ruff formatter handles line length automatically. When you run `ruff format`, it wraps lines to the configured length, making this lint check redundant. |
-| `B008` | Function call in default argument | Common pattern in FastAPI and Click. For example, `def endpoint(db: Session = Depends(get_db))` uses a function call as a default argument. This is intentional in dependency injection frameworks. |
-| `B904` | Raise from err | This rule requires `raise NewException() from original_exception` syntax to preserve exception chains. Ignored because many existing codebases have too many violations to fix at once. |
-| `B905` | zip without strict parameter | This rule requires `zip(..., strict=True)` to catch mismatched lengths. Ignored because the `strict` parameter is only available in Python 3.10 and later, and many projects support older Python versions. |
-| `C401` | Unnecessary generator | This rule flags `set(x for x in items)` suggesting `{x for x in items}`. Ignored because sometimes the generator form is clearer, especially in complex expressions. |
-| `C416` | Unnecessary list comprehension | This rule flags `[x for x in items]` as unnecessary when `list(items)` would work. Ignored because the comprehension form can be clearer when reading code, and sometimes serves as documentation of intent. |
-| `E402` | Module-level import not at top of file | Some scripts need to modify `sys.path` or set environment variables before importing modules. For example, a script might need `sys.path.insert(0, "/custom/path")` before importing a local module. |
-| `F841` | Local variable assigned but never used | Sometimes a variable is assigned for debugging purposes, or to document the return value of a function call even when only the side effect matters. Ignored to reduce noise during development. |
-| `W293` | Blank line contains whitespace | The ruff formatter automatically strips whitespace from blank lines. This check is redundant when the formatter is used. |
-| `B007` | Loop control variable not used | This rule flags `for x in range(n)` when `x` is never used in the loop body. The convention is to use `for _ in range(n)` instead. Ignored because many developers use named variables for clarity even when unused. |
+| Rule   | Name                                   | Why Ignored                                                                                                                                                                                                          |
+| ------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `E501` | Line too long                          | The ruff formatter handles line length automatically. When you run `ruff format`, it wraps lines to the configured length, making this lint check redundant.                                                         |
+| `B008` | Function call in default argument      | Common pattern in FastAPI and Click. For example, `def endpoint(db: Session = Depends(get_db))` uses a function call as a default argument. This is intentional in dependency injection frameworks.                  |
+| `B904` | Raise from err                         | This rule requires `raise NewException() from original_exception` syntax to preserve exception chains. Ignored because many existing codebases have too many violations to fix at once.                              |
+| `B905` | zip without strict parameter           | This rule requires `zip(..., strict=True)` to catch mismatched lengths. Ignored because the `strict` parameter is only available in Python 3.10 and later, and many projects support older Python versions.          |
+| `C401` | Unnecessary generator                  | This rule flags `set(x for x in items)` suggesting `{x for x in items}`. Ignored because sometimes the generator form is clearer, especially in complex expressions.                                                 |
+| `C416` | Unnecessary list comprehension         | This rule flags `[x for x in items]` as unnecessary when `list(items)` would work. Ignored because the comprehension form can be clearer when reading code, and sometimes serves as documentation of intent.         |
+| `E402` | Module-level import not at top of file | Some scripts need to modify `sys.path` or set environment variables before importing modules. For example, a script might need `sys.path.insert(0, "/custom/path")` before importing a local module.                 |
+| `F841` | Local variable assigned but never used | Sometimes a variable is assigned for debugging purposes, or to document the return value of a function call even when only the side effect matters. Ignored to reduce noise during development.                      |
+| `W293` | Blank line contains whitespace         | The ruff formatter automatically strips whitespace from blank lines. This check is redundant when the formatter is used.                                                                                             |
+| `B007` | Loop control variable not used         | This rule flags `for x in range(n)` when `x` is never used in the loop body. The convention is to use `for _ in range(n)` instead. Ignored because many developers use named variables for clarity even when unused. |
 
 ---
 
 ## Per-File Ignore Patterns
 
-| Pattern | Rule | Reason |
-|---------|------|--------|
+| Pattern       | Rule                    | Reason                                                                                                                                                                                                |
+| ------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `__init__.py` | `F401` (unused imports) | `__init__.py` files re-export symbols to define a package's public API. The imports exist to make symbols available when someone imports the package, not because the `__init__.py` itself uses them. |
-| `tests/*` | `B011` (assert false) | Test files use `assert False` to mark test cases that should never reach a certain point. For example, `assert False, "This line should not be reached"` is a valid test pattern. |
-| `test_*.py` | `F401` (unused imports) | Test files import fixtures and test helpers that are used by the test framework (like pytest fixtures) but appear unused to static analysis. |
+| `tests/*`     | `B011` (assert false)   | Test files use `assert False` to mark test cases that should never reach a certain point. For example, `assert False, "This line should not be reached"` is a valid test pattern.                     |
+| `test_*.py`   | `F401` (unused imports) | Test files import fixtures and test helpers that are used by the test framework (like pytest fixtures) but appear unused to static analysis.                                                          |
 
 ### Adding Custom Per-File Ignores
 
-Add new per-file ignores in the `[lint.per-file-ignores]` section of `ruff.toml`. The key is a file pattern (glob syntax), and the value is a list of rule codes to ignore for files matching that pattern.
+Add new per-file ignores in the `[lint.per-file-ignores]` section of
+`ruff.toml`. The key is a file pattern (glob syntax), and the value is a list of
+rule codes to ignore for files matching that pattern.
 
 ```toml
 [lint.per-file-ignores]
@@ -163,19 +188,23 @@ Add new per-file ignores in the `[lint.per-file-ignores]` section of `ruff.toml`
 
 ## Formatter Settings
 
-| Setting | Value | Meaning |
-|---------|-------|---------|
-| `quote-style` | `"double"` | Use double quotes for strings. Write `"hello"` not `'hello'`. Ruff formatter automatically converts single quotes to double quotes. |
-| `indent-style` | `"space"` | Use spaces for indentation, not tabs. Standard Python convention is 4 spaces per indentation level. |
-| `line-ending` | `"auto"` | Detect line endings automatically. Uses LF (`\n`) on Unix/macOS systems and CRLF (`\r\n`) on Windows. This prevents line ending conflicts in cross-platform teams. |
+| Setting        | Value      | Meaning                                                                                                                                                            |
+| -------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `quote-style`  | `"double"` | Use double quotes for strings. Write `"hello"` not `'hello'`. Ruff formatter automatically converts single quotes to double quotes.                                |
+| `indent-style` | `"space"`  | Use spaces for indentation, not tabs. Standard Python convention is 4 spaces per indentation level.                                                                |
+| `line-ending`  | `"auto"`   | Detect line endings automatically. Uses LF (`\n`) on Unix/macOS systems and CRLF (`\r\n`) on Windows. This prevents line ending conflicts in cross-platform teams. |
 
-**Note**: Line length is NOT configured in ruff.toml for AI Maestro Programmer projects. The line length is set to 88 characters and must be passed as a command-line flag:
+**Note**: Line length is NOT configured in ruff.toml for AI Maestro Programmer
+projects. The line length is set to 88 characters and must be passed as a
+command-line flag:
 
 ```bash
 uv run ruff format --line-length=88 src/ tests/
 ```
 
-The reason for using command-line flags instead of configuration: the project CLAUDE.md enforces `--line-length=88` and this ensures the setting is always explicit and visible in every command invocation.
+The reason for using command-line flags instead of configuration: the project
+CLAUDE.md enforces `--line-length=88` and this ensures the setting is always
+explicit and visible in every command invocation.
 
 ---
 
@@ -190,7 +219,8 @@ To check all Python files for lint issues:
 uv run ruff check src/ tests/
 ```
 
-To automatically fix issues that ruff can safely fix (like import sorting, unnecessary parentheses):
+To automatically fix issues that ruff can safely fix (like import sorting,
+unnecessary parentheses):
 
 ```bash
 # Auto-fix safe issues
@@ -222,7 +252,8 @@ uv run ruff format --check --line-length=88 src/ tests/
 
 ### Combined Workflow
 
-Run linting first to fix issues, then format. This order matters because some lint fixes may affect formatting:
+Run linting first to fix issues, then format. This order matters because some
+lint fixes may affect formatting:
 
 ```bash
 # Fix lint issues first, then format
@@ -247,7 +278,9 @@ uv run ruff format --line-length=88 src/mymodule.py
 
 ### FastAPI Projects
 
-FastAPI uses function calls in default arguments extensively for dependency injection. The `B008` rule is already ignored in the standard template, which covers patterns like:
+FastAPI uses function calls in default arguments extensively for dependency
+injection. The `B008` rule is already ignored in the standard template, which
+covers patterns like:
 
 ```python
 @app.get("/items")
@@ -259,11 +292,14 @@ No additional configuration needed for FastAPI projects.
 
 ### CLI Tools (Click or Typer)
 
-Click and Typer use function calls in decorator defaults, similar to FastAPI. The `B008` ignore already covers this. No additional configuration needed.
+Click and Typer use function calls in decorator defaults, similar to FastAPI.
+The `B008` ignore already covers this. No additional configuration needed.
 
 ### Data Science Projects
 
-Data science code often uses single-letter variable names from mathematical conventions (like `l` for length, `O` for big-O, `I` for identity matrix). Add `E741` to the ignore list:
+Data science code often uses single-letter variable names from mathematical
+conventions (like `l` for length, `O` for big-O, `I` for identity matrix). Add
+`E741` to the ignore list:
 
 ```toml
 ignore = [
@@ -274,11 +310,15 @@ ignore = [
 
 ### Library Projects with Public API
 
-Library projects may need additional `__init__.py` flexibility. The standard template already ignores `F401` in `__init__.py` files. If you also have `__all__` definitions, no additional configuration is needed.
+Library projects may need additional `__init__.py` flexibility. The standard
+template already ignores `F401` in `__init__.py` files. If you also have
+`__all__` definitions, no additional configuration is needed.
 
 ### Strict Configuration
 
-For projects that want maximum strictness, remove the ignore rules you want to enforce. At minimum, always keep `E501` ignored because the formatter handles line length:
+For projects that want maximum strictness, remove the ignore rules you want to
+enforce. At minimum, always keep `E501` ignored because the formatter handles
+line length:
 
 ```toml
 ignore = [
@@ -287,6 +327,7 @@ ignore = [
 ```
 
 This enables all other rules that the standard template ignores, requiring:
+
 - Exception chaining with `raise ... from ...`
 - `strict=True` on all `zip()` calls
 - Set comprehensions instead of `set()` with generators

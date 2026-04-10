@@ -14,9 +14,11 @@ parent-skill: ampa-github-operations
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-Push code fixes to an existing PR after rejection from AMIA review. This corresponds to **Step 22** of the AMPA workflow.
+Push code fixes to an existing PR after rejection from AMIA review. This
+corresponds to **Step 22** of the AMPA workflow.
 
 ## When to Use
 
@@ -89,7 +91,8 @@ git commit -m "fix(api): address security concerns from review
 git commit -m "test(auth): add unit tests per review request"
 ```
 
-**Do not squash commits** when pushing fixes. Keep separate commits so reviewer can see what changed since last review.
+**Do not squash commits** when pushing fixes. Keep separate commits so reviewer
+can see what changed since last review.
 
 ### 6.3 Pushing Updates to PR Branch
 
@@ -109,7 +112,8 @@ If you rebased and need to force push:
 git push --force-with-lease origin <branch-name>
 ```
 
-**Note:** Prefer merge over rebase to preserve review context. Force pushing can lose review comments.
+**Note:** Prefer merge over rebase to preserve review context. Force pushing can
+lose review comments.
 
 ### 6.4 Updating PR Description
 
@@ -264,13 +268,13 @@ EOF
 
 ## Error Handling
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `rejected: non-fast-forward` | Remote has new commits | `git pull origin <branch>` then push |
-| `failed to push` | Branch protection | Check if PR is from fork (needs sync) |
-| `merge conflict` | Diverged from main | Resolve conflicts locally |
-| `PR is closed` | PR was closed | Reopen PR or create new one |
-| `force-with-lease rejected` | Someone else pushed | Pull their changes first |
+| Error                        | Cause                  | Solution                              |
+| ---------------------------- | ---------------------- | ------------------------------------- |
+| `rejected: non-fast-forward` | Remote has new commits | `git pull origin <branch>` then push  |
+| `failed to push`             | Branch protection      | Check if PR is from fork (needs sync) |
+| `merge conflict`             | Diverged from main     | Resolve conflicts locally             |
+| `PR is closed`               | PR was closed          | Reopen PR or create new one           |
+| `force-with-lease rejected`  | Someone else pushed    | Pull their changes first              |
 
 ## Recovery Steps
 

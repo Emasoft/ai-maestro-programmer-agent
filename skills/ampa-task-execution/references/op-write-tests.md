@@ -14,13 +14,15 @@ parent-skill: ampa-task-execution
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
 Create tests that verify the implementation meets acceptance criteria.
 
 ## When to Use
 
 Use this operation when:
+
 - Code implementation is complete for a component
 - You need to verify behavior matches requirements
 - Acceptance criteria require test coverage as proof
@@ -28,6 +30,7 @@ Use this operation when:
 ## Prerequisites
 
 Before executing this operation:
+
 1. Code implementation must be complete (op-implement-code completed)
 2. The code must pass linting and type checking
 3. Test framework must be configured (pytest for Python)
@@ -39,13 +42,14 @@ Before executing this operation:
 
 Map each acceptance criterion to test scenarios:
 
-| Criterion | Test Scenarios |
-|-----------|----------------|
-| AC-001: Email format validated | Valid email passes, invalid fails, edge cases |
-| AC-002: Error message shown | Error message text, visibility, dismissibility |
-| AC-003: Form submission works | Submits with valid input, blocks with invalid |
+| Criterion                      | Test Scenarios                                 |
+| ------------------------------ | ---------------------------------------------- |
+| AC-001: Email format validated | Valid email passes, invalid fails, edge cases  |
+| AC-002: Error message shown    | Error message text, visibility, dismissibility |
+| AC-003: Form submission works  | Submits with valid input, blocks with invalid  |
 
 For each scenario, identify:
+
 - **Input**: What data or state to set up
 - **Action**: What operation to perform
 - **Expected**: What outcome to verify
@@ -87,10 +91,10 @@ class TestValidateEmail:
 
 Test naming conventions:
 
-| Convention | Example |
-|------------|---------|
-| File name | `test_<module>.py` |
-| Class name | `Test<FunctionOrClass>` |
+| Convention  | Example                              |
+| ----------- | ------------------------------------ |
+| File name   | `test_<module>.py`                   |
+| Class name  | `Test<FunctionOrClass>`              |
 | Method name | `test_<condition>_<expected_result>` |
 
 ### Step 5.3: Write Integration Tests if Applicable
@@ -140,7 +144,8 @@ class TestPasswordResetIntegration:
         assert stored_token.expires_at < datetime.utcnow() + timedelta(hours=25)
 ```
 
-Do NOT use mocks unless absolutely necessary. Real tests with real components find real bugs.
+Do NOT use mocks unless absolutely necessary. Real tests with real components
+find real bugs.
 
 ### Step 5.4: Run Tests and Fix Failures
 
@@ -166,11 +171,11 @@ When a test fails:
 
 Test result interpretation:
 
-| Result | Meaning | Action |
-|--------|---------|--------|
-| PASSED | Test passed | Continue |
-| FAILED | Assertion failed | Fix implementation or test |
-| ERROR | Exception raised | Fix code error |
+| Result  | Meaning          | Action                      |
+| ------- | ---------------- | --------------------------- |
+| PASSED  | Test passed      | Continue                    |
+| FAILED  | Assertion failed | Fix implementation or test  |
+| ERROR   | Exception raised | Fix code error              |
 | SKIPPED | Test was skipped | Verify skip reason is valid |
 
 ## Checklist
@@ -256,7 +261,7 @@ class TestTokenExpiration:
 
 Running tests should produce:
 
-```
+```text
 $ uv run pytest tests/unit/test_validators.py -v
 
 ========================= test session starts ==========================
@@ -273,15 +278,16 @@ tests/unit/test_validators.py::TestValidateEmail::test_email_validation[@example
 
 ## Error Handling
 
-| Error | Cause | Resolution |
-|-------|-------|------------|
-| Test collection error | Syntax error in test file | Fix Python syntax |
-| Import error | Module not found | Check import paths, run from project root |
-| Fixture not found | Missing pytest fixture | Define fixture or import from conftest |
-| Assertion error | Test expectation wrong | Verify expected value is correct |
-| Timeout | Test runs too long | Check for infinite loops, add timeout |
+| Error                 | Cause                     | Resolution                                |
+| --------------------- | ------------------------- | ----------------------------------------- |
+| Test collection error | Syntax error in test file | Fix Python syntax                         |
+| Import error          | Module not found          | Check import paths, run from project root |
+| Fixture not found     | Missing pytest fixture    | Define fixture or import from conftest    |
+| Assertion error       | Test expectation wrong    | Verify expected value is correct          |
+| Timeout               | Test runs too long        | Check for infinite loops, add timeout     |
 
 ## Related Operations
 
 - [op-implement-code.md](op-implement-code.md) - Previous step
-- [op-validate-acceptance-criteria.md](op-validate-acceptance-criteria.md) - Next step
+- [op-validate-acceptance-criteria.md](op-validate-acceptance-criteria.md) -
+  Next step

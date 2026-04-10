@@ -14,13 +14,15 @@ parent-skill: ampa-task-execution
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
 Parse and validate incoming task assignments from AI Maestro messages.
 
 ## When to Use
 
 Use this operation when:
+
 - You see the AI Maestro inbox notification banner
 - You receive a message with subject containing "TASK:" or "ASSIGNMENT:"
 - The orchestrator sends you work to perform
@@ -28,7 +30,9 @@ Use this operation when:
 ## Prerequisites
 
 Before executing this operation:
-1. AI Maestro service must be running (verify using the `agent-messaging` skill's health check feature)
+
+1. AI Maestro service must be running (verify using the `agent-messaging`
+   skill's health check feature)
 2. You must have a valid session name configured
 3. The message must be in the expected JSON format
 
@@ -39,6 +43,7 @@ Before executing this operation:
 Check your inbox using the `agent-messaging` skill. Process all unread messages.
 
 Look for messages where:
+
 - `content.type` is `"task"` or `"assignment"`
 - `subject` contains task identification
 
@@ -46,17 +51,19 @@ Look for messages where:
 
 From the message body, extract:
 
-| Field | Location | Description |
-|-------|----------|-------------|
-| Task ID | `content.task_id` | UUID from AI Maestro (or free-form string). May include `externalRef` mapping to a GitHub issue number. |
-| Task Name | `content.task_name` | Human-readable task description |
-| Priority | `priority` field | URGENT, HIGH, NORMAL, LOW |
-| Deadline | `content.deadline` | Optional completion deadline |
-| From Agent | `from` field | Orchestrator that assigned the task |
+| Field      | Location            | Description                                                                                             |
+| ---------- | ------------------- | ------------------------------------------------------------------------------------------------------- |
+| Task ID    | `content.task_id`   | UUID from AI Maestro (or free-form string). May include `externalRef` mapping to a GitHub issue number. |
+| Task Name  | `content.task_name` | Human-readable task description                                                                         |
+| Priority   | `priority` field    | URGENT, HIGH, NORMAL, LOW                                                                               |
+| Deadline   | `content.deadline`  | Optional completion deadline                                                                            |
+| From Agent | `from` field        | Orchestrator that assigned the task                                                                     |
 
 Example message structure:
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -80,41 +87,50 @@ Example message structure:
 
 Verify the message contains all required fields:
 
-| Required Field | Validation |
-|----------------|------------|
-| `content.type` | Must be "task" or "assignment" |
-| `content.task_id` | Must be non-empty string |
-| `content.message` | Must contain task description |
+| Required Field                | Validation                                   |
+| ----------------------------- | -------------------------------------------- |
+| `content.type`                | Must be "task" or "assignment"               |
+| `content.task_id`             | Must be non-empty string                     |
+| `content.message`             | Must contain task description                |
 | `content.acceptance_criteria` | Must be an array with at least one criterion |
 
 If validation fails:
+
 - Do NOT proceed with the task
 - Report the validation error back to sender
 - Request a properly formatted task assignment
 
 ### Step 1.4: Verify Task in Kanban (Optional)
 
-If the `$AIMAESTRO_API` environment variable is set, verify the task assignment against the kanban system:
+If the `$AIMAESTRO_API` environment variable is set, verify the task assignment
+against the kanban system:
 
 ```bash
 curl -s "$AIMAESTRO_API/api/teams/{teamId}/tasks?assignee={agentId}" | jq '.tasks[]'
 ```
 
 This provides independent verification that:
+
 - The task exists in the kanban system (not just in an AMP message)
 - The task is assigned to this agent
 - The task status is `pending` or `in_progress`
 
 If the task is NOT found in the kanban:
+
 - Do NOT reject the task — AMP messages are authoritative
 - Log the discrepancy in `docs_dev/task-verification-<task_id>.md`
-- Notify the orchestrator: "Task received via AMP but not found in kanban. Proceeding with AMP assignment."
+- Notify the orchestrator: "Task received via AMP but not found in kanban.
+  Proceeding with AMP assignment."
 
-> **Note**: This step is optional. If the API endpoint is unavailable or `$AIMAESTRO_API` is not set, skip verification and proceed with the AMP-received task.
+> **Note**: This step is optional. If the API endpoint is unavailable or
+> `$AIMAESTRO_API` is not set, skip verification and proceed with the
+> AMP-received task.
 
 ### Step 1.5: Acknowledge Receipt to Orchestrator
 
-Send an acknowledgment message to the orchestrator using the `agent-messaging` skill:
+Send an acknowledgment message to the orchestrator using the `agent-messaging`
+skill:
+
 - **Recipient**: the sender's session name (from the incoming message)
 - **Subject**: "ACK: [TASK_ID] received"
 - **Content**: "Task received and validated. Beginning work."
@@ -139,7 +155,9 @@ Send an acknowledgment message to the orchestrator using the `agent-messaging` s
 
 Incoming message:
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -161,7 +179,9 @@ Incoming message:
 
 Response:
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -180,7 +200,9 @@ Response:
 
 Incoming message missing acceptance criteria:
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -195,7 +217,9 @@ Incoming message missing acceptance criteria:
 
 Response:
 
-> **Note**: The structure below shows the conceptual message content. Use the `agent-messaging` skill to send messages - it handles the exact API format automatically.
+> **Note**: The structure below shows the conceptual message content. Use the
+> `agent-messaging` skill to send messages - it handles the exact API format
+> automatically.
 
 ```json
 {
@@ -213,14 +237,16 @@ Response:
 
 ## Error Handling
 
-| Error | Cause | Resolution |
-|-------|-------|------------|
-| No messages in inbox | No tasks assigned yet | Wait for orchestrator assignment |
-| Message missing task_id | Malformed message | Report error, request resubmission |
-| Missing acceptance_criteria | Incomplete task definition | Request criteria from orchestrator |
-| AI Maestro unreachable | Service not running | Verify AI Maestro connectivity using the `agent-messaging` skill |
+| Error                       | Cause                      | Resolution                                                       |
+| --------------------------- | -------------------------- | ---------------------------------------------------------------- |
+| No messages in inbox        | No tasks assigned yet      | Wait for orchestrator assignment                                 |
+| Message missing task_id     | Malformed message          | Report error, request resubmission                               |
+| Missing acceptance_criteria | Incomplete task definition | Request criteria from orchestrator                               |
+| AI Maestro unreachable      | Service not running        | Verify AI Maestro connectivity using the `agent-messaging` skill |
 
 ## Related Operations
 
-- [op-parse-task-requirements.md](op-parse-task-requirements.md) - Next step after receiving task
-- [op-validate-acceptance-criteria.md](op-validate-acceptance-criteria.md) - Final validation step
+- [op-parse-task-requirements.md](op-parse-task-requirements.md) - Next step
+  after receiving task
+- [op-validate-acceptance-criteria.md](op-validate-acceptance-criteria.md) -
+  Final validation step

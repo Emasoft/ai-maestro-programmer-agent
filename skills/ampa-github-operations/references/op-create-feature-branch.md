@@ -14,7 +14,8 @@ parent-skill: ampa-github-operations
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
 Create a properly named feature branch for implementing a task.
 
@@ -37,11 +38,12 @@ Create a properly named feature branch for implementing a task.
 
 Use this format for branch names:
 
-```
+```text
 <type>/<issue-number>-<short-description>
 ```
 
 **Types:**
+
 - `feature/` - New functionality
 - `fix/` - Bug fixes
 - `refactor/` - Code restructuring
@@ -50,13 +52,15 @@ Use this format for branch names:
 - `chore/` - Maintenance tasks
 
 **Rules:**
+
 - Use lowercase letters only
 - Use hyphens to separate words
 - Keep description under 50 characters
 - Include issue number if applicable
 
 **Examples:**
-```
+
+```text
 feature/123-user-authentication
 fix/456-memory-leak-on-close
 refactor/789-extract-validation-utils
@@ -81,6 +85,7 @@ git checkout -b <branch-name>
 ```
 
 Example:
+
 ```bash
 git checkout main
 git pull origin main
@@ -88,6 +93,7 @@ git checkout -b feature/123-add-user-auth
 ```
 
 Alternative using git switch (Git 2.23+):
+
 ```bash
 git switch main
 git pull origin main
@@ -119,11 +125,13 @@ git push -u origin <branch-name>
 ```
 
 Example:
+
 ```bash
 git push -u origin feature/123-add-user-auth
 ```
 
-The `-u` flag sets up tracking so future `git push` and `git pull` work without specifying the remote.
+The `-u` flag sets up tracking so future `git push` and `git pull` work without
+specifying the remote.
 
 ## Checklist
 
@@ -181,13 +189,13 @@ git checkout -b feature/101-contribute-feature
 
 ## Error Handling
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `branch already exists` | Branch name collision | Delete old branch: `git branch -d <name>` or use different name |
-| `uncommitted changes` | Dirty working tree | Commit or stash changes first |
-| `not a git repository` | Wrong directory | `cd` to repository root |
-| `cannot update paths and switch to branch` | Branch exists on remote | Use `git checkout -b <name> origin/<name>` |
-| `Your branch is behind` | Local main outdated | `git pull origin main` |
+| Error                                      | Cause                   | Solution                                                        |
+| ------------------------------------------ | ----------------------- | --------------------------------------------------------------- |
+| `branch already exists`                    | Branch name collision   | Delete old branch: `git branch -d <name>` or use different name |
+| `uncommitted changes`                      | Dirty working tree      | Commit or stash changes first                                   |
+| `not a git repository`                     | Wrong directory         | `cd` to repository root                                         |
+| `cannot update paths and switch to branch` | Branch exists on remote | Use `git checkout -b <name> origin/<name>`                      |
+| `Your branch is behind`                    | Local main outdated     | `git pull origin main`                                          |
 
 ## Recovery Steps
 

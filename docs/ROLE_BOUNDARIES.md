@@ -16,7 +16,7 @@
 
 ## Role Hierarchy
 
-```
+```text
 User <-> manager <-> chief-of-staff <-> member(s)
 ```
 
@@ -43,7 +43,7 @@ User <-> manager <-> chief-of-staff <-> member(s)
 
 ## Governance Flow
 
-```
+```text
 member needs X -> COS submits GovernanceRequest -> manager approves/rejects
 ```
 

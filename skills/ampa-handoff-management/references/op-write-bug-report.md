@@ -15,21 +15,27 @@ parent-skill: ampa-handoff-management
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-This operation explains how to document bugs discovered during implementation work with proper reproduction steps, expected versus actual behavior, and relevant context.
+This operation explains how to document bugs discovered during implementation
+work with proper reproduction steps, expected versus actual behavior, and
+relevant context.
 
 ## When to Use
 
 Use this operation when:
 
-1. **You discover a bug during implementation**: The code does not behave as expected
-2. **A test reveals unexpected behavior**: Tests fail for reasons other than your new code
+1. **You discover a bug during implementation**: The code does not behave as
+   expected
+2. **A test reveals unexpected behavior**: Tests fail for reasons other than
+   your new code
 3. **You find issues in existing code**: Pre-existing bugs in the codebase
 4. **Edge cases cause failures**: Boundary conditions reveal problems
 5. **Integration issues arise**: Components do not work together correctly
 
 Do NOT use this operation when:
+
 - Your own new code fails tests (that is normal TDD, fix it directly)
 - You are documenting design decisions (use handoff notes instead)
 - The issue is a missing feature (that is a requirement, not a bug)
@@ -88,6 +94,7 @@ affected-files:
 ```
 
 Severity levels:
+
 - `critical`: System crash, data loss, security vulnerability
 - `high`: Major feature broken, no workaround
 - `medium`: Feature partially broken, workaround exists
@@ -101,7 +108,9 @@ Provide a clear one-paragraph summary:
 # <Bug Title>
 
 ## Summary
-<One paragraph describing what the bug is, where it occurs, and its impact. Be specific about the symptoms.>
+
+<One paragraph describing what the bug is, where it occurs, and its impact. Be
+specific about the symptoms.>
 ```
 
 ### Step 5: Document Expected vs Actual Behavior
@@ -110,10 +119,14 @@ Clearly contrast what should happen versus what does happen:
 
 ```markdown
 ## Expected Behavior
-<What the code should do according to requirements, documentation, or reasonable expectations.>
+
+<What the code should do according to requirements, documentation, or reasonable
+expectations.>
 
 ## Actual Behavior
-<What the code actually does. Include error messages, incorrect outputs, or unexpected states.>
+
+<What the code actually does. Include error messages, incorrect outputs, or
+unexpected states.>
 ```
 
 ### Step 6: Write Reproduction Steps
@@ -129,6 +142,7 @@ Provide exact steps to reproduce the bug:
 4. <Observe the bug>
 
 **Environment:**
+
 - Python version: <version>
 - OS: <operating system>
 - Relevant dependencies: <list with versions>
@@ -138,7 +152,7 @@ Provide exact steps to reproduce the bug:
 
 Provide the smallest code sample that triggers the bug:
 
-```markdown
+````markdown
 ## Minimal Reproduction
 
 ```python
@@ -151,7 +165,9 @@ config = parse_config("invalid: [unclosed bracket")
 # Expected: YamlParseError exception
 # Actual: IndexError in line 47
 ```
-```
+````
+
+````
 
 ### Step 8: Add Stack Trace or Error Output
 
@@ -160,29 +176,35 @@ Include the actual error message:
 ```markdown
 ## Error Output
 
+````
+
+Traceback (most recent call last): File "src/parsers/yaml_parser.py", line 47,
+in parse_config return tokens[current_index] IndexError: list index out of range
+
 ```
-Traceback (most recent call last):
-  File "src/parsers/yaml_parser.py", line 47, in parse_config
-    return tokens[current_index]
-IndexError: list index out of range
-```
-```
+
+```text
 
 ### Step 9: Document Root Cause Analysis (If Known)
 
 If you have identified the cause:
 
-```markdown
+````markdown
 ## Root Cause Analysis
 
-The bug occurs in `parse_config()` at line 47 of `yaml_parser.py`. The function assumes `tokens` always has at least one element after calling `tokenize()`, but when given malformed input, `tokenize()` returns an empty list.
+The bug occurs in `parse_config()` at line 47 of `yaml_parser.py`. The function
+assumes `tokens` always has at least one element after calling `tokenize()`, but
+when given malformed input, `tokenize()` returns an empty list.
 
 The missing check is:
+
 ```python
 if not tokens:
     raise YamlParseError("Empty or invalid YAML input")
 ```
-```
+````
+
+````
 
 ### Step 10: Suggest a Fix (If Known)
 
@@ -199,12 +221,14 @@ def parse_config(yaml_string: str) -> Config:
     if not tokens:
         raise YamlParseError("Empty or invalid YAML input")
     # ... rest of function
-```
+````
 
 **Impact of fix:**
+
 - Low risk, isolated change
 - Requires adding test for empty input case
-```
+
+````
 
 ### Step 11: Link Related Items
 
@@ -217,7 +241,7 @@ Connect to related code, tests, and documentation:
 - **Related test**: `tests/unit/test_yaml_parser.py::test_parse_empty_input` (currently missing)
 - **Documentation**: `docs/parser-design.md` (section 3.2 error handling)
 - **Related bugs**: None found
-```
+````
 
 ### Step 12: Save the Bug Report
 
@@ -237,29 +261,38 @@ Add a reference to the bug in the current handoff:
 
 ```markdown
 ## Bugs Discovered
-- bug-001: IndexError on empty YAML input (severity: medium) — see `bugs/bug-001.md`
+
+- bug-001: IndexError on empty YAML input (severity: medium) — see
+  `bugs/bug-001.md`
 ```
 
 The format for each bug entry in the handoff document is:
 
-```
+```text
 - <bug-id>: <short title> (severity: <level>) — see `bugs/<bug-id>.md`
 ```
 
-This is a plain-text reference to the bug report file created in Step 12. Do not use Markdown links to the bugs directory -- just reference the filename so the reader knows where to look.
+This is a plain-text reference to the bug report file created in Step 12. Do not
+use Markdown links to the bugs directory -- just reference the filename so the
+reader knows where to look.
 
 ### Step 14: Notify If Critical
 
-For critical or high severity bugs, notify the orchestrator immediately using the `agent-messaging` skill:
+For critical or high severity bugs, notify the orchestrator immediately using
+the `agent-messaging` skill:
+
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "BUG [severity]: [bug title]"
-- **Content**: describe that a critical/high bug was discovered, provide the bug title, and reference the bug report file path for details
+- **Content**: describe that a critical/high bug was discovered, provide the bug
+  title, and reference the bug report file path for details
 - **Type**: bug-report
 - **Priority**: urgent
 
 **Verify**: confirm the bug notification was delivered.
 
-Only send this notification for critical or high severity bugs. Medium and low severity bugs are documented in the handoff but do not require immediate notification.
+Only send this notification for critical or high severity bugs. Medium and low
+severity bugs are documented in the handoff but do not require immediate
+notification.
 
 ## Checklist
 
@@ -287,7 +320,7 @@ Complete these items when writing a bug report:
 
 ### Example 1: Medium Severity Bug Report
 
-```markdown
+````markdown
 ---
 bug-id: bug-001
 title: IndexError on empty YAML input
@@ -303,13 +336,20 @@ affected-files:
 # IndexError on Empty YAML Input
 
 ## Summary
-The `parse_config()` function raises an `IndexError` instead of a proper `YamlParseError` when given empty or whitespace-only YAML input. This affects error handling and makes debugging harder for users.
+
+The `parse_config()` function raises an `IndexError` instead of a proper
+`YamlParseError` when given empty or whitespace-only YAML input. This affects
+error handling and makes debugging harder for users.
 
 ## Expected Behavior
-When given empty input, the parser should raise a `YamlParseError` with a clear message like "Empty or invalid YAML input".
+
+When given empty input, the parser should raise a `YamlParseError` with a clear
+message like "Empty or invalid YAML input".
 
 ## Actual Behavior
-The parser raises `IndexError: list index out of range` from an internal function, exposing implementation details.
+
+The parser raises `IndexError: list index out of range` from an internal
+function, exposing implementation details.
 
 ## Reproduction Steps
 
@@ -318,6 +358,7 @@ The parser raises `IndexError: list index out of range` from an internal functio
 3. Observe IndexError instead of YamlParseError
 
 **Environment:**
+
 - Python version: 3.12.1
 - OS: macOS 14.2
 
@@ -329,6 +370,7 @@ from src.parsers.yaml_parser import parse_config
 parse_config("")  # Raises IndexError
 parse_config("   ")  # Also raises IndexError
 ```
+````
 
 ## Error Output
 
@@ -337,11 +379,12 @@ Traceback (most recent call last):
   File "src/parsers/yaml_parser.py", line 47, in parse_config
     return tokens[current_index]
 IndexError: list index out of range
-```
+```text
 
 ## Root Cause Analysis
 
-The `tokenize()` function returns an empty list for empty input, but `parse_config()` accesses `tokens[0]` without checking if the list is empty.
+The `tokenize()` function returns an empty list for empty input, but
+`parse_config()` accesses `tokens[0]` without checking if the list is empty.
 
 ## Proposed Fix
 
@@ -357,7 +400,8 @@ def parse_config(yaml_string: str) -> Config:
 
 - **Source file**: `src/parsers/yaml_parser.py` (line 47)
 - **Missing test**: `test_parse_empty_input`
-```
+
+````
 
 ### Example 2: Critical Security Bug Report
 
@@ -404,11 +448,12 @@ from src.loaders.file_loader import load_config_file
 # This should fail but succeeds
 content = load_config_file("../../../etc/passwd")
 print(content)  # Prints system passwd file!
-```
+````
 
 ## Root Cause Analysis
 
-The `load_config_file()` function uses `open(path, 'r')` directly without validating that the resolved path is within the allowed directory.
+The `load_config_file()` function uses `open(path, 'r')` directly without
+validating that the resolved path is within the allowed directory.
 
 ## Proposed Fix
 
@@ -433,7 +478,8 @@ def load_config_file(path: str) -> str:
 
 - **Source file**: `src/loaders/file_loader.py` (lines 10-15)
 - **Security documentation**: OWASP Path Traversal
-```
+
+```text
 
 ## Error Handling
 
@@ -480,3 +526,4 @@ def load_config_file(path: str) -> str:
 3. Move lengthy stack traces to a separate file
 4. Summarize root cause rather than explaining all attempts
 5. Link to related documents instead of inlining content
+```

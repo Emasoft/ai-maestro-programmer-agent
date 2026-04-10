@@ -14,9 +14,11 @@ parent-skill: ampa-github-operations
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-Address review comments from AMIA (AI Maestro Integrator Agent) after PR rejection. This corresponds to **Step 21** of the AMPA workflow.
+Address review comments from AMIA (AI Maestro Integrator Agent) after PR
+rejection. This corresponds to **Step 21** of the AMPA workflow.
 
 ## When to Use
 
@@ -53,6 +55,7 @@ gh api repos/<owner>/<repo>/pulls/<pr-number>/comments
 ```
 
 Using gh pr checks to see status:
+
 ```bash
 gh pr checks <pr-number>
 ```
@@ -61,17 +64,18 @@ gh pr checks <pr-number>
 
 Common rejection categories from AMIA:
 
-| Category | Description | How to Address |
-|----------|-------------|----------------|
-| **Code Quality** | Style issues, complexity | Refactor, format code |
+| Category          | Description                | How to Address             |
+| ----------------- | -------------------------- | -------------------------- |
+| **Code Quality**  | Style issues, complexity   | Refactor, format code      |
 | **Missing Tests** | Insufficient test coverage | Add unit/integration tests |
-| **Documentation** | Missing or outdated docs | Update README, docstrings |
-| **Security** | Vulnerabilities identified | Fix security issues |
-| **Performance** | Performance concerns | Optimize code |
-| **Architecture** | Design issues | Refactor approach |
-| **Functionality** | Does not meet requirements | Revise implementation |
+| **Documentation** | Missing or outdated docs   | Update README, docstrings  |
+| **Security**      | Vulnerabilities identified | Fix security issues        |
+| **Performance**   | Performance concerns       | Optimize code              |
+| **Architecture**  | Design issues              | Refactor approach          |
+| **Functionality** | Does not meet requirements | Revise implementation      |
 
 Parse the review to identify:
+
 1. What specific changes are requested
 2. Which files need modification
 3. Priority of each comment
@@ -82,12 +86,14 @@ Parse the review to identify:
 For each comment, determine the action:
 
 **Blocking comments** (must fix):
+
 - Marked as "Request changes"
 - Security vulnerabilities
 - Breaking functionality
 - Missing required tests
 
 **Non-blocking suggestions** (consider):
+
 - Style preferences
 - Alternative approaches
 - Nice-to-have improvements
@@ -98,15 +104,18 @@ Create a list of changes to make:
 ## Review Response Plan
 
 ### Must Fix
+
 - [ ] Add null check in processUser() - security concern
 - [ ] Add unit tests for edge cases
 - [ ] Fix SQL injection vulnerability in query builder
 
 ### Will Address
+
 - [ ] Rename variable per suggestion
 - [ ] Add inline comments for complex logic
 
 ### Decline (with explanation)
+
 - Performance optimization - will address in separate PR
 ```
 
@@ -121,6 +130,7 @@ gh api repos/<owner>/<repo>/pulls/<pr-number>/comments/<comment-id>/replies \
 ```
 
 Or reply in the GitHub web interface:
+
 1. Go to PR page
 2. Find the comment
 3. Click "Reply"
@@ -129,18 +139,21 @@ Or reply in the GitHub web interface:
 **Good reply examples:**
 
 For implemented changes:
-```
+
+```text
 Fixed in commit abc123. Added null check as suggested.
 ```
 
 For needing clarification:
-```
+
+```text
 Could you clarify what behavior you expect when the input is empty?
 Currently it returns null, should it throw an exception instead?
 ```
 
 For declining with reason:
-```
+
+```text
 I considered this approach but chose the current implementation because
 it handles X edge case better. Happy to discuss further.
 ```
@@ -245,16 +258,17 @@ EOF
 
 ## Error Handling
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `Could not resolve to a PullRequest` | Wrong PR number | Verify PR number with `gh pr list` |
-| `Resource not accessible` | No permission | Check repo access |
-| `comment not found` | Wrong comment ID | Get correct ID from API |
-| `Review not found` | PR has no reviews | Wait for review or check correct PR |
+| Error                                | Cause             | Solution                            |
+| ------------------------------------ | ----------------- | ----------------------------------- |
+| `Could not resolve to a PullRequest` | Wrong PR number   | Verify PR number with `gh pr list`  |
+| `Resource not accessible`            | No permission     | Check repo access                   |
+| `comment not found`                  | Wrong comment ID  | Get correct ID from API             |
+| `Review not found`                   | PR has no reviews | Wait for review or check correct PR |
 
 ## Recovery Steps
 
 If you pushed a broken fix:
+
 ```bash
 # Revert the commit
 git revert <commit-hash>
@@ -265,6 +279,7 @@ gh pr comment <pr-number> --body "Reverted broken fix in commit xyz. Working on 
 ```
 
 If you addressed wrong comment:
+
 ```bash
 # Reply to clarify
 gh pr comment <pr-number> --body "My previous comment addressed the wrong issue. Working on the correct fix now."

@@ -14,9 +14,11 @@ parent-skill: ampa-github-operations
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-Create a pull request to submit completed work for review. This corresponds to **Step 19** of the AMPA workflow.
+Create a pull request to submit completed work for review. This corresponds to
+**Step 19** of the AMPA workflow.
 
 ## When to Use
 
@@ -58,7 +60,8 @@ git merge origin/main
 ### 4.2 Writing PR Title and Description
 
 **Title format** (same as commit message):
-```
+
+```text
 <type>(<scope>): <short description>
 ```
 
@@ -68,17 +71,21 @@ Keep under 72 characters. Use imperative mood.
 
 ```markdown
 ## Summary
+
 Brief description of what this PR does.
 
 ## Changes
+
 - Change 1
 - Change 2
 - Change 3
 
 ## Testing
+
 How was this tested?
 
 ## Related Issues
+
 Closes #123
 ```
 
@@ -161,16 +168,16 @@ gh pr edit <pr-number> --add-assignee "@me"
 Link PR to issues to auto-close them on merge:
 
 In PR description, use keywords:
+
 - `Closes #123` - Closes issue when PR merges
 - `Fixes #123` - Same as Closes
 - `Resolves #123` - Same as Closes
 - `Related to #123` - Links without closing
 
 Multiple issues:
+
 ```markdown
-Closes #123, Closes #124
-Fixes #125
-Related to #126
+Closes #123, Closes #124 Fixes #125 Related to #126
 ```
 
 ## Checklist
@@ -246,28 +253,31 @@ gh pr create \
 ```
 
 Convert draft to ready for review:
+
 ```bash
 gh pr ready <pr-number>
 ```
 
 ## Error Handling
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `no commits between main and branch` | Branch not diverged | Make commits on feature branch |
-| `pull request already exists` | PR exists for this branch | Use existing PR or close it first |
-| `branch not found on remote` | Not pushed | `git push -u origin <branch>` |
-| `validation failed` | Missing required fields | Check repo PR template requirements |
-| `user not found` | Wrong reviewer username | Verify username spelling |
+| Error                                | Cause                     | Solution                            |
+| ------------------------------------ | ------------------------- | ----------------------------------- |
+| `no commits between main and branch` | Branch not diverged       | Make commits on feature branch      |
+| `pull request already exists`        | PR exists for this branch | Use existing PR or close it first   |
+| `branch not found on remote`         | Not pushed                | `git push -u origin <branch>`       |
+| `validation failed`                  | Missing required fields   | Check repo PR template requirements |
+| `user not found`                     | Wrong reviewer username   | Verify username spelling            |
 
 ## Recovery Steps
 
 If PR was created with wrong title:
+
 ```bash
 gh pr edit <pr-number> --title "correct title"
 ```
 
 If PR was created with wrong description:
+
 ```bash
 gh pr edit <pr-number> --body "$(cat <<'EOF'
 new description
@@ -276,11 +286,13 @@ EOF
 ```
 
 If PR was created against wrong base branch:
+
 ```bash
 gh pr edit <pr-number> --base correct-branch
 ```
 
 If you need to completely redo:
+
 ```bash
 # Close the PR
 gh pr close <pr-number>

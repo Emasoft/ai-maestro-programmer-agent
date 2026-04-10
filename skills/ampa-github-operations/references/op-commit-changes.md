@@ -14,9 +14,11 @@ parent-skill: ampa-github-operations
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
-Create well-structured commits with meaningful messages following conventional commits specification.
+Create well-structured commits with meaningful messages following conventional
+commits specification.
 
 ## When to Use
 
@@ -69,13 +71,14 @@ git add -A
 git add -p
 ```
 
-**Best Practice:** Stage specific files rather than using `git add -A` to avoid accidentally including sensitive files or unrelated changes.
+**Best Practice:** Stage specific files rather than using `git add -A` to avoid
+accidentally including sensitive files or unrelated changes.
 
 ### 3.2 Commit Message Format
 
 Commit messages have three parts:
 
-```
+```text
 <type>(<scope>): <subject>
 
 <body>
@@ -90,7 +93,8 @@ Commit messages have three parts:
 - **Footer** (optional): Reference issues, breaking changes
 
 **Example:**
-```
+
+```text
 feat(auth): add OAuth2 login support
 
 Implement OAuth2 authentication flow with support for Google and GitHub
@@ -108,23 +112,24 @@ BREAKING CHANGE: Sessions from v1.x will be invalidated
 
 **Types:**
 
-| Type | Description |
-|------|-------------|
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `docs` | Documentation only |
-| `style` | Formatting, no code change |
+| Type       | Description                         |
+| ---------- | ----------------------------------- |
+| `feat`     | New feature                         |
+| `fix`      | Bug fix                             |
+| `docs`     | Documentation only                  |
+| `style`    | Formatting, no code change          |
 | `refactor` | Code restructure, no feature change |
-| `test` | Add or fix tests |
-| `chore` | Maintenance, dependencies |
-| `perf` | Performance improvement |
-| `ci` | CI/CD changes |
-| `build` | Build system changes |
-| `revert` | Revert previous commit |
+| `test`     | Add or fix tests                    |
+| `chore`    | Maintenance, dependencies           |
+| `perf`     | Performance improvement             |
+| `ci`       | CI/CD changes                       |
+| `build`    | Build system changes                |
+| `revert`   | Revert previous commit              |
 
 **Scope:** Optional, describes the affected component
 
 Examples:
+
 - `feat(api): add user endpoints`
 - `fix(ui): correct button alignment`
 - `docs(readme): update installation steps`
@@ -152,6 +157,7 @@ EOF
 ### 3.4 Amending Commits (When Safe)
 
 **Only amend when:**
+
 - The commit has NOT been pushed
 - No one else has based work on the commit
 
@@ -168,7 +174,8 @@ git add <file>
 git commit --amend -m "updated message"
 ```
 
-**Never amend after pushing** unless you are certain no one else has pulled your changes.
+**Never amend after pushing** unless you are certain no one else has pulled your
+changes.
 
 ### 3.5 Verifying Commit Success
 
@@ -251,13 +258,13 @@ EOF
 
 ## Error Handling
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `nothing to commit` | No staged changes | Stage files first with `git add` |
-| `empty commit message` | Forgot message | Message is required |
-| `error: pathspec not found` | File path wrong | Check file path spelling |
-| `Please tell me who you are` | Git not configured | Set user.name and user.email |
-| `Changes not staged` | Forgot to stage | Run `git add` first |
+| Error                        | Cause              | Solution                         |
+| ---------------------------- | ------------------ | -------------------------------- |
+| `nothing to commit`          | No staged changes  | Stage files first with `git add` |
+| `empty commit message`       | Forgot message     | Message is required              |
+| `error: pathspec not found`  | File path wrong    | Check file path spelling         |
+| `Please tell me who you are` | Git not configured | Set user.name and user.email     |
+| `Changes not staged`         | Forgot to stage    | Run `git add` first              |
 
 ## Recovery Steps
 

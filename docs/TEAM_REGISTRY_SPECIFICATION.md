@@ -21,7 +21,7 @@ This file is **git-tracked** and stored in the repository, ensuring all team mem
 
 ## File Location
 
-```
+```text
 <repository-root>/
 └── .ai-maestro/
     └── team-registry.json
@@ -35,7 +35,7 @@ This file is **git-tracked** and stored in the repository, ensuring all team mem
 
 ### Format
 
-```
+```text
 <repo-name>-<project-type>-team
 ```
 
@@ -226,7 +226,7 @@ The agent's **name** uses the specific subtype (e.g., `svgbbox-programmer-001`),
 
 ### Format
 
-```
+```text
 <team-prefix>-<role>[-<instance>]
 ```
 
@@ -325,7 +325,7 @@ All AI Maestro messages must include full agent identity. Send using the `agent-
 
 To track which agent made each commit:
 
-```
+```text
 Fix login validation bug
 
 - Added email format validation

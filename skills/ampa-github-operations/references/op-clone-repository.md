@@ -14,7 +14,8 @@ parent-skill: ampa-github-operations
 - [Examples](#examples)
 - [Error Handling](#error-handling)
 
-> **Token rule**: Write all command output to a report file. Return only a 2-3 line summary + file path to the caller.
+> **Token rule**: Write all command output to a report file. Return only a 2-3
+> line summary + file path to the caller.
 
 Clone or fork the project repository to your local machine for development.
 
@@ -29,7 +30,8 @@ Clone or fork the project repository to your local machine for development.
 
 - gh CLI installed (see https://cli.github.com/)
   - macOS: `brew install gh`
-  - Linux: `sudo apt install gh` or see https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+  - Linux: `sudo apt install gh` or see
+    https://github.com/cli/cli/blob/trunk/docs/install_linux.md
   - Windows: `winget install --id GitHub.cli`
 - gh CLI authenticated: `gh auth login`
 - Git configured with user name and email
@@ -40,11 +42,13 @@ Clone or fork the project repository to your local machine for development.
 ### 1.1 When to Clone vs Fork
 
 **Clone directly** when:
+
 - You have write access to the repository
 - It is your own repository
 - You are part of the organization that owns the repo
 
 **Fork first** when:
+
 - You do not have write access
 - Contributing to an open source project
 - You want to make changes without affecting the original
@@ -65,6 +69,7 @@ gh repo clone <owner>/<repo> -- --config core.sshCommand="ssh -i ~/.ssh/id_rsa"
 ```
 
 Example:
+
 ```bash
 gh repo clone <owner>/<project>
 cd <project>
@@ -86,6 +91,7 @@ gh repo fork <owner>/<repo> --org=<org-name> --clone=true
 ```
 
 Example:
+
 ```bash
 gh repo fork kubernetes/kubernetes --clone=true
 cd kubernetes
@@ -101,7 +107,8 @@ git remote -v
 ```
 
 Expected output for a fork:
-```
+
+```text
 origin    https://github.com/<your-username>/<repo>.git (fetch)
 origin    https://github.com/<your-username>/<repo>.git (push)
 upstream  https://github.com/<original-owner>/<repo>.git (fetch)
@@ -109,11 +116,13 @@ upstream  https://github.com/<original-owner>/<repo>.git (push)
 ```
 
 If upstream is missing, add it:
+
 ```bash
 git remote add upstream https://github.com/<original-owner>/<repo>.git
 ```
 
 Sync fork with upstream:
+
 ```bash
 git fetch upstream
 git checkout main
@@ -184,13 +193,13 @@ cd ~/projects/<project>
 
 ## Error Handling
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `repository not found` | Wrong repo name or private repo without access | Verify repo name, check access permissions |
-| `could not read Username` | Not authenticated | Run `gh auth login` |
-| `Permission denied (publickey)` | SSH key issue | Use HTTPS or configure SSH key |
-| `destination path already exists` | Directory exists | Remove directory or use different name |
-| `fatal: not a git repository` | Not in repo directory | `cd` into cloned directory |
+| Error                             | Cause                                          | Solution                                   |
+| --------------------------------- | ---------------------------------------------- | ------------------------------------------ |
+| `repository not found`            | Wrong repo name or private repo without access | Verify repo name, check access permissions |
+| `could not read Username`         | Not authenticated                              | Run `gh auth login`                        |
+| `Permission denied (publickey)`   | SSH key issue                                  | Use HTTPS or configure SSH key             |
+| `destination path already exists` | Directory exists                               | Remove directory or use different name     |
+| `fatal: not a git repository`     | Not in repo directory                          | `cd` into cloned directory                 |
 
 ## Recovery Steps
 
