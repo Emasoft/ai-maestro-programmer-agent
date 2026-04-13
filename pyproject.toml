@@ -1,6 +1,6 @@
 [project]
 name = "ai-maestro-programmer-agent"
-version = "1.0.24"
+version = "1.0.25"
 description = "Programmer Agent plugin for AI Maestro"
 requires-python = ">=3.10"
 license = "MIT"
