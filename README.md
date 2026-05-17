@@ -1,6 +1,6 @@
 # AI Maestro Programmer Agent (AMPA)
 
-**Version**: 1.0.20
+**Version**: 1.0.26
 
 ## Overview
 
@@ -268,6 +268,84 @@ with PyYAML installed.
 - `validate.yml` — Runs plugin validation on push to main and PRs
 - `release.yml` — Creates GitHub releases on version tags (`v*`)
 - `notify-marketplace.yml` — Marketplace notification (currently disabled, TBD)
+
+## Compatibility with Recent Claude Code Releases
+
+AMPA is verified against Claude Code v2.1.105–v2.1.143. The agent itself
+remains backwards-compatible with earlier Claude Code builds; the items
+below describe **new platform capabilities** that AMPA users can opt into
+without changing the plugin.
+
+### Main-thread agent capabilities (v2.1.116 / v2.1.117 / v2.1.119)
+
+When AMPA is launched with `claude --agent ai-maestro-programmer-agent-main-agent`,
+Claude Code now reads three additional fields from the agent frontmatter:
+
+| Field            | Effect                                                                                   | Added in |
+| ---------------- | ---------------------------------------------------------------------------------------- | -------- |
+| `mcpServers`     | MCP servers are pre-loaded for the main-thread session — useful for declaring SERENA/LLM-Externalizer requirements at agent invocation time | v2.1.117 |
+| `hooks:`         | Agent-level hooks fire on the main-thread session (previously subagent-only)             | v2.1.116 |
+| `permissionMode` | `--agent` honors the agent's declared permission mode                                    | v2.1.119 |
+
+AMPA does **not** ship hard-coded `mcpServers` entries because SERENA MCP and
+LLM Externalizer are typically configured globally via the user's
+`.mcp.json` or via the `llm-externalizer` plugin's own server registration.
+Operators who want SERENA pre-loaded at `--agent` startup can extend the
+agent frontmatter in their own fork.
+
+### Hook authoring (v2.1.139)
+
+When extending AMPA with hooks (project- or plugin-scope), prefer the
+exec-form `args: string[]` field over the shell-form `command:` string:
+
+```json
+{
+  "type": "command",
+  "args": ["uv", "run", "scripts/pre-push-hook.py", "$CLAUDE_PROJECT_DIR"]
+}
+```
+
+Exec form spawns the command directly without a shell, so path placeholders
+never need quoting and there is no shell-injection surface.
+
+`PreCompact` hooks (v2.1.105) can block compaction — exit code 2 or
+`{"decision":"block"}` from a `PreCompact` hook keeps the current
+conversation intact. Useful for long task-execution flows where compaction
+mid-task would lose state.
+
+### Effort and caching (v2.1.108 / v2.1.120 / v2.1.133)
+
+- `ENABLE_PROMPT_CACHING_1H=1` extends the prompt-cache TTL to 1 hour for
+  API-key / Bedrock / Vertex / Foundry users. Recommended for long
+  programmer sessions where AMPA re-reads the same project files turn after
+  turn.
+- Skills and hooks now see the active effort level via `${CLAUDE_EFFORT}`
+  (skills) and `$CLAUDE_EFFORT` (Bash tool / hook env). AMPA skills can
+  dial scan depth up/down based on this value when relevant.
+- `xhigh` effort level (v2.1.111) is available on Opus 4.7 for the most
+  thorough analyses; AMPA does not pin an effort level, so users control it
+  via `/effort`.
+
+### New commands and OTel events worth knowing
+
+| Surface                          | What it does                                                  | Added in |
+| -------------------------------- | ------------------------------------------------------------- | -------- |
+| `/goal`                          | Set a completion condition; Claude keeps working across turns | v2.1.139 |
+| `/ultrareview` / `claude ultrareview` | Parallel multi-agent code review; CI-friendly via the CLI subcommand | v2.1.111 / v2.1.120 |
+| `/less-permission-prompts`       | Scans transcripts for read-only Bash/MCP calls and proposes an allowlist | v2.1.111 |
+| `claude project purge`           | Wipe all Claude Code state for a project                      | v2.1.126 |
+| `claude_code.skill_activated`    | OpenTelemetry event with `invocation_trigger` attribute       | v2.1.126 |
+| `worktree.bgIsolation: "none"`   | Lets background sessions edit the working copy directly       | v2.1.143 |
+
+### Plugin manifest changes (v2.1.129 / v2.1.143)
+
+- `themes` and `monitors` should now live under `"experimental": { ... }`
+  in `plugin.json`. AMPA ships neither, so no migration is required.
+- `claude plugin disable` now refuses to disable a plugin that another
+  enabled plugin depends on (with a copy-pasteable disable-chain hint).
+  `claude plugin enable` force-enables transitive dependencies. AMPA has no
+  declared dependencies on other plugins, so this only matters for
+  operators bundling AMPA inside a meta-plugin.
 
 ## See Also
 
