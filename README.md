@@ -136,7 +136,8 @@ claude --agent ai-maestro-programmer-agent-main-agent
 
 When `llm-externalizer` is installed alongside this plugin, the agent
 automatically uses it for code analysis (`code_task`), codebase scanning
-(`scan_folder`), batch checking (`batch_check`), and post-refactoring validation
+(`scan_folder`), per-file independent audits (`code_task` with
+`answer_mode: 0` and `max_retries: 3`), and post-refactoring validation
 (`check_references`, `check_imports`).
 
 ## Getting Started

@@ -61,26 +61,28 @@ reading large files into your own context**. It offloads bounded analysis to
 cheaper external LLMs, saving orchestrator context tokens.
 
 **Use for** (files >100 lines or 3+ files): code analysis, codebase scanning,
-batch checking, import validation, file comparison, boilerplate generation,
-summarization.
+per-file independent checks, import validation, file comparison, boilerplate
+generation, summarization.
 
 **Do NOT use for**: precise surgical edits (use Read+Edit), cross-file logic
 needing multiple tool calls, tasks requiring real-time tool access.
 
-| Tool               | When to Use                                   |
-| ------------------ | --------------------------------------------- |
-| `chat`             | Summarize, compare, translate, generate text  |
-| `code_task`        | Code review, security audit, bug finding      |
-| `batch_check`      | Same check applied to each file independently |
-| `scan_folder`      | Scan a directory tree for patterns/issues     |
-| `compare_files`    | Diff two files and summarize changes          |
-| `check_references` | Validate symbol references after refactoring  |
-| `check_imports`    | Find broken imports                           |
+| Tool               | When to Use                                                                |
+| ------------------ | -------------------------------------------------------------------------- |
+| `chat`             | Summarize, compare, translate, generate text                               |
+| `code_task`        | Code review, security audit, bug finding                                   |
+| `code_task` w/ `answer_mode: 0`, `max_retries: 3` | Same check applied to each file independently (per-file reports) |
+| `scan_folder`      | Scan a directory tree for patterns/issues                                  |
+| `compare_files`    | Diff two files and summarize changes                                       |
+| `check_references` | Validate symbol references after refactoring                               |
+| `check_imports`    | Find broken imports                                                        |
+| `search_existing_implementations` | Find existing implementations of a described feature across the codebase |
 
 **Key rules**: Always pass file paths via `input_files_paths` (never paste
 content). Include brief project context in `instructions` (the external LLM has
-zero project knowledge). Output is saved to `llm_externalizer_output/` — read
-the file path returned by the tool.
+zero project knowledge). Pass an explicit `output_dir` pointing under the main
+repo's `reports/llm_externalizer/` folder — the tool returns ONLY the file
+path of the report; read it when needed.
 
 ## Required Reading
 
@@ -150,8 +152,8 @@ line.
 
 **LLM Externalizer:** When `llm-externalizer` MCP is available, use it instead
 of reading large files (>100 lines) into your context. Use `code_task` for
-analysis, `scan_folder` for codebase-wide checks, `batch_check` for per-file
-audits.
+analysis, `scan_folder` for codebase-wide checks, and `code_task` with
+`answer_mode: 0` + `max_retries: 3` for per-file independent audits.
 
 ## Operating Modes
 
