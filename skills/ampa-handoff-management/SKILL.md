@@ -13,7 +13,7 @@ metadata:
   procedure: "proc-handoff-management"
 context: fork
 agent: ai-maestro-programmer-agent-main-agent
-user-invocable: false
+disable-model-invocation: true
 ---
 
 # AMPA Handoff Management Skill

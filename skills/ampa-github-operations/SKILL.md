@@ -16,7 +16,7 @@ metadata:
   procedure: "proc-complete-task, proc-handle-failed-pr"
 context: fork
 agent: ai-maestro-programmer-agent-main-agent
-user-invocable: false
+disable-model-invocation: true
 ---
 
 # AMPA GitHub Operations

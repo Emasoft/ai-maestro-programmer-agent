@@ -13,7 +13,7 @@ metadata:
   procedure: "proc-execute-task"
 context: fork
 agent: ai-maestro-programmer-agent-main-agent
-user-invocable: false
+disable-model-invocation: true
 ---
 
 # AMPA Project Setup Skill

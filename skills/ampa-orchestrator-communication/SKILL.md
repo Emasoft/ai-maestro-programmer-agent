@@ -13,7 +13,7 @@ metadata:
   procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
 context: fork
 agent: ai-maestro-programmer-agent-main-agent
-user-invocable: false
+disable-model-invocation: true
 ---
 
 # AMPA Orchestrator Communication Skill
