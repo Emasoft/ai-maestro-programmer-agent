@@ -126,22 +126,22 @@ Check for task-specific dependencies:
 Verify SERENA is accessible:
 
 ```text
-mcp__serena__get_codebase_structure()
+mcp__plugin_serena_serena__get_symbols_overview(relative_path=".")
 ```
 
 If SERENA fails to initialize:
 
-1. Check if the project has been indexed
+1. Check if the project has been activated (`mcp__plugin_serena_serena__activate_project`)
 2. Verify the project path is correct
 3. Report environment setup failure to orchestrator
 
-Common SERENA initialization commands:
+Common SERENA initialization commands (canonical plugin-prefixed names):
 
-| Command                      | Purpose                   |
-| ---------------------------- | ------------------------- |
-| `get_codebase_structure()`   | Get project overview      |
-| `find_symbol("name")`        | Locate functions, classes |
-| `get_symbol_details("name")` | Get full implementation   |
+| Command                                                                   | Purpose                   |
+| ------------------------------------------------------------------------- | ------------------------- |
+| `mcp__plugin_serena_serena__get_symbols_overview(relative_path=".")`      | Get project overview      |
+| `mcp__plugin_serena_serena__find_symbol(name_path="name")`                | Locate functions, classes |
+| `mcp__plugin_serena_serena__find_symbol(name_path="name", include_body=true)` | Get full implementation   |
 
 ## Checklist
 
@@ -185,7 +185,7 @@ git status
 # On branch main, working tree clean
 
 # Initialize SERENA
-mcp__serena__get_codebase_structure()
+mcp__plugin_serena_serena__get_symbols_overview(relative_path=".")
 # Returns project structure with src/, tests/, etc.
 ```
 

@@ -44,14 +44,14 @@ Before executing this operation:
 Before writing any code, understand the existing codebase:
 
 ```text
-# Get overall structure
-mcp__serena__get_codebase_structure()
+# Get folder symbol overview
+mcp__plugin_serena_serena__get_symbols_overview(relative_path="src/")
 
 # Find related components
-mcp__serena__find_symbol("RelatedClass")
+mcp__plugin_serena_serena__find_symbol(name_path="RelatedClass")
 
-# Get implementation details
-mcp__serena__get_symbol_details("RelatedClass")
+# Get implementation details (include the body in the result)
+mcp__plugin_serena_serena__find_symbol(name_path="RelatedClass", include_body=true)
 ```
 
 Document patterns to follow:
@@ -176,7 +176,7 @@ Task: Add a function to validate email addresses
 **Step 1: Analyze existing code**
 
 ```text
-mcp__serena__find_symbol("validate_")
+mcp__plugin_serena_serena__find_symbol(name_path="validate_")
 # Found: validate_username in src/validators/user.py
 ```
 

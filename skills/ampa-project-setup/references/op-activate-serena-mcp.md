@@ -49,19 +49,23 @@ Before executing this operation:
 
 Check if SERENA MCP tools are available:
 
-The following SERENA tools should be accessible:
+The following SERENA tools should be accessible (names use the canonical
+plugin-prefixed form; if SERENA is installed as a non-plugin MCP server the
+prefix is `mcp__<server-name>__` instead of `mcp__plugin_serena_serena__`):
 
-- `mcp__serena__find_symbol` - Find symbol definitions
-- `mcp__serena__find_references` - Find symbol references
-- `mcp__serena__get_file_structure` - Get file structure
-- `mcp__serena__search_code` - Search code patterns
+- `mcp__plugin_serena_serena__find_symbol` - Find symbol definitions
+- `mcp__plugin_serena_serena__find_referencing_symbols` - Find symbol references
+- `mcp__plugin_serena_serena__get_symbols_overview` - Get file/folder symbol overview
+- `mcp__plugin_serena_serena__search_for_pattern` - Search code patterns
 
 ### Step 2: Activate SERENA for the Project
 
 SERENA operates on a per-project basis. Activate it by opening the project:
 
 ```text
-Use the SERENA open_project tool with the project root path
+Use the SERENA activate_project tool with the project root path
+(mcp__plugin_serena_serena__activate_project when SERENA is installed
+as the canonical `serena` plugin).
 ```
 
 The project root is typically the directory containing:
@@ -79,13 +83,13 @@ Test SERENA by performing a simple search:
 1. Search for a known symbol in the project:
 
 ```text
-Use mcp__serena__find_symbol with a known function or class name
+Use mcp__plugin_serena_serena__find_symbol with a known function or class name
 ```
 
-2. Get the structure of a known file:
+2. Get the symbol overview of a known file:
 
 ```text
-Use mcp__serena__get_file_structure with a known source file path
+Use mcp__plugin_serena_serena__get_symbols_overview with a known source file path
 ```
 
 ### Step 4: Index the Project (if needed)
@@ -100,12 +104,12 @@ For large projects, SERENA may need to build an index:
 
 Confirm all SERENA tools are responding:
 
-| Tool                 | Purpose            | Test Query                       |
-| -------------------- | ------------------ | -------------------------------- |
-| `find_symbol`        | Locate definitions | Search for `main` or entry point |
-| `find_references`    | Find usages        | Search for a common function     |
-| `get_file_structure` | Show file outline  | Query a known source file        |
-| `search_code`        | Pattern search     | Search for a unique string       |
+| Tool                       | Purpose            | Test Query                       |
+| -------------------------- | ------------------ | -------------------------------- |
+| `find_symbol`              | Locate definitions | Search for `main` or entry point |
+| `find_referencing_symbols` | Find usages        | Search for a common function     |
+| `get_symbols_overview`     | Show file outline  | Query a known source file        |
+| `search_for_pattern`       | Pattern search     | Search for a unique string       |
 
 ## SERENA Tool Reference
 
@@ -117,7 +121,7 @@ Finds where a symbol (function, class, variable) is defined.
 
 **Example**: Find where `process_data` function is defined.
 
-### find_references
+### find_referencing_symbols
 
 Finds all locations where a symbol is used.
 
@@ -126,16 +130,16 @@ codebase.
 
 **Example**: Find all calls to `validate_input` function.
 
-### get_file_structure
+### get_symbols_overview
 
-Returns the structure of a file (functions, classes, methods).
+Returns the top-level symbols (functions, classes, methods) of a file or folder.
 
 **Use when**: You need an overview of what a file contains without reading the
 whole file.
 
-**Example**: Get structure of `src/main.py` to see available functions.
+**Example**: Get the symbol overview of `src/main.py` to see available functions.
 
-### search_code
+### search_for_pattern
 
 Searches for code patterns using regex or literal strings.
 
@@ -157,15 +161,15 @@ Searches for code patterns using regex or literal strings.
 ### Example 1: Activating SERENA for Python Project
 
 ```text
-1. Open project:
-   mcp__serena__open_project path="/path/to/python-project"
+1. Activate project:
+   mcp__plugin_serena_serena__activate_project project="/path/to/python-project"
 
 2. Verify with symbol search:
-   mcp__serena__find_symbol symbol="main"
+   mcp__plugin_serena_serena__find_symbol name_path="main"
    Result: Found in src/main.py at line 15
 
-3. Get file structure:
-   mcp__serena__get_file_structure path="src/main.py"
+3. Get symbol overview:
+   mcp__plugin_serena_serena__get_symbols_overview relative_path="src/main.py"
    Result:
    - function: main (line 15)
    - function: setup (line 5)
@@ -175,17 +179,16 @@ Searches for code patterns using regex or literal strings.
 ### Example 2: Activating SERENA for TypeScript Project
 
 ```text
-1. Open project:
-   mcp__serena__open_project path="/path/to/ts-project"
+1. Activate project:
+   mcp__plugin_serena_serena__activate_project project="/path/to/ts-project"
 
 2. Verify with symbol search:
-   mcp__serena__find_symbol symbol="App"
+   mcp__plugin_serena_serena__find_symbol name_path="App"
    Result: Found in src/App.tsx at line 10
 
-3. Find references:
-   mcp__serena__find_references symbol="handleClick"
+3. Find referencing symbols:
+   mcp__plugin_serena_serena__find_referencing_symbols name_path="handleClick" relative_path="src/components/Button.tsx"
    Result:
-   - src/components/Button.tsx:15 (definition)
    - src/components/Form.tsx:42 (usage)
    - src/App.tsx:28 (usage)
 ```
@@ -193,16 +196,16 @@ Searches for code patterns using regex or literal strings.
 ### Example 3: Large Project Indexing
 
 ```text
-1. Open large project:
-   mcp__serena__open_project path="/path/to/large-project"
+1. Activate large project:
+   mcp__plugin_serena_serena__activate_project project="/path/to/large-project"
    Note: Initial indexing may take 5-10 seconds
 
 2. First search (may be slow):
-   mcp__serena__search_code pattern="TODO"
+   mcp__plugin_serena_serena__search_for_pattern substring_pattern="TODO"
    Result: 47 matches found (indexing complete)
 
 3. Subsequent searches (fast):
-   mcp__serena__search_code pattern="FIXME"
+   mcp__plugin_serena_serena__search_for_pattern substring_pattern="FIXME"
    Result: 12 matches found (instant)
 ```
 
