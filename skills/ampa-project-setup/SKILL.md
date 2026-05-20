@@ -8,7 +8,7 @@ license: MIT
 compatibility: Requires SERENA MCP activated.
 metadata:
   author: AI Maestro
-  version: 1.0.20
+  version: 1.0.26
   workflow-instruction: "Step 17 (first task)"
   procedure: "proc-execute-task"
 context: fork
