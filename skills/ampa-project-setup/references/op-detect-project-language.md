@@ -73,14 +73,25 @@ ls -la | grep -E "(pyproject|package\.json|Cargo\.toml|go\.mod|\.csproj|CMakeLis
 If no configuration files are found, scan for source file extensions:
 
 ```bash
-find . -type f -name "*.py" -o -name "*.js" -o -name "*.ts" -o -name "*.rs" -o -name "*.go" -o -name "*.cs" -o -name "*.cpp" -o -name "*.swift" -o -name "*.m" 2>/dev/null | head -20
+# Parentheses are required: without them `-type f` binds only to the first
+# `-name` and every `-o` branch matches directories too.
+find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.ts" -o -name "*.rs" -o -name "*.go" -o -name "*.cs" -o -name "*.cpp" -o -name "*.swift" -o -name "*.m" \) 2>/dev/null | head -20
 ```
 
-Map extensions to languages: | Extension | Language | |-----------|----------| |
-`.py` | Python | | `.js`, `.mjs`, `.cjs` | JavaScript | | `.ts`, `.tsx` |
-TypeScript | | `.rs` | Rust | | `.go` | Go | | `.cs` | C# (.NET) | | `.cpp`,
-`.cc`, `.cxx`, `.h`, `.hpp` | C++ | | `.c` | C | | `.swift` | Swift | | `.m`,
-`.mm` | Objective-C |
+Map extensions to languages:
+
+| Extension                       | Language    |
+| ------------------------------- | ----------- |
+| `.py`                           | Python      |
+| `.js`, `.mjs`, `.cjs`           | JavaScript  |
+| `.ts`, `.tsx`                   | TypeScript  |
+| `.rs`                           | Rust        |
+| `.go`                           | Go          |
+| `.cs`                           | C# (.NET)   |
+| `.cpp`, `.cc`, `.cxx`, `.h`, `.hpp` | C++    |
+| `.c`                            | C           |
+| `.swift`                        | Swift       |
+| `.m`, `.mm`                     | Objective-C |
 
 ### Step 3: Check for TypeScript vs JavaScript
 
