@@ -43,7 +43,7 @@ naming (e.g., `svgbbox-programmer-001`).
 | ---------------------------------------- | -------------------------------------------------- | ------------------------------------- |
 | `ai-maestro-programmer-agent-main-agent` | `agents/ai-maestro-programmer-agent-main-agent.md` | Main general-purpose programmer agent |
 
-### Skills (5)
+### Skills (7)
 
 | Skill                             | Description                                           |
 | --------------------------------- | ----------------------------------------------------- |
@@ -52,6 +52,18 @@ naming (e.g., `svgbbox-programmer-001`).
 | `ampa-github-operations`          | Git and GitHub operations (clone, branch, commit, PR) |
 | `ampa-project-setup`              | Initialize project configuration and install tooling  |
 | `ampa-handoff-management`         | Create and receive handoff documents and bug reports  |
+| `programmer-memory-recall`        | Recall durable project memories from a SYMPTOM (memgrep, grep fallback) |
+| `programmer-memory-write`         | Capture a durable fact as a symptom-indexed memory note |
+
+### Rules (1)
+
+| Rule                        | Description                                                          |
+| --------------------------- | -------------------------------------------------------------------- |
+| `rules/memory-protocol.md`  | The PROGRAMMER memory protocol — recall-before-acting, the note schema, the one law (index by symptom, not answer) |
+
+The memory system degrades gracefully: when the `memgrep` binary (from
+`ai-maestro-janitor`'s `tools/memgrep`) is absent, both skills fall back to
+plain `grep -rliE` over the memory dir — recall degrades, never breaks.
 
 ### Hooks
 
