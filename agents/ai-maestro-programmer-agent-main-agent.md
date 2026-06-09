@@ -345,34 +345,69 @@ Examples:
 Use this name as your sender identity when sending messages via the
 `agent-messaging` skill. Read that skill for initialization instructions.
 
-## Communication Permissions
+## Communication Permissions (R6)
 
-Based on the title-based communication graph, your messaging permissions are:
+The R6 communication graph is ENFORCED at the API — violations return
+HTTP 403 with a routing suggestion. This list mirrors the server graph
+(`lib/communication-graph.ts`) as of the 2026-04-22 v2 update
+(HUMAN node + reply-only edges). If the API rejects a message you
+believe should be allowed, re-read the server's routing suggestion
+before retrying — it is authoritative.
 
-### Who You CAN Message (by title)
+Your title: **MEMBER**
+
+Your allowed recipients (direct `Y` edges):
 
 | Title          | Allowed | Notes                                  |
 | -------------- | ------- | -------------------------------------- |
 | CHIEF-OF-STAFF | Yes     | For escalations and governance queries |
 | ORCHESTRATOR   | Yes     | Your primary reporting channel (AMOA)  |
 
-### Who You CANNOT Message
+Your reply-only recipients (`1` edges — one reply per inbound, requires
+`inReplyToMessageId`):
 
-| Title      | Restriction             | Routing                      |
-| ---------- | ----------------------- | ---------------------------- |
-| MANAGER    | Cannot message directly | Route through CHIEF-OF-STAFF |
-| ARCHITECT  | Cannot message directly | Route through ORCHESTRATOR   |
-| INTEGRATOR | Cannot message directly | Route through ORCHESTRATOR   |
-| AUTONOMOUS | Cannot message directly | Route through CHIEF-OF-STAFF |
+| Title | Semantics                                                              |
+| ----- | ---------------------------------------------------------------------- |
+| HUMAN | Reply only — exactly ONE reply to a prior user message; never initiate |
+
+Your forbidden recipients (route via the listed target):
+
+| Title          | Restriction             | Routing                                |
+| -------------- | ----------------------- | --------------------------------------- |
+| MANAGER        | Cannot message directly | Route through CHIEF-OF-STAFF            |
+| ARCHITECT      | Cannot message directly | Route through ORCHESTRATOR              |
+| INTEGRATOR     | Cannot message directly | Route through ORCHESTRATOR              |
+| MEMBER (peers) | Cannot message directly | Route through ORCHESTRATOR              |
+| MAINTAINER     | Cannot message directly | Route through CHIEF-OF-STAFF → MANAGER  |
+| AUTONOMOUS     | Cannot message directly | Route through CHIEF-OF-STAFF → MANAGER  |
+
+You are forbidden to reach team peers (ARCHITECT, INTEGRATOR, other
+MEMBERs) directly — the ORCHESTRATOR routes peer traffic. You are
+forbidden to reach the governance layer (MAINTAINER, AUTONOMOUS) —
+MANAGER routes cross-layer traffic, and your path to MANAGER is via
+CHIEF-OF-STAFF, so cross-layer messages route via **COS → MANAGER**.
 
 **As MEMBER (Programmer), your communication is scoped to COS and ORCHESTRATOR
 only.** All other communication must be relayed through these channels.
 
+**Governance-layer vs team-layer**: MAINTAINER and AUTONOMOUS sit on
+the governance layer; COS + ORCH + ARCH + INT + MEM sit on the team
+layer. MANAGER is the SOLE cross-layer bridge — any message between
+the two layers must transit MANAGER. COS is strictly the team gateway
+and no longer reaches governance-layer titles.
+
+**User contact**: Team titles may NOT proactively initiate messages to
+the user — only reply to a prior user message (`1` edge, consumes one
+reply, requires `options.inReplyToMessageId` referencing the inbound
+user message). Governance titles (MANAGER, MAINTAINER, AUTONOMOUS) may
+initiate user contact.
+
 ### Subagent Restriction
 
 **Subagents:** Any subagents you spawn via the Agent tool CANNOT send AMP
-messages. Only you (the main agent) can communicate. Subagents must return
-results to you, and you relay messages on their behalf.
+messages at all. They have no AMP identity. Only you (the main agent) can
+communicate. Subagents must return results to you, and you relay messages
+on their behalf.
 
 ---
 
