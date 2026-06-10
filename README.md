@@ -71,21 +71,20 @@ None. The `hooks/hooks.json` is empty -- AMPA uses globally installed hooks.
 
 ### Scripts
 
-The `scripts/` directory contains 24 Python scripts: 18 CPV (Claude Plugins
-Validation) scripts covering plugin structure, agents, skills, hooks, security,
-encoding, documentation, and more, plus 6 project utility scripts. The entry
-point is `validate_plugin.py`. CPV scripts are auto-synced from
-`Emasoft/claude-plugins-validation` via `sync_cpv_scripts.py`.
+The `scripts/` directory contains 5 project utility scripts. Plugin
+validation runs through the **CPV remote launcher**
+(`uvx … cpv-remote-validate`), fetched on demand from
+`Emasoft/claude-plugins-validation` — the previously vendored CPV validator
+scripts were retired (CI and `publish.py` both call the remote validator,
+so local copies only drifted behind upstream).
 
-| Script                   | Description                                               |
-| ------------------------ | --------------------------------------------------------- |
-| `validate_plugin.py`     | CPV suite entry point — runs all validation checks        |
-| `pre-push-hook.py`       | Git pre-push hook — runs validation before each push      |
-| `sync_cpv_scripts.py`    | Sync CPV validation scripts from upstream GitHub releases |
-| `test_order_pipeline.py` | OrderPipeline validation test suite                       |
-| `lint_files.py`          | Lint and format Python source files                       |
-| `gitignore_filter.py`    | Filter file lists against .gitignore patterns             |
-| `smart_exec.py`          | Cross-platform script executor with timeout support       |
+| Script                   | Description                                                   |
+| ------------------------ | ------------------------------------------------------------- |
+| `publish.py`             | Strict release pipeline — test, lint, validate, bump, push    |
+| `pre-push-hook.py`       | Git pre-push hook — runs cpv-remote-validate before each push |
+| `test_order_pipeline.py` | OrderPipeline validation test suite                           |
+| `gitignore_filter.py`    | Filter file lists against .gitignore patterns                 |
+| `smart_exec.py`          | Cross-platform script executor with timeout support           |
 
 ### Token-Efficient Reporting
 
@@ -94,7 +93,6 @@ Project scripts support file-based reporting to minimize terminal output:
 | Script                   | Flag                              | Description                                                    |
 | ------------------------ | --------------------------------- | -------------------------------------------------------------- |
 | `test_order_pipeline.py` | `--report-file PATH`              | Write full test report to file; terminal gets concise summary  |
-| `sync_cpv_scripts.py`    | `--report-file PATH`              | Write full sync log to file; terminal gets concise summary     |
 | `pre-push-hook.py`       | `AMPA_REPORT_FILE=PATH` (env var) | Write validation output to file; terminal gets concise summary |
 
 ## Workflow
@@ -268,12 +266,17 @@ The Programmer Agent relies on SERENA MCP for code investigation:
 
 ## Validation
 
+Validation runs through the CPV remote launcher — the exact command CI's
+`validate.yml` uses:
+
 ```bash
-uv run --with pyyaml python scripts/validate_plugin.py . --verbose
+uvx --from git+https://github.com/Emasoft/claude-plugins-validation \
+    --with pyyaml \
+    cpv-remote-validate plugin . --strict
 ```
 
-If `uv` is not available, use `python3 scripts/validate_plugin.py . --verbose`
-with PyYAML installed.
+Exit codes: 0 = PASS; 1-4 (CRITICAL/MAJOR/MINOR/NIT) all block in strict
+mode. `uvx` ships with [uv](https://docs.astral.sh/uv/).
 
 ### CI/CD
 
