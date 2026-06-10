@@ -55,10 +55,14 @@ uv is the preferred Python package manager for this workflow.
 uv --version
 ```
 
-If not installed, install uv:
+If not installed, install uv. Download the official installer to a file
+first, review it, then run it — never pipe a remote script straight into a
+shell:
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+curl -LsSf https://astral.sh/uv/install.sh -o /tmp/uv-install.sh
+less /tmp/uv-install.sh   # review before executing
+sh /tmp/uv-install.sh
 ```
 
 **Step 2: Initialize Python project**
