@@ -98,8 +98,8 @@ Analyze the task description to identify:
 Use SERENA MCP to locate existing components:
 
 ```text
-mcp__serena__find_symbol("UserService")
-mcp__serena__get_codebase_structure()
+mcp__plugin_serena_serena__find_symbol(name_path="UserService")
+mcp__plugin_serena_serena__get_symbols_overview(relative_path=".")
 ```
 
 Create a file impact map:

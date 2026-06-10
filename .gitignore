@@ -3,6 +3,13 @@
 docs_dev/
 scripts_dev/
 
+# Agent / skill / tool reports (private data — paths, tokens, internal notes)
+# Both /reports/ and /reports_dev/ MUST be gitignored per the global
+# agent-reports-location rule. /reports_dev/ is already matched by *_dev/
+# above; the explicit /reports/ line is required because reports/ lacks
+# the _dev suffix.
+/reports/
+
 # Python
 __pycache__/
 *.py[cod]

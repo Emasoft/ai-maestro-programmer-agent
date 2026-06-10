@@ -8,7 +8,7 @@ license: MIT
 compatibility: Requires gh CLI authenticated.
 metadata:
   author: AI Maestro
-  version: 1.0.20
+  version: 1.0.26
   workflow-instruction:
     "Steps 14 (clone/fork), 17 (branch/commit), 19 (PR creation). Also handles
     AMPA response portions of Steps 21 (PR review feedback) and 22 (fixing
@@ -16,7 +16,7 @@ metadata:
   procedure: "proc-complete-task, proc-handle-failed-pr"
 context: fork
 agent: ai-maestro-programmer-agent-main-agent
-user-invocable: false
+disable-model-invocation: true
 ---
 
 # AMPA GitHub Operations

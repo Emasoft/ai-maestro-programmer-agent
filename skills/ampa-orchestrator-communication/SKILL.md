@@ -8,12 +8,12 @@ license: MIT
 compatibility: Requires AI Maestro running.
 metadata:
   author: AI Maestro
-  version: 1.0.20
+  version: 1.0.26
   workflow-instruction: "Steps 14, 15, 17, 19"
   procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
 context: fork
 agent: ai-maestro-programmer-agent-main-agent
-user-invocable: false
+disable-model-invocation: true
 ---
 
 # AMPA Orchestrator Communication Skill

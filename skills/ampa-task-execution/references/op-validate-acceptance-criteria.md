@@ -76,7 +76,7 @@ uv run pytest tests/unit/test_validators.py::TestValidateEmail -v
 
 ```text
 # Use SERENA to verify the code contains expected logic
-mcp__serena__get_symbol_details("validate_email")
+mcp__plugin_serena_serena__find_symbol(name_path="validate_email", include_body=true)
 
 # Manually verify the implementation matches the criterion
 ```
