@@ -499,13 +499,17 @@ All projects use the canonical **5-status kanban system** on GitHub Projects:
 
 ## Scripts Reference
 
+Plugin validation runs through the CPV remote launcher
+(`uvx --from git+https://github.com/Emasoft/claude-plugins-validation
+--with pyyaml cpv-remote-validate plugin . --strict`) — the vendored CPV
+validator scripts were retired in favour of the on-demand remote validator
+that CI and `publish.py` already use.
+
 | Script | Purpose |
 |--------|---------|
-| `scripts/validate_plugin.py` | CPV suite entry point — runs all validation checks |
-| `scripts/pre-push-hook.py` | Git pre-push hook — runs validation before each push |
-| `scripts/sync_cpv_scripts.py` | Sync CPV validation scripts from upstream GitHub releases |
+| `scripts/publish.py` | Strict release pipeline — test, lint, validate, bump, push |
+| `scripts/pre-push-hook.py` | Git pre-push hook — runs cpv-remote-validate before each push |
 | `scripts/test_order_pipeline.py` | OrderPipeline validation test suite |
-| `scripts/lint_files.py` | Lint and format Python source files |
 | `scripts/gitignore_filter.py` | Filter file lists against .gitignore patterns |
 | `scripts/smart_exec.py` | Cross-platform script executor with timeout support |
 

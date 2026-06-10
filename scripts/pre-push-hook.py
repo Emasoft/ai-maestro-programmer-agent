@@ -17,8 +17,8 @@
 #   git push --no-verify
 
 import os
-import sys
 import subprocess
+import sys
 from pathlib import Path
 
 # ANSI colors
@@ -155,28 +155,28 @@ def main() -> int:
     # Change to repo root before running the validator
     os.chdir(repo_root)
 
-    validator = repo_root / "scripts" / "validate_plugin.py"
-    if not validator.is_file():
-        print(f"{YELLOW}WARNING: scripts/validate_plugin.py not found{NC}")
+    # Local CPV validator scripts were retired in bc1c306 — validation runs
+    # through the CPV remote launcher (the same command CI's validate.yml
+    # uses), fetched on demand via uvx. Without uvx there is no validator to
+    # run, so warn-and-allow rather than blocking every push on a tooling gap.
+    uvx_check = subprocess.run(["uvx", "--version"], capture_output=True, text=True)
+    if uvx_check.returncode != 0:
+        print(f"{YELLOW}WARNING: uvx not found — cannot run cpv-remote-validate{NC}")
         print(f"{YELLOW}Cannot validate plugin. Allowing push.{NC}")
         return 0
 
-    print(f"{BLUE}Running plugin validation...{NC}")
+    print(f"{BLUE}Running plugin validation (cpv-remote-validate --strict)...{NC}")
     print()
-
-    # NOTE: CPV scripts are synced in CI (validate.yml), not during pre-push.
-    # To manually update local validation scripts, run: python3 scripts/sync_cpv_scripts.py
 
     # Determine report file path for concise output when invoked by agents
     report_file = os.environ.get("AMPA_REPORT_FILE")
 
-    # Try uv first (CI-style), fall back to python3 (local dev without uv)
-    validator_args = ["scripts/validate_plugin.py", ".", "--verbose"]
-    uv_check = subprocess.run(["uv", "--version"], capture_output=True, text=True)
-    if uv_check.returncode == 0:
-        cmd = ["uv", "run", "--with", "pyyaml", "python"] + validator_args
-    else:
-        cmd = ["python3"] + validator_args
+    cmd = [
+        "uvx",
+        "--from", "git+https://github.com/Emasoft/claude-plugins-validation",
+        "--with", "pyyaml",
+        "cpv-remote-validate", "plugin", ".", "--strict",
+    ]
 
     if report_file:
         # Capture validator output to file, show only concise summary
@@ -193,19 +193,20 @@ def main() -> int:
 
     print()
 
+    # cpv-remote-validate --strict exit codes mirror CI's quality gate:
+    # 0=PASS; 1=CRITICAL, 2=MAJOR, 3=MINOR, 4=NIT all BLOCK (only exit 0
+    # passes in CI's validate.yml, so the hook must block the same set or
+    # pushes land that CI then rejects).
+    severity_names = {1: "CRITICAL", 2: "MAJOR", 3: "MINOR", 4: "NIT"}
+
     if report_file:
         # Concise summary for agent consumption
-        tag_map = {0: "[PASS]", 1: "[BLOCKED]", 2: "[BLOCKED]", 3: "[WARN]"}
-        tag = tag_map.get(exit_code, "[UNKNOWN]")
-        msg_map = {
-            0: "All validation checks passed. Push allowed.",
-            1: "CRITICAL issues found. Push blocked.",
-            2: "MAJOR issues found. Push blocked.",
-            3: "MINOR issues found. Push allowed.",
-        }
-        msg = msg_map.get(exit_code, f"Exit code {exit_code}. Push allowed.")
-        print(f"{tag} {msg} Report: {report_file}")
-        return 1 if exit_code in (1, 2) else 0
+        if exit_code == 0:
+            print(f"[PASS] All validation checks passed. Push allowed. Report: {report_file}")
+            return 0
+        name = severity_names.get(exit_code, f"exit {exit_code}")
+        print(f"[BLOCKED] {name} issues found. Push blocked. Report: {report_file}")
+        return 1
 
     if exit_code == 0:
         banner(GREEN, [
@@ -213,30 +214,12 @@ def main() -> int:
             "Push allowed.",
         ])
         return 0
-    elif exit_code == 1:
-        banner(RED, [
-            "BLOCKED: CRITICAL issues found",
-            "Fix ALL issues before pushing.",
-        ])
-        return 1
-    elif exit_code == 2:
-        banner(RED, [
-            "BLOCKED: MAJOR issues found",
-            "Fix ALL issues before pushing.",
-        ])
-        return 1
-    elif exit_code == 3:
-        banner(YELLOW, [
-            "WARNING: MINOR issues found",
-            "Push allowed. Fix when convenient.",
-        ])
-        return 0
-    else:
-        banner(YELLOW, [
-            f"Validation returned exit code {exit_code}",
-            "Please check the validation script. Push allowed.",
-        ])
-        return 0
+    name = severity_names.get(exit_code, f"exit code {exit_code}")
+    banner(RED, [
+        f"BLOCKED: {name} issues found (CI's strict gate blocks the same)",
+        "Fix ALL issues before pushing.",
+    ])
+    return 1
 
 
 if __name__ == "__main__":

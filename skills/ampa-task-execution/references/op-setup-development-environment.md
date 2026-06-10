@@ -242,7 +242,7 @@ bun run tsc --version
 | Error                   | Cause                  | Resolution                                                  |
 | ----------------------- | ---------------------- | ----------------------------------------------------------- |
 | Directory not found     | Invalid project path   | Verify path with orchestrator                               |
-| uv: command not found   | uv not installed       | Install: `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
+| uv: command not found   | uv not installed       | Install via the official script (download to a file, review, then `sh` it — see ampa-project-setup) |
 | Python version mismatch | Wrong Python specified | Use `uv venv --python X.Y` with correct version             |
 | Dependency conflict     | Package version issues | Report to orchestrator, may need manual resolution          |
 | SERENA not responding   | MCP not configured     | Verify SERENA MCP is in settings                            |
