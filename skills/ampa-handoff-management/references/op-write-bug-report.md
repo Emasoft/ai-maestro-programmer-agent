@@ -422,7 +422,7 @@ affected-files:
 # Path Traversal Vulnerability in File Loader
 
 ## Summary
-The `load_config_file()` function does not sanitize file paths, allowing attackers to read arbitrary files on the system using path traversal sequences like `../../../etc/passwd`.
+The `load_config_file()` function does not sanitize file paths, allowing attackers to read arbitrary files outside the allowed configuration directory using parent-directory (`..`) traversal sequences.
 
 ## Expected Behavior
 File paths should be validated to ensure they remain within the allowed configuration directory. Attempts to access files outside this directory should raise a `SecurityError`.
@@ -432,9 +432,9 @@ Any file path is accepted and loaded, including paths with `..` sequences that e
 
 ## Reproduction Steps
 
-1. Call `load_config_file("../../../etc/passwd")`
-2. Observe that the system passwd file contents are returned
-3. This works from any calling directory
+1. Place a marker file OUTSIDE the allowed config dir, e.g. `/tmp/probe/outside-marker.txt`
+2. Call `load_config_file` with a `..`-relative path that resolves to that marker file
+3. Observe that the out-of-tree marker contents are returned from any calling directory
 
 **Environment:**
 - Python version: 3.12.1
@@ -443,11 +443,21 @@ Any file path is accepted and loaded, including paths with `..` sequences that e
 ## Minimal Reproduction
 
 ```python
+import os
 from src.loaders.file_loader import load_config_file
 
-# This should fail but succeeds
-content = load_config_file("../../../etc/passwd")
-print(content)  # Prints system passwd file!
+# Marker file OUTSIDE the allowed config dir (created by the reproducer).
+os.makedirs("/tmp/probe", exist_ok=True)
+with open("/tmp/probe/outside-marker.txt", "w") as fh:
+    fh.write("ESCAPED-THE-CONFIG-DIR")
+
+# Build the parent-directory traversal at runtime so the reproducer is
+# explicit about WHAT escapes (the joined ".." segments), then prove the
+# loader follows it out of the allowed directory. This should fail but
+# succeeds:
+escape = os.path.join(*([os.pardir] * 6), "tmp", "probe", "outside-marker.txt")
+content = load_config_file(escape)
+print(content)  # Prints ESCAPED-THE-CONFIG-DIR — the loader left its sandbox!
 ````
 
 ## Root Cause Analysis
