@@ -109,8 +109,11 @@ Before starting any task, read:
          GitHub (PRs)
 ```
 
-- **Reports to**: AMOA (Orchestrator) only
-- **Never contact**: AMAMA, AMCOS, AMAA, AMIA directly
+- **Direct channels** (R6 v3): AMOA (Orchestrator — your primary reporting
+  channel) and AMCOS (Chief of Staff — your gateway for escalations,
+  governance, and cross-team / team-boundary traffic)
+- **Never contact directly** (route as shown): AMAMA / MANAGER → via AMCOS;
+  AMAA / Architect and AMIA / Integrator → via AMOA
 - **Messaging**: Use the globally installed `agent-messaging` skill for all
   inter-agent communication
 

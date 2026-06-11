@@ -209,7 +209,7 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 **Verify**: confirm the message appears in your sent messages.
 
-> **Note**: In normal operations, AMPA routes ALL messages through AMOA. The direct-to-AMCOS and direct-to-AMIA templates below are reserved for exceptional scenarios explicitly authorized by AMOA (e.g., AMOA instructs AMPA to send a review request directly to AMIA). When in doubt, send to AMOA and let AMOA route.
+> **Note (R6 v3)**: AMPA's direct edges are **AMOA** (primary reporting) and **AMCOS** (escalations, blockers, governance, and the cross-team / team-boundary gateway) — messaging AMCOS directly for a blocker or escalation is NORMAL, not exceptional. AMPA may **not** message AMIA, AMAA, or peer MEMBERs directly; those route through AMOA. The to-AMIA review-request template below applies ONLY when AMOA explicitly instructs AMPA to send it directly (an AMOA-authorized exception). When in doubt, send to AMOA and let AMOA route.
 
 #### To AMCOS (Chief of Staff) - For Blockers Only
 
