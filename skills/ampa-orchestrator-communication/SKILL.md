@@ -80,6 +80,7 @@ log. Resume when connectivity is restored.
 | [op-report-blocker.md](references/op-report-blocker.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 | [op-propose-improvement.md](references/op-propose-improvement.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 | [op-notify-completion.md](references/op-notify-completion.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
+| [op-pre-pr-gate.md](references/op-pre-pr-gate.md) | The "PR now?" pre-PR gate — ask AMOA for a green-light before opening a PR (R6 v3 / #17 M7c) |
 | [op-receive-feedback.md](references/op-receive-feedback.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 
 **`agent-messaging` skill** (global) — Messaging commands.

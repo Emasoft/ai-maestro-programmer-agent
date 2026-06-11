@@ -25,10 +25,17 @@ Create a pull request to submit completed work for review. This corresponds to
 - Task implementation is complete
 - All tests pass locally
 - Code is ready for review
+- **AMOA has green-lit the PR via the pre-PR gate** (never open a PR before this)
 - Submitting work for AMIA review (Step 19)
 
 ## Prerequisites
 
+- **ORCHESTRATOR (AMOA) green-light received — the pre-PR gate (R6 v3 / #17 M7c).**
+  Before opening any PR you MUST have asked AMOA "I believe `<TRDD-id>` is done —
+  PR now?" and received an explicit go-ahead *after* AMOA validated the acceptance
+  criteria, confirmed all EHTs are terminal, and confirmed tests are green.
+  **Never open a PR without it** — use the "PR now?" request/reply template
+  (`op-pre-pr-gate`) in the `ampa-orchestrator-communication` skill.
 - Feature branch pushed to remote
 - All changes committed
 - Tests passing
@@ -182,6 +189,7 @@ Closes #123, Closes #124 Fixes #125 Related to #126
 
 ## Checklist
 
+- [ ] AMOA pre-PR green-light received ("PR now?" → explicit go-ahead)
 - [ ] All changes committed and pushed
 - [ ] Tests pass locally
 - [ ] Branch is up to date with main

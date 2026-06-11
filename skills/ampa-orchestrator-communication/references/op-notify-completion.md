@@ -210,18 +210,25 @@ If PR was created:
 
 ## Procedure
 
-Follow these steps to notify completion:
+Follow these steps. **The pre-PR gate (step 4) is mandatory — never open a PR
+before AMOA green-lights it (R6 v3 / #17 M7c).**
 
 1. **Verify all tests pass**: Run complete test suite
 2. **Verify code quality**: Run linter, formatter, type checker
-3. **Gather statistics**: Collect code and test metrics
-4. **Create PR (if applicable)**: Open pull request
-5. **Self-review**: Review your own changes one more time
-6. **Compose notification**: Use the format from section 5.2
+3. **Gather statistics + self-review**: Collect code/test metrics; review your
+   own changes one more time
+4. **Pre-PR gate — ask AMOA "PR now?"**: Send AMOA the request
+   "I believe `<TRDD-id>` is done — PR now?" with the evidence (acceptance
+   criteria met, all EHTs terminal, tests green). **WAIT** for AMOA's explicit
+   green-light. If AMOA sends it back, return to dev and fix — do **NOT** open a
+   PR. Use the `op-pre-pr-gate` ("PR now?") request/reply template in this skill.
+5. **Only on green-light — create the PR**: Follow `op-create-pull-request`. In
+   orchestrated mode AMOA then routes the PR to AMIA for review (Step 20).
+6. **Compose notification**: Use the format from section 5.2 (the PR is now up).
 7. **Send to AMOA**: Send the completion notification using the
-   `agent-messaging` skill
+   `agent-messaging` skill.
 8. **Wait for feedback**: Check your inbox using the `agent-messaging` skill for
-   AMOA response
+   AMOA response. (AMOA/AMIA — not you — own the `→ completed` flip.)
 
 ## Checklist
 
