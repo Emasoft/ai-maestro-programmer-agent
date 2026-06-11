@@ -350,8 +350,8 @@ Use this name as your sender identity when sending messages via the
 ## Communication Permissions (R6)
 
 The R6 communication graph is ENFORCED at the API — violations return
-HTTP 403 with a routing suggestion. This list mirrors the server graph
-(`lib/communication-graph.ts`) as of the 2026-04-22 v2 update
+HTTP 403 with a routing suggestion. This list mirrors the AI Maestro server's R6 routing graph as of the
+2026-04-22 v2 update
 (HUMAN node + reply-only edges). If the API rejects a message you
 believe should be allowed, re-read the server's routing suggestion
 before retrying — it is authoritative.

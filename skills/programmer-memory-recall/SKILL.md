@@ -109,7 +109,7 @@ User: this publish failed again with a stale lockfile — didn't we fix this?
 
 <example>
 User: recall what we learned about the flaky pipeline last week
-→ memgrep recall "flaky pipeline" "$MEMDIR" --since 2026-06-01 --sort lmd
+→ memgrep recall "flaky pipeline" "$MEMDIR" --since <YYYY-MM-DD> --sort lmd
   → recent notes, newest-modified first, lessons appended.
 </example>
 

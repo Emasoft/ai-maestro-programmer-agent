@@ -1,5 +1,4 @@
 {
-  "description": "AMPA hooks - minimal configuration for programmer agent",
-  "_note": "AMPA uses globally installed hooks and skills, minimal local hooks needed",
+  "description": "AMPA hooks - minimal configuration; AMPA uses globally installed hooks and skills, so no local hooks are needed",
   "hooks": {}
 }

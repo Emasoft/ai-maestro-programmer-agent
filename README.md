@@ -1,6 +1,10 @@
 # AI Maestro Programmer Agent (AMPA)
 
-**Version**: 1.0.26
+A general-purpose, multi-language programmer agent for Claude Code that
+implements, tests, fixes, and documents code across Python,
+JavaScript/TypeScript, Rust, Go, and other toolchains — either standalone or
+orchestrated within the AI Maestro ecosystem. The current version is recorded
+in `.claude-plugin/plugin.json` (the single source of truth).
 
 ## Overview
 
@@ -149,7 +153,7 @@ automatically uses it for code analysis (`code_task`), codebase scanning
 `answer_mode: 0` and `max_retries: 3`), and post-refactoring validation
 (`check_references`, `check_imports`).
 
-## Getting Started
+## Usage
 
 1. **Install the plugin** using the command from the Installation section above.
 2. **Launch the agent** in your project directory:
@@ -282,7 +286,7 @@ mode. `uvx` ships with [uv](https://docs.astral.sh/uv/).
 
 - `validate.yml` — Runs plugin validation on push to main and PRs
 - `release.yml` — Creates GitHub releases on version tags (`v*`)
-- `notify-marketplace.yml` — Marketplace notification (currently disabled, TBD)
+- `notify-marketplace.yml` — Dispatches a `plugin-updated` event to the marketplace repo when plugin files change on `main`
 
 ## Compatibility with Recent Claude Code Releases
 
