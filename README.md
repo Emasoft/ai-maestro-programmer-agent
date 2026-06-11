@@ -65,9 +65,11 @@ naming (e.g., `svgbbox-programmer-001`).
 | --------------------------- | -------------------------------------------------------------------- |
 | `rules/memory-protocol.md`  | The PROGRAMMER memory protocol — recall-before-acting, the note schema, the one law (index by symptom, not answer) |
 
-The memory system degrades gracefully: when the `memgrep` binary (from
-`ai-maestro-janitor`'s `tools/memgrep`) is absent, both skills fall back to
-plain `grep -rliE` over the memory dir — recall degrades, never breaks.
+The memory system degrades gracefully: when the `memgrep` binary is absent,
+both skills fall back to plain `grep -rliE` over the memory dir — recall
+degrades, never breaks. Install memgrep from the latest `ai-maestro-janitor`
+GitHub release (prebuilt binaries, v0.7.1+, with `SHA256SUMS`) or build it
+with `cargo install --path <ai-maestro-janitor>/scripts/memgrep`.
 
 ### Hooks
 

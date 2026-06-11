@@ -66,9 +66,13 @@ failed, had to log in" and you find it from the problem.)
    fi
    ```
 
-   If `memgrep` is not installed, it can be installed once from a checkout of
-   the `ai-maestro-janitor` repo:
-   `cargo install --path <ai-maestro-janitor>/tools/memgrep` — until then the
+   If `memgrep` is not installed, install it once (best option first):
+   (1) download the prebuilt binary for your platform from the latest
+   `ai-maestro-janitor` GitHub release (v0.7.1+; macOS arm64/x64 + Linux
+   x64/arm64, verify against the published `SHA256SUMS`) and put it on PATH;
+   (2) build from a checkout:
+   `cargo install --path <ai-maestro-janitor>/scripts/memgrep`
+   (the crate moved from `tools/memgrep` in janitor v0.7.0). Until then the
    grep fallback works on note frontmatter + bodies.
 
 3. Read the top 1-3 notes the recall returns; the fact you need is in their

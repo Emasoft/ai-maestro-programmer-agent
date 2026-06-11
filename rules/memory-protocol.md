@@ -37,8 +37,11 @@ task that smells familiar, RECALL first — "have we hit this before?". Cheap,
 and it's the whole point of having a memory.
 
 ```bash
-# memdir is the harness per-project memory dir:
-MEMDIR="$HOME/.claude/projects/<project-slug>/memory"   # slug = project path, dashed
+# memdir — the fleet three-scope model (ratified on janitor#18); recall the
+# scope that matches the question, LOCAL first for project work:
+MEMDIR="$HOME/.claude/projects/<project-slug>/memory"   # LOCAL — live per-project notes, never pushed (slug = project path, dashed)
+# PROJECT scope: <git-root>/memory/                     #  git-tracked, machine-independent content ONLY (janitor leak-polices it)
+# USER scope:    $HOME/.claude/memory/                  #  cross-project user-level notes
 SYMPTOM="the user's words / the error / the symptom"     # NOT the answer's jargon
 
 if command -v memgrep >/dev/null 2>&1; then
@@ -73,16 +76,24 @@ then capture it (per the `# Memory` directive and the
 
 `memgrep` is `rg` for markdown (gitignore-aware tree walk, markdown-AST-aware
 filters, and the memory subcommands `recall`/`find`/`index`). It lives in the
-`ai-maestro-janitor` repo (`tools/memgrep/`).
+`ai-maestro-janitor` repo (`scripts/memgrep/` — moved from `tools/memgrep`
+in janitor v0.7.0).
 
 - **Availability:** memgrep is a Rust binary. If `command -v memgrep` is
-  empty, install it once from a checkout of `ai-maestro-janitor`:
-  `cargo install --path <ai-maestro-janitor>/tools/memgrep` (puts it on
-  `~/.cargo/bin`); prebuilt per-platform release binaries are tracked
-  upstream. Until then, the plain-`grep` fallback above works on note
-  frontmatter + bodies — **recall degrades, never breaks**. Every consumer of
-  this protocol (skills, hooks, tests) MUST gate on `command -v memgrep` and
-  fall back to `grep -rliE`.
+  empty, install it once — documented ladder, best first:
+  1. **Prebuilt release binary** (janitor v0.7.1+): download the asset for
+     your platform (macOS arm64/x64, Linux x64/arm64) from the latest
+     `ai-maestro-janitor` GitHub release, verify it against the published
+     `SHA256SUMS`, put it on PATH.
+  2. **Build from source:**
+     `cargo install --path <ai-maestro-janitor>/scripts/memgrep` (puts it on
+     `~/.cargo/bin`).
+  3. **Plain-`grep` fallback** (kept forever): works on note frontmatter +
+     bodies — **recall degrades, never breaks** (also covers CI containers
+     without the binary). Every consumer of this protocol (skills, hooks,
+     tests) MUST gate on `command -v memgrep` and fall back to `grep -rliE`.
+     The soft dependency is deliberate — do NOT declare a hard plugin
+     dependency on `ai-maestro-janitor` for the binary.
 - **recall** `memgrep recall "SYMPTOM" <memdir>` — symptom-ranked notes,
   precision-first (surface matches suppress body-only matches unless nothing
   matched the surface), printed `path — description`, best first. Useful
@@ -116,6 +127,15 @@ metadata:
 ---
 <body: the one fact; for feedback/project add **Why:** and **How to apply:**>
 ```
+
+The **wikimem layer** (janitor v0.7.0+) is an ADDITIVE superset of this
+schema: optional frontmatter fields (`tier: hub|aspect|component`,
+`functionality`, `globs`, `ocd`/`lmd`) and bidirectional `[[link]]` pages. A
+flat note without those fields is treated as a component page — fully
+forward-compatible. Author against this flat schema; adopt wikimem fields
+opportunistically (source of truth: the janitor's
+`janitor-memory-{recall,write,update}` skills and their `wikimem-model.md`
+reference).
 
 `MEMORY.md` is the human index (`- [Title](file.md) — hook`, one line per
 note) loaded each session. Recall does not need the index — it scans the
