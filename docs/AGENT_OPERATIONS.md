@@ -510,7 +510,6 @@ that CI and `publish.py` already use.
 | `scripts/publish.py` | Strict release pipeline — test, lint, validate, bump, push |
 | `scripts/pre-push-hook.py` | Git pre-push hook — runs cpv-remote-validate before each push |
 | `scripts/test_order_pipeline.py` | OrderPipeline validation test suite |
-| `scripts/gitignore_filter.py` | Filter file lists against .gitignore patterns |
 | `scripts/smart_exec.py` | Cross-platform script executor with timeout support |
 
 ---

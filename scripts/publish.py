@@ -52,9 +52,6 @@ BLUE = "\033[0;34m" if _USE_COLOR else ""
 BOLD = "\033[1m" if _USE_COLOR else ""
 NC = "\033[0m" if _USE_COLOR else ""
 
-# Lazy-initialized gitignore filter for file scanning
-_gi = None
-
 
 # ── pre-push hook (strict publish enforcement) ──────────────────────────────
 #
@@ -170,17 +167,35 @@ def ensure_pre_push_hook(git_root: Path) -> None:
     print(f"{GREEN}ok pre-push hook installed + core.hooksPath activated{NC}")
 
 
-def _get_gi(root: Path):  # noqa: ANN202
-    """Get or create GitignoreFilter for the given root."""
-    global _gi  # noqa: PLW0603
-    if _gi is None:
-        try:
-            from gitignore_filter import GitignoreFilter
-            _gi = GitignoreFilter(root)
-        except ImportError:
-            # Fallback: return a simple walker that skips common dirs
-            return None
-    return _gi
+def _list_py_files(plugin_root: Path) -> list[Path]:
+    """List all non-gitignored *.py files under plugin_root.
+
+    Delegates gitignore semantics to git itself — the single source of truth.
+    `git ls-files --cached --others --exclude-standard` lists tracked files plus
+    untracked-but-not-ignored files, i.e. exactly the non-gitignored set. Falls
+    back to a manual walk (skipping hidden, build, and *_dev dirs) only when git
+    is unavailable or the tree is not a repository — the fallback mirrors the
+    gitignore intent so version bumps never touch gitignored _dev scratch.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(plugin_root), "ls-files", "--cached", "--others",
+             "--exclude-standard", "-z", "--", "*.py"],
+            capture_output=True, text=True, timeout=30,
+        )
+        if result.returncode == 0:
+            return [plugin_root / rel for rel in result.stdout.split("\0") if rel]
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return [
+        p for p in plugin_root.rglob("*.py")
+        if not any(
+            part.startswith(".")
+            or part.endswith("_dev")
+            or part in ("node_modules", "__pycache__", "dist", "build", ".git")
+            for part in p.relative_to(plugin_root).parts
+        )
+    ]
 
 
 # ── Auto-detection ───────────────────────────────────────────────────────────
@@ -989,18 +1004,8 @@ def update_pyproject_toml(plugin_root: Path, new_version: str) -> tuple[bool, st
 
 def update_python_versions(plugin_root: Path, new_version: str) -> list[tuple[bool, str]]:
     """Update __version__ = 'X.Y.Z' in all Python files."""
-    gi = _get_gi(plugin_root)
     results: list[tuple[bool, str]] = []
-
-    # Use gitignore filter if available, else walk manually
-    if gi is not None:
-        py_files = list(gi.rglob("*.py"))
-    else:
-        py_files = [
-            p for p in plugin_root.rglob("*.py")
-            if not any(part.startswith(".") or part in ("node_modules", "__pycache__", "dist", "build", ".git")
-                       for part in p.relative_to(plugin_root).parts)
-        ]
+    py_files = _list_py_files(plugin_root)
 
     for py_file in py_files:
         try:
@@ -1049,12 +1054,7 @@ def check_version_consistency(plugin_root: Path) -> tuple[bool, str]:
         except Exception:
             pass
 
-    gi = _get_gi(plugin_root)
-    py_files = list(gi.rglob("*.py")) if gi else [
-        p for p in plugin_root.rglob("*.py")
-        if not any(part.startswith(".") or part in ("node_modules", "__pycache__", "dist", "build", ".git")
-                   for part in p.relative_to(plugin_root).parts)
-    ]
+    py_files = _list_py_files(plugin_root)
     for py_file in py_files:
         try:
             content = py_file.read_text(encoding="utf-8")

@@ -83,7 +83,6 @@ so local copies only drifted behind upstream).
 | `publish.py`             | Strict release pipeline — test, lint, validate, bump, push    |
 | `pre-push-hook.py`       | Git pre-push hook — runs cpv-remote-validate before each push |
 | `test_order_pipeline.py` | OrderPipeline validation test suite                           |
-| `gitignore_filter.py`    | Filter file lists against .gitignore patterns                 |
 | `smart_exec.py`          | Cross-platform script executor with timeout support           |
 
 ### Token-Efficient Reporting
