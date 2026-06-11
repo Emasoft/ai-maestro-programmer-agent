@@ -76,7 +76,14 @@ Keep under 72 characters. Use imperative mood.
 
 **Description template:**
 
+Every PR body MUST begin with the G1.1 self-identification line — all AI
+Maestro agents share the single human-owner GitHub identity, so the body
+itself must say which agent authored it:
+
 ```markdown
+_This is the Claude responsible for the <project> project (AMPA programmer,
+via the shared owner gh auth)._
+
 ## Summary
 
 Brief description of what this PR does.
@@ -102,6 +109,9 @@ Create PR using heredoc for proper formatting:
 
 ```bash
 gh pr create --title "<type>(<scope>): <description>" --body "$(cat <<'EOF'
+_This is the Claude responsible for the <project> project (AMPA programmer,
+via the shared owner gh auth)._
+
 ## Summary
 <1-3 sentences describing the change>
 
@@ -125,6 +135,9 @@ EOF
 
 ```bash
 gh pr create --title "feat(auth): add OAuth2 login support" --body "$(cat <<'EOF'
+_This is the Claude responsible for the acme-webshop project (AMPA programmer,
+via the shared owner gh auth)._
+
 ## Summary
 Implements OAuth2 authentication flow with support for Google and GitHub providers.
 
@@ -190,6 +203,7 @@ Closes #123, Closes #124 Fixes #125 Related to #126
 ## Checklist
 
 - [ ] AMOA pre-PR green-light received ("PR now?" → explicit go-ahead)
+- [ ] PR body begins with the G1.1 self-identification line
 - [ ] All changes committed and pushed
 - [ ] Tests pass locally
 - [ ] Branch is up to date with main

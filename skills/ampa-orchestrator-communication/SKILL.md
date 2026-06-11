@@ -75,6 +75,7 @@ log. Resume when connectivity is restored.
 
 | Document | Description |
 |----------|-------------|
+| [op-comprehension-handshake.md](references/op-comprehension-handshake.md) | The task-comprehension handshake answer (all 5 points, before coding) — replaces the bare ACK (R6 v3 / #17 M7a) |
 | [op-request-clarification.md](references/op-request-clarification.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 | [op-report-status.md](references/op-report-status.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 | [op-report-blocker.md](references/op-report-blocker.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |

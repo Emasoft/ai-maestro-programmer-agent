@@ -126,18 +126,37 @@ If the task is NOT found in the kanban:
 > `$AIMAESTRO_API` is not set, skip verification and proceed with the
 > AMP-received task.
 
-### Step 1.5: Acknowledge Receipt to Orchestrator
+### Step 1.5: Answer the Task-Comprehension Handshake (NOT a bare ACK)
 
-Send an acknowledgment message to the orchestrator using the `agent-messaging`
-skill:
+**The task-comprehension handshake (loop (a) of the corrected workflow model /
+#17 M7a) replaces the bare "Task received" acknowledgment.** Coding MUST NOT
+start until you have answered ALL FIVE handshake points and AMOA has confirmed
+your understanding. A bare ACK tells the orchestrator nothing about whether you
+understood the task — the handshake catches misunderstandings BEFORE tokens are
+burned on a wrong implementation.
+
+Send the handshake answer to the orchestrator using the `agent-messaging`
+skill — full template and reply semantics in
+`op-comprehension-handshake.md` (`ampa-orchestrator-communication` skill):
 
 - **Recipient**: the sender's session name (from the incoming message)
-- **Subject**: "ACK: [TASK_ID] received"
-- **Content**: "Task received and validated. Beginning work."
-- **Type**: acknowledgment
+- **Subject**: "HANDSHAKE: [TASK_ID] — comprehension answer"
+- **Content**: answer ALL FIVE points:
+  1. **Restate the task** in your own words (not a copy of the assignment)
+  2. **Files / domains you will touch** (paths, modules, configs)
+  3. **Ambiguities** — anything underspecified (or "none identified")
+  4. **Foreseen risks / issues** — what could go wrong
+  5. **Anticipated NPT / EHT** — prerequisite tasks and effect-handling tasks
+     the assignment implies
+- **Type**: status
 - **Priority**: normal
 
-**Verify**: confirm the acknowledgment appears in your sent messages.
+**WAIT for AMOA's confirmation before coding.** If AMOA flags a wrong
+restatement or an unresolved ambiguity turns out to be a design flaw, the issue
+routes back through AMOA (design flaw → AMAA revises or authors new TRDDs) —
+never silently improvise around it.
+
+**Verify**: confirm the handshake answer appears in your sent messages.
 
 ## Checklist
 
@@ -146,7 +165,8 @@ skill:
 - [ ] Extracted task ID and metadata
 - [ ] Validated all required fields present
 - [ ] Verified task in kanban (if API available)
-- [ ] Sent acknowledgment to orchestrator
+- [ ] Answered the comprehension handshake (all 5 points) to orchestrator
+- [ ] Received AMOA confirmation BEFORE starting to code
 - [ ] Recorded task start time for tracking
 
 ## Examples
@@ -186,15 +206,18 @@ Response:
 ```json
 {
   "to": "orchestrator-master",
-  "subject": "ACK: a1b2c3d4-e5f6-7890-abcd-ef1234567890 received",
+  "subject": "HANDSHAKE: a1b2c3d4-e5f6-7890-abcd-ef1234567890 — comprehension answer",
   "content": {
-    "type": "acknowledgment",
+    "type": "status",
     "task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "message": "Task received. 3 acceptance criteria identified.",
-    "status": "in_progress"
+    "message": "1) RESTATE: add client+server email-format validation to the user registration form so invalid emails are rejected on submit with a visible error. 2) FILES: src/forms/register.tsx, src/validation/email.ts, tests/forms/register.test.tsx. 3) AMBIGUITIES: should validation also normalize case (Foo@Bar.com -> foo@bar.com)? 4) RISKS: existing users with legacy invalid emails may fail re-login flows that reuse the validator. 5) NPT/EHT: NPT none; EHT update docs/forms.md + re-run the signup e2e suite.",
+    "status": "awaiting-confirmation"
   }
 }
 ```
+
+AMOA replies confirming (or correcting) the restatement and answering the
+ambiguity — only then does work begin.
 
 ### Example 2: Invalid Task Assignment
 
