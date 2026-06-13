@@ -8,5 +8,7 @@
   },
   "repository": "https://github.com/Emasoft/ai-maestro-programmer-agent",
   "license": "MIT",
-  "dependencies": ["ai-maestro-plugin"]
+  "dependencies": [
+    { "name": "ai-maestro-plugin", "version": "^2.7.0" }
+  ]
 }

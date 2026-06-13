@@ -198,4 +198,9 @@ def test_plugin_declares_tooling_dependency() -> None:
     import json
 
     data = json.loads((REPO_ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
-    assert "ai-maestro-plugin" in data.get("dependencies", []), "must declare ai-maestro-plugin dependency"
+    # dependencies may be plain strings or {name, version} objects — accept both.
+    names = [d if isinstance(d, str) else d.get("name") for d in data.get("dependencies", [])]
+    assert "ai-maestro-plugin" in names, "must declare ai-maestro-plugin dependency"
+    # the dependency must carry a version constraint (CPV: avoid auto-tracking latest)
+    versioned = [d for d in data.get("dependencies", []) if isinstance(d, dict) and d.get("name") == "ai-maestro-plugin"]
+    assert versioned and versioned[0].get("version"), "ai-maestro-plugin dependency must be version-pinned"
