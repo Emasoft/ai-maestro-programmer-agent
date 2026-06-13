@@ -91,6 +91,16 @@ Copy this checklist and track your progress:
 
 **`agent-messaging` skill** (global) — Send notifications, list agents.
 
+## Governance
+
+This skill operates under the AI Maestro **approval tiers** — the escalation
+ladder Tier 0 (self-authority for in-scope work + DERIVED NPT/EHT tasks) →
+CHIEF-OF-STAFF → MANAGER → USER. See the `ampa-prrd-trdd-kanban` skill and
+`~/.claude/rules/trdd-approval-tiers.md` for which transitions need approval.
+**A MEMBER never self-approves its own releases** — entering the release
+pipeline (`publish`/`deploy`) is USER/MANAGER-authorized, and the INTEGRATOR
+(not the MEMBER) owns the `→ complete` flip.
+
 ## Related
 
 - **ampa-task-execution** — Core implementation workflow producing

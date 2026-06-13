@@ -79,6 +79,17 @@ force-push without AMOA approval.
 | [op-respond-to-review.md](references/op-respond-to-review.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 | [op-update-pr-with-fixes.md](references/op-update-pr-with-fixes.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 
+## Governance
+
+This skill operates under the AI Maestro **approval tiers** — the escalation
+ladder Tier 0 (self-authority for in-scope work + DERIVED NPT/EHT tasks) →
+CHIEF-OF-STAFF → MANAGER → USER. See the `ampa-prrd-trdd-kanban` skill and
+`~/.claude/rules/trdd-approval-tiers.md` for which transitions need approval.
+**A MEMBER never self-approves its own releases** — entering the release
+pipeline (`publish`/`deploy`) is USER/MANAGER-authorized, and the INTEGRATOR
+(not the MEMBER) owns the `→ complete` flip. No PR is opened without the
+ORCHESTRATOR's pre-PR-gate green-light.
+
 ## Related
 
 - **ampa-task-execution** -- Implementing code and tests before creating a PR.
