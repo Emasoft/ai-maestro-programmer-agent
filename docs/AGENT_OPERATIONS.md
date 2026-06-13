@@ -479,21 +479,22 @@ This prevents AMPA from consuming resources while waiting for review feedback.
 
 ---
 
-## Kanban Column System
+## Kanban Column System (TRDD v2 `column:`)
 
-All projects use the canonical **5-status kanban system** on GitHub Projects:
+Task state lives in **TRDD files under `design/tasks/`** (frontmatter
+`column:`), not GitHub Projects labels:
 
-| Column | Code | Label | Description |
-|--------|------|-------|-------------|
-| Backlog | `backlog` | `status:backlog` | Entry point for new tasks |
-| Pending | `pending` | `status:pending` | Ready to start, prioritized |
-| In Progress | `in_progress` | `status:in_progress` | Active work by assigned agent |
-| Review | `review` | `status:review` | Under review (AI or human) |
-| Completed | `completed` | `status:completed` | Done and merged |
+| Group | Columns | Description |
+|-------|---------|-------------|
+| ENTRY | `backburner`, `todo` | parked / promoted |
+| DESIGN | `design`, `dispatch` | shaped by ARCHITECT; awaiting `assignee:` |
+| WORK | `dev`, `testing`, `ai_review`, `human_review` | MEMBER's slice → review |
+| READY/SHIP | `complete` → `publish`→`published` / `deploy`→`live` | done; then shipped |
+| EXCEPTIONS | `blocked`, `failed`, `superseded` | blocked reversible; failed retryable; superseded terminal |
 
-**Task routing**:
-- All tasks: Backlog → Pending → In Progress → Review → Completed
-- Blocking issues are tracked via labels/flags, not as a separate column
+**MEMBER routing**: `dispatch → dev → testing → ai_review` (bounce `testing →
+dev` on failure). The INTEGRATOR owns the `→ complete` flip; blocking is the
+`blocked` column with `blocked-by:`, not a label.
 
 ---
 
@@ -515,6 +516,15 @@ that CI and `publish.py` already use.
 ---
 
 ## Recent Changes
+
+### 2026-06-14
+- Fleet-readiness alignment (#17): migrated the docs from the retired 5-status
+  GitHub-labels kanban to the TRDD v2 `column:` pipeline + 4-zone `design/`
+  folders (this **supersedes** the 2026-02-07 "5-status canonical kanban"
+  entry below); updated the 3-role model to the full two-layer title model
+  and R6 v3 routing; added the three dialog loops (comprehension handshake /
+  in-dev raise-immediately / pre-PR gate) and the INTEGRATOR-owns-`complete`
+  rule.
 
 ### 2026-03-08
 - Resolved all CPV MAJOR and WARNING validation issues (0 CRITICAL, 0 MAJOR, 0 WARNING)

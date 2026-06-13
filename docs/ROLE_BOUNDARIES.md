@@ -6,18 +6,36 @@
 
 ---
 
-## 3-Role System
+## Title Model — two layers
 
-| Role | Singleton | Scope | Primary Function |
-|------|-----------|-------|------------------|
-| `manager` | Yes (per host) | Organization-wide | User interface, approval authority |
-| `chief-of-staff` | One per closed team | Team-scoped | Agent coordination within team |
-| `member` | Many per team | Task-scoped | Execution; skills determine specialization |
+Roles live in two layers. The **team layer** does the work; the **governance
+layer** sets policy and authorizes releases. **MANAGER is the sole cross-layer
+bridge** — it is the only role that connects the user and the governance layer
+to a team.
+
+### Team layer
+
+| Role | Acronym | Singleton | Scope | Primary Function |
+|------|---------|-----------|-------|------------------|
+| `chief-of-staff` | AMCOS | One per closed team | Team-boundary | Guards the team boundary; escalation + governance gateway |
+| `orchestrator` | AMOA | One per team | Team-scoped | Task orchestration, dispatch, kanban; MEMBER's primary contact |
+| `architect` | AMAA | One per team | Team-scoped | Design column: shapes proto-TRDDs into full TRDDs |
+| `integrator` | AMIA | One per team | Team-scoped | PR review, merging, owns the final `→ completed` flip |
+| `member` | AMPA (+ subtypes) | Many per team | Task-scoped | Execution; AMPA = programmer (artist, sfx-expert, … are other implementer subtypes) |
+
+### Governance layer
+
+| Role | Acronym | Singleton | Scope | Primary Function |
+|------|---------|-----------|-------|------------------|
+| `manager` | AMAMA | Yes (per host) | Organization-wide | User interface, approval authority, **sole cross-layer bridge** |
+| `maintainer` | — | Per project | Repo-scoped | Repo hardening, CI, dependency/supply-chain hygiene |
+| `autonomous` | — | Per project | Project-scoped | Unattended/self-directed project work; escalates to USER on crisis |
 
 ## Role Hierarchy
 
 ```text
-User <-> manager <-> chief-of-staff <-> member(s)
+User <-> MANAGER (governance bridge) <-> AMCOS (team boundary) <-> { AMOA, AMAA, AMIA, MEMBER(s) }
+                                                                     ^^^^ within-team edges are DIRECT
 ```
 
 ---

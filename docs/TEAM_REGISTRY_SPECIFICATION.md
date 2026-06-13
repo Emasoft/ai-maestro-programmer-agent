@@ -415,17 +415,20 @@ When AMCOS updates the registry, it sends a notification to all team agents usin
 
 ## Kanban System Reference
 
-All projects use the canonical **5-status kanban system** on GitHub Projects:
+Task state lives in **TRDD files under `design/tasks/`** (frontmatter
+`column:`), not in GitHub Projects labels. The v2 columns:
 
-| Column | Code | Label |
-|--------|------|-------|
-| Backlog | `backlog` | `status:backlog` |
-| Pending | `pending` | `status:pending` |
-| In Progress | `in_progress` | `status:in_progress` |
-| Review | `review` | `status:review` |
-| Completed | `completed` | `status:completed` |
+| Group | Columns |
+|-------|---------|
+| ENTRY | `backburner`, `todo` |
+| DESIGN | `design`, `dispatch` |
+| WORK | `dev`, `testing`, `ai_review`, `human_review` |
+| READY / SHIP | `complete` → (`publish`→`published`) or (`deploy`→`live`) |
+| EXCEPTIONS | `blocked`, `failed`, `superseded` |
 
-For full kanban workflow details, task routing rules, and code format rules, see **FULL_PROJECT_WORKFLOW.md**.
+For full kanban workflow details and the 4-zone
+`design/{proposals,tasks,refused,archived}` lifecycle, see
+**FULL_PROJECT_WORKFLOW.md**.
 
 ---
 

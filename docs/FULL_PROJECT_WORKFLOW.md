@@ -1,9 +1,16 @@
 # Full Project Workflow: From Requirements to Delivery
 
-**Version**: 1.2.0
-**Last Updated**: 2026-03-08
+**Version**: 2.0.0
+**Last Updated**: 2026-06-12
 
 This document describes the complete workflow for how the AI Maestro agent system handles a project from initial requirements to delivery. All agents must understand this workflow to coordinate effectively.
+
+The fleet operates on two layers of titles:
+
+- **Team layer** — CHIEF-OF-STAFF (AMCOS), ORCHESTRATOR (AMOA), ARCHITECT (AMAA), INTEGRATOR (AMIA), and MEMBER. AMPA (this plugin) is the **programmer** MEMBER subtype; other implementer subtypes (artist, sfx-expert, …) share the `member` role in team registries but load subtype-specific plugins.
+- **Governance layer** — MANAGER (AMAMA), MAINTAINER, AUTONOMOUS. **MANAGER is the sole cross-layer bridge** between governance and the teams.
+
+Work state lives in **TRDD files under `design/`** (frontmatter `column:` field), NOT in GitHub issue labels. The universal kanban mechanics live in the `prrd-trdd-kanban` skill of ai-maestro-plugin (a declared plugin dependency; pillar scripts `get-prrd.py` / `prrd-edit.py` / `findtrdd.py` / `kanban.py`); the MEMBER-facing layer is the `ampa-prrd-trdd-kanban` skill. Project rules live in `design/requirements/PRRD.md` and are cited as golden `G*` / silver `S*` rules (e.g. `PRRD S3.1`).
 
 ---
 
@@ -67,30 +74,40 @@ AMOA ◄────────────────────────
 
 ---
 
-## Kanban Column System
+## Kanban Column System (TRDD v2 `column:` pipeline)
 
-All projects use a **5-status kanban system** on GitHub Projects. Every agent must understand these statuses and use the canonical code format consistently.
+Task state lives in **TRDD files under `design/tasks/`** — the `column:`
+frontmatter field is the single source of truth, **not** a GitHub Projects
+label. Every agent reads/moves a task by editing its TRDD (or via
+`kanban.py` from `ai-maestro-plugin`).
 
-### Canonical Statuses
+### Columns
 
-| # | Status | Code | Label | Description |
-|---|--------|------|-------|-------------|
-| 1 | Backlog | `backlog` | `status:backlog` | Entry point for all new issues |
-| 2 | Pending | `pending` | `status:pending` | Ready to start, prioritized |
-| 3 | In Progress | `in_progress` | `status:in_progress` | Active work by assigned agent |
-| 4 | Review | `review` | `status:review` | Under review (AI or human) |
-| 5 | Completed | `completed` | `status:completed` | Done and merged |
+| Group | Columns | Meaning |
+|-------|---------|---------|
+| ENTRY | `backburner`, `todo` | parked / promoted, awaiting design |
+| DESIGN | `design`, `dispatch` | ARCHITECT shapes proto→full TRDD; then awaiting `assignee:` |
+| WORK | `dev`, `testing`, `ai_review`, `human_review` | MEMBER implements → tests → AI review → (human review when required) |
+| READY | `complete` | requirements met + tested; not yet shipped |
+| SHIP (tools) | `publish` → `published` | publishing a plugin/package (this repo) |
+| SHIP (services) | `deploy` → `live` (+ `live_auditing` soak) | deploying a service |
+| EXCEPTIONS | `blocked`, `failed`, `superseded` | `blocked` reversible (`blocked-by:` non-empty); `failed` retryable (stays open); `superseded` terminal |
 
-### Task Routing
+### Task routing (MEMBER's slice)
 
-- **All tasks**: Pending → In Progress → Review → Completed
-- **Blocking**: Handled via labels/flags, not a separate column
+- `dispatch → dev` (ORCH sets `assignee:`) → `dev → testing` → `testing →
+  ai_review` on pass; **`testing → dev` on failure** (increment
+  `test-failures:`, append a post-mortem). The pre-PR gate (Step 19) sits
+  between "tests green" and "PR opened".
+- The **INTEGRATOR owns the `→ complete` flip** after validating the merged
+  PR against the TRDD — nobody self-marks complete.
 
-### Code Format Rules
+### 4-zone design folders
 
-- **Always use underscores**: `in_progress`, not `in-progress`
-- **Labels use `status:` prefix**: `status:in_progress`, `status:review`
-- **Display names use title case**: "In Progress", "Review", "Completed"
+`design/{proposals,tasks,refused,archived}/` — `proposals/` awaits approval;
+`refused/` = never-approved; `tasks/` = OPEN work (including `blocked` and
+`failed`); `archived/` = once-approved terminal (`completed` | `cancelled` |
+`superseded`). Project rules live in `design/requirements/PRRD.md`.
 
 ---
 
@@ -234,15 +251,16 @@ All projects use a **5-status kanban system** on GitHub Projects. Every agent mu
 #### Step 13: Kanban Population
 **Actor**: AMOA (Orchestrator)
 **Action**:
-- Add tasks to the GitHub Project kanban with `pending` status
-- For each task:
-  - Set the "Assigned Agent" custom field
-  - Attach the task-requirements-document
-  - Specify task order and dependencies
-  - Ensure task executes only when required previous tasks are completed
+- Author the TRDD files under `design/tasks/` in the `dispatch` column (or
+  `todo` when further design is pending)
+- For each TRDD:
+  - Set `assignee:` to the chosen agent session
+  - Reference the task-requirements-document / acceptance criteria in the body
+  - Specify task order via `npt:` / `blocked-by:` dependencies
+  - Ensure a task starts only when its `blocked-by:` TRDDs are terminal
 
 **Communication**:
-- GitHub: Create issues, add to project, set fields
+- `design/tasks/` TRDD files (the kanban); optional `kanban.py` render
 - AI Maestro: Notification to each agent about their first assigned task
 
 #### Step 14: Agent Clarification
@@ -290,32 +308,39 @@ All projects use a **5-status kanban system** on GitHub Projects. Every agent mu
 #### Step 17: Task Execution
 **Actor**: IMPLEMENTER AGENTS
 **Action**:
-- Start working on assigned tasks
-- Report status of being "in development" to Orchestrator
+- **Loop (a) — task-comprehension handshake FIRST**: before coding, answer the
+  five handshake points (restate / files+domains / ambiguities / risks /
+  NPT-EHT) and wait for AMOA confirmation (see `op-comprehension-handshake`)
+- Start working only after AMOA confirms understanding
+- **Loop (b)**: raise any blocker, ambiguity, or suspected design flaw to AMOA
+  immediately — never silently improvise around a design flaw
 
 **Communication**:
-- AI Maestro: Status update to AMOA
+- AI Maestro: handshake answer + status updates to AMOA
 
 #### Step 18: Kanban Status Update
-**Actor**: AMOA (Orchestrator)
+**Actor**: AMOA (Orchestrator) / MEMBER
 **Action**:
-- Move tasks on project kanban from `pending` status to `in_progress` status
+- Move the TRDD `column:` from `dispatch` to `dev` when work begins, then to
+  `testing` when the code is ready for the test run
 
 **Communication**:
-- GitHub: Update project item status
+- `design/tasks/` TRDD `column:` field (the kanban)
 
-#### Step 19: Task Completion
+#### Step 19: Pre-PR Gate + PR Creation
 **Actor**: IMPLEMENTER AGENTS → AMOA
 **Action**:
-- When an implementer agent finishes a task, notify the Orchestrator
-- Orchestrator discusses and asks questions to ensure truly completed
-- If OK: Orchestrator gives approval to do the pull-request
-- Implementer creates PR
+- **Loop (c) — the pre-PR gate**: when tests are green, the implementer asks
+  AMOA "I believe TRDD-x is done — PR now?" with the evidence (acceptance
+  criteria met, EHTs terminal, tests green) — see `op-pre-pr-gate`
+- AMOA validates and replies GO / HOLD. **No PR is opened without an explicit
+  GO** — this protects AMIA from premature/incomplete PRs
+- Only on GO: the implementer creates the PR (`op-create-pull-request`; the PR
+  body begins with the G1.1 self-id line) and moves the TRDD to `ai_review`
 
 **Communication**:
-- AI Maestro: Completion notification from agent to AMOA
-- AI Maestro: Approval to PR from AMOA to agent
-- GitHub: PR created
+- AI Maestro: "PR now?" request + GO/HOLD reply between agent and AMOA
+- GitHub: PR created (on GO only)
 
 ---
 
@@ -351,13 +376,13 @@ All projects use a **5-status kanban system** on GitHub Projects. Every agent mu
 - Communicate to agents the issues and shortcomings
 - Instruct agents to fix or improve the code
 - Provide extended/improved task-requirements-document if needed
-- Move task back to `in_progress` status
+- Move the TRDD `column:` back to `dev` (from `ai_review` or `testing`)
 - Ask agent if they need anything to complete the task
 - If OK: implementer agent resumes work on task
 
 **Communication**:
 - AI Maestro: Feedback and instructions to agents
-- GitHub: Update task status
+- `design/tasks/` TRDD `column:` field
 
 ---
 
@@ -366,11 +391,13 @@ All projects use a **5-status kanban system** on GitHub Projects. Every agent mu
 #### Step 23: Successful PR Handling
 **Actor**: AMOA (Orchestrator)
 **Action**:
-- When Integrator reports successful PR merge, move task to `review` status
-  - Review encompasses both AI review (AMIA) and human review (user, for significant tasks)
-  - If review passes: move to `completed`
-  - Report to Manager (AMAMA) for approval
-  - If Manager approves: assign new task to the agent that finished
+- The **INTEGRATOR (AMIA)** — not the MEMBER — validates the merged PR against
+  the TRDD and owns the `→ complete` flip; nobody self-marks complete
+  - `human_review` is entered only when the TRDD's `review-requirements:`
+    includes human-review (user, for significant tasks)
+  - Entering the release pipeline (`publish`/`deploy`) is USER/MANAGER-authorized
+    — a MEMBER never self-approves its own release
+  - Once `complete`, AMOA may assign the agent its next TRDD
   - Keep implementer agents always working, never idle
 
 **Communication**:

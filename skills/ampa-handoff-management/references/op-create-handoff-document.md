@@ -88,17 +88,20 @@ from: ai-maestro-programmer-agent-main-agent
 to: <receiving-agent-or-future-self>
 created: <current-ISO-timestamp>
 priority: <low|normal|high|urgent>
-status: <backlog|pending|in_progress|review|completed>
+column: <backburner|todo|dispatch|dev|testing|ai_review|human_review|complete|blocked>
 ---
 ```
 
-Status values:
+Column values (TRDD v2 — the task's `column:`):
 
-- `backlog`: Work is queued but not yet scheduled
-- `pending`: Work has not started yet
-- `in_progress`: Work is partially complete
-- `review`: Work is done, awaiting review
-- `completed`: All work is finished
+- `backburner` / `todo`: queued / promoted, not yet in design
+- `dispatch`: designed, assigned, not started
+- `dev`: implementation in progress
+- `testing`: code ready, running the test/audit suite
+- `ai_review` / `human_review`: under AI review (and human review when the
+  TRDD's `review-requirements:` demands it)
+- `complete`: requirements met + tested (INTEGRATOR owns this flip)
+- `blocked`: cannot proceed (`blocked-by:` non-empty; reversible)
 
 ### Step 4: Write the Task Summary
 
@@ -267,7 +270,7 @@ from: ai-maestro-programmer-agent-main-agent
 to: amoa-orchestrator-main-agent
 created: 2025-02-06T15:30:00Z
 priority: high
-status: completed
+column: complete
 ---
 
 # Implement YAML Parser
@@ -331,7 +334,7 @@ from: ai-maestro-programmer-agent-main-agent
 to: amoa-orchestrator-main-agent
 created: 2025-02-06T16:00:00Z
 priority: urgent
-status: blocked
+column: blocked
 ---
 
 # Integrate External API

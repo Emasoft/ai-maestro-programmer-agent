@@ -88,7 +88,7 @@ from: <delegating-agent>
 to: <receiving-agent>
 created: <ISO-timestamp>
 priority: <low|normal|high|urgent>
-status: <backlog|pending|in_progress|review|completed>
+column: <backburner|todo|dispatch|dev|testing|ai_review|human_review|complete|blocked>
 ---
 ```
 
@@ -183,7 +183,7 @@ from: amoa-orchestrator-main-agent
 to: ai-maestro-programmer-agent-main-agent
 created: 2025-02-06T10:00:00Z
 priority: high
-status: pending
+column: dispatch
 ---
 
 # Implement Config Parser
@@ -215,7 +215,7 @@ against a schema.
 
 After reading this, you would:
 
-1. Note this is a fresh task (status: pending, no checkpoints)
+1. Note this is a fresh task (`column: dispatch`, no checkpoints)
 2. Understand the four requirements
 3. Check the codebase paths mentioned
 4. Begin with writing tests (TDD approach per constraints)
