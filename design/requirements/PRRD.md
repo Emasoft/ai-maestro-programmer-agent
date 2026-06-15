@@ -1,6 +1,6 @@
 ---
-prrd-version: 1.1
-updated: 2026-06-12T01:28:38+0200
+prrd-version: 1.2
+updated: 2026-06-16T01:30:22+0200
 project: ai-maestro-programmer-agent
 project-id: autonomous
 canonical-source: design/requirements/PRRD.md
@@ -34,7 +34,7 @@ spec: `~/.claude/rules/prrd-design-rules.md`.
 
 - **S3.1** — Releases ship exclusively through `scripts/publish.py` (the strict no-skip pipeline: tests → lint → CPV strict → consistency → bump → changelog → tag → push → GitHub release). The pipeline-installed pre-push hook makes `publish.py` the sole sanctioned pusher. A MEMBER never self-approves its own release — USER or MANAGER authorize entering the release pipeline.
 - **S4.1** — Every skill, command, hook, and runtime behavior in this plugin ships real tests (no mocks, no conceptual tests); the test runner exits 0 on all-pass and non-zero on any-fail, and `publish.py` runs it as a mandatory gate.
-- **S5.1** — Memory notes follow the symptom-indexed protocol in `rules/memory-protocol.md` (index by the QUESTION, not the answer; recall before acting). `memgrep` is a soft dependency: every consumer gates on `command -v memgrep` and falls back to `grep -rliE` — recall degrades, never breaks.
+- **S5.2** — Memory is the **global** janitor-hosted 3-scope wiki (LOCAL `~/.claude/projects/<slug>/memory/` · PROJECT `.claude/project/memory/` · USER plugin-data); the plugin ships **no** per-plugin memory skills or `rules/` mirror. Recall/write/update go through the global `janitor-memory-{recall,write,update}` skills per `~/.claude/rules/markdown-memory-recall.md`; the proactive contract (recall-before-acting, write-after-solving, scope-routing) binds the main agent AND every spawned sub-agent. See `CLAUDE.md`. `memgrep` is a soft dependency — recall degrades to `grep`, never breaks.
 - **S6.1** — Task state lives on the TRDD v2 `column:` pipeline with the 4-zone `design/{proposals,tasks,refused,archived}` folders; the v1 5-column `status:` kanban vocabulary is retired. Docs and templates must not reintroduce it — no parallel legacy versions of documents are kept.
 - **S7.1** — The three dialog loops are mandatory for every assigned task: (a) the task-comprehension handshake answered in full before coding (`op-comprehension-handshake`), (b) in-dev issues raised to the ORCHESTRATOR immediately — never silently improvise around a design flaw, (c) the pre-PR gate — no PR is opened without the ORCHESTRATOR's explicit green-light (`op-pre-pr-gate`). The INTEGRATOR owns the `→ completed` flip; the MEMBER never self-marks completed.
 - **S8.1** — Agent/skill/tool reports are written under the gitignored `reports/` tree (per-component subfolder, `YYYYMMDD_HHMMSS±HHMM` local-time timestamps); both `/reports/` and `/reports_dev/` stay in `.gitignore`.

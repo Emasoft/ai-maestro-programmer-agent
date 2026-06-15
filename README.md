@@ -47,7 +47,7 @@ naming (e.g., `svgbbox-programmer-001`).
 | ---------------------------------------- | -------------------------------------------------- | ------------------------------------- |
 | `ai-maestro-programmer-agent-main-agent` | `agents/ai-maestro-programmer-agent-main-agent.md` | Main general-purpose programmer agent |
 
-### Skills (7)
+### Skills (6)
 
 | Skill                             | Description                                           |
 | --------------------------------- | ----------------------------------------------------- |
@@ -56,20 +56,19 @@ naming (e.g., `svgbbox-programmer-001`).
 | `ampa-github-operations`          | Git and GitHub operations (clone, branch, commit, PR) |
 | `ampa-project-setup`              | Initialize project configuration and install tooling  |
 | `ampa-handoff-management`         | Create and receive handoff documents and bug reports  |
-| `programmer-memory-recall`        | Recall durable project memories from a SYMPTOM (memgrep, grep fallback) |
-| `programmer-memory-write`         | Capture a durable fact as a symptom-indexed memory note |
+| `ampa-prrd-trdd-kanban`           | The MEMBER (programmer) role in the PRRD / TRDD / kanban workflow |
 
-### Rules (1)
+### Memory (global, janitor-hosted)
 
-| Rule                        | Description                                                          |
-| --------------------------- | -------------------------------------------------------------------- |
-| `rules/memory-protocol.md`  | The PROGRAMMER memory protocol — recall-before-acting, the note schema, the one law (index by symptom, not answer) |
-
-The memory system degrades gracefully: when the `memgrep` binary is absent,
-both skills fall back to plain `grep -rliE` over the memory dir — recall
-degrades, never breaks. Install memgrep from the latest `ai-maestro-janitor`
-GitHub release (prebuilt binaries, v0.7.1+, with `SHA256SUMS`) or build it
-with `cargo install --path <ai-maestro-janitor>/scripts/memgrep`.
+This plugin uses the **global** AI-Maestro markdown memory system — it ships
+**no** per-plugin memory skills or `rules/` mirror. Recall / write / update go
+through the global `janitor-memory-recall` / `-write` / `-update` skills; the
+protocol + recall law live in `~/.claude/rules/markdown-memory-recall.md`; the
+project's memory contract + scope routing live in [`CLAUDE.md`](CLAUDE.md). The
+git-tracked PROJECT-scope wiki is `.claude/project/memory/` (stood up once via
+`/janitor-memory-bootstrap`). The `memgrep` binary (from `ai-maestro-janitor`)
+powers recall and degrades to `grep` when absent — recall degrades, never
+breaks.
 
 ### Hooks
 
@@ -292,7 +291,7 @@ mode. `uvx` ships with [uv](https://docs.astral.sh/uv/).
 
 ## Compatibility with Recent Claude Code Releases
 
-AMPA is verified against Claude Code v2.1.105–v2.1.143. The agent itself
+AMPA is verified against Claude Code v2.1.105–v2.1.178. The agent itself
 remains backwards-compatible with earlier Claude Code builds; the items
 below describe **new platform capabilities** that AMPA users can opt into
 without changing the plugin.
@@ -364,9 +363,27 @@ mid-task would lose state.
   in `plugin.json`. AMPA ships neither, so no migration is required.
 - `claude plugin disable` now refuses to disable a plugin that another
   enabled plugin depends on (with a copy-pasteable disable-chain hint).
-  `claude plugin enable` force-enables transitive dependencies. AMPA has no
-  declared dependencies on other plugins, so this only matters for
-  operators bundling AMPA inside a meta-plugin.
+  `claude plugin enable` force-enables transitive dependencies. AMPA
+  **declares one dependency** (`ai-maestro-plugin`, the 3-pillars scripts),
+  so `claude plugin enable ai-maestro-programmer-agent` force-enables it.
+
+### Newer releases (v2.1.144 – v2.1.178)
+
+| Change | Effect on AMPA | Added in |
+| ------ | -------------- | -------- |
+| **Subagent nesting** (up to 5 levels) | AMPA's spawned sub-agents may now spawn their own — useful for fan-out; sub-agent `disallowedTools` MCP specs (`mcp__server`) are honored | v2.1.172 |
+| **`disallowed-tools` skill/command frontmatter** + `/reload-skills` | A skill/command can drop tools while active; skill dirs re-scan without restart | v2.1.152 |
+| **Plugins declare `.mcp.json`** + `defaultEnabled: false` | A plugin may ship MCP servers and ship disabled-by-default; AMPA ships neither | v2.1.154 |
+| **`Tool(param:value)` permission rules** | e.g. `Agent(model:opus)` / `WebFetch(domain:*.example.com)` — finer allow/deny operators can apply to AMPA's tool use | v2.1.176 / v2.1.178 |
+| **Nested-skills loading** | Skills under a nested `.claude/skills/` load when working there; on a name clash they appear as `<dir>:<name>` | v2.1.178 |
+| **`post-session` hook** + `disableBundledSkills` | New end-of-session lifecycle hook; a setting to hide bundled skills from the model | v2.1.169 |
+| **Dynamic-workflow keyword `workflow` → `ultracode`** | The word "workflow" no longer auto-triggers; AMPA prose is unaffected (it never relied on auto-trigger) | v2.1.161 |
+| **`/simplify` → `/code-review`** (`--fix`, `--comment`) | If operators wire AMPA into a review step, use `/code-review` | v2.1.147 / v2.1.152 |
+| **Lean system prompt default; Opus 4.8** | AMPA pins no model/effort, so it inherits the session's — no change needed | v2.1.154 |
+
+None of these require an AMPA code change — the plugin stays
+backwards-compatible. They are documented so operators know what the latest
+platform offers a programmer agent.
 
 ## See Also
 

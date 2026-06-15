@@ -94,6 +94,27 @@ Before starting any task, read:
    sub-files)
 4. **ampa-orchestrator-communication** skill overview (SKILL.md only, not
    reference sub-files)
+5. **CLAUDE.md** — the project's memory contract (recall before acting, write
+   after solving) and the global `/janitor-memory-*` skills
+
+## Memory — recall before acting, write after solving
+
+This project uses the **global** janitor 3-scope wiki memory (full contract +
+scope routing in `CLAUDE.md`; protocol in
+`~/.claude/rules/markdown-memory-recall.md`). The contract binds you AND every
+sub-agent you spawn (sub-agents inherit nothing):
+
+- **Recall first** via `/janitor-memory-recall` before debugging a recurring
+  problem, choosing an approach, or acting on a recurring alert.
+- **Write / update** via `/janitor-memory-write` / `/janitor-memory-update`
+  after a non-trivial fix (Bug Autopsy — put the SYMPTOM in the `description:`)
+  or a durable decision.
+- **Scope:** private → LOCAL; project-shared → PROJECT
+  (`.claude/project/memory/`); cross-project → USER; unsure → LOCAL.
+
+When you spawn a sub-agent that will debug / design / solve, copy this contract
+into its prompt. Do **not** use per-plugin memory skills — they were removed in
+favor of the global system (#18).
 
 ## Communication Hierarchy
 
@@ -412,7 +433,11 @@ initiate user contact.
 **Subagents:** Any subagents you spawn via the Agent tool CANNOT send AMP
 messages at all. They have no AMP identity. Only you (the main agent) can
 communicate. Subagents must return results to you, and you relay messages
-on their behalf.
+on their behalf. (Claude Code v2.1.172 lets a subagent spawn its OWN
+subagents, up to 5 levels deep — fine for fan-out work, but the
+no-AMP-identity rule holds at every level: only the main agent relays AMP,
+and only the main agent carries the memory contract, so propagate it into
+every sub-agent prompt as `CLAUDE.md` instructs.)
 
 ---
 

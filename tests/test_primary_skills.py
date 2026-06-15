@@ -184,13 +184,18 @@ def test_m2_m3_design_governance_bootstrap() -> None:
     assert re.search(r"\*\*S\d+\.\d+\*\*", prrd), "PRRD SILVER must be non-empty (no ungoverned ops)"
 
 
-def test_memory_protocol_path_is_scripts_memgrep() -> None:
-    """Phase 3: the memory docs point at scripts/memgrep (janitor v0.7.0), not the old tools/ path."""
-    proto = (REPO_ROOT / "rules" / "memory-protocol.md").read_text(encoding="utf-8")
-    recall = (SKILLS_DIR / "programmer-memory-recall" / "SKILL.md").read_text(encoding="utf-8")
-    assert "scripts/memgrep" in proto, "protocol must reference scripts/memgrep"
-    assert "command -v memgrep" in proto, "protocol must keep the grep-fallback gate"
-    assert "scripts/memgrep" in recall, "recall skill must reference scripts/memgrep"
+def test_memory_is_global_janitor_not_per_plugin() -> None:
+    """#18: per-plugin memory skills/rule are removed; CLAUDE.md carries the global janitor contract."""
+    assert not (SKILLS_DIR / "programmer-memory-recall").exists(), "per-plugin recall skill must be removed"
+    assert not (SKILLS_DIR / "programmer-memory-write").exists(), "per-plugin write skill must be removed"
+    assert not (REPO_ROOT / "rules" / "memory-protocol.md").exists(), "per-plugin memory-protocol rule must be removed"
+    claude_md = (REPO_ROOT / "CLAUDE.md").read_text(encoding="utf-8")
+    assert "janitor-memory-recall" in claude_md, "CLAUDE.md must point at the global recall skill"
+    assert "RECALL BEFORE ACTING" in claude_md, "CLAUDE.md must carry the proactive recall contract"
+    assert "SCOPE ROUTING" in claude_md, "CLAUDE.md must document the 3-scope routing"
+    proj_mem = REPO_ROOT / ".claude" / "project" / "memory"
+    assert (proj_mem / "MEMORY.md").is_file(), "PROJECT memory index missing"
+    assert (proj_mem / "architecture.md").is_file(), "PROJECT architecture hub missing"
 
 
 def test_plugin_declares_tooling_dependency() -> None:
