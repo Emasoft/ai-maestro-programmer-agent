@@ -17,7 +17,7 @@ Work state lives in **TRDD files under `design/`** (frontmatter `column:` field)
 ## Workflow Overview
 
 ```text
-USER
+MAESTRO
   │
   ▼
 AMAMA (Manager) ◄────────────────────────────────────────────┐
@@ -40,7 +40,7 @@ AMAA (Architect)                                              │
   │ 7. Creates design document                               │
   │ 8. Sends design to AMAMA                                  │
   ▼                                                          │
-AMAMA ◄──── USER APPROVAL ─────────────────────────────────►  │
+AMAMA ◄──── MAESTRO APPROVAL ──────────────────────────────►  │
   │                                                          │
   │ 9. Sends approved design to AMOA                          │
   ▼                                                          │
@@ -207,12 +207,12 @@ label. Every agent reads/moves a task by editing its TRDD (or via
 - AI Maestro: Notification to AMAMA that design is ready
 
 #### Step 9: Design Approval
-**Actor**: AMAMA (Manager) + USER
+**Actor**: AMAMA (Manager) + MAESTRO
 **Action**:
 - Manager examines the design document
-- Manager asks for approval from the User
-- If User approves: design is sent to the Orchestrator
-- If User rejects: design goes back to Architect with feedback
+- Manager asks for approval from the MAESTRO
+- If the MAESTRO approves: design is sent to the Orchestrator
+- If the MAESTRO rejects: design goes back to Architect with feedback
 
 **Communication**:
 - GitHub: Issue comments with design and approval status
@@ -465,7 +465,7 @@ label. Every agent reads/moves a task by editing its TRDD (or via
 ## Document References
 
 - **Requirements Document**: Created by AMAMA, sent to AMAA
-- **Design Document**: Created by AMAA, approved by AMAMA/User
+- **Design Document**: Created by AMAA, approved by AMAMA/MAESTRO
 - **Task-Requirements-Document**: Created by AMOA for each task
 - **Design-Change-Request**: Created by AMOA when agents suggest improvements
 - **PR Review Report**: Created by AMIA for each PR

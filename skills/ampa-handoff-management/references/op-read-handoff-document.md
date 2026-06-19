@@ -272,7 +272,7 @@ After reading this, you would:
 1. Check if the handoffs directory exists: `ls -la $CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/`
 2. Look for similarly named task directories
 3. Send a message to the delegating agent requesting the handoff location
-4. If delegating agent is unavailable, ask the user for task details
+4. If the delegating agent is unavailable, ask AMOA/AMCOS for the handoff details (in standalone mode, ask the local operator)
 
 ### Error: Invalid YAML Frontmatter
 

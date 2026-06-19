@@ -29,12 +29,12 @@ to a team.
 |------|---------|-----------|-------|------------------|
 | `manager` | AMAMA | Yes (per host) | Organization-wide | User interface, approval authority, **sole cross-layer bridge** |
 | `maintainer` | — | Per project | Repo-scoped | Repo hardening, CI, dependency/supply-chain hygiene |
-| `autonomous` | — | Per project | Project-scoped | Unattended/self-directed project work; escalates to USER on crisis |
+| `autonomous` | — | Per project | Project-scoped | Unattended/self-directed project work; escalates to the MAESTRO on crisis |
 
 ## Role Hierarchy
 
 ```text
-User <-> MANAGER (governance bridge) <-> AMCOS (team boundary) <-> { AMOA, AMAA, AMIA, MEMBER(s) }
+MAESTRO <-> MANAGER (governance bridge) <-> AMCOS (team boundary) <-> { AMOA, AMAA, AMIA, MEMBER(s) }
                                                                      ^^^^ within-team edges are DIRECT
 ```
 
@@ -106,6 +106,7 @@ The following table maps specific AI Maestro agent plugins to the 3-role system:
 
 ---
 
-**Document Version**: 2.0.1
-**Last Updated**: 2026-03-13
+**Document Version**: 2.0.2
+**Last Updated**: 2026-06-19
 **Source**: Synced from upstream `ai-maestro-assistant-manager-agent/docs/ROLE_BOUNDARIES.md`
+**Local divergence (pending upstream re-sync)**: the `autonomous` crisis-escalation authority and the role-hierarchy top node were updated USER→MAESTRO (R37.1) ahead of the upstream source; re-sync once AMAMA's `ROLE_BOUNDARIES.md` carries the same change.

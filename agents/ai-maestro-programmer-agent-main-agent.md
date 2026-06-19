@@ -353,7 +353,9 @@ available.
 
 On partial blocks: do NOT create a PR until all criteria are met or AMOA
 explicitly approves partial delivery. On SERENA/messaging persistent
-failures, escalate to the user directly.
+failures, escalate up-chain via AMCOS → MANAGER → the MAESTRO — never contact
+the user directly in orchestrated mode (in standalone mode, surface the
+failure to the local operator).
 
 ## Session Naming
 

@@ -207,8 +207,8 @@ Use this checklist before reporting a blocker:
 ### Escalation Actions
 
 1. **First Escalation**: Resend with reminder, confirm AMOA received original
-2. **Second Escalation**: Request AMOA to escalate to user
-3. **Final Escalation**: Send direct notification to user (if configured)
+2. **Second Escalation**: Request AMOA to escalate up-chain (AMCOS → MANAGER → the MAESTRO)
+3. **Final Escalation**: Escalate via AMCOS (your team gateway) → MANAGER → the MAESTRO
 
 ### Escalation Message
 
@@ -311,7 +311,7 @@ Send a blocker report to the orchestrator using the `agent-messaging` skill:
 | Error                     | Cause                         | Resolution                                                                          |
 | ------------------------- | ----------------------------- | ----------------------------------------------------------------------------------- |
 | Messaging service offline | Messaging service not running | Use the `agent-messaging` skill's status check, start AI Maestro immediately        |
-| AMOA not responding       | AMOA session inactive         | Escalate to user directly                                                           |
+| AMOA not responding       | AMOA session inactive         | Escalate to AMCOS (your chief-of-staff — a direct R6 edge)                                                           |
 | Message delivery failed   | Network issue                 | Retry the send operation immediately using the `agent-messaging` skill, max 3 times |
 
 ### Critical Blocker Protocol
@@ -321,5 +321,5 @@ For critical severity blockers:
 1. Send blocker report immediately
 2. Set timer for 15 minutes
 3. If no response, send escalation
-4. If still no response after 30 minutes, notify user directly (if possible)
+4. If still no response after 30 minutes, escalate via AMCOS → MANAGER → the MAESTRO
 5. Document all attempts and timestamps

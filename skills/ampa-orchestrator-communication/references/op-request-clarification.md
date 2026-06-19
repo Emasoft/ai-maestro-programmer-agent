@@ -233,7 +233,7 @@ skill:
 | Error                                | Cause                         | Resolution                                                                  |
 | ------------------------------------ | ----------------------------- | --------------------------------------------------------------------------- |
 | Identity not found                   | Messaging not initialized     | Read the `agent-messaging` skill and follow its initialization instructions |
-| Recipient not found                  | AMOA session not registered   | Wait for AMOA to start or notify user                                       |
+| Recipient not found                  | AMOA session not registered   | Wait for AMOA to start, or route to AMCOS (your chief-of-staff)                                       |
 | Messaging service offline            | Messaging service not running | Use the `agent-messaging` skill's status check, restart AI Maestro          |
 | No response within 30 minutes        | AMOA busy or unavailable      | Resend with urgent priority using the `agent-messaging` skill               |
 | `Response does not answer questions` | Miscommunication              | Send follow-up with specific unanswered questions                           |
@@ -246,7 +246,7 @@ If message delivery fails:
 2. Attempt to send the message again using the `agent-messaging` skill
 3. If it fails again, wait 5 seconds and retry one more time (maximum 3 attempts
    total)
-4. If all 3 attempts fail, report the messaging failure to the user
+4. If all 3 attempts fail, report the messaging failure up-chain via AMCOS → MANAGER → the MAESTRO
 
 **Verify**: after each retry, check whether the message appears in your sent
 messages before retrying.
