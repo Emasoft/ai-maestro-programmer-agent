@@ -102,11 +102,13 @@ If validation fails:
 
 ### Step 1.4: Verify Task in Kanban (Optional)
 
-If the `$AIMAESTRO_API` environment variable is set, verify the task assignment
-against the kanban system:
+If AI Maestro is running, verify the task assignment against the kanban board
+using the frozen `amp-kanban-list` CLI — never the server `/api/` directly
+(R23 frozen-CLI decoupling). The CLI resolves your team and identity from your
+registration:
 
 ```bash
-curl -s "$AIMAESTRO_API/api/teams/{teamId}/tasks?assignee={agentId}" | jq '.tasks[]'
+amp-kanban-list --assignee {agentId}
 ```
 
 This provides independent verification that:
@@ -122,8 +124,8 @@ If the task is NOT found in the kanban:
 - Notify the orchestrator: "Task received via AMP but not found in kanban.
   Proceeding with AMP assignment."
 
-> **Note**: This step is optional. If the API endpoint is unavailable or
-> `$AIMAESTRO_API` is not set, skip verification and proceed with the
+> **Note**: This step is optional. If AI Maestro is not running or the
+> `amp-kanban-list` CLI is unavailable, skip verification and proceed with the
 > AMP-received task.
 
 ### Step 1.5: Answer the Task-Comprehension Handshake (NOT a bare ACK)
@@ -164,7 +166,7 @@ never silently improvise around it.
 - [ ] Identified task assignment message
 - [ ] Extracted task ID and metadata
 - [ ] Validated all required fields present
-- [ ] Verified task in kanban (if API available)
+- [ ] Verified task in kanban (if AI Maestro running)
 - [ ] Answered the comprehension handshake (all 5 points) to orchestrator
 - [ ] Received AMOA confirmation BEFORE starting to code
 - [ ] Recorded task start time for tracking

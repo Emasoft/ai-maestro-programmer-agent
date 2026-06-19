@@ -69,7 +69,7 @@ Copy this checklist and track your progress:
 | Error                         | Resolution                                                                                                                  |
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | Handoff directory missing     | Run `mkdir -p "$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-<task-name>/"`                                             |
-| AI Maestro notification fails | Verify running with `curl -s "$AIMAESTRO_API/api/sessions"`, check `agent-messaging` skill for connectivity troubleshooting |
+| AI Maestro notification fails | Verify running with `amp-status` (frozen CLI, not the server `/api/` — R23), check `agent-messaging` skill for connectivity troubleshooting |
 | YAML frontmatter parse error  | Ensure `---` delimiters on own lines, quote special characters in values                                                    |
 | Receiving agent not found     | Use the `agent-messaging` skill to list registered agents                                                                   |
 | Handoff document is stale     | Archive existing `current.md` to `archive/` with timestamp, then create new                                                 |
