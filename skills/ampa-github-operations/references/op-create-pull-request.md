@@ -200,6 +200,45 @@ Multiple issues:
 Closes #123, Closes #124 Fixes #125 Related to #126
 ```
 
+### 4.6 Creating the PR via the Frozen `amp-submit-pr` CLI (Optional, Orchestrated Mode)
+
+In orchestrated mode, prefer the frozen `amp-submit-pr` CLI to open the PR and
+register it on the kanban in one step — never the server `/api/` directly
+(R23 frozen-CLI decoupling). The CLI resolves your team and identity from your
+registration:
+
+```bash
+amp-submit-pr <repo-path> "<type>(<scope>): <description>" --body "$(cat <<'EOF'
+_This is the Claude responsible for the <project> project (AMPA programmer,
+via the shared owner gh auth)._
+
+## Summary
+<1-3 sentences describing the change>
+
+## Changes
+- <specific change 1>
+- <specific change 2>
+
+## Testing
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+
+## Related Issues
+Closes #<issue-number>
+EOF
+)" --base main
+```
+
+The PR body still MUST begin with the G1.1 self-identification line (section
+4.2). The `--base` flag defaults to `main`; pass it explicitly only when
+targeting a different base branch.
+
+> **Note**: This path is optional and non-fatal. If AI Maestro is not running,
+> the programmer has no AID, or the `amp-submit-pr` CLI is unavailable, fall
+> back to the `gh pr create` form (section 4.3) — never block the PR on a
+> kanban call. After `amp-submit-pr` succeeds, record the returned PR URL so the
+> `amp-kanban-move … ai_review` step in `op-notify-completion` can reference it.
+
 ## Checklist
 
 - [ ] AMOA pre-PR green-light received ("PR now?" → explicit go-ahead)

@@ -179,6 +179,29 @@ Follow these steps to report a blocker:
     for AMOA reply
 11. **Continue if possible**: Work on unblocked items if any exist
 
+### Reflecting the Block on the Kanban (Optional)
+
+When you report a blocker, also reflect the blocked state on the kanban board
+using the frozen `amp-task-blocked` CLI — never the server `/api/` directly
+(R23 frozen-CLI decoupling). The CLI resolves your team and identity from your
+registration:
+
+```bash
+amp-task-blocked "<reason>"
+```
+
+On a multi-agent host where the CLI cannot resolve "self", pass your agent UUID:
+
+```bash
+amp-task-blocked "<reason>" --id <agent-uuid>
+```
+
+> **Note**: This step is optional and non-fatal. If AI Maestro is not running,
+> the programmer has no AID, or the `amp-task-blocked` CLI is unavailable, skip
+> the kanban call and proceed with the AMP blocker report — never block on it.
+> The urgent AMP blocker report (orchestrated) or the local operator
+> (standalone) remains authoritative.
+
 ## Checklist
 
 Use this checklist before reporting a blocker:

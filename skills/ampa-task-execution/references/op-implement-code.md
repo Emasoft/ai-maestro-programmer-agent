@@ -39,6 +39,29 @@ Before executing this operation:
 
 ## Procedure
 
+### Step 4.0: Move the Task to `in_progress` in the Kanban (Optional)
+
+When you begin implementation, reflect the start of work on the kanban board
+using the frozen `amp-kanban-move` CLI — never the server `/api/` directly
+(R23 frozen-CLI decoupling). The CLI resolves your team and identity from your
+registration:
+
+```bash
+amp-kanban-move <task-id> in_progress
+```
+
+On a multi-agent host where the CLI cannot resolve "self", pass your agent UUID:
+
+```bash
+amp-kanban-move <task-id> in_progress --id <agent-uuid>
+```
+
+> **Note**: This step is optional and non-fatal. If AI Maestro is not running,
+> the programmer has no AID, or the `amp-kanban-move` CLI is unavailable, skip
+> the move and proceed with implementation — never block coding on a kanban
+> call. AMP messages (orchestrated) or the local operator (standalone) remain
+> authoritative.
+
 ### Step 4.1: Analyze Existing Code Structure with SERENA
 
 Before writing any code, understand the existing codebase:

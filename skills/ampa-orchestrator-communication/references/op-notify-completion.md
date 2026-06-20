@@ -230,6 +230,34 @@ before AMOA green-lights it (R6 v3 / #17 M7c).**
 8. **Wait for feedback**: Check your inbox using the `agent-messaging` skill for
    AMOA response. (AMOA/AMIA — not you — own the `→ completed` flip.)
 
+### Reflecting Submit-for-Review and Done on the Kanban (Optional)
+
+Reflect the review and terminal-completion transitions on the kanban board using
+the frozen CLI — never the server `/api/` directly (R23 frozen-CLI decoupling).
+The CLI resolves your team and identity from your registration.
+
+After the AMOA green-light and the PR is created (procedure step 5), move the
+task to the `ai_review` column, recording the PR URL:
+
+```bash
+amp-kanban-move <task-id> ai_review
+```
+
+When AMOA/AMIA confirm the task is terminally complete, record the completion:
+
+```bash
+amp-task-done "<completion message>"
+```
+
+On a multi-agent host where the CLI cannot resolve "self", append
+`--id <agent-uuid>` to either call.
+
+> **Note**: These calls are optional and non-fatal. If AI Maestro is not
+> running, the programmer has no AID, or the verb is unavailable, skip the
+> kanban call and proceed — never block completion on it. The AMP completion
+> notification (orchestrated) or the local operator (standalone) remains
+> authoritative; AMOA/AMIA still own the `→ completed` flip.
+
 ## Checklist
 
 Use this checklist before sending completion notification:

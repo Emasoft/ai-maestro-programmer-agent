@@ -89,6 +89,39 @@ def test_r23_c2_handoff_uses_frozen_status_cli() -> None:
     assert "/api/sessions" not in body, "stale /api/sessions reference still present"
 
 
+def test_r23_c3_start_work_uses_frozen_kanban_move() -> None:
+    """R23-C3: op-implement-code reflects start-of-work via amp-kanban-move in_progress, not a curl."""
+    body = (SKILLS_DIR / "ampa-task-execution" / "references" / "op-implement-code.md").read_text(encoding="utf-8")
+    assert "amp-kanban-move" in body, "must repoint the start transition to the frozen amp-kanban-move CLI"
+    assert "in_progress" in body, "the start transition must target the in_progress column"
+    assert not _LIVE_API.search(body) and not _ENV_API.search(body), "stale direct /api/ call still present"
+
+
+def test_r23_c4_submit_for_review_uses_frozen_submit_pr_and_move() -> None:
+    """R23-C4: PR submit uses amp-submit-pr; the review move uses amp-kanban-move ai_review — no curl."""
+    pr_body = (SKILLS_DIR / "ampa-github-operations" / "references" / "op-create-pull-request.md").read_text(encoding="utf-8")
+    notify_body = (SKILLS_DIR / "ampa-orchestrator-communication" / "references" / "op-notify-completion.md").read_text(encoding="utf-8")
+    assert "amp-submit-pr" in pr_body, "the PR submit must offer the frozen amp-submit-pr CLI"
+    assert "amp-kanban-move" in notify_body, "the review transition must use the frozen amp-kanban-move CLI"
+    assert "ai_review" in notify_body, "the review transition must target the ai_review column"
+    assert not _LIVE_API.search(pr_body) and not _ENV_API.search(pr_body), "stale direct /api/ call in PR op"
+    assert not _LIVE_API.search(notify_body) and not _ENV_API.search(notify_body), "stale direct /api/ call in notify op"
+
+
+def test_r23_c5_blocked_uses_frozen_task_blocked() -> None:
+    """R23-C5: op-report-blocker reflects the block via amp-task-blocked, not a curl …/api/."""
+    body = (SKILLS_DIR / "ampa-orchestrator-communication" / "references" / "op-report-blocker.md").read_text(encoding="utf-8")
+    assert "amp-task-blocked" in body, "must repoint the blocked transition to the frozen amp-task-blocked CLI"
+    assert not _LIVE_API.search(body) and not _ENV_API.search(body), "stale direct /api/ call still present"
+
+
+def test_r23_c6_done_uses_frozen_task_done() -> None:
+    """R23-C6: op-notify-completion records terminal completion via amp-task-done, not a curl …/api/."""
+    body = (SKILLS_DIR / "ampa-orchestrator-communication" / "references" / "op-notify-completion.md").read_text(encoding="utf-8")
+    assert "amp-task-done" in body, "must repoint the done transition to the frozen amp-task-done CLI"
+    assert not _LIVE_API.search(body) and not _ENV_API.search(body), "stale direct /api/ call still present"
+
+
 def test_r6_r37_no_user_as_authority_prose() -> None:
     """R6.6/R37.1: no MEMBER escalation/approval prose names the user as the top authority."""
     offenders = []
