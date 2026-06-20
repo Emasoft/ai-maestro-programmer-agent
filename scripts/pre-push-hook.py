@@ -42,8 +42,16 @@ PLUGIN_PATTERNS = (
 NULL_SHA = "0000000000000000000000000000000000000000"
 
 
-def git(*args: str, check: bool = True) -> subprocess.CompletedProcess:
-    """Run a git command and return the CompletedProcess result."""
+def git(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
+    """Run a git command and return the CompletedProcess result.
+
+    The return type is parameterized as ``CompletedProcess[str]`` because
+    ``text=True`` is always set, so ``.stdout``/``.stderr`` are ``str`` (not
+    ``bytes``). Without the ``[str]`` parameter mypy infers ``Any`` for the
+    streams, which then leaks ``Any`` out of typed callers like
+    ``get_base_branch()`` (the ``[no-any-return]`` error at the
+    ``.split("/")[-1]`` site).
+    """
     return subprocess.run(
         ["git", *args],
         capture_output=True,
