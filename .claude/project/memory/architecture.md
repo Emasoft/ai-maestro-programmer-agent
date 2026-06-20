@@ -34,8 +34,11 @@ gate. It works standalone or orchestrated within the fleet. Distributed via the
   contract + scope routing live in `CLAUDE.md`.
 
 ## Applies to
-- (radiates down to component/aspect pages as they're created; wire the
-  reciprocal `## Governed by` on each)
+- [[publish-ci-vs-dryrun]] — the CPV `remote-validation` publish profile + the
+  local-green≠CI-green trap (CI pulls the latest CPV via `uvx`; reproduce the exact
+  `cpv-remote-validate … --strict` command before tagging).
+- (more component/aspect pages radiate here as created; wire the reciprocal
+  `## Governed by` on each)
 
 ## See also
 - (lateral links to other functionality hubs, once they exist)
