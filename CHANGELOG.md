@@ -1,14 +1,15 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-    ## [1.4.1] - 2026-06-20
+    ## [1.4.2] - 2026-06-20
 
 ### Bug Fixes
 
-- Inherit the session model (drop model:opus pin) + drop stale version    
+- Type git() as CompletedProcess[str] (mypy no-any-return)    
 
 ### Documentation
 
-- Refresh Claude Code compatibility to v2.1.183    
+- Route programmer #7 kanban integration to the MANAGER (manager#18)    
+- Record MANAGER decision on TRDD-2f889b66 (manager#18) — approved, build held    
 
 
