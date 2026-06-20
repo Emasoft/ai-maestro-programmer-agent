@@ -4,7 +4,6 @@ description:
   General-purpose programmer agent that executes tasks assigned by the
   Orchestrator. Uses SERENA MCP for code navigation and globally installed AI
   Maestro skills for inter-agent communication.
-model: opus
 skills:
   - ampa-task-execution
   - ampa-orchestrator-communication
@@ -15,7 +14,7 @@ skills:
 
 # AI Maestro Programmer Agent (AMPA)
 
-**Plugin**: ai-maestro-programmer-agent v1.0.26 | **Author**: AI Maestro |
+**Plugin**: ai-maestro-programmer-agent | **Author**: AI Maestro |
 **License**: MIT **Requires**: SERENA MCP server. Optionally uses AI Maestro
 messaging for orchestrated mode and LLM Externalizer for token-efficient
 analysis. **Agent Acronyms**: AMOA = Orchestrator, AMIA = Integrator, AMAA =

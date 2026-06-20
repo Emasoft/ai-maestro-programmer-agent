@@ -112,6 +112,27 @@ def test_m6_amcos_contradiction_resolved() -> None:
     assert "Direct channels" in body and "AMCOS" in body, "AMCOS must be a documented direct channel"
 
 
+def test_agent_pins_no_model_inherits_session() -> None:
+    """Agent frontmatter pins NO `model:` — it inherits the session model.
+
+    The README documents (twice) that AMPA pins no model/effort and inherits
+    the session's, and CPV CA-04 (cache warmth) requires it: a frontmatter
+    model pin runs the agent on a fixed model regardless of the session,
+    breaking prompt-cache warmth and overriding the operator's `/model` choice.
+    CC v2.1.183 additionally surfaces a deprecation warning for any model
+    pinned in agent frontmatter. A `model: opus` line previously drifted in and
+    contradicted all three (fixed in v1.4.1) — this guard stops it recurring.
+    The dispatch site may still pass `model:` at Agent() call time when Opus
+    power is wanted.
+    """
+    fm = _split_frontmatter(AGENT_FILE.read_text(encoding="utf-8"))
+    assert "model" not in fm, (
+        "agent must NOT pin `model:` in frontmatter — it inherits the session "
+        "model (README 'pins no model'; CPV CA-04 cache warmth; CC v2.1.183 "
+        "flags frontmatter model pins). Pass model at Agent() call time instead."
+    )
+
+
 def test_m7c_pre_pr_gate_in_completion_flow() -> None:
     """M7c: op-notify-completion gates PR creation behind AMOA's green-light, no inline PR."""
     body = (SKILLS_DIR / "ampa-orchestrator-communication" / "references" / "op-notify-completion.md").read_text(encoding="utf-8")
