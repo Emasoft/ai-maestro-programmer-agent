@@ -291,7 +291,7 @@ mode. `uvx` ships with [uv](https://docs.astral.sh/uv/).
 
 ## Compatibility with Recent Claude Code Releases
 
-AMPA is verified against Claude Code v2.1.105–v2.1.178. The agent itself
+AMPA is verified against Claude Code v2.1.105–v2.1.183. The agent itself
 remains backwards-compatible with earlier Claude Code builds; the items
 below describe **new platform capabilities** that AMPA users can opt into
 without changing the plugin.
@@ -367,7 +367,7 @@ mid-task would lose state.
   **declares one dependency** (`ai-maestro-plugin`, the 3-pillars scripts),
   so `claude plugin enable ai-maestro-programmer-agent` force-enables it.
 
-### Newer releases (v2.1.144 – v2.1.178)
+### Newer releases (v2.1.144 – v2.1.183)
 
 | Change | Effect on AMPA | Added in |
 | ------ | -------------- | -------- |
@@ -380,6 +380,11 @@ mid-task would lose state.
 | **Dynamic-workflow keyword `workflow` → `ultracode`** | The word "workflow" no longer auto-triggers; AMPA prose is unaffected (it never relied on auto-trigger) | v2.1.161 |
 | **`/simplify` → `/code-review`** (`--fix`, `--comment`) | If operators wire AMPA into a review step, use `/code-review` | v2.1.147 / v2.1.152 |
 | **Lean system prompt default; Opus 4.8** | AMPA pins no model/effort, so it inherits the session's — no change needed | v2.1.154 |
+| **Model-deprecation warning now covers agent frontmatter** | The warning fires (on stderr, incl. `-p`) for a deprecated/auto-updated model pinned in an agent's frontmatter. AMPA's agent pins **no** `model:` (it inherits the session's), so nothing is flagged | v2.1.183 |
+| **Auto-mode destructive-git guards** | The classifier blocks `git reset --hard`, `checkout -- .`, `clean -fd`, `stash drop`, non-agent `commit --amend`, and `terraform`/`pulumi`/`cdk destroy` unless asked. AMPA's `publish.py` git ops (`commit`/`tag`/`push`) are NOT in that set, so the publish pipeline is unaffected | v2.1.183 |
+| **Scheduled-task / webhook deliveries are task notifications** | In auto mode they can no longer approve a pending action or set the session title — safe for orchestrated/headless AMPA runs | v2.1.183 |
+| **Foreground subagents respect the 5-level nesting depth** | Same cap as background subagents (v2.1.172); AMPA fan-out stays bounded whichever way a sub-agent is spawned | v2.1.181 |
+| **`/config key=value` from the prompt** | Operators can set any setting inline (e.g. `/config effort=high`); no AMPA change — AMPA pins nothing it would override | v2.1.181 |
 
 None of these require an AMPA code change — the plugin stays
 backwards-compatible. They are documented so operators know what the latest
