@@ -167,8 +167,15 @@ def main() -> int:
     # through the CPV remote launcher (the same command CI's validate.yml
     # uses), fetched on demand via uvx. Without uvx there is no validator to
     # run, so warn-and-allow rather than blocking every push on a tooling gap.
-    uvx_check = subprocess.run(["uvx", "--version"], capture_output=True, text=True)
-    if uvx_check.returncode != 0:
+    # timeout=10: a wedged `uvx --version` must not hang the push. A timeout or a
+    # missing/erroring uvx all collapse to the SAME documented warn-and-allow
+    # outcome (CI's validate.yml re-runs the strict gate and is the real backstop).
+    try:
+        uvx_check = subprocess.run(["uvx", "--version"], capture_output=True, text=True, timeout=10)
+        uvx_ok = uvx_check.returncode == 0
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        uvx_ok = False
+    if not uvx_ok:
         print(f"{YELLOW}WARNING: uvx not found — cannot run cpv-remote-validate{NC}")
         print(f"{YELLOW}Cannot validate plugin. Allowing push.{NC}")
         return 0

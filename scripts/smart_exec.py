@@ -179,7 +179,11 @@ def detect_executors() -> dict[str, bool]:
 
 def get_version(cmd: list[str]) -> str | None:
     try:
-        p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        # timeout=10: a wedged probe (dead docker daemon, network-blocking `deno`,
+        # `pwsh` cold-start) must NOT hang the whole `executors` command. The bare
+        # `except Exception` below turns the resulting TimeoutExpired into None, so
+        # the executor is reported unavailable (correct fail-fast degradation).
+        p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=10)
         if p.returncode != 0:
             return None
         out = (p.stdout or "").strip().splitlines()
@@ -190,9 +194,12 @@ def get_version(cmd: list[str]) -> str | None:
 
 def executor_versions() -> dict[str, str | None]:
     v: dict[str, str | None] = {}
+    # Independent `if` blocks (not `if/elif`): uvx ships WITH uv, so both are
+    # commonly present. Report each one's version on its own — mirrors every
+    # other executor below, where each `have(x)` reports independently.
     if have("uvx"):
         v["uvx"] = get_version(["uvx", "--version"])
-    elif have("uv"):
+    if have("uv"):
         v["uv"] = get_version(["uv", "--version"])
     if have("pipx"):
         v["pipx"] = get_version(["pipx", "--version"])
@@ -532,23 +539,27 @@ def main(argv: list[str]) -> int:
         return 0
 
     # which/run
-    spec = resolve_tool(ns.tool)
-    if getattr(ns, "ecosystem", None):
-        spec = ToolSpec(
-            name=spec.name,
-            ecosystem=ns.ecosystem,
-            package=spec.package,
-            command=spec.command,
-            prefer_latest=spec.prefer_latest,
-            docker=spec.docker,
-        )
-
-    tool_args = list(ns.tool_args)
-    # Strip a single leading '--' (common “end of options” marker)
-    if tool_args[:1] == ["--"]:
-        tool_args = tool_args[1:]
-
+    # resolve_tool() lives INSIDE the try so an unknown tool's ValueError is
+    # caught by the same handler as choose_best()'s RuntimeError, yielding a
+    # clean `Error: ...` on stderr + exit 1 — NOT a raw traceback. Both adjacent
+    # failure modes (unknown tool, no executor) must fail-fast identically.
     try:
+        spec = resolve_tool(ns.tool)
+        if getattr(ns, "ecosystem", None):
+            spec = ToolSpec(
+                name=spec.name,
+                ecosystem=ns.ecosystem,
+                package=spec.package,
+                command=spec.command,
+                prefer_latest=spec.prefer_latest,
+                docker=spec.docker,
+            )
+
+        tool_args = list(ns.tool_args)
+        # Strip a single leading '--' (common “end of options” marker)
+        if tool_args[:1] == ["--"]:
+            tool_args = tool_args[1:]
+
         argv2, chosen = choose_best(spec, tool_args, ex)
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
