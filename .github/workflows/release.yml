@@ -17,9 +17,13 @@ on:
 # purpose is to catch regressions where someone bypasses publish.py and
 # pushes a tag directly — CI will flag the broken release.
 
+permissions:
+  contents: read
+
 jobs:
   validate-tag:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
         with:
