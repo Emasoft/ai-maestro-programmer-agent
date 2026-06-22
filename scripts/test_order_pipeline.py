@@ -660,6 +660,123 @@ def test_error_report_contains_stage_info(verbose: bool = False) -> TestResult:
     )
 
 
+def test_order_validation_rejects_missing_order_id(verbose: bool = False) -> TestResult:
+    """An order with an empty order_id should fail validation with a Missing order_id error."""
+    start = time.monotonic()
+    pipeline = OrderPipeline(batch_size=1, verbose=verbose)
+    # validate_order checks order_id FIRST (before customer_id/items/total), so
+    # an empty order_id must short-circuit to the "Missing order_id" branch.
+    order = _make_order(order_id="")
+    result = pipeline.process_batch([order])
+
+    passed = (
+        result.failed == 1
+        and result.completed == 0
+        and order.status == OrderStatus.FAILED
+        and order.error is not None
+        and "order_id" in order.error.lower()
+    )
+    duration = (time.monotonic() - start) * 1000
+    error = None if passed else (
+        f"Expected 1 failed with 'order_id' error, got: status={order.status.value}, error={order.error}"
+    )
+    return TestResult(
+        name="test_order_validation_rejects_missing_order_id",
+        description="An order with an empty order_id should fail validation with a Missing order_id error.",
+        passed=passed,
+        duration_ms=duration,
+        error=error,
+    )
+
+
+class _FlakyStagePipeline(OrderPipeline):
+    """Test-only pipeline whose PROCESSING stage fails once then recovers.
+
+    Exercises the otherwise-unreachable RETRYING->success branch of
+    process_with_retry: the production fixture's failure (negative quantity) is
+    deterministic and never recovers, so a real retry-then-recover path is
+    untested without a stage that genuinely succeeds on a later attempt. This
+    subclass keys a per-order attempt counter in order.metadata so the FIRST
+    PROCESSING attempt fails (status=FAILED, the retryable condition) and the
+    SECOND succeeds — no mocks, just a deterministic flaky stage.
+    """
+
+    def process_stage(self, order: Order, stage: PipelineStage) -> bool:
+        if stage == PipelineStage.PROCESSING:
+            attempts = order.metadata.get("_processing_attempts", 0) + 1
+            order.metadata["_processing_attempts"] = attempts
+            order.current_stage = stage
+            if attempts == 1:
+                order.error = "Transient processing glitch (attempt 1)"
+                order.status = OrderStatus.FAILED
+                return False
+            order.status = OrderStatus.PROCESSING
+            return True
+        return super().process_stage(order, stage)
+
+
+def test_retry_then_recover_completes(verbose: bool = False) -> TestResult:
+    """An order that fails the PROCESSING stage once then recovers should COMPLETE with retry_count > 0."""
+    start = time.monotonic()
+    pipeline = _FlakyStagePipeline(batch_size=1, verbose=verbose)
+    order = _make_order()
+    result = pipeline.process_batch([order])
+
+    # The order must reach COMPLETED (so a later stage ran after recovery) AND
+    # carry a retry from the first PROCESSING failure — proving the
+    # RETRYING->success transition, not the failure-then-exhaust path.
+    passed = (
+        order.status == OrderStatus.COMPLETED
+        and order.retry_count > 0
+        and result.completed == 1
+        and result.failed == 0
+        and result.retried == 1
+    )
+    duration = (time.monotonic() - start) * 1000
+    error = None if passed else (
+        f"Expected COMPLETED with retry_count>0, got: status={order.status.value}, "
+        f"retry_count={order.retry_count}, completed={result.completed}, "
+        f"failed={result.failed}, retried={result.retried}"
+    )
+    return TestResult(
+        name="test_retry_then_recover_completes",
+        description="An order that fails the PROCESSING stage once then recovers should COMPLETE with retry_count > 0.",
+        passed=passed,
+        duration_ms=duration,
+        error=error,
+    )
+
+
+def test_exact_batch_size_boundary(verbose: bool = False) -> TestResult:
+    """A batch whose length equals batch_size exactly should process as a single full batch."""
+    start = time.monotonic()
+    batch_size = 10
+    pipeline = OrderPipeline(batch_size=batch_size, verbose=verbose)
+    # len(orders) == batch_size exactly: the range(0, n, batch_size) loop must
+    # yield exactly ONE batch of size batch_size (off-by-one boundary — n and
+    # n+1 are the classic failure points of a windowed batch loop).
+    orders = [_make_order() for _ in range(batch_size)]
+    result = pipeline.process_batch(orders)
+
+    passed = (
+        result.total_orders == batch_size
+        and result.completed == batch_size
+        and result.failed == 0
+    )
+    duration = (time.monotonic() - start) * 1000
+    error = None if passed else (
+        f"Expected {batch_size} completed (single full batch), got: "
+        f"{result.completed} completed / {result.failed} failed."
+    )
+    return TestResult(
+        name="test_exact_batch_size_boundary",
+        description="A batch whose length equals batch_size exactly should process as a single full batch.",
+        passed=passed,
+        duration_ms=duration,
+        error=error,
+    )
+
+
 # ==============================================================================
 # Test Runner and Reporting
 # ==============================================================================
@@ -671,13 +788,16 @@ ALL_TESTS = [
     test_order_validation_rejects_empty_items,
     test_order_validation_rejects_zero_total,
     test_order_validation_rejects_missing_customer,
+    test_order_validation_rejects_missing_order_id,
     test_negative_quantity_fails_processing,
     test_pipeline_stages_execute_in_order,
     test_enrichment_adds_metadata,
     test_retry_count_tracked,
+    test_retry_then_recover_completes,
     test_mixed_batch_partial_success,
     test_large_batch_performance,
     test_empty_batch,
+    test_exact_batch_size_boundary,
     test_pipeline_result_has_duration,
     test_error_report_contains_stage_info,
 ]

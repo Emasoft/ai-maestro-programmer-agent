@@ -783,16 +783,15 @@ All notable changes to this project will be documented in this file.
 """
 body = """
 {% if version %}\
-    ## [{{ version | trim_start_matches(pat=\"v\") }}] - {{ timestamp | date(format=\"%Y-%m-%d\") }}
+## [{{ version | trim_start_matches(pat=\"v\") }}] - {{ timestamp | date(format=\"%Y-%m-%d\") }}
 {% else %}\
-    ## [Unreleased]
+## [Unreleased]
 {% endif %}\
 {% for group, commits in commits | group_by(attribute=\"group\") %}
-    ### {{ group | upper_first }}
-    {% for commit in commits %}
-        - {% if commit.breaking %}[**breaking**] {% endif %}{{ commit.message | upper_first }}\
-    {% endfor %}
-{% endfor %}\n
+### {{ group | upper_first }}
+{% for commit in commits %}
+- {% if commit.breaking %}[**breaking**] {% endif %}{{ commit.message | upper_first }}
+{% endfor %}{% endfor %}\n
 """
 trim = true
 footer = ""
@@ -830,25 +829,32 @@ sort_commits = "oldest"
 def run_git_cliff(root: Path, new_version: str) -> str:
     """Run git-cliff to (re)generate CHANGELOG.md and extract release notes.
 
-    Uses the `--bump --unreleased --tag vX.Y.Z -o CHANGELOG.md` pattern to
-    regenerate the full changelog file in one call. This matches the
-    upstream git-cliff recommended pipeline and handles both fresh-generation
-    and update cases uniformly — git-cliff walks the full tag history from
-    the start of the repo and produces the complete CHANGELOG.md with the
-    new version section at the top.
+    Two DISTINCT git-cliff calls with deliberately different scopes:
 
-    Release notes (latest-only, header stripped) are extracted in a second
-    call and written to .git-cliff-release-notes.md so a subsequent
-    `gh release create --notes-file` can consume them.
+    1. CHANGELOG generation — `--bump --tag vX.Y.Z -o CHANGELOG.md` WITHOUT
+       `--unreleased`. git-cliff walks the FULL tag history from the start of
+       the repo and produces the complete CHANGELOG.md with every version
+       section, the new one bumped to the top. `-o` overwrites the file, so
+       the no-`--unreleased` form is what keeps the full history intact —
+       adding `--unreleased` here would restrict output to commits since the
+       last tag and collapse the file to a single version (the H1/H2 bug this
+       fixes).
+
+    2. Release-notes extraction — `--unreleased --strip header`. This call
+       legitimately wants LATEST-ONLY output: just the new version's section,
+       header stripped, written to .git-cliff-release-notes.md so a subsequent
+       `gh release create --notes-file` can consume it.
 
     Any git-cliff error exits the pipeline.
     """
-    # 1. Generate / regenerate CHANGELOG.md with the new version at the top.
+    # 1. Regenerate the COMPLETE CHANGELOG.md (full tag history) with the new
+    #    version bumped to the top. NO --unreleased: -o overwrites, so the
+    #    full-history form is required to avoid collapsing the file to one
+    #    version on every release.
     run(
         [
             "git-cliff",
             "--bump",
-            "--unreleased",
             "--tag", f"v{new_version}",
             "-o", "CHANGELOG.md",
         ],
@@ -1427,12 +1433,14 @@ Examples:
     ):
         if (plugin_root / name).exists():
             staged.append(name)
-    # Also stage any Python files whose __version__ was updated. Strict typing:
-    # iterate Path objects in py_path, then convert to str for staging.
-    for py_path in plugin_root.rglob("*.py"):
+    # Also stage any Python files whose __version__ was updated. Reuse the
+    # SAME selector as update_python_versions / check_version_consistency
+    # (_list_py_files, gitignore-aware via `git ls-files`) so the bump-set and
+    # the staging-set agree on "which .py files carry the version" — one source
+    # of truth. A bespoke rglob walk here would diverge from the bumper's
+    # gitignore/_dev exclusions and could stage a file the bumper never touched.
+    for py_path in _list_py_files(plugin_root):
         rel_path = py_path.relative_to(plugin_root)
-        if any(part.startswith(".") or part in ("node_modules", "__pycache__", "dist", "build", ".git") for part in rel_path.parts):
-            continue
         try:
             py_content = py_path.read_text(encoding="utf-8")
             if re.search(r'^__version__\s*=\s*["\']' + re.escape(new_version) + r'["\']', py_content, re.MULTILINE):
