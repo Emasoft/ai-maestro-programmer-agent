@@ -10,6 +10,7 @@ skills:
   - ampa-github-operations
   - ampa-project-setup
   - ampa-handoff-management
+  - ampa-prrd-trdd-kanban
 ---
 
 # AI Maestro Programmer Agent (AMPA)

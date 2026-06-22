@@ -76,7 +76,7 @@ None. The `hooks/hooks.json` is empty -- AMPA uses globally installed hooks.
 
 ### Scripts
 
-The `scripts/` directory contains 5 project utility scripts. Plugin
+The `scripts/` directory contains 4 project utility scripts. Plugin
 validation runs through the **CPV remote launcher**
 (`uvx … cpv-remote-validate`), fetched on demand from
 `Emasoft/claude-plugins-validation` — the previously vendored CPV validator
@@ -87,7 +87,7 @@ so local copies only drifted behind upstream).
 | ------------------------ | ------------------------------------------------------------- |
 | `publish.py`             | Strict release pipeline — test, lint, validate, bump, push    |
 | `pre-push-hook.py`       | Git pre-push hook — runs cpv-remote-validate before each push |
-| `test_order_pipeline.py` | OrderPipeline validation test suite                           |
+| `test_order_pipeline.py` | Tests `publish.py` release-step ordering                      |
 | `smart_exec.py`          | Cross-platform script executor with timeout support           |
 
 ### Token-Efficient Reporting
@@ -101,13 +101,14 @@ Project scripts support file-based reporting to minimize terminal output:
 
 ## Workflow
 
-The Programmer Agent follows **Steps 14, 15, 17-19, 21-23** from the master
-workflow:
+The Programmer Agent owns **Steps 14, 15, 17, 19, 21, 22** from the master
+workflow (the implementer's slice; the intervening Steps 16, 18, 20, 23 are
+owned by AMOA/AMIA — see `docs/FULL_PROJECT_WORKFLOW.md`):
 
 1. **Step 14**: Request Clarification from Orchestrator
 2. **Step 15**: Receive Feedback and Design Updates
 3. **Step 17**: Task Execution (code, lint, test)
-4. **Step 19**: Task Completion (create PR, notify)
+4. **Step 19**: Pre-PR Gate + PR Creation (after AMOA's green-light)
 5. **Step 21**: Respond to PR Review Feedback
 6. **Step 22**: Handle Failed PR (fix and resubmit)
 
@@ -115,11 +116,8 @@ workflow:
 
 Role plugins are installed with `--scope local` inside the specific agent's
 working directory (`~/agents/<agent-name>/`). This ensures the plugin is only
-available to that agent.
-
-```bash
-# RESTART Claude Code after installing (required!)
-```
+available to that agent. Use one of the install commands below, then **restart
+Claude Code** — plugin metadata is cached and only picked up on a fresh start.
 
 ### Installation (from GitHub)
 
@@ -342,9 +340,10 @@ mid-task would lose state.
 - Skills and hooks now see the active effort level via `${CLAUDE_EFFORT}`
   (skills) and `$CLAUDE_EFFORT` (Bash tool / hook env). AMPA skills can
   dial scan depth up/down based on this value when relevant.
-- `xhigh` effort level (v2.1.111) is available on Opus 4.7 for the most
-  thorough analyses; AMPA does not pin an effort level, so users control it
-  via `/effort`.
+- `xhigh` effort level (v2.1.111) is available on the current Opus generation
+  (introduced on Opus 4.7, carried forward to Opus 4.8) for the most thorough
+  analyses; AMPA does not pin an effort level, so users control it via
+  `/effort`.
 
 ### New commands and OTel events worth knowing
 

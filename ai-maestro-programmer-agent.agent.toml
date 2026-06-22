@@ -14,7 +14,7 @@ tech_stack = ["python", "typescript", "rust", "go"]
 
 [skills]
 primary = ["ampa-task-execution", "ampa-orchestrator-communication", "ampa-github-operations"]
-secondary = ["ampa-project-setup", "ampa-handoff-management"]
+secondary = ["ampa-project-setup", "ampa-handoff-management", "ampa-prrd-trdd-kanban"]
 specialized = []
 
 [agents]
@@ -27,6 +27,9 @@ recommended = []
 recommended = []
 
 [mcp]
+# serena is REQUIRED (code navigation); llm-externalizer is OPTIONAL — a
+# token-saving companion the agent uses when present, never a hard requirement
+# (matches the README "Recommended Companion Plugins" + "SERENA MCP (REQUIRED)").
 recommended = ["serena", "llm-externalizer"]
 
 [hooks]
