@@ -1,9 +1,9 @@
 ---
 trdd-id: 3ff8013f-3ee8-496a-bc6f-383d911ecac5
 title: publish.py release-pipeline integrity — full-history CHANGELOG + Step-11 staging One-Source-of-Truth
-column: planned
+column: complete
 created: 2026-06-22T02:40:15+0200
-updated: 2026-06-22T02:40:15+0200
+updated: 2026-06-22T03:07:24+0200
 current-owner: ampa
 assignee: ampa
 priority: 2
@@ -19,9 +19,9 @@ target-branch: main
 test-requirements: [unit, lint, typecheck]
 review-requirements: []
 impacts: [ci-pipeline]
-attempts: 0
-last-test-result: not-run
-implementation-commits: []
+attempts: 1
+last-test-result: pass
+implementation-commits: [3e245f5]
 ---
 
 # TRDD-3ff8013f — publish.py release-pipeline integrity

@@ -1,9 +1,9 @@
 ---
 trdd-id: e4e12416-9f53-48c9-a32a-40bb1e7eae53
 title: smart_exec.py robustness (fail-fast, timeouts, symmetry) + hermetic unit tests
-column: planned
+column: complete
 created: 2026-06-22T02:40:15+0200
-updated: 2026-06-22T02:40:15+0200
+updated: 2026-06-22T03:07:24+0200
 current-owner: ampa
 assignee: ampa
 priority: 3
@@ -19,9 +19,9 @@ target-branch: main
 test-requirements: [unit, lint, typecheck]
 review-requirements: []
 impacts: []
-attempts: 0
-last-test-result: not-run
-implementation-commits: []
+attempts: 1
+last-test-result: pass
+implementation-commits: [4809a20]
 ---
 
 # TRDD-e4e12416 — smart_exec.py robustness + tests

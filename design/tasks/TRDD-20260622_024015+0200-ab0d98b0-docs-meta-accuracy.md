@@ -1,9 +1,9 @@
 ---
 trdd-id: ab0d98b0-0a00-4233-934c-daf072218587
 title: docs and meta accuracy — README facts, agent skill declaration, tests/README
-column: planned
+column: complete
 created: 2026-06-22T02:40:15+0200
-updated: 2026-06-22T02:40:15+0200
+updated: 2026-06-22T03:07:24+0200
 current-owner: ampa
 assignee: ampa
 priority: 4
@@ -19,9 +19,9 @@ target-branch: main
 test-requirements: [unit]
 review-requirements: []
 impacts: []
-attempts: 0
-last-test-result: not-run
-implementation-commits: []
+attempts: 1
+last-test-result: pass
+implementation-commits: [e31a1c6]
 ---
 
 # TRDD-ab0d98b0 — docs / meta accuracy
