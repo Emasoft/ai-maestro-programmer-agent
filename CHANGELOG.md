@@ -1,7 +1,13 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [Unreleased]
+## [1.4.4] - 2026-06-22
+
+### Bug Fixes
+
+- Full-history CHANGELOG + One-Source-of-Truth staging (TRDD-3ff8013f)
+
+- Fail-fast on unknown tool + subprocess timeouts (TRDD-e4e12416)
 
 ### Documentation
 
@@ -10,6 +16,10 @@ All notable changes to this project will be documented in this file.
 - Capture publish CI-vs-dryrun lesson (PROJECT wikimem)
 
 - Plan go-on-yourself improvement pass — 3 TRDDs
+
+- Correct script count, workflow steps, declare kanban skill (TRDD-ab0d98b0)
+
+- Mark 3 go-on-yourself TRDDs complete (3e245f5, 4809a20, e31a1c6)
 
 ## [1.4.3] - 2026-06-20
 
