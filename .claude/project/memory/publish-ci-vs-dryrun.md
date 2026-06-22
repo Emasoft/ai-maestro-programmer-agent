@@ -2,7 +2,7 @@
 name: publish-ci-vs-dryrun
 description: "publish.py --dry-run (or the local CPV gate) passed but GitHub CI went RED on CPV validation — why local-green is not CI-green for this plugin, and how to not get surprised at tag time"
 ocd: 2026-06-21
-lmd: 2026-06-21
+lmd: 2026-06-22
 metadata:
   node_type: memory
   type: project
@@ -41,5 +41,8 @@ green before tag → CI green.
 
 ## Governed by
 - [[architecture]] — the publish pipeline is part of the project architecture hub.
+
+## See also
+- [[publish-changelog-generation]] — the OTHER publish.py gotcha (git-cliff `--unreleased -o` collapsed CHANGELOG history + a malformed cliff.toml template).
 
 ## Notes and lessons learned
