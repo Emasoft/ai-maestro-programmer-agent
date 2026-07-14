@@ -1,14 +1,16 @@
 ---
 trdd-id: UMRQ84S9
 title: Publish the {name}--v{version} dependency-resolution tag atomically with the release
-column: dev
+column: complete
 created: 2026-07-15T00:14:01+0200
-updated: 2026-07-15T00:14:01+0200
+updated: 2026-07-15T00:29:36+0200
 current-owner: ai-maestro-programmer-agent
 task-type: infra
 approval-tier: 0
 relevant-rules: [1]
 release-via: publish
+implementation-commits: [12f64c5, ac53c63]
+last-test-result: pass
 ---
 
 # TRDD-UMRQ84S9 — Publish the `{name}--v{version}` dependency-resolution tag

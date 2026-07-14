@@ -1,14 +1,16 @@
 ---
 trdd-id: YK1HL9RH
 title: Update the main agent TRDD lifecycle section from the v1 shape to v2 columns and 4 zones
-column: dev
+column: complete
 created: 2026-07-15T00:17:30+0200
-updated: 2026-07-15T00:17:30+0200
+updated: 2026-07-15T00:29:36+0200
 current-owner: ai-maestro-programmer-agent
 task-type: docs
 approval-tier: 0
 relevant-rules: [1]
 release-via: publish
+implementation-commits: [14b1bd2]
+last-test-result: pass
 ---
 
 # TRDD-YK1HL9RH — Main-agent lifecycle: v1 (`status:` + 2 folders) → v2 (`column:` + 4 zones)

@@ -1,14 +1,16 @@
 ---
 trdd-id: UF9AXQJY
 title: Add the MEMBER governance behavior scenarios in the fleet-canonical format
-column: dev
+column: complete
 created: 2026-07-15T00:17:30+0200
-updated: 2026-07-15T00:17:30+0200
+updated: 2026-07-15T00:29:36+0200
 current-owner: ai-maestro-programmer-agent
 task-type: docs
 approval-tier: 0
 relevant-rules: [1]
 release-via: publish
+implementation-commits: [5f8a65a, ac53c63]
+last-test-result: pass
 ---
 
 # TRDD-UF9AXQJY — MEMBER governance behavior scenarios
