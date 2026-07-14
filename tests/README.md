@@ -18,6 +18,17 @@ without updating its test (or vice-versa) and the suite fails.
   the R6.6 / R37.1 MAESTRO escalation model guards.
 - `test_smart_exec.py` — `smart_exec.py`'s cross-platform argv builders
   (interpreter selection, timeout wrapping, report-file flag handling).
+- `test_publish_dependency_tag.py` — the release must push the
+  `{name}--v{version}` tag Claude Code's dependency resolver reads (derived
+  strictly from the manifest, hard-failing on a nameless one), alongside
+  `v{version}`, in one `git push --atomic` (`TRDD-UMRQ84S9`).
+
+`scenarios/` holds `governance-scenarios.md` — a Given/When/Then **plan** of the
+MEMBER governance *reasoning* behaviors (tier self-classify, propose-don't-edit,
+signal-only transitions, the R23 refusal). These are persona behaviors with no
+executable to drive; the file is reviewed by reading the persona/skill prose, not
+run — its coverage map names the pytest test that enforces each bright-line and
+marks the rest `prose-review`. Do NOT fabricate a harness to "run" them.
 
 ## Run locally
 

@@ -85,7 +85,7 @@ so local copies only drifted behind upstream).
 
 | Script                   | Description                                                   |
 | ------------------------ | ------------------------------------------------------------- |
-| `publish.py`             | Strict release pipeline — test, lint, validate, bump, push    |
+| `publish.py`             | Strict release pipeline — test, lint, validate, bump, tag (`v{version}` + the `{name}--v{version}` dependency-resolution tag), atomic push |
 | `pre-push-hook.py`       | Git pre-push hook — runs cpv-remote-validate before each push |
 | `test_order_pipeline.py` | Tests `publish.py` release-step ordering                      |
 | `smart_exec.py`          | Cross-platform script executor with timeout support           |
