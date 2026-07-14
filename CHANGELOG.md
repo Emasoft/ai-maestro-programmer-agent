@@ -1,6 +1,16 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.4.6] - 2026-07-14
+
+### Documentation
+
+- Capture the {name}--v{version} dependency-resolution tag (PROJECT wikimem)
+
+- G1.1 self-id on the review-comment path + document the Agent commit trailer (TRDD-W5WYY2VF)
+
+- Mark W5WYY2VF complete (3d93133)
+
 ## [1.4.5] - 2026-07-14
 
 ### Documentation
@@ -18,6 +28,10 @@ All notable changes to this project will be documented in this file.
 ### Features
 
 - Push the {name}--v{version} dependency-resolution tag atomically (TRDD-UMRQ84S9)
+
+### Miscellaneous
+
+- V1.4.5
 
 ### Tests
 
