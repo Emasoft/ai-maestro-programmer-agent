@@ -44,5 +44,6 @@ green before tag → CI green.
 
 ## See also
 - [[publish-changelog-generation]] — the OTHER publish.py gotcha (git-cliff `--unreleased -o` collapsed CHANGELOG history + a malformed cliff.toml template).
+- [[publish-dependency-resolution-tag]] — the publish.py Step-12/13 tag gotcha ({name}--v{version} resolver tag pushed atomically).
 
 ## Notes and lessons learned

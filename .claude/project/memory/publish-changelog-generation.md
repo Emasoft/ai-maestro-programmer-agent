@@ -43,6 +43,7 @@ headings), `grep -cE ' +$' CHANGELOG.md` → 0 (no trailing ws), `grep -cE '^## 
 
 ## See also
 - [[publish-ci-vs-dryrun]] — the OTHER publish.py gotcha (local-green ≠ CI-green for CPV validation).
+- [[publish-dependency-resolution-tag]] — the publish.py Step-12/13 tag gotcha ({name}--v{version} resolver tag).
 
 ## Notes and lessons learned
 [^1]: [ocd:2026-06-22 lmd:2026-06-22] The load-bearing trap: `cliff.toml` is
