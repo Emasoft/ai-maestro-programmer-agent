@@ -165,13 +165,32 @@ def test_m13_dialog_loop_templates_exist() -> None:
         assert fm.get("name") == p.stem
 
 
-def test_m10_g1_selfid_in_pr_and_bug_templates() -> None:
-    """M10: the PR body and bug-report body templates begin with the G1.1 self-id line."""
-    pr = (SKILLS_DIR / "ampa-github-operations" / "references" / "op-create-pull-request.md").read_text(encoding="utf-8")
-    bug = (SKILLS_DIR / "ampa-handoff-management" / "references" / "op-write-bug-report.md").read_text(encoding="utf-8")
+def test_m10_g1_selfid_on_every_github_posting_path() -> None:
+    """M10: every GitHub-posting op body carries the G1.1 self-id line (PR, bug-report, review reply).
+
+    All AI Maestro agents share ONE human-owner GitHub identity, so every body posted to
+    GitHub must open with the self-id line naming the authoring agent — otherwise a review
+    reply (or any comment) posts under the shared identity with no attribution. TRDD-W5WYY2VF.
+    """
     needle = "This is the Claude responsible for the"
-    assert needle in pr, "PR template missing the G1.1 self-id line"
-    assert needle in bug, "bug-report template missing the G1.1 self-id line"
+    ghops = SKILLS_DIR / "ampa-github-operations" / "references"
+    posting_paths = {
+        "PR body": ghops / "op-create-pull-request.md",
+        "bug-report body": SKILLS_DIR / "ampa-handoff-management" / "references" / "op-write-bug-report.md",
+        "PR-review-comment body": ghops / "op-respond-to-review.md",
+    }
+    for label, path in posting_paths.items():
+        assert needle in path.read_text(encoding="utf-8"), f"{label} missing the G1.1 self-id line"
+
+
+def test_m10b_agent_trailer_documented_in_commit_convention() -> None:
+    """M10b: the commit convention documents the `Agent:` trailer the fleet commits carry.
+
+    commit-discipline.md + PRRD G1.1 ask every commit to carry `Agent: <plugin-slug>`; the
+    agent's own commit manual must document it, not just the PR/issue paths. TRDD-W5WYY2VF.
+    """
+    commit_doc = (SKILLS_DIR / "ampa-github-operations" / "references" / "op-commit-changes.md").read_text(encoding="utf-8")
+    assert "Agent:" in commit_doc, "op-commit-changes must document the `Agent:` commit trailer"
 
 
 @pytest.mark.parametrize("rel", HANDOFF_TASKSTATE_REFS)

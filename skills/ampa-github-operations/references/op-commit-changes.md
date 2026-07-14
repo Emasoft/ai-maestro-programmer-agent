@@ -88,17 +88,24 @@ Commit messages have three parts:
 
 **Components:**
 
-- **Subject line** (required): Max 72 characters, imperative mood, no period
-- **Body** (optional): Explain what and why, wrap at 72 characters
-- **Footer** (optional): Reference issues, breaking changes
+- **Subject line** (required): Max 72 characters, imperative mood, no period.
+  Include the governing `TRDD-<id8>` when the commit implements one.
+- **Body** (optional): Explain what and **why** — the why can only be written by
+  the agent that made the change; wrap at 72 characters.
+- **Footer**: Reference issues and breaking changes, and carry the
+  **`Agent: <plugin-slug>` trailer** (required). All AI Maestro agents share one
+  human-owner git identity, so the trailer names which agent authored the commit
+  (per `PRRD G1.1` / the commit-discipline rule). For this plugin it is
+  `Agent: ai-maestro-programmer-agent`.
 
 **Example:**
 
 ```text
-feat(auth): add OAuth2 login support
+feat(auth): add OAuth2 login support (TRDD-9A8ABA94)
 
 Implement OAuth2 authentication flow with support for Google and GitHub
-providers. This replaces the legacy session-based auth system.
+providers. This replaces the legacy session-based auth system, whose shared
+session store could not scope tokens per provider.
 
 - Add OAuth2Strategy class
 - Configure passport.js middleware
@@ -106,6 +113,7 @@ providers. This replaces the legacy session-based auth system.
 
 Closes #123
 BREAKING CHANGE: Sessions from v1.x will be invalidated
+Agent: ai-maestro-programmer-agent
 ```
 
 ### 3.3 Conventional Commits Syntax
@@ -150,6 +158,7 @@ Implement OAuth2 authentication flow with support for Google and GitHub
 providers.
 
 Closes #123
+Agent: ai-maestro-programmer-agent
 EOF
 )"
 ```

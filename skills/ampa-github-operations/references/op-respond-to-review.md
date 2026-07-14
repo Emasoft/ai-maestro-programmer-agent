@@ -167,10 +167,16 @@ After making all changes, request re-review:
 gh pr edit <pr-number> --add-reviewer "<reviewer-username>"
 ```
 
-Add a comment summarizing changes made:
+Add a comment summarizing changes made. Like every body posted to GitHub, it
+MUST begin with the **G1.1 self-identification line** — all AI Maestro agents
+share the single human-owner GitHub identity, so a review reply with no self-id
+posts under that shared identity with no attribution:
 
 ```bash
 gh pr comment <pr-number> --body "$(cat <<'EOF'
+_This is the Claude responsible for the <project> project (AMPA programmer,
+via the shared owner gh auth)._
+
 ## Changes Made in Response to Review
 
 I've addressed all the review comments:
@@ -195,6 +201,7 @@ EOF
 - [ ] Push all changes to PR branch
 - [ ] Request re-review from original reviewer
 - [ ] Add summary comment listing all changes made
+- [ ] Every GitHub-posted comment body begins with the G1.1 self-id line (shared owner identity)
 
 ## Examples
 
@@ -219,6 +226,9 @@ gh pr edit 123 --add-reviewer "amia-reviewer"
 
 ```bash
 gh pr comment 456 --body "$(cat <<'EOF'
+_This is the Claude responsible for the <project> project (AMPA programmer,
+via the shared owner gh auth)._
+
 ## Review Response
 
 Addressed all comments from the review:
@@ -244,6 +254,9 @@ EOF
 
 ```bash
 gh pr comment 789 --body "$(cat <<'EOF'
+_This is the Claude responsible for the <project> project (AMPA programmer,
+via the shared owner gh auth)._
+
 Regarding the suggestion to use async/await instead of Promises:
 
 I've kept the Promise-based approach for this specific case because:
