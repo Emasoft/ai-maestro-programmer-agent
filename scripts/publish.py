@@ -245,6 +245,42 @@ def detect_plugin_info(plugin_root: Path) -> dict:
         return {"name": "unknown", "version": "0.0.0"}
 
 
+def dependency_resolution_tag(plugin_root: Path, version: str) -> str:
+    """Return the `{name}--v{version}` tag Claude Code's dependency resolver reads.
+
+    A plugin that depends on this one is resolved by Claude Code listing THIS repo's tags,
+    filtering to those starting with `{name}--v`, and taking the highest one satisfying the
+    declared range (https://code.claude.com/docs/en/plugin-dependencies.md, CC 2.1.110+).
+    The plain `v{version}` tag does NOT match that filter, so without this tag a constrained
+    dependent fails to install with "no git tag satisfying <range>" against a repo visibly
+    full of tags — a silent, total outage for the dependent.
+
+    The name MUST come from the manifest: the resolver filters on it, and the repo/directory
+    name can differ from it.
+
+    This deliberately does NOT reuse detect_plugin_info(), which answers "unknown" for a
+    missing name. That fallback is right for a cosmetic banner and catastrophic here: it
+    would push a tag literally named `unknown--v1.4.5` — published, and resolvable by
+    nobody. A missing tag fails loudly; a wrongly-named one fails silently. Hence: raise.
+
+    TRDD-UMRQ84S9.
+    """
+    plugin_json = plugin_root / ".claude-plugin" / "plugin.json"
+    if not plugin_json.is_file():
+        raise ValueError(f"Cannot derive the dependency-resolution tag: {plugin_json} not found.")
+    try:
+        data = json.loads(plugin_json.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as exc:
+        raise ValueError(f"Cannot derive the dependency-resolution tag: {plugin_json} is unreadable ({exc}).") from exc
+    name = str(data.get("name") or "").strip()
+    if not name:
+        raise ValueError(
+            f"Cannot derive the dependency-resolution tag: no `name` in {plugin_json}. "
+            f"Refusing to guess — a wrongly-named tag is a silent outage for every dependent."
+        )
+    return f"{name}--v{version}"
+
+
 def detect_marketplace(git_root: Path) -> dict:
     """Auto-detect marketplace info from git remote and plugin structure."""
     info: dict = {"org": "", "repo": "", "url": "", "marketplace_name": ""}
@@ -1462,15 +1498,31 @@ Examples:
     run(["git", "tag", "-a", f"v{new_version}", "-m", final_notes], cwd=git_root)
     print(f"{GREEN}ok Tagged v{new_version} (annotated, body = release notes){NC}")
 
-    # ── Step 13: Push commit + tag to origin ──
+    # The DEPENDENCY-RESOLUTION tag, alongside (never instead of) v{version}. Claude Code
+    # resolves a constrained dependency on this plugin by filtering this repo's tags to
+    # those starting with `{name}--v`; the plain `v{version}` tag does not match that
+    # filter. Both tags coexist by design: GitHub Releases + the marketplace notify chain
+    # read `v{version}`, the resolver reads this one. Hard-fails on a nameless manifest
+    # rather than tagging `unknown--v…`. Never `claude plugin tag <name>` — that CLI's
+    # positional arg is a PATH, so the call silently creates nothing (#26). TRDD-UMRQ84S9.
+    dep_tag = dependency_resolution_tag(plugin_root, new_version)
+    run(["git", "tag", "-a", dep_tag, "-m", final_notes], cwd=git_root)
+    print(f"{GREEN}ok Tagged {dep_tag} (dependency resolution){NC}")
+
+    # ── Step 13: Push commit + both tags to origin (ONE atomic transaction) ──
     # The pre-push hook verifies its caller via PROCESS ANCESTRY: it walks
     # the PID tree and looks for a `python.*scripts/publish.py` ancestor.
     # Because this process IS scripts/publish.py, the hook will find it and
     # allow the push. No env var needed — process trees can't be spoofed.
-    print(f"\n{BLUE}=== Step 13: Push commit + tag to origin/{default_branch} ==={NC}")
-    run(["git", "push", "origin", "HEAD"], cwd=git_root)
-    run(["git", "push", "origin", f"v{new_version}"], cwd=git_root)
-    print(f"\n{GREEN}ok Published v{new_version} ({info.name}){NC}")
+    #
+    # --atomic, and one push for all three refs: a release that landed with the commit and
+    # v{version} but WITHOUT the dependency tag would be published-but-unresolvable for
+    # every dependent — a silent outage that looks like a successful release. Sequential
+    # pushes can produce exactly that half-published state if a later one fails; an atomic
+    # push either lands everything or nothing.
+    print(f"\n{BLUE}=== Step 13: Push commit + tags to origin/{default_branch} (atomic) ==={NC}")
+    run(["git", "push", "--atomic", "origin", "HEAD", f"v{new_version}", dep_tag], cwd=git_root)
+    print(f"\n{GREEN}ok Published v{new_version} ({info.name}) — pushed v{new_version} + {dep_tag} atomically{NC}")
 
     # ── Step 14: Create GitHub release with release notes (MANDATORY) ──
     # Every push MUST create a corresponding GitHub release so Claude Code's
