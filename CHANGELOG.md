@@ -1,6 +1,32 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.4.5] - 2026-07-14
+
+### Documentation
+
+- Capture the publish CHANGELOG-generation bug lesson (PROJECT wikimem)
+
+- Mark workflow-hardening TRDD-e39a6aa8 complete (8c561b5)
+
+- Lifecycle section v1 -> v2 (column + 4 zones) (TRDD-YK1HL9RH)
+
+- Reflect the dependency-resolution tag + new tests in README/tests (TRDD-UMRQ84S9, UF9AXQJY)
+
+- Mark UMRQ84S9 / YK1HL9RH / UF9AXQJY complete
+
+### Features
+
+- Push the {name}--v{version} dependency-resolution tag atomically (TRDD-UMRQ84S9)
+
+### Tests
+
+- Add MEMBER governance behavior scenarios (TRDD-UF9AXQJY)
+
+### Ci
+
+- Least-privilege permissions + job timeouts on all workflows (TRDD-e39a6aa8)
+
 ## [1.4.4] - 2026-06-22
 
 ### Bug Fixes
@@ -20,6 +46,10 @@ All notable changes to this project will be documented in this file.
 - Correct script count, workflow steps, declare kanban skill (TRDD-ab0d98b0)
 
 - Mark 3 go-on-yourself TRDDs complete (3e245f5, 4809a20, e31a1c6)
+
+### Miscellaneous
+
+- V1.4.4
 
 ## [1.4.3] - 2026-06-20
 
