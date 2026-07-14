@@ -469,18 +469,38 @@ MANAGER forwards the highest-stakes (golden / owner-identity) ones to USER.
 > `ampa-orchestrator-communication` skill. Both say "proposal"; they are
 > different mechanisms — do not conflate them.
 
-### Two folders (location = authorization)
+### Four zones (location = authorization)
 
-| Folder | `status:` | Meaning |
+A TRDD's **folder is its authorization**, and its **`column:`** is its state.
+TRDD v2 has **no `status:` field** — `column:` IS the state machine.
+
+| Folder | `column:` | Meaning |
 |--------|-----------|---------|
-| `design/proposals/` | `proposal` | Authored, **awaiting approval — not authorized to execute**. |
-| `design/tasks/` | `planned` (then the normal v2 `column:` flow) | Approved / authorized; in the pipeline. |
+| `design/proposals/` | `proposal` | Authored, **awaiting approval — NOT authorized to execute**. |
+| `design/tasks/` | `planned`, then the normal flow (`todo` → `dispatch` → `dev` → `testing` → `ai_review` → …), plus `blocked` / `failed` | **OPEN work** — approved / authorized, not yet terminal. |
+| `design/archived/` | `completed` · `cancelled` · `superseded` | **Once-approved** TRDDs that reached a terminal-DONE state. |
+| `design/refused/` | `refused` | A proposal that was **NEVER approved** — declined at the gate. Kept as an audit record. |
 
-On approval, the approver sets `status: planned`, records who/when/why in the
+**Which terminal zone?** The dividing line is *was it ever approved?* A proposal
+an approver **declines** never entered the pipeline → `design/refused/`. A TRDD
+that **was approved** (reached `design/tasks/`) and later finishes, is withdrawn,
+or is replaced → `design/archived/`.
+
+**`failed` is NOT terminal and is NOT archived.** A failed TRDD **stays in
+`design/tasks/`** with `column: failed` — failure is *retryable*: fix the cause
+(often via other TRDDs) and retry. Only an explicit decision to give up converts
+`failed` → `cancelled` (→ `design/archived/`). There is no "archive as failed".
+
+On approval, the approver sets `column: planned`, records who/when/why in the
 TRDD body `## Approval log`, and **moves the file** with
 `git mv design/proposals/TRDD-….md design/tasks/TRDD-….md` (preserves history).
+Every later decision (`git mv` into `archived/` or `refused/`) keeps the zones an
+accurate live index — a decided TRDD never lingers among the open ones.
 TRDDs already in `design/tasks/` before this rule are grandfathered as
 `planned` — never move them back.
+
+The tier you classify a task at is recorded in the TRDD frontmatter as
+**`approval-tier:`** (`0`–`3`, per the ladder below).
 
 ### Your tier obligations
 
