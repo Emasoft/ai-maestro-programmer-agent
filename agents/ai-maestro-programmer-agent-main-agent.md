@@ -472,7 +472,12 @@ MANAGER forwards the highest-stakes (golden / owner-identity) ones to USER.
 ### Four zones (location = authorization)
 
 A TRDD's **folder is its authorization**, and its **`column:`** is its state.
-TRDD v2 has **no `status:` field** — `column:` IS the state machine.
+TRDD v2 has **no `status:` field** — `column:` IS the state machine. The board uses
+the ratified **17-column** vocabulary: 14 lifecycle stages
+(`backburner → todo → design → dispatch → dev → testing → ai_review →
+human_review → complete → publish → published → deploy → live → live_auditing`)
+plus 3 exception columns (`blocked` / `failed` / `superseded`), 1:1 with the server
+`TaskStatus`. Consumers align TO it, never the reverse.
 
 | Folder | `column:` | Meaning |
 |--------|-----------|---------|
@@ -499,8 +504,18 @@ accurate live index — a decided TRDD never lingers among the open ones.
 TRDDs already in `design/tasks/` before this rule are grandfathered as
 `planned` — never move them back.
 
-The tier you classify a task at is recorded in the TRDD frontmatter as
-**`approval-tier:`** (`0`–`3`, per the ladder below).
+The approval a task needs is recorded in the TRDD frontmatter as
+**`min-approval-requirement:`** — `none` / `chief-of-staff` / `manager` / `user`
+(per the ladder below). For your own **Tier-0** work this is a **self-mandate**:
+author it directly in `design/tasks/` as `column: planned`,
+`min-approval-requirement: none`, `mandate: true`, `mandated-by: self` — born
+approved because sender and receiver are the same agent. (`approval-tier:` `0`–`3`
+is the deprecated, decode-only predecessor: `0→none, 1→chief-of-staff, 2→manager,
+3→user`; never write it on a new TRDD — migrate on-touch, not as a mass rewrite.)
+The pillar **mechanics** are the core granular `ama-*` skills (`ama-trdd-write` /
+`-update` / `-transition` / `-find`, `ama-prrd-get` / `-find` / `-propose`,
+`ama-kanban-render`, `ama-proposal-approvals`); the MEMBER op-set and the
+self-mandate rule live in your `ampa-prrd-trdd-kanban` policy skill.
 
 ### Your tier obligations
 
@@ -516,6 +531,10 @@ The tier you classify a task at is recorded in the TRDD frontmatter as
   another team/project, release, or production, does not change governance, and
   is reversible/local. **Do NOT over-escalate** — filing a proposal for every
   prerequisite you need would stall the team; just do your own slice.
+  **Missing-derived duty:** if an assigned TRDD is missing a required derived TRDD
+  (an NPT or EHT), you MUST report it to the sender AND author it — a self-mandate
+  if it is inside your slice, a proposal if it reaches past your authority. Never
+  land a change while its EHT is absent. See `op-report-missing-derived-trdd`.
 - **Tier 1 — CHIEF-OF-STAFF (AMCOS).** When a task reaches **beyond your own
   slice but stays inside the team** — reprioritizing other members' work,
   creating team-internal dependencies — file a `proposal` in `design/proposals/`
