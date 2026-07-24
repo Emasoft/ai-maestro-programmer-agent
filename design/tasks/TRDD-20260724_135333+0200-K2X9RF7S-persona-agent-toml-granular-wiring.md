@@ -1,9 +1,9 @@
 ---
 trdd-id: K2X9RF7S
 title: Migrate the persona and agent.toml to granular ama-* wiring and min-approval-requirement language
-column: planned
+column: complete
 created: 2026-07-24T13:53:33+0200
-updated: 2026-07-24T13:53:33+0200
+updated: 2026-07-24T14:11:54+0200
 current-owner: ampa-programmer
 task-type: refactor
 min-approval-requirement: none
@@ -11,8 +11,8 @@ mandate: true
 mandated-by: self
 relevant-rules: [1, 15]
 external-refs: [Emasoft/ai-maestro#61]
-blocked-by: [I8AH88SS]
-implementation-commits: []
+blocked-by: []
+implementation-commits: [57b35a4]
 ---
 
 # Migrate the persona and agent.toml to granular ama-* wiring and min-approval-requirement language
@@ -25,12 +25,12 @@ implementation-commits: []
 `prrd-trdd-kanban` wrapper. This is the LARGEST migration surface — scoped as
 "wiring" but really approval-schema migration too.
 
-**NEXT ACTION:** after I8AH88SS lands, read the persona's governance section and the
-agent.toml wiring block; re-point every pillar reference to the granular `ama-*`
-skills the repurposed wrapper now cites; migrate the persona's `approval-tier:`
-field name + tier-N prose → `min-approval-requirement:` (0→none,1→chief-of-staff,
-2→manager,3→user) + the 17-column vocab. Keep the MEMBER→ORCHESTRATOR comm-graph
-UNCHANGED (#61: correct as written). Run pytest → green before commit.
+**DONE (2026-07-24, commit 57b35a4):** persona migrated — `min-approval-requirement:`
+field + self-mandate fields, `approval-tier:` documented deprecated/decode-only,
+granular `ama-*` mechanics wired + policy-skill pointer, 17-column vocab, missing-
+derived duty. **agent.toml unchanged** — its `[skills]` lists AMPA's OWN skills; the
+granular `ama-*` come from the `ai-maestro-plugin` dependency (`^2.7.0`), not AMPA's
+skill list. Comm-graph left as-is. 93 passed.
 
 **SUPERSEDED — do NOT carry forward:** none yet.
 
