@@ -10,7 +10,7 @@ min-approval-requirement: none
 mandate: true
 mandated-by: self
 relevant-rules: [1]
-implementation-commits: []
+implementation-commits: [459032f]
 ---
 
 # Pin the ruff lint gate to its shipped rule set so ruff-default drift stops blocking publishes
