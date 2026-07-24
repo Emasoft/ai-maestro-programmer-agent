@@ -1,6 +1,30 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.4.7] - 2026-07-24
+
+### Bug Fixes
+
+- Pin ruff gate to shipped E4/E7/E9/F rule set (TRDD-1TXG0EON)
+
+### Documentation
+
+- Add I8AH88SS/K2X9RF7S/G0768YHK — rewire 3-pillars onto granular ama-* skills
+
+- Mark I8AH88SS complete (58827de)
+
+- Mark K2X9RF7S complete (57b35a4)
+
+- Reflect granular ama-* wiring + add self-mandate/missing-derived/refusal scenarios (TRDD-G0768YHK)
+
+- Mark G0768YHK complete (e3ddf58)
+
+### Refactor
+
+- Rewire 3-pillars onto granular ama-* + repurpose wrapper as MEMBER policy (TRDD-I8AH88SS)
+
+- Migrate persona to min-approval-requirement + granular ama-* wiring (TRDD-K2X9RF7S)
+
 ## [1.4.6] - 2026-07-14
 
 ### Documentation
@@ -10,6 +34,10 @@ All notable changes to this project will be documented in this file.
 - G1.1 self-id on the review-comment path + document the Agent commit trailer (TRDD-W5WYY2VF)
 
 - Mark W5WYY2VF complete (3d93133)
+
+### Miscellaneous
+
+- V1.4.6
 
 ## [1.4.5] - 2026-07-14
 
