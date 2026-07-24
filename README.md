@@ -56,7 +56,7 @@ naming (e.g., `svgbbox-programmer-001`).
 | `ampa-github-operations`          | Git and GitHub operations (clone, branch, commit, PR) |
 | `ampa-project-setup`              | Initialize project configuration and install tooling  |
 | `ampa-handoff-management`         | Create and receive handoff documents and bug reports  |
-| `ampa-prrd-trdd-kanban`           | The MEMBER (programmer) role in the PRRD / TRDD / kanban workflow |
+| `ampa-prrd-trdd-kanban`           | The MEMBER (programmer) role POLICY over the granular ama-* pillar skills — op-set, self-mandate rule, missing-derived-TRDD duty |
 
 ### Memory (global, janitor-hosted)
 

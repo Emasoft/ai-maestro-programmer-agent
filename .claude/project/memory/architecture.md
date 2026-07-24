@@ -2,7 +2,7 @@
 name: architecture
 description: "how does ai-maestro-programmer-agent work — overview, the main parts (main agent, the ampa-* skills + kanban skill, the CPV-direct publish pipeline, the 3-pillars governance under design/), where the PRRD/TRDDs live"
 ocd: 2026-06-16
-lmd: 2026-06-16
+lmd: 2026-07-24
 metadata:
   node_type: memory
   type: project
@@ -20,11 +20,11 @@ gate. It works standalone or orchestrated within the fleet. Distributed via the
 
 ## Parts map
 - Main agent: `agents/ai-maestro-programmer-agent-main-agent.md` — MEMBER persona,
-  R6 v3 comms (direct edges to AMOA + AMCOS), approval tiers, the three dialog
+  R6 v3 comms (direct edges to AMOA + AMCOS), the min-approval-requirement ladder, the three dialog
   loops (comprehension handshake / in-dev raise-immediately / pre-PR gate).
 - Skills: `ampa-task-execution`, `ampa-orchestrator-communication`,
   `ampa-github-operations`, `ampa-project-setup`, `ampa-handoff-management`,
-  `ampa-prrd-trdd-kanban` (the MEMBER kanban layer).
+  `ampa-prrd-trdd-kanban` (the MEMBER-policy layer over the granular ama-* pillar skills).
 - Publish: the strict, CPV-direct pipeline `scripts/publish.py` (tests → lint →
   CPV `--strict` → bump → tag → push → release) + the process-ancestry pre-push
   gate. No vendored validators — CI/publish invoke `uvx … cpv-remote-validate`.

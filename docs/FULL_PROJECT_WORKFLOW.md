@@ -10,7 +10,7 @@ The fleet operates on two layers of titles:
 - **Team layer** — CHIEF-OF-STAFF (AMCOS), ORCHESTRATOR (AMOA), ARCHITECT (AMAA), INTEGRATOR (AMIA), and MEMBER. AMPA (this plugin) is the **programmer** MEMBER subtype; other implementer subtypes (artist, sfx-expert, …) share the `member` role in team registries but load subtype-specific plugins.
 - **Governance layer** — MANAGER (AMAMA), MAINTAINER, AUTONOMOUS. **MANAGER is the sole cross-layer bridge** between governance and the teams.
 
-Work state lives in **TRDD files under `design/`** (frontmatter `column:` field), NOT in GitHub issue labels. The universal kanban mechanics live in the `prrd-trdd-kanban` skill of ai-maestro-plugin (a declared plugin dependency; pillar scripts `get-prrd.py` / `prrd-edit.py` / `findtrdd.py` / `kanban.py`); the MEMBER-facing layer is the `ampa-prrd-trdd-kanban` skill. Project rules live in `design/requirements/PRRD.md` and are cited as golden `G*` / silver `S*` rules (e.g. `PRRD S3.1`).
+Work state lives in **TRDD files under `design/`** (frontmatter `column:` field), NOT in GitHub issue labels. The universal kanban mechanics are the core GRANULAR `ama-*` pillar skills of ai-maestro-plugin (a declared plugin dependency) — `ama-trdd-{find,transition,update,write}`, `ama-prrd-{get,find,propose,edit}`, `ama-kanban-render`, `ama-proposal-approvals`; the MEMBER-facing layer is the `ampa-prrd-trdd-kanban` policy skill. Project rules live in `design/requirements/PRRD.md` and are cited as golden `G*` / silver `S*` rules (e.g. `PRRD S3.1`).
 
 ---
 
@@ -79,7 +79,7 @@ AMOA ◄────────────────────────
 Task state lives in **TRDD files under `design/tasks/`** — the `column:`
 frontmatter field is the single source of truth, **not** a GitHub Projects
 label. Every agent reads/moves a task by editing its TRDD (or via
-`kanban.py` from `ai-maestro-plugin`).
+`ama-kanban-render` from `ai-maestro-plugin`).
 
 ### Columns
 
@@ -260,7 +260,7 @@ label. Every agent reads/moves a task by editing its TRDD (or via
   - Ensure a task starts only when its `blocked-by:` TRDDs are terminal
 
 **Communication**:
-- `design/tasks/` TRDD files (the kanban); optional `kanban.py` render
+- `design/tasks/` TRDD files (the kanban); optional `ama-kanban-render` render
 - AI Maestro: Notification to each agent about their first assigned task
 
 #### Step 14: Agent Clarification
