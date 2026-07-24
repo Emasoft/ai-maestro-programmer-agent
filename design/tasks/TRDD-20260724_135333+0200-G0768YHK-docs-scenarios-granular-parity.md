@@ -1,9 +1,9 @@
 ---
 trdd-id: G0768YHK
 title: Update docs and governance scenarios for granular wiring self-mandate and missing-derived duty
-column: planned
+column: complete
 created: 2026-07-24T13:53:33+0200
-updated: 2026-07-24T13:53:33+0200
+updated: 2026-07-24T14:18:23+0200
 current-owner: ampa-programmer
 task-type: docs
 min-approval-requirement: none
@@ -11,8 +11,8 @@ mandate: true
 mandated-by: self
 relevant-rules: [1, 15]
 external-refs: [Emasoft/ai-maestro#61, Emasoft/ai-maestro#71]
-blocked-by: [I8AH88SS, K2X9RF7S]
-implementation-commits: []
+blocked-by: []
+implementation-commits: [e3ddf58]
 ---
 
 # Update docs and governance scenarios for granular wiring self-mandate and missing-derived duty
