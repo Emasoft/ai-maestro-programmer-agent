@@ -81,10 +81,13 @@ before retrying.
 
 ## Governance
 
-This skill operates under the AI Maestro **approval tiers** — the escalation
-ladder Tier 0 (self-authority for in-scope work + DERIVED NPT/EHT tasks) →
-CHIEF-OF-STAFF → MANAGER → USER. See the `ampa-prrd-trdd-kanban` skill and
-`~/.claude/rules/trdd-approval-tiers.md` for which transitions need approval.
+This skill operates under the AI Maestro **approval requirements** — the
+`min-approval-requirement:` ladder `none` (Tier-0 self-authority for in-scope
+work + DERIVED NPT/EHT tasks, authored directly as a self-mandate) →
+`chief-of-staff` → `manager` → `user`. The MEMBER op-set, the self-mandate rule,
+and which moves need approval are in the `ampa-prrd-trdd-kanban` MEMBER-policy
+skill; the mechanics are the core granular `ama-*` pillar skills. See also
+`~/.claude/rules/trdd-approval-tiers.md`.
 **A MEMBER never self-approves its own releases** — entering the release
 pipeline (`publish`/`deploy`) is USER/MANAGER-authorized, and the INTEGRATOR
 (not the MEMBER) owns the `→ complete` flip.

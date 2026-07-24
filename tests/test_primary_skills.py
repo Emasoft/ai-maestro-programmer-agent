@@ -47,6 +47,18 @@ V2_COLUMNS = {
     "deploy", "live", "live_auditing", "blocked", "failed", "superseded",
 }
 
+# Single source of truth for the core granular pillar skills AMPA wires (verified
+# present in installed ai-maestro-plugin >=2.7). The MEMBER-policy skill
+# (ampa-prrd-trdd-kanban) must enumerate every one; a typo here or there recreates
+# the dead-wiring bug with tests green around the wrong string, so both sides read
+# THIS list. (Emasoft/ai-maestro#61 Q1/Q2, TRDD-I8AH88SS.)
+GRANULAR_PILLAR_SKILLS = [
+    "ama-prrd-get", "ama-prrd-find", "ama-prrd-propose", "ama-prrd-edit",
+    "ama-trdd-write", "ama-trdd-update", "ama-trdd-transition", "ama-trdd-find",
+    "ama-kanban-render", "ama-proposal-approvals",
+]
+POLICY_SKILL = "ampa-prrd-trdd-kanban"
+
 
 def _split_frontmatter(text: str) -> dict:
     """Parse the leading --- YAML frontmatter block of a markdown file."""
@@ -73,11 +85,19 @@ def test_skill_frontmatter_valid(skill: str) -> None:
 
 @pytest.mark.parametrize("skill", PRIMARY_SKILLS)
 def test_skill_governance_block_present(skill: str) -> None:
-    """M5: each primary skill carries the approval-tiers reference + never-self-approve line."""
+    """M5: each primary skill's Governance block cites the min-approval-requirement ladder,
+    the MEMBER-policy skill, the granular ama-* mechanics, and the never-self-approve line.
+
+    Migrated from the deprecated `approval-tier:` / dead `prrd-trdd-kanban` wiring to the
+    granular core skills + min-approval-requirement (Emasoft/ai-maestro#61, TRDD-I8AH88SS).
+    """
     body = (SKILLS_DIR / skill / "SKILL.md").read_text(encoding="utf-8")
     assert "## Governance" in body, f"{skill}: missing ## Governance section"
-    assert "approval tiers" in body.lower(), f"{skill}: must reference the approval tiers"
-    assert "ampa-prrd-trdd-kanban" in body, f"{skill}: must point at the kanban skill"
+    assert "min-approval-requirement" in body, (
+        f"{skill}: must reference the min-approval-requirement ladder (approval-tier is deprecated)"
+    )
+    assert POLICY_SKILL in body, f"{skill}: must cite the {POLICY_SKILL} MEMBER-policy skill"
+    assert "ama-*" in body, f"{skill}: must reference the granular ama-* pillar mechanics"
     assert "never self-approves its own releases" in body, (
         f"{skill}: must carry the never-self-approve line"
     )
@@ -204,14 +224,41 @@ def test_m11_handoff_uses_v2_column(rel: str) -> None:
 
 
 def test_m4_kanban_skill_present_and_v3() -> None:
-    """M4: the ampa-prrd-trdd-kanban skill exists, is R6-v3 correct, and wires the dialog loops."""
-    p = SKILLS_DIR / "ampa-prrd-trdd-kanban" / "SKILL.md"
-    assert p.is_file(), "kanban skill missing"
+    """M4: the MEMBER-policy skill exists, is R6-v3 correct, wires both dialog loops, and carries
+    the repurposed policy (self-mandate + min-approval-requirement) — not the dead passthrough.
+
+    Adapted for the granular rewire (TRDD-I8AH88SS): the skill is now the MEMBER-policy layer
+    over the core granular ama-* mechanics, so it must state the self-mandate rule and the
+    min-approval-requirement vocab, and must NOT still defer to the removed core skill.
+    """
+    p = SKILLS_DIR / POLICY_SKILL / "SKILL.md"
+    assert p.is_file(), "policy skill missing"
     body = p.read_text(encoding="utf-8")
     fm = _split_frontmatter(body)
-    assert fm.get("name") == "ampa-prrd-trdd-kanban"
+    assert fm.get("name") == POLICY_SKILL
     assert "op-comprehension-handshake" in body and "op-pre-pr-gate" in body, "must wire both gates"
     assert "R6 v3" in body, "must state the R6 v3 direct-edge model"
+    assert "self-mandate" in body.lower(), "must carry the self-mandate rule"
+    assert "min-approval-requirement" in body, "must use the min-approval-requirement vocab"
+    assert "Requires the universal prrd-trdd-kanban" not in body, (
+        "must not still defer to the removed core prrd-trdd-kanban skill (passthrough)"
+    )
+
+
+def test_policy_skill_enumerates_granular_pillars() -> None:
+    """The MEMBER-policy skill is the single source that cites EVERY granular ama-* pillar skill.
+
+    The dead-wiring bug (Emasoft/ai-maestro#61) happened because a per-plugin wrapper deferred
+    to a core skill that was later renamed. Pinning the policy skill against the canonical
+    GRANULAR_PILLAR_SKILLS list means a future core rename or a citation typo fails HERE
+    (loudly) instead of silently resolving to nothing again. TRDD-I8AH88SS.
+    """
+    body = (SKILLS_DIR / POLICY_SKILL / "SKILL.md").read_text(encoding="utf-8")
+    missing = [g for g in GRANULAR_PILLAR_SKILLS if g not in body]
+    assert not missing, f"{POLICY_SKILL} must cite every granular pillar skill; missing: {missing}"
+    assert "op-report-missing-derived-trdd" in body, (
+        "policy skill must wire the missing-derived-TRDD duty op"
+    )
 
 
 def test_m2_m3_design_governance_bootstrap() -> None:
