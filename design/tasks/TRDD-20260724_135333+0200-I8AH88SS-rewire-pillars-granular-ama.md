@@ -1,9 +1,9 @@
 ---
 trdd-id: I8AH88SS
 title: Rewire 3-pillars mechanics onto the granular ama-* skills and repurpose the wrapper into a MEMBER-policy skill
-column: planned
+column: complete
 created: 2026-07-24T13:53:33+0200
-updated: 2026-07-24T13:53:33+0200
+updated: 2026-07-24T14:02:39+0200
 current-owner: ampa-programmer
 task-type: refactor
 min-approval-requirement: none
@@ -11,7 +11,7 @@ mandate: true
 mandated-by: self
 relevant-rules: [1, 15]
 external-refs: [Emasoft/ai-maestro#61, ai-maestro-programmer-agent#25]
-implementation-commits: []
+implementation-commits: [58827de]
 ---
 
 # Rewire 3-pillars mechanics onto the granular ama-* skills and repurpose the wrapper into a MEMBER-policy skill
@@ -51,13 +51,14 @@ _present_and_v3` (~206-214) asserts the wrapper's body strings. So T1 (skill
 repurpose) + T2 (governance blocks) + T4 (tests) MUST land as ONE commit unit —
 sequencing them red-breaks publish.py's test gate mid-way.
 
-**NEXT ACTION:** Read `tests/test_primary_skills.py` fully; enumerate every
-assertion that pins the wrapper name or its body strings. Then edit in this order
-within ONE unit: (1) repurpose `ampa-prrd-trdd-kanban/SKILL.md`; (2) re-point the 5
-primary skills' `## Governance` blocks; (3) add the D1 op-reference; (4) adapt the
-tests (single-source `ama-*` name constant; assert granular citations; do NOT add a
-repo-wide `approval-tier:` absence assertion). Run `uv run pytest tests/ -q` → must
-be green before commit.
+**DONE (2026-07-24, commit 58827de):** all four sub-steps landed as one green unit —
+repurposed `ampa-prrd-trdd-kanban` into a MEMBER-policy skill (10 granular skills
+enumerated as the single source, self-mandate rule, missing-derived duty,
+min-approval-requirement ladder); re-pointed the 5 primary skills' `## Governance`
+blocks; added `op-report-missing-derived-trdd`; adapted the tests
+(GRANULAR_PILLAR_SKILLS constant). Full suite **93 passed**. Run tests with
+`uv run --with pytest --with pyyaml pytest tests/ -q` (project declares only pyyaml;
+pytest is injected).
 
 **SUPERSEDED — do NOT carry forward:** any plan that DELETES the wrapper (rejected —
 Q2 exception + 10+ reference sites); any plan that sequences T1→T2→T3→T4 (red-breaks
