@@ -2,14 +2,12 @@
 name: ampa-prrd-trdd-kanban
 description: "MEMBER (programmer)'s ROLE POLICY for the PRRD / TRDD / Kanban workflow — the op-set a MEMBER may run, the self-mandate rule for Tier-0 work, the missing-derived-TRDD duty, and which moves need approval. Use when this agent is the assignee of a TRDD in dev or testing, or is authoring its own Tier-0 / derived tasks. Mechanics are the core granular ama-* pillar skills; this skill is the policy layer over them, not a passthrough."
 license: MIT
-compatibility: Uses the core granular ama-* pillar skills (ai-maestro-plugin >=2.7) for all mechanics.
+compatibility: Uses the core granular ama-* pillar skills (ai-maestro-plugin >=3.0.5) for all mechanics.
 allowed-tools: "Bash(git:*), Read, Edit, Write, Grep, Glob"
 metadata:
   author: "Emasoft"
   version: "1.2.0"
-context: fork
-agent: ai-maestro-programmer-agent-main-agent
-disable-model-invocation: true
+argument-hint: "[TRDD-id8]"
 ---
 
 # AMPA MEMBER role policy (PRRD / TRDD / Kanban)
@@ -51,7 +49,7 @@ allow-list; do not re-implement them here):
 
 ## Prerequisites
 
-- The core granular `ama-*` pillar skills above (`ai-maestro-plugin` >=2.7).
+- The core granular `ama-*` pillar skills above (`ai-maestro-plugin` >=3.0.5).
 - A PRRD at `design/requirements/PRRD.md` and the 4-zone
   `design/{proposals,tasks,refused,archived}/` folders.
 - SERENA MCP for code navigation while implementing.

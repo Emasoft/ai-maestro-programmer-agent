@@ -11,9 +11,7 @@ metadata:
   version: 1.0.26
   workflow-instruction: "Steps 14, 15, 17, 19"
   procedure: "proc-clarify-tasks, proc-handle-feedback, proc-complete-task"
-context: fork
-agent: ai-maestro-programmer-agent-main-agent
-disable-model-invocation: true
+argument-hint: "[clarification|status|blocker|improvement|completion|feedback]"
 ---
 
 # AMPA Orchestrator Communication Skill

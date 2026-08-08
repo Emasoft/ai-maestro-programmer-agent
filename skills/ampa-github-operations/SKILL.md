@@ -14,9 +14,7 @@ metadata:
     AMPA response portions of Steps 21 (PR review feedback) and 22 (fixing
     failed PRs)."
   procedure: "proc-complete-task, proc-handle-failed-pr"
-context: fork
-agent: ai-maestro-programmer-agent-main-agent
-disable-model-invocation: true
+argument-hint: "[clone|branch|commit|pr|review|fix-pr]"
 ---
 
 # AMPA GitHub Operations

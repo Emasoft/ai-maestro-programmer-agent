@@ -289,10 +289,10 @@ mode. `uvx` ships with [uv](https://docs.astral.sh/uv/).
 
 ## Compatibility with Recent Claude Code Releases
 
-AMPA is verified against Claude Code v2.1.105–v2.1.183. The agent itself
-remains backwards-compatible with earlier Claude Code builds; the items
-below describe **new platform capabilities** that AMPA users can opt into
-without changing the plugin.
+AMPA is verified against Claude Code v2.1.105–**v2.1.224**. Most items below
+describe **new platform capabilities** that AMPA users can opt into without
+changing the plugin — but two changes in the v2.1.184–v2.1.224 range altered how
+AMPA *executes* and required fixes; they are marked **Breaking** in that table.
 
 ### Main-thread agent capabilities (v2.1.116 / v2.1.117 / v2.1.119)
 
@@ -350,7 +350,7 @@ mid-task would lose state.
 | Surface                          | What it does                                                  | Added in |
 | -------------------------------- | ------------------------------------------------------------- | -------- |
 | `/goal`                          | Set a completion condition; Claude keeps working across turns | v2.1.139 |
-| `/ultrareview` / `claude ultrareview` | Parallel multi-agent code review; CI-friendly via the CLI subcommand | v2.1.111 / v2.1.120 |
+| `/ultrareview` / `claude ultrareview` | Parallel multi-agent code review; CI-friendly via the CLI subcommand. **Deprecated in v2.1.223** — now an alias for `/code-review ultra` | v2.1.111 / v2.1.120 |
 | `/less-permission-prompts`       | Scans transcripts for read-only Bash/MCP calls and proposes an allowlist | v2.1.111 |
 | `claude project purge`           | Wipe all Claude Code state for a project                      | v2.1.126 |
 | `claude_code.skill_activated`    | OpenTelemetry event with `invocation_trigger` attribute       | v2.1.126 |
@@ -370,7 +370,7 @@ mid-task would lose state.
 
 | Change | Effect on AMPA | Added in |
 | ------ | -------------- | -------- |
-| **Subagent nesting** (up to 5 levels) | AMPA's spawned sub-agents may now spawn their own — useful for fan-out; sub-agent `disallowedTools` MCP specs (`mcp__server`) are honored | v2.1.172 |
+| **Subagent nesting** | AMPA's spawned sub-agents may spawn their own; sub-agent `disallowedTools` MCP specs (`mcp__server`) are honored. **The depth is no longer 5** — see the v2.1.217–v2.1.224 table below for the current cap | v2.1.172 |
 | **`disallowed-tools` skill/command frontmatter** + `/reload-skills` | A skill/command can drop tools while active; skill dirs re-scan without restart | v2.1.152 |
 | **Plugins declare `.mcp.json`** + `defaultEnabled: false` | A plugin may ship MCP servers and ship disabled-by-default; AMPA ships neither | v2.1.154 |
 | **`Tool(param:value)` permission rules** | e.g. `Agent(model:opus)` / `WebFetch(domain:*.example.com)` — finer allow/deny operators can apply to AMPA's tool use | v2.1.176 / v2.1.178 |
@@ -382,12 +382,28 @@ mid-task would lose state.
 | **Model-deprecation warning now covers agent frontmatter** | The warning fires (on stderr, incl. `-p`) for a deprecated/auto-updated model pinned in an agent's frontmatter. AMPA's agent pins **no** `model:` (it inherits the session's), so nothing is flagged | v2.1.183 |
 | **Auto-mode destructive-git guards** | The classifier blocks `git reset --hard`, `checkout -- .`, `clean -fd`, `stash drop`, non-agent `commit --amend`, and `terraform`/`pulumi`/`cdk destroy` unless asked. AMPA's `publish.py` git ops (`commit`/`tag`/`push`) are NOT in that set, so the publish pipeline is unaffected | v2.1.183 |
 | **Scheduled-task / webhook deliveries are task notifications** | In auto mode they can no longer approve a pending action or set the session title — safe for orchestrated/headless AMPA runs | v2.1.183 |
-| **Foreground subagents respect the 5-level nesting depth** | Same cap as background subagents (v2.1.172); AMPA fan-out stays bounded whichever way a sub-agent is spawned | v2.1.181 |
+| **Foreground subagents respect the same nesting depth as background ones** | AMPA fan-out stays bounded whichever way a sub-agent is spawned. **The depth is no longer 5** — see below | v2.1.181 |
 | **`/config key=value` from the prompt** | Operators can set any setting inline (e.g. `/config effort=high`); no AMPA change — AMPA pins nothing it would override | v2.1.181 |
 
-None of these require an AMPA code change — the plugin stays
-backwards-compatible. They are documented so operators know what the latest
-platform offers a programmer agent.
+None of the above required an AMPA code change. The next table did.
+
+### v2.1.184 – v2.1.224 — including two changes AMPA had to act on
+
+| Change | Effect on AMPA | Added in |
+| ------ | -------------- | -------- |
+| **`context: fork` skills run in the BACKGROUND by default** | **Breaking, and silent.** All six `ampa-*` skills were `context: fork` with no `background:` key, so from v2.1.218 they returned an agent handle instead of their result — the invoking agent got nothing in the turn it asked, with no error. **Fixed by removing `context: fork` entirely** (not by pinning `background: false`): every `ampa-*` skill is an AMP/session-coupled procedure, and a forked subagent has no AMP identity, so it could never complete one. The skills now run inline | v2.1.218 |
+| **`disable-model-invocation: true` excludes a skill from subagent preload** | **Breaking, and silent.** The agent's `skills:` field listed all six skills, and all six set that key — so the preload was inert and the agent booted without its own procedures. The key was removed from all six; the preload now works | — |
+| **Nested subagents: off by default, then default depth 3** | `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` sets it. **AMPA's own policy is stricter: single-layer delegation — the sub-agents AMPA spawns do not fan out further** | v2.1.217 / v2.1.219 |
+| **Concurrent-subagent cap (default 20)** | `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`. AMPA's single-layer policy keeps it far below the cap | v2.1.217 |
+| **Per-session 200-subagent spawn cap removed** | Long AMPA sessions no longer refuse new agents; depth and concurrency limits still apply | v2.1.224 (added v2.1.212) |
+| **Agent names may not contain `:`** | Reserved for plugin namespacing. AMPA's agent name is compliant; a non-compliant file is not loaded and the error goes only to the debug log | v2.1.218 |
+| **`/review` is an alias of `/code-review`; `/ultrareview` is deprecated** | Use `/code-review <level>` or `/code-review ultra`. With no level it reuses the last one you typed | v2.1.223 |
+| **Task tool's `mode` parameter deprecated (ignored)** | Subagents inherit the parent session's permission mode. AMPA never passed it | v2.1.212 |
+| **Native cross-session `SendMessage` + `ListAgents`** | Claude Code sessions can message each other across machines. **AMPA does not adopt it**: it carries no AI Maestro AID, so a message has no verifiable author, no R6 routing, and no audit entry. AMP remains AMPA's governed channel. Not unsafe — relayed messages have carried no user authority since v2.1.166 and are classifier-evaluated since v2.1.222 — but **ungoverned**, and the transport choice is fleet governance, not a plugin's to make | v2.1.224 |
+| **`DirectoryAdded` hook** | Fires on `/add-dir`. AMPA registers no hooks: adding a workspace root does not change `cwd`, and AMPA keys nothing on workspace roots. Deliberate, not an omission | v2.1.219 |
+| **Frontmatter booleans accept `yes`/`no`/`on`/`off`/`1`/`0`** | Alongside `true`/`false`. AMPA uses `true`/`false` | v2.1.222 |
+| **`archive` plugin source with optional SHA-256 pinning** | Install from a zip over HTTPS, no git or npm. A **marketplace-entry** feature, not a plugin-manifest one — nothing for AMPA to declare | v2.1.224 |
+| **Plugins accept `"."` as a `skills` path** | For single-skill plugins whose `SKILL.md` sits at the root. AMPA uses the `skills/` directory layout | v2.1.221 |
 
 ## See Also
 

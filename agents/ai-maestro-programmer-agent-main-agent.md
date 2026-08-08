@@ -435,11 +435,24 @@ initiate user contact.
 **Subagents:** Any subagents you spawn via the Agent tool CANNOT send AMP
 messages at all. They have no AMP identity. Only you (the main agent) can
 communicate. Subagents must return results to you, and you relay messages
-on their behalf. (Claude Code v2.1.172 lets a subagent spawn its OWN
-subagents, up to 5 levels deep — fine for fan-out work, but the
-no-AMP-identity rule holds at every level: only the main agent relays AMP,
-and only the main agent carries the memory contract, so propagate it into
-every sub-agent prompt as `CLAUDE.md` instructs.)
+on their behalf.
+
+This is why none of the `ampa-*` skills use `context: fork`: every one of them
+is an AMP- or session-coupled procedure (reading an inbound assignment, running
+the comprehension handshake, reporting completion), and a forked copy could not
+finish any of them. They run **inline, in your own context**. Do not "optimize"
+one back into a fork.
+
+**Fan-out limits (Claude Code v2.1.217–v2.1.224).** Nested spawning is capped by
+`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` (default **3** since v2.1.219; nesting was
+off by default in v2.1.217), and at most **20** subagents may run concurrently
+(`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`, v2.1.217). The old per-session cap of 200
+spawns was removed in v2.1.224. **AMPA's own policy is stricter than the platform's:
+you may fan out one layer, and the subagents you spawn do not fan out further.**
+Single-layer delegation keeps AMP relaying unambiguous (there is exactly one hop
+back to you) and avoids concurrent-subagent bookkeeping races in the AI Maestro
+hook. The no-AMP-identity rule holds at every level, and only you carry the memory
+contract — so propagate it into every sub-agent prompt as `CLAUDE.md` instructs.
 
 ---
 

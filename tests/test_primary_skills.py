@@ -296,3 +296,98 @@ def test_plugin_declares_tooling_dependency() -> None:
     # the dependency must carry a version constraint (CPV: avoid auto-tracking latest)
     versioned = [d for d in data.get("dependencies", []) if isinstance(d, dict) and d.get("name") == "ai-maestro-plugin"]
     assert versioned and versioned[0].get("version"), "ai-maestro-plugin dependency must be version-pinned"
+
+
+# --------------------------------------------------------------------------
+# Claude Code platform-contract guards (TRDD-6QJ4W1MZ).
+#
+# Two Claude Code changes silently altered how this plugin EXECUTES, with no
+# error and no warning. Both were invisible to lint and to every test above,
+# because both are frontmatter semantics rather than file structure. These
+# guards exist so the NEXT such change fails here instead of in production.
+# --------------------------------------------------------------------------
+
+ALL_SKILLS = sorted(p.name for p in SKILLS_DIR.iterdir() if (p / "SKILL.md").is_file())
+
+
+@pytest.mark.parametrize("skill", ALL_SKILLS)
+def test_skill_does_not_fork_amp_coupled_procedure(skill: str) -> None:
+    """No ampa-* skill may use `context: fork` — every one is an AMP/session-coupled procedure.
+
+    WHY THIS IS AN ASSERTION AND NOT A COMMENT: Claude Code v2.1.218 flipped
+    `context: fork` skills to run in the BACKGROUND by default, so a forked
+    skill returns an agent handle and its text arrives later as a task
+    notification — the invoking agent gets NOTHING in the turn it asked, with
+    no error raised. All six ampa-* skills carried `context: fork` and hit
+    exactly that.
+
+    Pinning `background: false` would have papered over a deeper defect: a
+    forked subagent has NO AMP identity (stated in the agent definition
+    itself), yet every ampa-* skill's procedure requires reading or sending
+    AMP messages in the invoking session — receiving the assignment, running
+    the comprehension handshake, reporting completion. A fork can therefore
+    never COMPLETE one of these procedures, foreground or background. On top
+    of that, `agent:` named this same agent, making each invocation a
+    self-recursive fork against the depth cap.
+
+    The fix was to remove `context: fork` and `agent:` outright so the
+    procedures run inline. Re-adding either re-breaks AMP silently.
+    """
+    fm = _split_frontmatter((SKILLS_DIR / skill / "SKILL.md").read_text(encoding="utf-8"))
+    assert "context" not in fm, (
+        f"{skill}: must not set `context:` — ampa-* procedures are AMP/session-coupled and "
+        "run inline; a forked subagent has no AMP identity and cannot complete them"
+    )
+    assert "agent" not in fm, (
+        f"{skill}: must not set `agent:` — it is only meaningful with `context: fork`, and it "
+        "named this same agent (a self-recursive fork)"
+    )
+
+
+@pytest.mark.parametrize("skill", ALL_SKILLS)
+def test_preloaded_skill_is_not_blocked_from_preload(skill: str) -> None:
+    """A skill listed in the agent's `skills:` preload must not set `disable-model-invocation`.
+
+    Claude Code excludes `disable-model-invocation: true` skills from subagent
+    preloading ("preloading draws from the same set of skills Claude can
+    invoke"). All six skills set it while the agent's `skills:` field listed
+    all six — so the preload was inert and the role agent booted WITHOUT its
+    own operating procedures in context. Silent: no error, no warning, and the
+    agent body still instructed itself to use them.
+    """
+    agent_fm = _split_frontmatter(AGENT_FILE.read_text(encoding="utf-8"))
+    preloaded = set(agent_fm.get("skills") or [])
+    fm = _split_frontmatter((SKILLS_DIR / skill / "SKILL.md").read_text(encoding="utf-8"))
+    if skill in preloaded:
+        assert not fm.get("disable-model-invocation"), (
+            f"{skill}: is in the agent's `skills:` preload list, so `disable-model-invocation: "
+            "true` makes that preload silently inert — drop one or the other"
+        )
+
+
+def test_agent_and_skill_names_carry_no_colon() -> None:
+    """`:` is reserved for plugin namespacing; since v2.1.218 a name containing it is REJECTED.
+
+    Claude Code does not load such a file and logs the error only to the debug
+    log — so a bad rename would remove the agent from the fleet with no visible
+    failure anywhere an operator would look.
+    """
+    agent_name = str(_split_frontmatter(AGENT_FILE.read_text(encoding="utf-8")).get("name", ""))
+    assert ":" not in agent_name, f"agent name {agent_name!r} must not contain ':'"
+    for skill in ALL_SKILLS:
+        fm = _split_frontmatter((SKILLS_DIR / skill / "SKILL.md").read_text(encoding="utf-8"))
+        assert ":" not in str(fm.get("name", "")), f"{skill}: skill name must not contain ':'"
+
+
+def test_agent_preload_list_matches_shipped_skills() -> None:
+    """Every skill the agent preloads must exist on disk — a typo yields a silent no-op.
+
+    The `skills:` field is resolved by name; an entry that matches nothing is
+    dropped without an error, which is the same failure mode as the inert
+    preload above but caused by a rename instead of a frontmatter key.
+    """
+    agent_fm = _split_frontmatter(AGENT_FILE.read_text(encoding="utf-8"))
+    preloaded = list(agent_fm.get("skills") or [])
+    assert preloaded, "agent must declare its operating procedures in `skills:`"
+    missing = [s for s in preloaded if s not in ALL_SKILLS]
+    assert not missing, f"agent `skills:` names skills that do not exist: {missing}"

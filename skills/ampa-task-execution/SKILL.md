@@ -11,9 +11,7 @@ metadata:
   version: 1.0.26
   workflow-instruction: "Step 17 - Task Execution"
   procedure: "proc-execute-task"
-context: fork
-agent: ai-maestro-programmer-agent-main-agent
-disable-model-invocation: true
+argument-hint: "[task-id]"
 ---
 
 # AMPA Task Execution Skill

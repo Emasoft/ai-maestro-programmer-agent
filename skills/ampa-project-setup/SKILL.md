@@ -11,9 +11,7 @@ metadata:
   version: 1.0.26
   workflow-instruction: "Step 17 (first task)"
   procedure: "proc-execute-task"
-context: fork
-agent: ai-maestro-programmer-agent-main-agent
-disable-model-invocation: true
+argument-hint: "[project-path]"
 ---
 
 # AMPA Project Setup Skill

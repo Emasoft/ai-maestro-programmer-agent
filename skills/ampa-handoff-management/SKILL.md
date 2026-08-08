@@ -11,9 +11,7 @@ metadata:
   version: 1.0.26
   workflow-instruction: "support"
   procedure: "proc-handoff-management"
-context: fork
-agent: ai-maestro-programmer-agent-main-agent
-disable-model-invocation: true
+argument-hint: "[read|create|bug-report|document-state]"
 ---
 
 # AMPA Handoff Management Skill
