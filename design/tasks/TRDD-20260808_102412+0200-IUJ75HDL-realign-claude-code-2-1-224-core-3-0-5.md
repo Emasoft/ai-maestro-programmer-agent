@@ -139,3 +139,23 @@ governance (Tier 2/3), not a role plugin's decision. AMP remains the governed ch
 - 2026-08-08T10:31:00+0200 — PUBLISHED as v2.0.0 (`da26fd3`). Gate green on the second
   attempt; the first was blocked by two shellcheck MINORs in `.githooks/pre-push`, fixed in
   both the generated file and its generating template (`ac0809c`).
+- 2026-08-08T10:40:00+0200 — **CORRECTION, superseding one claim in "Claims checked and
+  REFUSED" above. `R42.8` IS ratified governance.** The body's claim is left in place, not
+  deleted, so the error stays auditable. Verified first-hand this time:
+  `docs/GOVERNANCE-RULES.md` **v5.3.3 on the `governance-rules` branch** of `Emasoft/ai-maestro`
+  carries R42.8 with verdict *Explicit (USER)*, and rows R42.1 and R42.2 both reference it as
+  the single carve-out. Issue `#125` staying OPEN was **doc-lag**, reconciled in its comment
+  `5224811566` (2026-08-08T05:53:41Z).
+  **Why the original check was wrong, and the lesson:** `governance-rules` is the authoritative
+  ref by USER decision (2026-08-08); `main` is stale at 4.0.2 / R20-era. I measured the issue's
+  *state* on the default ref and never queried the branch — I did not know it existed at the
+  time. A probe aimed at the wrong ref returns a **true-looking negative**, indistinguishable
+  from a real absence. Prove a probe with a known-good positive control before trusting its
+  silence. The `ama-unblock` half of that section stands: still absent from CORE v3.0.5.
+  **Operationally moot for this plugin** — R42.8 grants MANAGER and CHIEF-OF-STAFF only; AMPA is
+  MEMBER, so `inject`/`slash`/`queue`/`answer` remain forbidden to it against any agent. Nothing
+  shipped in v2.0.0 depends on either reading.
+- 2026-08-08T10:40:00+0200 — `RP-MODEL-01` (role-plugins spec, `governance-rules`) checked
+  against this plugin: the spec's own measurement lists `ai-maestro-programmer-agent` under
+  **"no `model:` key"**, which is the corrected normative state. AMPA declares no `model:`,
+  `effort:`, `tools:`, or `permission-mode:`. **Already compliant — do not add a `model:` pin.**
