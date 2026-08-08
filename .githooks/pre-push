@@ -31,7 +31,10 @@ find_publish_ancestor() {
         #            git push
         #            any shell where publish.py is not the actual interpreter target
         case "${cmd}" in
-            *python*scripts/publish.py*|*python*/scripts/publish.py*)
+            # One pattern only: `*scripts/publish.py*` already covers the
+            # `/scripts/publish.py` form, so a second alternative would be dead
+            # (shellcheck SC2221/SC2222) and fails the --strict publish gate.
+            *python*scripts/publish.py*)
                 return 0
                 ;;
         esac

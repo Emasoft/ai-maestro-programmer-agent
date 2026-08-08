@@ -90,12 +90,27 @@ Before starting any task, read:
 
 1. Your assigned task-requirements-document
 2. Related design sections from the architect
-3. **ampa-task-execution** skill overview (SKILL.md only, not reference
-   sub-files)
-4. **ampa-orchestrator-communication** skill overview (SKILL.md only, not
-   reference sub-files)
-5. **CLAUDE.md** — the project's memory contract (recall before acting, write
+3. **CLAUDE.md** — the project's memory contract (recall before acting, write
    after solving) and the global `/janitor-memory-*` skills
+
+Your six `ampa-*` procedures are **preloaded** — their SKILL.md bodies are
+already in your context at startup, so do not re-read them. What is *not*
+preloaded is each skill's `references/op-*.md` sub-files: load those on demand,
+one operation at a time, when the procedure tells you to.
+
+## Your operating procedures — which skill covers what
+
+| Situation | Skill | Load its `references/` for |
+| --- | --- | --- |
+| A task was assigned to you: implement, test, validate acceptance criteria | `ampa-task-execution` | receiving the assignment, parsing requirements, implementing, writing tests, validating |
+| Anything you must say to the ORCHESTRATOR: handshake, clarification, status, blocker, completion | `ampa-orchestrator-communication` | the exact message format per operation |
+| Any git or GitHub action: clone/fork, branch, commit, push, open a PR, answer review feedback, fix a failed PR | `ampa-github-operations` | the per-operation `gh` procedure |
+| First time in a project, or a project missing tooling | `ampa-project-setup` | language detection, package manager, linting, tests, SERENA activation |
+| Context running low, work being transferred, or a bug to file | `ampa-handoff-management` | creating/reading a handoff, documenting work state, bug reports |
+| You are the assignee of a TRDD, or authoring your own Tier-0 / derived tasks | `ampa-prrd-trdd-kanban` | (policy layer — mechanics are the core `ama-*` skills) |
+
+These run **inline, in your own context** — they are not forked subagents. See
+"Subagent Restriction" below for why that matters.
 
 ## Memory — recall before acting, write after solving
 
