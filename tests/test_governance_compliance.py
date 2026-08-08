@@ -149,3 +149,31 @@ def test_r37_tier3_user_label_is_preserved() -> None:
     """M8 exempt: the PRRD Tier-3 `USER` contract label must survive the MAESTRO sweep untouched."""
     body = AGENT_FILE.read_text(encoding="utf-8")
     assert "Tier 3 — USER" in body, "the fixed PRRD Tier-3 USER label must NOT be renamed (ruling-2 exemption)"
+
+
+def test_rp_skill_menu_01_menu_covers_every_shipped_skill() -> None:
+    """RP-SKILL-MENU-01: the persona body carries one menu row per shipped skill.
+
+    role-plugins-spec 1.1.0 (TRDD-0FCR6KOW) requires every role-plugin MAIN agent
+    whose plugin ships skills to carry a compact skill menu — the skill name plus
+    when to reach for it — because skill *descriptions* alone under-trigger for
+    role-specific procedures: an agent that cannot SEE its inventory does not reach
+    for it.
+
+    THE GUARD IS THE POINT, not the menu. The spec states plainly that a STALE menu
+    is worse than none, and asks that a publish gate compare menu entries against the
+    shipped SKILL.md count. Without this test, adding a 7th skill leaves a 6-row menu
+    that reads as complete and silently hides the new skill from the agent — the same
+    silent-omission failure as the preload-exclusion defect that motivated the rule.
+    """
+    shipped = sorted(p.name for p in SKILLS_DIR.iterdir() if (p / "SKILL.md").is_file())
+    assert shipped, "no skills found — check SKILLS_DIR"
+    body = AGENT_FILE.read_text(encoding="utf-8")
+    # A menu row is a markdown table row that names the skill in backticks. Counting
+    # rows (not bare mentions) is deliberate: prose elsewhere in the persona mentions
+    # several skills, and those must not be able to satisfy the menu requirement.
+    rows = {s: len(re.findall(rf"^\|.*`{re.escape(s)}`", body, re.M)) for s in shipped}
+    missing = [s for s, n in rows.items() if n == 0]
+    assert not missing, f"RP-SKILL-MENU-01: no menu row for {missing} — the agent cannot see them"
+    duplicated = [s for s, n in rows.items() if n > 1]
+    assert not duplicated, f"RP-SKILL-MENU-01: {duplicated} appear in more than one menu row (ambiguous)"
