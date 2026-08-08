@@ -1,9 +1,9 @@
 ---
 trdd-id: IUJ75HDL
 title: Realign AMPA to Claude Code v2.1.224 and AI Maestro CORE v3.0.5
-column: dev
+column: published
 created: 2026-08-08T10:24:12+0200
-updated: 2026-08-08T10:24:12+0200
+updated: 2026-08-08T10:32:00+0200
 current-owner: ai-maestro-programmer-agent
 task-type: bugfix
 scope: project
@@ -18,7 +18,8 @@ impacts: [plugin-manifest, skills, agent-definition, docs, tests]
 test-requirements: [pytest, ruff, cpv-strict]
 npt: []
 eht: []
-implementation-commits: []
+implementation-commits: [1f67a5e, ac0809c, da26fd3]
+released-as: v2.0.0
 ---
 
 # Realign AMPA to Claude Code v2.1.224 and AI Maestro CORE v3.0.5
@@ -31,7 +32,15 @@ implementation-commits: []
 - **README**: compatibility re-anchored to v2.1.224; two false nesting claims removed;
   new v2.1.184–v2.1.224 table added. DONE.
 - **Tests**: 4 platform-contract guards added to `tests/test_primary_skills.py`. 107 pass.
-- **NEXT ACTION**: `uv run scripts/publish.py` (full gate → tag → push → GitHub release).
+- **SHIPPED**: `v2.0.0`, remote `main` at `da26fd3`, GitHub release live. MAJOR because the
+  CORE dependency floor moved to 3.x — a consumer on CORE 2.x can no longer satisfy it.
+- **NEXT ACTION**: none for this card. Open follow-up, tracked separately: the ai-maestro
+  session was asked for `design/specs/role-plugins-spec.md` (branch `governance-rules`); if it
+  constrains role-plugin frontmatter/manifest, a follow-up TRDD may be needed.
+- **Gate note (load-bearing)**: `publish.py` rewrites `.githooks/pre-push` from
+  `PRE_PUSH_HOOK_TEMPLATE` at step 0.5, BEFORE the validate gate. A fix applied only to the
+  generated file is silently reverted on the next publish. Always fix both; they are asserted
+  byte-identical.
 - **SUPERSEDED — do NOT carry forward**: the "add `background: false` to the six skills"
   fix. It is wrong here; see "Why not `background: false`" below. Several fleet peers
   requested exactly that — the request is understandable but the premise does not hold
@@ -118,10 +127,15 @@ governance (Tier 2/3), not a role plugin's decision. AMP remains the governed ch
 - [x] README states verification through v2.1.224 and marks the two breaking changes.
 - [x] Regression guards fail if `context: fork`, an inert preload, or a `:` in a name returns.
 - [x] `pytest tests/ -q` green (107 passed).
-- [ ] `ruff check .` green.
-- [ ] `publish.py` gate green; tagged, pushed, released.
+- [x] `ruff check .` green.
+- [x] `publish.py` gate green (CRITICAL=0 MAJOR=0 MINOR=0 NIT=0); tagged `v2.0.0` +
+      `ai-maestro-programmer-agent--v2.0.0`, pushed atomically, GitHub release created.
+- [x] Remote re-measure: zero `context: fork` on the published branch.
 
 ## Approval log
 
 - 2026-08-08T10:24:12+0200 — Tier-0 self-mandate (in-scope repair of this plugin's own
   defects). USER authorized implement + push + publish in-session.
+- 2026-08-08T10:31:00+0200 — PUBLISHED as v2.0.0 (`da26fd3`). Gate green on the second
+  attempt; the first was blocked by two shellcheck MINORs in `.githooks/pre-push`, fixed in
+  both the generated file and its generating template (`ac0809c`).
