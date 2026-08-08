@@ -1,6 +1,20 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.0] - 2026-08-08
+
+### Bug Fixes
+
+- [**breaking**] Run ampa-* skills inline and repair the inert preload (TRDD-IUJ75HDL)
+
+- Drop the dead case pattern and route the preloaded skills (TRDD-IUJ75HDL)
+
+### Documentation
+
+- Record 459032f on 1TXG0EON (ruff-gate pin)
+
+- Capture the ruff-drift publish-lint-gate lesson (TRDD-1TXG0EON)
+
 ## [1.4.7] - 2026-07-24
 
 ### Bug Fixes
@@ -18,6 +32,10 @@ All notable changes to this project will be documented in this file.
 - Reflect granular ama-* wiring + add self-mandate/missing-derived/refusal scenarios (TRDD-G0768YHK)
 
 - Mark G0768YHK complete (e3ddf58)
+
+### Miscellaneous
+
+- V1.4.7
 
 ### Refactor
 
