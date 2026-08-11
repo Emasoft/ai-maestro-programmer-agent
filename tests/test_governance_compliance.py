@@ -22,6 +22,8 @@ into a breach and the suite fails.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 from pathlib import Path
 
@@ -198,11 +200,23 @@ def test_pinned_prrd_citations_resolve_to_a_live_rule_version() -> None:
     live = _prrd_rule_versions()
     assert live, "parsed no rules from the PRRD — the definition format has drifted"
 
+    # `.py` is scanned too: the first version of this guard globbed *.md only,
+    # so a stale citation in a docstring — where several of them actually live —
+    # was invisible to it.
+    #
+    # THIS FILE excludes itself, permanently and by necessity, not by oversight:
+    # a detector that documents the defect must quote the defect's own triggers
+    # (`G1.1` → `G1.2` appears in the docstrings above), and its negative-control
+    # fixtures must contain the thing it detects. Excluding only itself is the
+    # smallest exclusion that resolves the self-reference, and a stated hole
+    # beats a hidden one. Credit: the ORCHESTRATOR role-plugin hit this in its
+    # own implementation and documented it.
     scanned = [
         p
         for d in ("skills", "docs", "agents", "tests", "design")
-        for p in (REPO_ROOT / d).rglob("*.md")
-        if not _is_frozen_trdd(p)
+        for pattern in ("*.md", "*.py")
+        for p in (REPO_ROOT / d).rglob(pattern)
+        if not _is_frozen_trdd(p) and p.resolve() != Path(__file__).resolve()
     ] + [REPO_ROOT / "README.md", REPO_ROOT / "CLAUDE.md"]
 
     dangling: list[str] = []
@@ -218,6 +232,52 @@ def test_pinned_prrd_citations_resolve_to_a_live_rule_version() -> None:
     assert not dangling, (
         "version-pinned PRRD citations that no longer resolve — use the floating form "
         "`G<n>` when the claim is not about a specific revision: " + "; ".join(dangling)
+    )
+
+
+def _prrd_rule_bodies() -> dict[str, str]:
+    """Map every PRRD rule's full citation (`G1.2`) to its rule TEXT."""
+    prrd = (REPO_ROOT / "design" / "requirements" / "PRRD.md").read_text(encoding="utf-8")
+    return {
+        f"{letter}{number}.{version}": body.strip()
+        for letter, number, version, body in re.findall(r"^- \*\*([GS])(\d+)\.(\d+)\*\* — (.*)$", prrd, re.M)
+    }
+
+
+def test_prrd_rule_text_matches_its_declared_version() -> None:
+    """A rule's TEXT may not change without its version moving.
+
+    The inverse of the dangling-citation defect, and strictly worse. A stale
+    pointer announces itself the first time someone looks it up and finds
+    nothing. A pointer to silently-MUTATED content never announces itself at
+    all: edit a rule's text and skip the version bump, and every existing
+    `G1.1` citation still resolves perfectly — to text that changed underneath
+    it. The version is a machine-readable claim about the text; nothing was
+    checking that the claim stayed true.
+
+    Reported by the ORCHESTRATOR role-plugin, which hit exactly this while
+    making the same byline fix and shipped the mirror of it.
+
+    On a legitimate edit the fix is TWO steps, and the failure message gives
+    both: bump the version in the PRRD, then update this fixture (the printed
+    hash is copy-pasteable). The bookkeeping is one line, on a line the author
+    is already editing to bump the version.
+    """
+    fixture_path = REPO_ROOT / "tests" / "prrd-rule-text-hashes.json"
+    pinned = json.loads(fixture_path.read_text(encoding="utf-8"))
+    live = {k: hashlib.sha256(v.encode()).hexdigest()[:16] for k, v in _prrd_rule_bodies().items()}
+
+    mutated = [
+        f"{cite}: text changed but the version did not — bump it in the PRRD, then set this "
+        f"fixture entry to {h}"
+        for cite, h in live.items()
+        if cite in pinned and pinned[cite] != h
+    ]
+    unpinned = [f'{cite}: new or renumbered — add "{cite}": "{h}" to the fixture' for cite, h in live.items() if cite not in pinned]
+    removed = [f"{cite}: in the fixture but no longer in the PRRD — drop it" for cite in pinned if cite not in live]
+
+    assert not (mutated + unpinned + removed), "PRRD rule text / version drift:\n  " + "\n  ".join(
+        mutated + unpinned + removed
     )
 
 
