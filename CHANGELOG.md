@@ -1,11 +1,21 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.4] - 2026-08-11
+
+### Tests
+
+- Commit the negative controls — mine only ever ran by hand
+
 ## [2.0.3] - 2026-08-11
 
 ### Bug Fixes
 
 - The rule-text guard was blind to continuation lines
+
+### Miscellaneous
+
+- V2.0.3
 
 ## [2.0.2] - 2026-08-11
 
