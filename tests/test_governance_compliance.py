@@ -236,12 +236,35 @@ def test_pinned_prrd_citations_resolve_to_a_live_rule_version() -> None:
 
 
 def _prrd_rule_bodies() -> dict[str, str]:
-    """Map every PRRD rule's full citation (`G1.2`) to its rule TEXT."""
+    """Map every PRRD rule's full citation (`G1.2`) to its WHOLE rule text, whitespace-normalized.
+
+    Two things here are load-bearing, and the first version of this function got
+    both wrong in a way that is worth keeping written down.
+
+    **Capture the whole block, not one line.** `(.*)$` under `re.M` stops at the
+    first newline, so a rule wrapped across lines was silently truncated to its
+    first line — and an edit to any CONTINUATION line then hashed identically to
+    the original. The guard would have passed while the rule's meaning changed,
+    which is precisely the defect it exists to catch, reproduced inside the guard
+    itself. That is a silent under-coverage: strictly worse than a false alarm,
+    because nothing ever tells you it stopped covering.
+
+    **Normalize whitespace before hashing.** A reflow is not a revision. Failing
+    on one teaches the author to regenerate the fixture without reading it, which
+    is the single move that turns this guard back into decoration. Credit for this
+    half: the ORCHESTRATOR role-plugin, which hit it first.
+    """
     prrd = (REPO_ROOT / "design" / "requirements" / "PRRD.md").read_text(encoding="utf-8")
-    return {
-        f"{letter}{number}.{version}": body.strip()
-        for letter, number, version, body in re.findall(r"^- \*\*([GS])(\d+)\.(\d+)\*\* — (.*)$", prrd, re.M)
-    }
+    out: dict[str, str] = {}
+    # A rule runs from its own bullet to the next rule bullet, the next heading, or EOF.
+    for m in re.finditer(
+        r"^- \*\*([GS])(\d+)\.(\d+)\*\* — (.*?)(?=^- \*\*[GS]\d+\.\d+\*\*|^#|\Z)",
+        prrd,
+        re.M | re.S,
+    ):
+        letter, number, version, body = m.groups()
+        out[f"{letter}{number}.{version}"] = " ".join(body.split())
+    return out
 
 
 def test_prrd_rule_text_matches_its_declared_version() -> None:
