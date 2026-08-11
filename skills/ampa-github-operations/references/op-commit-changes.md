@@ -95,7 +95,7 @@ Commit messages have three parts:
 - **Footer**: Reference issues and breaking changes, and carry the
   **`Agent: <plugin-slug>` trailer** (required). All AI Maestro agents share one
   human-owner git identity, so the trailer names which agent authored the commit
-  (per `PRRD G1.1` / the commit-discipline rule). For this plugin it is
+  (per `PRRD G1` / the commit-discipline rule). For this plugin it is
   `Agent: ai-maestro-programmer-agent`.
 
 **Example:**

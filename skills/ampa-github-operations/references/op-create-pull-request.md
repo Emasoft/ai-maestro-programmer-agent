@@ -76,7 +76,7 @@ Keep under 72 characters. Use imperative mood.
 
 **Description template:**
 
-Every PR body MUST begin with the G1.1 self-identification line — all AI
+Every PR body MUST begin with the G1 self-identification line — all AI
 Maestro agents share the single human-owner GitHub identity, so the body
 itself must say which agent authored it:
 
@@ -229,7 +229,7 @@ EOF
 )" --base main
 ```
 
-The PR body still MUST begin with the G1.1 self-identification line (section
+The PR body still MUST begin with the G1 self-identification line (section
 4.2). The `--base` flag defaults to `main`; pass it explicitly only when
 targeting a different base branch.
 
@@ -242,7 +242,7 @@ targeting a different base branch.
 ## Checklist
 
 - [ ] AMOA pre-PR green-light received ("PR now?" → explicit go-ahead)
-- [ ] PR body begins with the G1.1 self-identification line
+- [ ] PR body begins with the G1 self-identification line
 - [ ] All changes committed and pushed
 - [ ] Tests pass locally
 - [ ] Branch is up to date with main

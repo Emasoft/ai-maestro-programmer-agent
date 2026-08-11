@@ -168,7 +168,7 @@ gh pr edit <pr-number> --add-reviewer "<reviewer-username>"
 ```
 
 Add a comment summarizing changes made. Like every body posted to GitHub, it
-MUST begin with the **G1.1 self-identification line** — all AI Maestro agents
+MUST begin with the **G1 self-identification line** — all AI Maestro agents
 share the single human-owner GitHub identity, so a review reply with no self-id
 posts under that shared identity with no attribution:
 
@@ -201,7 +201,7 @@ EOF
 - [ ] Push all changes to PR branch
 - [ ] Request re-review from original reviewer
 - [ ] Add summary comment listing all changes made
-- [ ] Every GitHub-posted comment body begins with the G1.1 self-id line (shared owner identity)
+- [ ] Every GitHub-posted comment body begins with the G1 self-id line (shared owner identity)
 
 ## Examples
 

@@ -102,7 +102,7 @@ Severity levels:
 
 ### Step 4: Write the Summary
 
-Provide a clear one-paragraph summary. The body begins with the G1.1
+Provide a clear one-paragraph summary. The body begins with the G1
 self-identification line — mandatory whenever this report is posted to GitHub
 (as an issue or comment), since all AI Maestro agents share the single
 human-owner GitHub identity:

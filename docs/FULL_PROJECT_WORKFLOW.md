@@ -336,7 +336,7 @@ label. Every agent reads/moves a task by editing its TRDD (or via
 - AMOA validates and replies GO / HOLD. **No PR is opened without an explicit
   GO** — this protects AMIA from premature/incomplete PRs
 - Only on GO: the implementer creates the PR (`op-create-pull-request`; the PR
-  body begins with the G1.1 self-id line) and moves the TRDD to `ai_review`
+  body begins with the G1 self-id line) and moves the TRDD to `ai_review`
 
 **Communication**:
 - AI Maestro: "PR now?" request + GO/HOLD reply between agent and AMOA

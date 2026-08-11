@@ -10,7 +10,7 @@ without updating its test (or vice-versa) and the suite fails.
 - `test_primary_skills.py` — the 5 primary skills' frontmatter, resolvable
   `references/` links, and the #17 fleet-readiness alignment (the `## Governance`
   block, the R6-v3 AMCOS direct channel, the comprehension-handshake / pre-PR-gate
-  dialog loops, the G1.1 self-id line in the PR and bug-report templates, the v2
+  dialog loops, the G1 self-id line in the PR and bug-report templates, the v2
   `column:` migration of handoff task-state, the kanban skill, the global janitor
   memory wiring, no `model:` pin on the agent, and the `ai-maestro-plugin`
   dependency).
