@@ -254,7 +254,17 @@ def _prrd_rule_bodies() -> dict[str, str]:
     is the single move that turns this guard back into decoration. Credit for this
     half: the ORCHESTRATOR role-plugin, which hit it first.
     """
-    prrd = (REPO_ROOT / "design" / "requirements" / "PRRD.md").read_text(encoding="utf-8")
+    return _parse_rule_bodies((REPO_ROOT / "design" / "requirements" / "PRRD.md").read_text(encoding="utf-8"))
+
+
+def _parse_rule_bodies(prrd: str) -> dict[str, str]:
+    """The parser, taking TEXT so the controls below can feed it synthetic input.
+
+    Split out deliberately: the controls must not mutate the real PRRD on disk.
+    An earlier round of these ran as throwaway scripts that edited the file and
+    restored it in a `finally` — which corrupts the repo if the run is
+    interrupted, and proves nothing once the script exits.
+    """
     out: dict[str, str] = {}
     # A rule runs from its own bullet to the next rule bullet, the next heading, or EOF.
     for m in re.finditer(
@@ -265,6 +275,93 @@ def _prrd_rule_bodies() -> dict[str, str]:
         letter, number, version, body = m.groups()
         out[f"{letter}{number}.{version}"] = " ".join(body.split())
     return out
+
+
+# --- Negative controls for the guards above -------------------------------
+#
+# A guard that has only ever PASSED is a guard nobody has tested. These prove
+# each guard can still FAIL, and they are committed rather than run once by hand
+# — a control that ran during development and was not kept is a demo, not a
+# control: the repo cannot tell a working guard from a broken one without them.
+#
+# Control C is the one that keeps A and B honest. A and B pass under the correct
+# parser AND under a hypothetical parser that never had the property, if the
+# fixture stops exercising it. C asserts the fixture can still TELL THE TWO
+# APART, so it fails the moment the fixture drifts to something undiscriminating.
+# Credit: the ORCHESTRATOR role-plugin, which found this gap in its own controls.
+
+_BROKEN_PARSER = re.compile(r"^- \*\*([GS])(\d+)\.(\d+)\*\* — (.*)$", re.M)
+
+_FIXTURE_ONE_LINE = "- **S9.1** — Alpha beta gamma delta epsilon zeta.\n"
+_FIXTURE_WRAPPED = "- **S9.1** — Alpha beta gamma\n  delta epsilon zeta.\n"
+_FIXTURE_TAIL_EDIT = "- **S9.1** — Alpha beta gamma\n  delta epsilon OMEGA.\n"
+
+
+def _broken_bodies(prrd: str) -> dict[str, str]:
+    """The naive parser this guard used to have — kept ONLY as control C's baseline."""
+    return {f"{letter}{n}.{v}": " ".join(body.split()) for letter, n, v, body in _BROKEN_PARSER.findall(prrd)}
+
+
+def test_control_a_edit_on_a_continuation_line_is_detected() -> None:
+    """A: a word changed on a rule's SECOND line must change its hash (no silent under-coverage)."""
+    assert _parse_rule_bodies(_FIXTURE_WRAPPED)["S9.1"] != _parse_rule_bodies(_FIXTURE_TAIL_EDIT)["S9.1"], (
+        "a continuation-line edit hashed identically — the parser is truncating at the first newline, "
+        "so the guard passes while a rule's meaning changes"
+    )
+
+
+def test_control_b_a_pure_reflow_is_not_a_revision() -> None:
+    """B: rewrapping a rule with no wording change must NOT change its hash (no false positive)."""
+    assert _parse_rule_bodies(_FIXTURE_ONE_LINE)["S9.1"] == _parse_rule_bodies(_FIXTURE_WRAPPED)["S9.1"], (
+        "a pure reflow changed the hash — that trains authors to regenerate the fixture without "
+        "reading it, which turns this guard back into decoration"
+    )
+
+
+def test_control_c_the_fixture_still_discriminates_the_broken_parser() -> None:
+    """C: the fixture must still tell the correct parser from the naive one.
+
+    Without this, A and B keep passing even if the fixture is simplified to a
+    single line — at which point they prove the parser behaves, not that the
+    multi-line property is WHY it behaves. A control that cannot distinguish the
+    fixed implementation from the broken one is not a control.
+    """
+    assert _broken_bodies(_FIXTURE_WRAPPED)["S9.1"] == _broken_bodies(_FIXTURE_TAIL_EDIT)["S9.1"], (
+        "the fixture no longer exercises the truncation bug — the naive parser now detects the "
+        "continuation-line edit too, so A and B are no longer testing the property they claim to"
+    )
+    assert _parse_rule_bodies(_FIXTURE_WRAPPED)["S9.1"] != _broken_bodies(_FIXTURE_WRAPPED)["S9.1"], (
+        "the correct and naive parsers agree on this fixture — it cannot discriminate them"
+    )
+
+
+def test_control_the_paging_handle_detector_can_still_fire() -> None:
+    """The `@handle` guard must catch a handle in prose, and must NOT fire inside code.
+
+    Both halves matter and pull opposite ways: a detector that fires on
+    `@eslint/js` in a fence gets suppressed by the next author, and one that
+    misses a bare handle in prose is why this repo shipped `@owner` in a template.
+    """
+    prose = _prose_lines("Posted by the Claude developing X (via the shared @owner gh auth).")
+    assert any(_PAGING_HANDLE.search(line) for _, line in prose), "must catch a bare @handle in prose"
+
+    for inert in ("Install `@eslint/js` now.", "```\n@pytest.fixture\n```", "See @types/node here.", "mail x@y.com"):
+        assert not any(_PAGING_HANDLE.search(line) for _, line in _prose_lines(inert)), (
+            f"false positive on inert text: {inert!r} — a guard that reddens on correct writing gets deleted"
+        )
+
+
+def test_control_prose_lines_keeps_line_numbers_accurate() -> None:
+    """Blanking code must preserve line numbers — a guard that misreports the line misdirects.
+
+    The first version of this helper DELETED fenced blocks, which shifted every
+    later line number: it reported a real finding at line 160 for a problem on
+    line 165, sending the reader to innocent text.
+    """
+    doc = "prose one\n```\nfenced @handle\n```\nprose @target here\n"
+    hits = [i for i, line in _prose_lines(doc) if "@target" in line]
+    assert hits == [5], f"expected the finding at line 5, got {hits}"
+    assert not any("@handle" in line for _, line in _prose_lines(doc)), "fenced content must be blanked, not scanned"
 
 
 def test_prrd_rule_text_matches_its_declared_version() -> None:
