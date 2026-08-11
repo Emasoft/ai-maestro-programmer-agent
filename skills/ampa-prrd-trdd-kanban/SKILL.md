@@ -162,9 +162,9 @@ See `~/.claude/rules/trdd-approval-tiers.md` for which transitions need approval
 ## Examples
 
 - Assigned a `pull-request` TRDD: read it (`ama-trdd-find`), answer the handshake,
-  get ORCH's confirmation, cite PRRD S64.3 (`ama-prrd-get`), branch
+  get ORCH's confirmation, cite PRRD S7.1 (`ama-prrd-get`), branch
   `feature/TRDD-1a2b3c4d-add-cache`, implement, commit
-  `feat: add request cache (TRDD-1a2b3c4d, PRRD S64.3)`, record the SHA
+  `feat: add request cache (TRDD-1a2b3c4d, PRRD S7.1)`, record the SHA
   (`ama-trdd-update`), move to `testing` (`ama-trdd-transition`), tests pass, clear
   the pre-PR gate with ORCH, open the PR, move to `ai_review`.
 - You spot a missing EHT while implementing: report it to ORCH per

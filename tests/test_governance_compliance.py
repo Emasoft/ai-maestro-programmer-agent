@@ -151,16 +151,97 @@ def test_r37_tier3_user_label_is_preserved() -> None:
     assert "Tier 3 — USER" in body, "the fixed PRRD Tier-3 USER label must NOT be renamed (ruling-2 exemption)"
 
 
-def _prose_only(text: str) -> str:
-    """Strip fenced code blocks and inline code spans, leaving prose an agent would paste.
+def _prrd_rule_versions() -> dict[str, str]:
+    """Map every PRRD rule NUMBER to its current version, from the rule definitions.
 
-    `@` is inert inside a code span and routine inside a fence (npm scopes like
-    `@eslint/js`, decorators like `@pytest.fixture`, `gh pr list --author "@me"`).
-    Only bare prose can page a real account, so only bare prose is checked.
+    A definition looks like `- **G1.2** — …` or `- **S64.134** — …`. The number is
+    globally unique across G/S, and promote/demote flips only the letter, so the
+    number alone is the stable key.
     """
-    text = re.sub(r"^```.*?^```", "", text, flags=re.S | re.M)  # fenced blocks
-    text = re.sub(r"`[^`\n]*`", "", text)  # inline code spans
-    return text
+    prrd = (REPO_ROOT / "design" / "requirements" / "PRRD.md").read_text(encoding="utf-8")
+    return {n: v for n, v in re.findall(r"^- \*\*[GS](\d+)\.(\d+)\*\* —", prrd, re.M)}
+
+
+# A PINNED citation: letter + number + version, e.g. `G1.2` / `PRRD S64.134`. The
+# floating form (`G1`, no version) is deliberately NOT matched — it means
+# "whatever rule 1 says now" and cannot dangle.
+_PINNED_CITATION = re.compile(r"\b([GS])(\d+)\.(\d+)\b")
+
+# Terminal TRDD columns. A card in one of these is FROZEN and its citations are a
+# historical record of the rule as it stood — renumbering them would make them lie.
+_TERMINAL_COLUMNS = {"complete", "completed", "failed", "superseded", "published", "live", "cancelled", "refused"}
+
+
+def _is_frozen_trdd(path: Path) -> bool:
+    if path.suffix != ".md" or "design" not in path.parts:
+        return False
+    m = re.search(r"^column:\s*(\S+)\s*$", path.read_text(encoding="utf-8"), re.M)
+    return bool(m and m.group(1) in _TERMINAL_COLUMNS)
+
+
+def test_pinned_prrd_citations_resolve_to_a_live_rule_version() -> None:
+    """Every version-pinned `PRRD G<n>.<v>` citation in living prose must still resolve.
+
+    Editing a rule's text bumps its version (`G1.1` → `G1.2`), and the number —
+    not the version — is what is stable. So every citation that PINS a version
+    silently dangles the moment the rule is edited: grep the pinned form in the
+    PRRD afterwards and you find nothing, with no hint the two are the same rule.
+
+    That is exactly what happened here. The G1.1 → G1.2 bump left 14 pinned
+    citations across skills, docs and tests pointing at a version that no longer
+    existed, and the whole suite stayed green — no lint, no test, and no plugin
+    validator checks citation integrity. This test is that missing check.
+
+    Frozen TRDDs are exempt by design: a terminal card records the rule as it
+    stood when the work was done, so renumbering its citations would make it lie.
+    """
+    live = _prrd_rule_versions()
+    assert live, "parsed no rules from the PRRD — the definition format has drifted"
+
+    scanned = [
+        p
+        for d in ("skills", "docs", "agents", "tests", "design")
+        for p in (REPO_ROOT / d).rglob("*.md")
+        if not _is_frozen_trdd(p)
+    ] + [REPO_ROOT / "README.md", REPO_ROOT / "CLAUDE.md"]
+
+    dangling: list[str] = []
+    for path in scanned:
+        for i, line in _prose_lines(path.read_text(encoding="utf-8")):
+            for letter, number, version in _PINNED_CITATION.findall(line):
+                if number not in live:
+                    dangling.append(f"{path.relative_to(REPO_ROOT)}:{i}: {letter}{number}.{version} — no rule {number}")
+                elif live[number] != version:
+                    dangling.append(
+                        f"{path.relative_to(REPO_ROOT)}:{i}: {letter}{number}.{version} — rule {number} is now at .{live[number]}"
+                    )
+    assert not dangling, (
+        "version-pinned PRRD citations that no longer resolve — use the floating form "
+        "`G<n>` when the claim is not about a specific revision: " + "; ".join(dangling)
+    )
+
+
+def _prose_lines(text: str) -> list[tuple[int, str]]:
+    """Yield (1-based line number, prose-only line), blanking code rather than deleting it.
+
+    Fenced blocks and inline code spans are blanked IN PLACE instead of stripped,
+    because deleting them shifts every following line number and a guard that
+    reports the wrong line sends its reader to innocent code — a small version of
+    the same silent-misdirection the guards exist to prevent.
+
+    Blanking matters because `@` and rule-shaped tokens are inert inside a code
+    span and routine inside a fence (`@eslint/js`, `@pytest.fixture`,
+    `--author "@me"`), so only bare prose is ever checked.
+    """
+    out: list[tuple[int, str]] = []
+    in_fence = False
+    for i, line in enumerate(text.splitlines(), 1):
+        if line.lstrip().startswith("```"):
+            in_fence = not in_fence
+            out.append((i, ""))
+            continue
+        out.append((i, "" if in_fence else re.sub(r"`[^`\n]*`", "", line)))
+    return out
 
 
 # A handle that PAGES: `@name` at a word boundary, not followed by `/`. Measured
@@ -198,7 +279,7 @@ def test_g1_byline_template_carries_no_paging_handle() -> None:
     offenders: list[str] = []
     for path in _GITHUB_PROSE_FILES:
         assert path.is_file(), f"{path} is missing — the guard's file list has drifted"
-        for i, line in enumerate(_prose_only(path.read_text(encoding="utf-8")).splitlines(), 1):
+        for i, line in _prose_lines(path.read_text(encoding="utf-8")):
             for m in _PAGING_HANDLE.finditer(line):
                 offenders.append(f"{path.relative_to(REPO_ROOT)}:{i}: {m.group(0)}")
     assert not offenders, (
