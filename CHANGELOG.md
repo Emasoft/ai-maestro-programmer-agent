@@ -1,6 +1,12 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.2] - 2026-08-11
+
+### Tests
+
+- Bind rule TEXT to its version, and cover .py citations
+
 ## [2.0.1] - 2026-08-11
 
 ### Bug Fixes
@@ -14,6 +20,10 @@ All notable changes to this project will be documented in this file.
 - Correct the R42.8 claim in IUJ75HDL — it IS ratified
 
 - Unpin the G1 citations my own version bump had just dangled
+
+### Miscellaneous
+
+- V2.0.1
 
 ### Tests
 
