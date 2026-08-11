@@ -1,6 +1,26 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.1] - 2026-08-11
+
+### Bug Fixes
+
+- Drop the paging handle from the G1 byline template, bump G1.1 to G1.2
+
+### Documentation
+
+- Close IUJ75HDL — published v2.0.0 (da26fd3)
+
+- Correct the R42.8 claim in IUJ75HDL — it IS ratified
+
+- Unpin the G1 citations my own version bump had just dangled
+
+### Tests
+
+- Gate the skill menu against the shipped skill set (RP-SKILL-MENU-01)
+
+- Gate PRRD citation integrity, and fix the one it found
+
 ## [2.0.0] - 2026-08-08
 
 ### Bug Fixes
@@ -14,6 +34,10 @@ All notable changes to this project will be documented in this file.
 - Record 459032f on 1TXG0EON (ruff-gate pin)
 
 - Capture the ruff-drift publish-lint-gate lesson (TRDD-1TXG0EON)
+
+### Miscellaneous
+
+- V2.0.0
 
 ## [1.4.7] - 2026-07-24
 
