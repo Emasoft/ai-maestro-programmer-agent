@@ -1,7 +1,17 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.3] - 2026-08-11
+
+### Bug Fixes
+
+- The rule-text guard was blind to continuation lines
+
 ## [2.0.2] - 2026-08-11
+
+### Miscellaneous
+
+- V2.0.2
 
 ### Tests
 
