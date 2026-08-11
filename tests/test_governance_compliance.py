@@ -151,6 +151,62 @@ def test_r37_tier3_user_label_is_preserved() -> None:
     assert "Tier 3 — USER" in body, "the fixed PRRD Tier-3 USER label must NOT be renamed (ruling-2 exemption)"
 
 
+def _prose_only(text: str) -> str:
+    """Strip fenced code blocks and inline code spans, leaving prose an agent would paste.
+
+    `@` is inert inside a code span and routine inside a fence (npm scopes like
+    `@eslint/js`, decorators like `@pytest.fixture`, `gh pr list --author "@me"`).
+    Only bare prose can page a real account, so only bare prose is checked.
+    """
+    text = re.sub(r"^```.*?^```", "", text, flags=re.S | re.M)  # fenced blocks
+    text = re.sub(r"`[^`\n]*`", "", text)  # inline code spans
+    return text
+
+
+# A handle that PAGES: `@name` at a word boundary, not followed by `/`. Measured
+# behaviour (gh api markdown): `@foo-bar` and `(@foo)` page; `@types/node` and
+# `x@foo` do not. An address does not page its domain, but is PII — also excluded
+# here only because the pattern requires a non-word char before the `@`.
+_PAGING_HANDLE = re.compile(r"(?<![\w.@-])@[A-Za-z][A-Za-z0-9-]*(?![\w./-])")
+
+# Files whose prose is copied verbatim into GitHub bodies (templates, personas,
+# the rule that defines the byline). These are the ones where a bare handle is a
+# live hazard rather than incidental text.
+_GITHUB_PROSE_FILES = [
+    REPO_ROOT / "design" / "requirements" / "PRRD.md",
+    AGENT_FILE,
+    SKILLS_DIR / "ampa-github-operations" / "references" / "op-create-pull-request.md",
+    SKILLS_DIR / "ampa-github-operations" / "references" / "op-respond-to-review.md",
+    SKILLS_DIR / "ampa-handoff-management" / "references" / "op-write-bug-report.md",
+]
+
+
+def test_g1_byline_template_carries_no_paging_handle() -> None:
+    """PRRD G1.x and every GitHub-body template must carry NO bare `@handle` in prose.
+
+    The self-id byline names the owner in PLAIN WORDS; the `@` only adds a
+    notification. A template is the dangerous case precisely because it is COPIED
+    OUT of any code span and pasted as finished prose — so backticking is not the
+    fix, removing the character is. This repo shipped `@owner` in the G1.1 template
+    (reported 2026-08-08), which would page a real organization for any agent that
+    used the template as written.
+
+    The guard is scoped to the files whose prose reaches GitHub, and it ignores
+    fenced blocks and inline code, where `@` is both inert and routine
+    (`@eslint/js`, `@pytest.fixture`, `--author "@me"`).
+    """
+    offenders: list[str] = []
+    for path in _GITHUB_PROSE_FILES:
+        assert path.is_file(), f"{path} is missing — the guard's file list has drifted"
+        for i, line in enumerate(_prose_only(path.read_text(encoding="utf-8")).splitlines(), 1):
+            for m in _PAGING_HANDLE.finditer(line):
+                offenders.append(f"{path.relative_to(REPO_ROOT)}:{i}: {m.group(0)}")
+    assert not offenders, (
+        "bare @handle in GitHub-bound prose — it pages a real account when pasted: "
+        + "; ".join(offenders)
+    )
+
+
 def test_rp_skill_menu_01_menu_covers_every_shipped_skill() -> None:
     """RP-SKILL-MENU-01: the persona body carries one menu row per shipped skill.
 

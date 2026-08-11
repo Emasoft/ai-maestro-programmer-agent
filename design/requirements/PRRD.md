@@ -1,6 +1,6 @@
 ---
-prrd-version: 1.2
-updated: 2026-06-16T01:30:22+0200
+prrd-version: 1.3
+updated: 2026-08-08T16:05:00+0200
 project: ai-maestro-programmer-agent
 project-id: autonomous
 canonical-source: design/requirements/PRRD.md
@@ -27,7 +27,7 @@ spec: `~/.claude/rules/prrd-design-rules.md`.
 
 ## 🥇 GOLDEN — set by the USER (immutable to MANAGER)
 
-- **G1.1** — Every agent that writes to GitHub (issue, issue comment, PR, PR comment, PR review, discussion, release note) MUST begin the body with a one-line self-identification of which agent/role/plugin authored it, because all AI Maestro agents share the single human-owner GitHub identity (the owner's gh CLI auth). Recommended leading line: _Posted by the Claude developing **<plugin-or-role>** (via the shared @owner gh auth)._ Commit messages SHOULD carry an `Agent: <role>` trailer.
+- **G1.2** — Every agent that writes to GitHub (issue, issue comment, PR, PR comment, PR review, discussion, release note) MUST begin the body with a one-line self-identification of which agent/role/plugin authored it, because all AI Maestro agents share the single human-owner GitHub identity (the owner's gh CLI auth). Recommended leading line: _Posted by the Claude developing **&lt;plugin-or-role&gt;** (via the shared owner gh auth)._ **The template carries NO `@`, deliberately** — a template is pasted verbatim as finished prose, so a bare handle in it PAGES a real account, and backticking is not a fix because the text is copied OUT of its code span. Commit messages SHOULD carry an `Agent: <role>` trailer. Normative source: `design/specs/governance-spec.md` in `Emasoft/ai-maestro` (the spec's granular renderings are normative; `docs/GOVERNANCE-RULES.md` is provenance).
 - **G2.1** — Validation runs ONLY through the CPV plugin invoked remotely (`uvx --from git+https://github.com/Emasoft/claude-plugins-validation … cpv-remote-validate`); vendored copies of validator scripts are forbidden in this repo. CPV false positives and errors are reported as issues on `Emasoft/claude-plugins-validation`; REAL security findings are devitalized or removed — never exempted or suppressed (the exempt-list mechanism was dropped fleet-wide as exploitable).
 
 ## 🥈 SILVER — MANAGER-mutable (agents propose via COS)
