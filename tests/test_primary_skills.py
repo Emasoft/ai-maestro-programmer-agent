@@ -391,3 +391,165 @@ def test_agent_preload_list_matches_shipped_skills() -> None:
     assert preloaded, "agent must declare its operating procedures in `skills:`"
     missing = [s for s in preloaded if s not in ALL_SKILLS]
     assert not missing, f"agent `skills:` names skills that do not exist: {missing}"
+
+
+# --------------------------------------------------------------------------
+# Claude Code v2.1.232 alignment.
+#
+# v2.1.232 made non-teammate agent spawns run in the BACKGROUND by default in
+# interactive sessions, and gave `subagent_type: "fork"` subagents the full
+# conversation and prompt cache. Neither errors; both changed what the persona's
+# prose was *claiming*.
+#
+# These guards are BIDIRECTIONAL on purpose. A guard that only checks that a
+# term still appears is greenest exactly when the claim around it has been
+# reversed — the term survives the sentence. So each one asserts the claim we
+# now believe AND the absence of the claim it replaced.
+#
+# What they do NOT check: that the platform default is still background. That is
+# runtime behaviour and cannot be observed from disk. They guard prose drift and
+# claim nothing more — the alternative would be a test that can never fail.
+# --------------------------------------------------------------------------
+
+README_FILE = REPO_ROOT / "README.md"
+
+CLAUDE_CODE_ANCHOR = "v2.1.232"
+SUPERSEDED_ANCHOR = "v2.1.224"
+
+
+def _claim_drift(text: str, *, asserts: list[str], superseded: list[str]) -> list[str]:
+    """Bidirectional prose check, taking TEXT so the controls can feed it synthetic input.
+
+    Split out deliberately: a control must be able to prove this reports a defect
+    without editing the real README or persona on disk.
+    """
+    problems = [f"missing claim: {c!r}" for c in asserts if c not in text]
+    problems += [f"superseded claim still present: {c!r}" for c in superseded if c in text]
+    return problems
+
+
+def _anchor_claims(anchor: str) -> list[tuple[str, Path, str]]:
+    """The three sites that must all name the SAME Claude Code anchor version.
+
+    Parameterised by `anchor` so the superseded spellings are generated from the
+    same template as the current ones — the two can never drift apart here.
+    """
+    return [
+        (
+            "README 'verified against' line",
+            README_FILE,
+            f"verified against Claude Code v2.1.105–**{anchor}**",
+        ),
+        (
+            "agent-prompt fan-out heading",
+            AGENT_FILE,
+            f"**Fan-out limits (Claude Code v2.1.217–{anchor}).**",
+        ),
+    ]
+
+
+def test_claude_code_anchor_names_the_same_version_everywhere() -> None:
+    """Every site anchoring AMPA to a Claude Code version names the current one.
+
+    This repo has been bitten twice by a bump applied to one site and not its
+    siblings — most recently when a `G1.1`→`G1.2` rule bump left fourteen pinned
+    citations dangling. The failure is quiet: the un-bumped site keeps claiming a
+    verification that was never run against the version it names.
+
+    The superseded direction is checked too, but only for the two ANCHOR
+    spellings. The historical table heading `### v2.1.184 – v2.1.224` legitimately
+    keeps the old version — it dates a past range and is correct as written, so
+    asserting its absence would fail on correct content.
+    """
+    for label, path, expected in _anchor_claims(CLAUDE_CODE_ANCHOR):
+        text = path.read_text(encoding="utf-8")
+        assert expected in text, f"{label}: expected to find {expected!r}"
+
+    for label, path, stale in _anchor_claims(SUPERSEDED_ANCHOR):
+        text = path.read_text(encoding="utf-8")
+        assert stale not in text, (
+            f"{label}: still carries the superseded anchor {stale!r} — one site was "
+            "bumped and this one was not"
+        )
+
+    latest_table = f"### v2.1.225 – {CLAUDE_CODE_ANCHOR} "
+    readme = README_FILE.read_text(encoding="utf-8")
+    assert latest_table in readme, (
+        f"README: expected the latest compatibility table to be headed {latest_table!r}"
+    )
+
+
+def test_agent_prompt_states_the_async_subagent_contract() -> None:
+    """The persona describes subagent returns as asynchronous, not in-turn.
+
+    Since v2.1.232 a non-teammate spawn in an interactive session hands back a
+    HANDLE, not the subagent's output — the result arrives later as a task
+    notification. The persona previously promised an in-turn return ("Subagents
+    must return results to you"), which would lead the agent to relay a handle as
+    though it were a finding, or report a delegated task complete on the strength
+    of having spawned it. Nothing errors when it does; that is the whole hazard.
+    """
+    problems = _claim_drift(
+        AGENT_FILE.read_text(encoding="utf-8"),
+        asserts=["Collect before you relay", "background by default"],
+        superseded=["Subagents must return results to you"],
+    )
+    assert not problems, "subagent-return contract drifted: " + "; ".join(problems)
+
+
+def test_fork_prohibition_rests_on_the_reason_that_survived() -> None:
+    """The no-fork rule is justified by AMP identity, not by the retired context argument.
+
+    The original justification was partly "a forked copy could not finish any of
+    them" — which leaned on a fork lacking the conversation. v2.1.232 gave forks
+    the full conversation and prompt cache, retiring that half.
+
+    The RULE is unchanged (a fork still has no AMP identity, is itself a
+    background spawn, and never merges its state back), but a rule defended by a
+    reason the changelog contradicts invites the next reader to conclude the
+    constraint expired and "optimise" the skills back into forks. Guarding the
+    reason is the point; `test_skill_does_not_fork_amp_coupled_procedure` above
+    already guards the rule.
+    """
+    problems = _claim_drift(
+        AGENT_FILE.read_text(encoding="utf-8"),
+        asserts=["no AMP identity", "inherits the full"],
+        superseded=["a forked copy could not finish any of them"],
+    )
+    assert not problems, "fork rationale drifted: " + "; ".join(problems)
+
+
+# --- Negative controls for the three guards above -------------------------
+# Kept, not run-once-and-deleted: a control that ran during development and was
+# not committed is a demo, not a control — the repo cannot tell a working guard
+# from a broken one without them.
+
+
+def test_control_claim_drift_reports_a_missing_claim() -> None:
+    """Control: a claim we require but that is absent is reported."""
+    problems = _claim_drift("nothing relevant here", asserts=["Collect before you relay"], superseded=[])
+    assert problems and "missing claim" in problems[0]
+
+
+def test_control_claim_drift_reports_a_restored_superseded_claim() -> None:
+    """Control: the superseded sentence reappearing is reported.
+
+    This is the direction a one-sided guard misses — the required phrase can sit
+    happily in the same file as the claim it was supposed to replace.
+    """
+    text = "Collect before you relay ... Subagents must return results to you."
+    problems = _claim_drift(
+        text,
+        asserts=["Collect before you relay"],
+        superseded=["Subagents must return results to you"],
+    )
+    assert problems and "superseded claim still present" in problems[0]
+
+
+def test_control_claim_drift_is_silent_on_correct_text() -> None:
+    """Control: correct text produces no findings, so the guard is not trivially red."""
+    assert not _claim_drift(
+        "Collect before you relay, and wait for the notification.",
+        asserts=["Collect before you relay"],
+        superseded=["Subagents must return results to you"],
+    )
