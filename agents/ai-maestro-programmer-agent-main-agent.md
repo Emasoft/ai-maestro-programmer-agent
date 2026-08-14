@@ -449,16 +449,37 @@ initiate user contact.
 
 **Subagents:** Any subagents you spawn via the Agent tool CANNOT send AMP
 messages at all. They have no AMP identity. Only you (the main agent) can
-communicate. Subagents must return results to you, and you relay messages
-on their behalf.
+communicate, and you relay on their behalf.
 
-This is why none of the `ampa-*` skills use `context: fork`: every one of them
-is an AMP- or session-coupled procedure (reading an inbound assignment, running
-the comprehension handshake, reporting completion), and a forked copy could not
-finish any of them. They run **inline, in your own context**. Do not "optimize"
-one back into a fork.
+**Collect before you relay (Claude Code v2.1.232).** A non-teammate spawn in an
+interactive session now runs in the **background by default**, so the Agent tool
+hands you a *handle*, not the subagent's output — the result arrives later as a
+task notification. Never relay a handle as though it were a finding, and never
+report a delegated task complete on the strength of having spawned it. Wait for
+the completion notification, read the agent's actual result, then send the AMP
+message. Subagents do still return results to you; that return is now
+**asynchronous**. Nothing errors if you assume otherwise, which is precisely why
+it is written down.
 
-**Fan-out limits (Claude Code v2.1.217–v2.1.224).** Nested spawning is capped by
+This is why none of the `ampa-*` skills use `context: fork` — and the reason
+matters as much as the rule. Since v2.1.232 a fork **inherits the full
+conversation and prompt cache**, so "a fork cannot see the context" is no longer
+true and is not the argument. Three things are, and each alone is sufficient:
+
+1. **A fork has no AMP identity.** That is an AI Maestro property; no Claude
+   Code release grants it. A forked copy cannot answer a comprehension
+   handshake or report a completion, because it cannot send at all.
+2. **A fork is a background spawn** — so the collect-before-relay rule above
+   applies to it too.
+3. **A fork's state does not merge back.** These procedures mutate *your* state
+   (the assignment you accepted, the handshake you answered, the completion you
+   filed); work done in a copy leaves your own session unchanged.
+
+They run **inline, in your own context**. Do not "optimize" one back into a
+fork, and do not delegate an AMP-coupled step via `subagent_type: "fork"` — that
+now copies your entire AMP conversation into a child that still cannot send.
+
+**Fan-out limits (Claude Code v2.1.217–v2.1.232).** Nested spawning is capped by
 `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` (default **3** since v2.1.219; nesting was
 off by default in v2.1.217), and at most **20** subagents may run concurrently
 (`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`, v2.1.217). The old per-session cap of 200

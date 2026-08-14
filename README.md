@@ -289,10 +289,11 @@ mode. `uvx` ships with [uv](https://docs.astral.sh/uv/).
 
 ## Compatibility with Recent Claude Code Releases
 
-AMPA is verified against Claude Code v2.1.105–**v2.1.224**. Most items below
+AMPA is verified against Claude Code v2.1.105–**v2.1.232**. Most items below
 describe **new platform capabilities** that AMPA users can opt into without
-changing the plugin — but two changes in the v2.1.184–v2.1.224 range altered how
-AMPA *executes* and required fixes; they are marked **Breaking** in that table.
+changing the plugin — but three changes altered how AMPA *executes* and required
+fixes: two in the v2.1.184–v2.1.224 range and one in v2.1.232. Each is marked
+**Breaking** in its table.
 
 ### Main-thread agent capabilities (v2.1.116 / v2.1.117 / v2.1.119)
 
@@ -391,7 +392,7 @@ None of the above required an AMPA code change. The next table did.
 
 | Change | Effect on AMPA | Added in |
 | ------ | -------------- | -------- |
-| **`context: fork` skills run in the BACKGROUND by default** | **Breaking, and silent.** All six `ampa-*` skills were `context: fork` with no `background:` key, so from v2.1.218 they returned an agent handle instead of their result — the invoking agent got nothing in the turn it asked, with no error. **Fixed by removing `context: fork` entirely** (not by pinning `background: false`): every `ampa-*` skill is an AMP/session-coupled procedure, and a forked subagent has no AMP identity, so it could never complete one. The skills now run inline | v2.1.218 |
+| **`context: fork` skills run in the BACKGROUND by default** | **Breaking, and silent.** All six `ampa-*` skills were `context: fork` with no `background:` key, so from v2.1.218 they returned an agent handle instead of their result — the invoking agent got nothing in the turn it asked, with no error. **Fixed by removing `context: fork` entirely** (not by pinning `background: false`): a forked subagent has no AMP identity, so it can neither answer a comprehension handshake nor report a completion. The skills now run inline. **Note the reason, not only the rule** — v2.1.232 gave forks the full conversation, retiring the "a fork cannot see the context" half of the original argument while leaving the AMP-identity half untouched | v2.1.218 |
 | **`disable-model-invocation: true` excludes a skill from subagent preload** | **Breaking, and silent.** The agent's `skills:` field listed all six skills, and all six set that key — so the preload was inert and the agent booted without its own procedures. The key was removed from all six; the preload now works | — |
 | **Nested subagents: off by default, then default depth 3** | `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` sets it. **AMPA's own policy is stricter: single-layer delegation — the sub-agents AMPA spawns do not fan out further** | v2.1.217 / v2.1.219 |
 | **Concurrent-subagent cap (default 20)** | `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`. AMPA's single-layer policy keeps it far below the cap | v2.1.217 |
@@ -404,6 +405,19 @@ None of the above required an AMPA code change. The next table did.
 | **Frontmatter booleans accept `yes`/`no`/`on`/`off`/`1`/`0`** | Alongside `true`/`false`. AMPA uses `true`/`false` | v2.1.222 |
 | **`archive` plugin source with optional SHA-256 pinning** | Install from a zip over HTTPS, no git or npm. A **marketplace-entry** feature, not a plugin-manifest one — nothing for AMPA to declare | v2.1.224 |
 | **Plugins accept `"."` as a `skills` path** | For single-skill plugins whose `SKILL.md` sits at the root. AMPA uses the `skills/` directory layout | v2.1.221 |
+
+### v2.1.225 – v2.1.232 — including one more change AMPA had to act on
+
+| Change | Effect on AMPA | Added in |
+| ------ | -------------- | -------- |
+| **Non-teammate agent spawns run in the BACKGROUND by default** | **Breaking, and silent** — the v2.1.218 defect class, one layer up. An interactive spawn now returns a *handle*, not the subagent's output; the result arrives later as a task notification. The agent prompt had promised an in-turn return, so it was rewritten to **collect before relaying**: never relay a handle as a finding, never report a delegated task complete on the strength of having spawned it. Confirmed first-hand on v2.1.232 | v2.1.232 |
+| **Subagent forking on by default; a fork inherits the full conversation and prompt cache** | Does **not** reopen `context: fork` for the `ampa-*` skills. Three reasons survive, each sufficient on its own: a fork still has no AMP identity; a fork is itself a background spawn; and a fork's state never merges back, while these procedures mutate the main agent's own state. The prompt now records all three, so the constraint cannot be discarded on a reason that has expired | v2.1.232 |
+| **`@` mentions another session in the prompt; `SendMessage` delivers to a bare name** | Makes the native cross-session channel far easier to reach by accident. **AMPA's non-adoption stance is unchanged** (see the v2.1.224 row): AMP stays the governed channel because it carries an AI Maestro AID. The `@` affordance is a *user* action in the operator's session, not something the plugin invokes | v2.1.232 |
+| **Interactive sessions keep unique names on one machine** | A session claiming a name another live session holds gets a `name-word-word` variant. AMPA keys nothing on session names — its identity is its AID | v2.1.232 |
+| **Write tool: newer models may overwrite a file they have not read this session** | Now matches the Edit tool's rules; older models still require the read first. AMPA asserted no read-before-write rule, so nothing broke — and none was added, since overwriting unread files is not a habit worth teaching | v2.1.228 |
+| **`/plugin install plugin@marketplace` refreshes the marketplace first** | A newly published AMPA version installs without a manual marketplace refresh. AMPA's documented install uses `--url`, so this reaches marketplace users only | v2.1.232 |
+| **`/code-review` at high, xhigh, and max runs in a background agent** | Now matches the other levels. Operators who wire AMPA into a review step get the result as a notification, not inline | v2.1.232 |
+| **Marketplace `command` sources; GitLab marketplaces; `additionalMarketplaces` / `allowedMarketplaces` aliases** | All **marketplace-entry** features, not plugin-manifest ones — nothing for AMPA to declare | v2.1.229 / v2.1.232 |
 
 ## See Also
 
