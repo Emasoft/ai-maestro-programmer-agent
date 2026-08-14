@@ -1,7 +1,25 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.5] - 2026-08-14
+
+### Bug Fixes
+
+- Stop promising an in-turn subagent return (TRDD-P9KVMK5A)
+
+### Documentation
+
+- Add TRDD-P9KVMK5A — realign AMPA to Claude Code v2.1.232
+
+### Tests
+
+- Guard the v2.1.232 claims in both directions (TRDD-P9KVMK5A)
+
 ## [2.0.4] - 2026-08-11
+
+### Miscellaneous
+
+- V2.0.4
 
 ### Tests
 
