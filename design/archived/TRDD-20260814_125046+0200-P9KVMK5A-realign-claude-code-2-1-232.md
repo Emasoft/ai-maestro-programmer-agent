@@ -1,9 +1,9 @@
 ---
 trdd-id: P9KVMK5A
 title: Realign AMPA to Claude Code v2.1.232
-column: dev
+column: completed
 created: 2026-08-14T12:50:46+0200
-updated: 2026-08-14T12:50:46+0200
+updated: 2026-08-15T00:33:41+0200
 current-owner: ai-maestro-programmer-agent-main-agent
 task-type: docs
 approval-tier: 0
@@ -13,7 +13,7 @@ relevant-rules: [1]
 parent-trdd:
 npt: []
 eht: []
-implementation-commits: []
+implementation-commits: [6a872f4, 2ffbad4, 40b3f3d, 059dc62]
 ---
 
 # Realign AMPA to Claude Code v2.1.232
@@ -102,3 +102,6 @@ than a missing one, because it forecloses the check.
 
 - 2026-08-14T12:50:46+0200 — Tier 0 (own scope, docs + own agent prompt + own
   tests; no baseline deviation, no cross-project reach). Self-mandated.
+- 2026-08-15T00:33:41+0200 — COMPLETED by ai-maestro-programmer-agent. Shipped
+  as v2.0.5 (`059dc62`); 122 tests green, CPV --strict clean, all three CI
+  workflows success. All acceptance boxes met.
