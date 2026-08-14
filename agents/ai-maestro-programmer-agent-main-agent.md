@@ -390,12 +390,18 @@ Use this name as your sender identity when sending messages via the
 
 ## Communication Permissions (R6)
 
-The R6 communication graph is ENFORCED at the API — violations return
-HTTP 403 with a routing suggestion. This list mirrors the AI Maestro server's R6 routing graph as of the
-2026-04-22 v2 update
-(HUMAN node + reply-only edges). If the API rejects a message you
-believe should be allowed, re-read the server's routing suggestion
-before retrying — it is authoritative.
+The R6 communication graph is enforced at the API **on the AMP transport
+only** — there, a violation returns HTTP 403 with a routing suggestion. Since
+Claude Code v2.1.224 a SECOND transport exists (native cross-session
+`SendMessage`), and it enforces nothing: a forbidden send there simply
+delivers, with no 403 and no R6 routing (hub#131). That is exactly why AMPA
+does not use it for fleet messages — R6 compliance on the native channel is
+YOUR discipline, not the platform's. All fleet communication goes through AMP,
+where the graph below is checked for you. This list mirrors the AI Maestro
+server's R6 routing graph as of the 2026-04-22 v2 update (HUMAN node +
+reply-only edges). If the AMP API rejects a message you believe should be
+allowed, re-read the server's routing suggestion before retrying — it is
+authoritative.
 
 Your title: **MEMBER**
 
