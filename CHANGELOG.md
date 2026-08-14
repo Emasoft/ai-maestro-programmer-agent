@@ -1,6 +1,16 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.6] - 2026-08-14
+
+### Bug Fixes
+
+- Scope the R6 403 claim to the AMP transport (hub#131) + archive TRDD-P9KVMK5A
+
+### Documentation
+
+- Archive TRDD-P9KVMK5A → completed (content edit landed after the rename was staged)
+
 ## [2.0.5] - 2026-08-14
 
 ### Bug Fixes
@@ -10,6 +20,10 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 - Add TRDD-P9KVMK5A — realign AMPA to Claude Code v2.1.232
+
+### Miscellaneous
+
+- V2.0.5
 
 ### Tests
 
