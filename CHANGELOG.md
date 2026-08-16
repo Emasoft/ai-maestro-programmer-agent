@@ -1,6 +1,18 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.7] - 2026-08-16
+
+### Bug Fixes
+
+- Un-archive 8 cards that were mid-pipeline, not terminal
+
+### Documentation
+
+- Mark 9 terminal TRDDs as LANDED — stale STATE prose read as current
+
+- Archive the 14 terminal TRDDs out of the OPEN zone
+
 ## [2.0.6] - 2026-08-14
 
 ### Bug Fixes
@@ -10,6 +22,10 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 - Archive TRDD-P9KVMK5A → completed (content edit landed after the rename was staged)
+
+### Miscellaneous
+
+- V2.0.6
 
 ## [2.0.5] - 2026-08-14
 
