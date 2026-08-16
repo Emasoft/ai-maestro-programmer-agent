@@ -17,6 +17,12 @@ last-test-result: pass
 
 ## ⏵ STATE — READ THIS FIRST ON RESUME (authoritative; supersedes the body) — 2026-07-15
 
+**⚠ LANDED — correction 2026-08-16:** this work SHIPPED in `3d93133`
+("docs(skills): G1.1 self-id on the review-comment path + document the Agent
+commit trailer"). Everything below is AUTHORING-TIME prose that was never
+refreshed — read it as history, not as current state. In particular the two ❌
+gaps listed below were closed by that commit.
+
 - **Current state (verified):**
   - `op-create-pull-request.md` ✅ has the G1.1 self-id line; `op-write-bug-report.md` ✅ has
     it too (the audit called it missing — it is present at :106). `test_m10` guards both.

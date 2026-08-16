@@ -17,6 +17,11 @@ last-test-result: pass
 
 ## ⏵ STATE — READ THIS FIRST ON RESUME (authoritative; supersedes the body) — 2026-07-15
 
+**⚠ LANDED — correction 2026-08-16:** this work SHIPPED in `14b1bd2`
+("docs(agent): lifecycle section v1 -> v2 (column + 4 zones)"). Everything below
+is AUTHORING-TIME prose that was never refreshed — read it as history, not as
+current state.
+
 - **Current state:** `agents/ai-maestro-programmer-agent-main-agent.md:472-483` — section
   "### Two folders (location = authorization)" — describes the **v1** lifecycle: a `status:`
   field and only **two** folders (`proposals/`, `tasks/`).

@@ -28,6 +28,11 @@ implementation-commits: [4809a20]
 
 ## ⏵ STATE — READ THIS FIRST ON RESUME (authoritative) — 2026-06-22
 
+**⚠ LANDED — correction 2026-08-16:** this work SHIPPED in `4809a20`. Everything
+below is AUTHORING-TIME prose that was never refreshed — read it as history, not
+as current state. Proof: `tests/test_smart_exec.py` exists (the text below plans
+it as "zero unit tests" + "~12-15 cases to write"; the commit shipped 42).
+
 **Origin:** the `go-on-yourself` pass. `scripts/smart_exec.py` (583 LOC, pure argv
 builders) has real robustness gaps AND **zero unit tests**. mypy + ruff are already
 clean. Source of findings: `reports/ampa-audit/20260622_023521+0200-scripts-tests.md`.

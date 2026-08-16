@@ -28,6 +28,12 @@ implementation-commits: [e31a1c6]
 
 ## ⏵ STATE — READ THIS FIRST ON RESUME (authoritative) — 2026-06-22
 
+**⚠ LANDED — correction 2026-08-16:** this work SHIPPED in `e31a1c6` ("docs(readme):
+correct script count, workflow steps, declare kanban skill"). Everything below is
+AUTHORING-TIME prose that was never refreshed — read it as history, not as current
+state. Proof: that commit touched `README.md` + the agent frontmatter, and
+`tests/README.md` exists.
+
 **Origin:** the `go-on-yourself` pass. Factual inaccuracies + missing contributor
 doc found by the docs-meta audit
 (`reports/ampa-audit/20260622_023429+0200-docs-meta.md`). Doc-only; touches

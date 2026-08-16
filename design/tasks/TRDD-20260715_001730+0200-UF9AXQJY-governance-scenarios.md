@@ -17,6 +17,11 @@ last-test-result: pass
 
 ## ⏵ STATE — READ THIS FIRST ON RESUME (authoritative; supersedes the body) — 2026-07-15
 
+**⚠ LANDED — correction 2026-08-16:** this work SHIPPED in `5f8a65a`. Everything
+below is AUTHORING-TIME prose that was never refreshed — read it as history, not
+as current state. Proof: `tests/scenarios/governance-scenarios.md` EXISTS; the
+"Current state" line below claims `tests/scenarios/` does not exist in this repo.
+
 - **Current state:** `tests/scenarios/` **does not exist** in this repo (the MANAGER's audit
   `#25` said "empty"; it is in fact absent). Governance IS enforced by pytest
   (`tests/test_governance_compliance.py`, 10 tests incl. the R23 bright-line), but the

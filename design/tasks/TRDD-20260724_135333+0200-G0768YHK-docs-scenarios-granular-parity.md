@@ -19,6 +19,13 @@ implementation-commits: [e3ddf58]
 
 ## ⏵ STATE — READ THIS FIRST ON RESUME — 2026-07-24
 
+**⚠ LANDED — correction 2026-08-16:** this work SHIPPED in `e3ddf58`
+("docs(governance): reflect granular ama-* wiring + add self-mandate/
+missing-derived/refusal scenarios"). Everything below is AUTHORING-TIME prose
+that was never refreshed — read it as history, not as current state. The NEXT
+ACTION below is gated on I8AH88SS + K2X9RF7S, and both landed (`58827de`,
+`57b35a4`).
+
 **Why:** docs (`README.md:59`, `docs/FULL_PROJECT_WORKFLOW.md:13`,
 `.claude/project/memory/architecture.md:27`) and `tests/scenarios/
 governance-scenarios.md` describe the old wrapper wiring + `approval-tier:`

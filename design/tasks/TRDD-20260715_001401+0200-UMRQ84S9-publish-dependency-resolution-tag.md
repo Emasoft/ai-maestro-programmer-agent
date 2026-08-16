@@ -17,6 +17,12 @@ last-test-result: pass
 
 ## ⏵ STATE — READ THIS FIRST ON RESUME (authoritative; supersedes the body) — 2026-07-15
 
+**⚠ LANDED — correction 2026-08-16:** this work SHIPPED in `12f64c5`. Everything
+below is AUTHORING-TIME prose that was never refreshed — read it as history, not
+as current state. Proof: `dependency_resolution_tag()` is defined at
+`scripts/publish.py:251` and called at `:1511`; the "Current state" line below
+claims no such tag exists anywhere in the pipeline.
+
 - **Current state:** `scripts/publish.py` creates and pushes **only** `v{version}`
   (Step 12 `git tag -a v{new_version}`, Step 13 two separate `git push` calls). There is
   **no** `{name}--v{version}` tag anywhere in the pipeline.

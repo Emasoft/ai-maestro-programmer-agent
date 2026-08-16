@@ -28,6 +28,12 @@ implementation-commits: [8c561b5]
 
 ## ⏵ STATE — READ THIS FIRST ON RESUME (authoritative) — 2026-06-22
 
+**⚠ LANDED — correction 2026-08-16:** this work SHIPPED in `8c561b5`. Everything
+below is AUTHORING-TIME prose that was never refreshed — read it as history, not
+as current state. Proof: all three workflows (`validate.yml`, `release.yml`,
+`notify-marketplace.yml`) now carry both `permissions:` and `timeout-minutes:`;
+the "Confirmed gaps" list below says they have neither.
+
 **Origin:** the `go-on-yourself` pass — the one project area not yet audited
 (`.github/workflows/`). Applies the USER's standing `~/.claude/rules/gh-actions.md`
 standard (least-privilege `permissions`, job `timeout-minutes`). Security-POSITIVE

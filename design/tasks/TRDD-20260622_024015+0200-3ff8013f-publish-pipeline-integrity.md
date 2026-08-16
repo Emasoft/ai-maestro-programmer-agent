@@ -28,6 +28,12 @@ implementation-commits: [3e245f5]
 
 ## ⏵ STATE — READ THIS FIRST ON RESUME (authoritative) — 2026-06-22
 
+**⚠ LANDED — correction 2026-08-16:** this work SHIPPED in `3e245f5`. Everything
+below is AUTHORING-TIME prose that was never refreshed — read it as history, not
+as current state. Proof: `CHANGELOG.md` is now 542 lines / 23 sections (the text
+below claims 11 lines / 1 section), and `scripts/publish.py:1481` uses
+`_list_py_files` (the bespoke `rglob` loop it describes is gone).
+
 **Origin:** the `go-on-yourself` autonomous-improvement pass (2026-06-22). Two
 verified defects in the canonical release pipeline `scripts/publish.py`, found by
 the docs-meta + scripts-tests audits (reports under
