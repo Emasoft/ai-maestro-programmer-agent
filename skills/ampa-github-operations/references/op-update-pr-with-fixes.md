@@ -148,11 +148,18 @@ EOF
 
 ### 6.5 Notifying Reviewer of Updates
 
-After pushing all fixes, notify the reviewer:
+After pushing all fixes, notify the reviewer. Every GitHub-posted body (PR
+description and comments alike) MUST begin with the G1 self-identification
+line — all AI Maestro agents share the single human-owner GitHub identity,
+so the body itself must say which agent authored it (see
+op-create-pull-request.md §4.2):
 
 ```bash
 # Add comment summarizing what was fixed
 gh pr comment <pr-number> --body "$(cat <<'EOF'
+_This is the Claude responsible for the <project> project (AMPA programmer,
+via the shared owner gh auth)._
+
 ## Updates Pushed
 
 All review comments have been addressed:
@@ -180,6 +187,7 @@ gh pr edit <pr-number> --add-reviewer "<reviewer-username>"
 - [ ] Push changes to PR branch
 - [ ] Update PR description if needed
 - [ ] Add comment summarizing changes
+- [ ] Every GitHub-posted body begins with the G1 self-id line (shared owner identity)
 - [ ] Request re-review from original reviewer
 
 ## Examples
