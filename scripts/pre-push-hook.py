@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # pre-push hook - Validate plugin before allowing push
 #
-# Runs validate_plugin.py in strict mode: CRITICAL and MAJOR severity levels
-# block the push. MINOR issues are warnings only (push allowed).
+# Runs cpv-remote-validate (claude-plugins-validation, via uvx) in --strict
+# mode. ANY non-zero exit blocks the push — including MINOR/NIT — because
+# CI's validate.yml quality gate passes only on exit 0, so the hook must
+# block the same set or pushes land that CI then rejects.
 #
-# Exit codes from validate_plugin.py:
-#   0 - All checks passed
-#   1 - CRITICAL issues found (blocks push)
-#   2 - MAJOR issues found (blocks push)
-#   3 - MINOR issues found (warning only, push allowed)
+# Exit codes from cpv-remote-validate --strict:
+#   0 - All checks passed (push allowed)
+#   1 - CRITICAL, 2 - MAJOR, 3 - MINOR, 4 - NIT (all block the push)
 #
-# To install:
-#   mkdir -p .git/hooks && cp git-hooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+# To install: the hook lives in .githooks/pre-push and is activated with
+#   git config core.hooksPath .githooks
+# (publish.py enforces this automatically on every run.)
 #
 # To bypass (NOT RECOMMENDED):
 #   git push --no-verify
