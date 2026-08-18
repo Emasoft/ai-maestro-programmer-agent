@@ -1,9 +1,9 @@
 ---
 trdd-id: MP45ZMAG
 title: README fixer troubleshooting cites nonexistent tests-logs directory
-column: complete
+column: published
 created: 2026-08-18T19:54:00+0200
-updated: 2026-08-18T20:05:00+0200
+updated: 2026-08-18T20:15:00+0200
 release-via: publish
 implementation-commits: [d1b7f8e]
 current-owner: ampa-main-session
@@ -36,3 +36,4 @@ fix errors").
 ## Approval log
 
 - 2026-08-18T20:05:00+0200 — todo→dev→testing→ai_review→complete by ampa-main-session (hub Phase-2 GO). Fixed in d1b7f8e; acceptance verified: `grep -rn "tests/logs" README.md` → exit 1; suite 122 passed.
+- 2026-08-18T20:15:00+0200 — complete→publish→published by ampa-main-session: shipped in v2.0.8 (release created, tags pushed atomically).
