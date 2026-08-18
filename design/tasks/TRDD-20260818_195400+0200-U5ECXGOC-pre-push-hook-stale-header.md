@@ -1,9 +1,11 @@
 ---
 trdd-id: U5ECXGOC
 title: pre-push-hook header documents a validator and install path that do not exist
-column: todo
+column: complete
 created: 2026-08-18T19:54:00+0200
-updated: 2026-08-18T19:54:00+0200
+updated: 2026-08-18T20:05:00+0200
+release-via: publish
+implementation-commits: [c494626]
 current-owner: ampa-main-session
 task-type: docs
 approval-tier: 0
@@ -35,3 +37,5 @@ Rewrite the header block (lines 2-16) to describe reality: cpv-remote-validate
 - Header's exit-code table matches the blocking behavior at :217-224.
 
 ## Approval log
+
+- 2026-08-18T20:05:00+0200 — todo→dev→testing→ai_review→complete by ampa-main-session (hub Phase-2 GO). Fixed in c494626; header now names cpv-remote-validate --strict, all-non-zero-block semantics, and the .githooks/core.hooksPath install.

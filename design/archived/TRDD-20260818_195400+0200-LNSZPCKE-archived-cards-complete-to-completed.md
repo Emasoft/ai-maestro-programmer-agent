@@ -1,9 +1,11 @@
 ---
 trdd-id: LNSZPCKE
 title: Four archived cards skipped the archival protocol column edit
-column: todo
+column: completed
 created: 2026-08-18T19:54:00+0200
-updated: 2026-08-18T19:54:00+0200
+updated: 2026-08-18T20:05:00+0200
+release-via: none
+implementation-commits: [c84adb6]
 current-owner: ampa-main-session
 task-type: docs
 approval-tier: 0
@@ -30,3 +32,5 @@ exception "the closing edit itself".
 - `grep -H "^column:" design/archived/*.md` shows only completed/published values.
 
 ## Approval log
+
+- 2026-08-18T20:05:00+0200 — todo→dev→testing→ai_review→complete by ampa-main-session (hub Phase-2 GO). Fixed in c84adb6; acceptance verified: archived columns are only completed/published.

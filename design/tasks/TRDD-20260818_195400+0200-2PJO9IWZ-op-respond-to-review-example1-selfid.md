@@ -1,9 +1,11 @@
 ---
 trdd-id: 2PJO9IWZ
 title: op-respond-to-review Example 1 contradicts its own self-id checklist
-column: todo
+column: complete
 created: 2026-08-18T19:54:00+0200
-updated: 2026-08-18T19:54:00+0200
+updated: 2026-08-18T20:05:00+0200
+release-via: publish
+implementation-commits: [7d31c6d]
 current-owner: ampa-main-session
 task-type: docs
 approval-tier: 0
@@ -27,3 +29,5 @@ Prepend the G1 self-id line to Example 1's comment body, matching Example 2's sh
 - Every `gh pr comment --body` example in the file begins with the self-id line.
 
 ## Approval log
+
+- 2026-08-18T20:05:00+0200 — todo→dev→testing→ai_review→complete by ampa-main-session (hub Phase-2 GO). Fixed in 7d31c6d; Example 1 now matches the checklist and Example 2's shape.

@@ -1,9 +1,11 @@
 ---
 trdd-id: MYX98XFG
 title: README misdescribes test_order_pipeline as publish.py ordering tests
-column: todo
+column: complete
 created: 2026-08-18T19:54:00+0200
-updated: 2026-08-18T19:54:00+0200
+updated: 2026-08-18T20:05:00+0200
+release-via: publish
+implementation-commits: [12e8f27]
 current-owner: ampa-main-session
 task-type: docs
 approval-tier: 0
@@ -29,3 +31,5 @@ Correct the README.md:90 table cell to match the script's real purpose.
 - README and docs/AGENT_OPERATIONS.md no longer disagree.
 
 ## Approval log
+
+- 2026-08-18T20:05:00+0200 — todo→dev→testing→ai_review→complete by ampa-main-session (hub Phase-2 GO). README row now matches the script docstring and AGENT_OPERATIONS.md; suite 122 passed.
