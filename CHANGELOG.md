@@ -1,6 +1,28 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.8] - 2026-08-18
+
+### Documentation
+
+- Add Phase-2 TRDDs MP45ZMAG MYX98XFG LNSZPCKE BYO9XYI0 FLU2C00U 2PJO9IWZ U5ECXGOC — fixes for the 8 confirmed self-audit findings (hub TRDD-BRRJK57P)
+
+- Perform the skipped complete→completed closing edits on 4 archived cards (TRDD-LNSZPCKE)
+
+- Remove dangling PRRD rule-15 citations from 3 cards (TRDD-BYO9XYI0)
+
+- Replace phantom tests/logs/ path with actionable instruction (TRDD-MP45ZMAG)
+
+- Rewrite stale pre-push-hook header to match its code (TRDD-U5ECXGOC)
+
+- Add G1 self-id line to op-respond-to-review Example 1 (TRDD-2PJO9IWZ)
+
+- Add the G1 self-id requirement to op-update-pr-with-fixes (TRDD-FLU2C00U)
+
+- Correct test_order_pipeline.py description (TRDD-MYX98XFG)
+
+- Close the 7 Phase-2 cards — 5 complete (release-via publish), 2 completed+archived (release-via none)
+
 ## [2.0.7] - 2026-08-16
 
 ### Bug Fixes
@@ -12,6 +34,10 @@ All notable changes to this project will be documented in this file.
 - Mark 9 terminal TRDDs as LANDED — stale STATE prose read as current
 
 - Archive the 14 terminal TRDDs out of the OPEN zone
+
+### Miscellaneous
+
+- V2.0.7
 
 ## [2.0.6] - 2026-08-14
 
