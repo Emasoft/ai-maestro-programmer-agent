@@ -1,9 +1,9 @@
 ---
 trdd-id: I8AH88SS
 title: Rewire 3-pillars mechanics onto the granular ama-* skills and repurpose the wrapper into a MEMBER-policy skill
-column: complete
+column: completed
 created: 2026-07-24T13:53:33+0200
-updated: 2026-07-24T14:02:39+0200
+updated: 2026-08-18T19:54:00+0200
 current-owner: ampa-programmer
 task-type: refactor
 min-approval-requirement: none
@@ -97,3 +97,7 @@ Persona/agent.toml wiring is TRDD-K2X9RF7S; docs/scenarios are TRDD-G0768YHK.
 - `uv run pytest tests/ -q` green; CPV `publish.py` gates green.
 - The wrapper skill is no longer a passthrough — it carries the MEMBER op-set, the
   self-mandate rule, escalation floors, and the missing-derived-TRDD duty.
+
+## Approval log
+
+- 2026-08-18T19:54:00+0200 — COMPLETED by ampa-main-session (TRDD-LNSZPCKE closing edit). The f29e1c2 archival was a pure git mv that skipped the protocol's `complete → completed` column edit; performed here. Work had shipped in 58827de.

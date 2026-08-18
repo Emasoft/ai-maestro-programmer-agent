@@ -1,9 +1,9 @@
 ---
 trdd-id: K2X9RF7S
 title: Migrate the persona and agent.toml to granular ama-* wiring and min-approval-requirement language
-column: complete
+column: completed
 created: 2026-07-24T13:53:33+0200
-updated: 2026-07-24T14:11:54+0200
+updated: 2026-08-18T19:54:00+0200
 current-owner: ampa-programmer
 task-type: refactor
 min-approval-requirement: none
@@ -50,3 +50,7 @@ skill list. Comm-graph left as-is. 93 passed.
 - Persona + agent.toml cite only skills that exist; no `prrd-trdd-kanban` mechanics
   reference; `approval-tier:` not written as a new field (decode-only).
 - `uv run pytest tests/ -q` green; CPV gates green.
+
+## Approval log
+
+- 2026-08-18T19:54:00+0200 — COMPLETED by ampa-main-session (TRDD-LNSZPCKE closing edit). The f29e1c2 archival was a pure git mv that skipped the protocol's `complete → completed` column edit; performed here. Work had shipped in 57b35a4.

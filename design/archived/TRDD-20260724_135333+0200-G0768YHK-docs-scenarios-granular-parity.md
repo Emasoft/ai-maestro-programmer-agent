@@ -1,9 +1,9 @@
 ---
 trdd-id: G0768YHK
 title: Update docs and governance scenarios for granular wiring self-mandate and missing-derived duty
-column: complete
+column: completed
 created: 2026-07-24T13:53:33+0200
-updated: 2026-07-24T14:18:23+0200
+updated: 2026-08-18T19:54:00+0200
 current-owner: ampa-programmer
 task-type: docs
 min-approval-requirement: none
@@ -55,3 +55,7 @@ the refusal-response proposer corollary (#71). Run pytest → green before commi
   narrative presented as current.
 - New scenarios present and consistent with the repurposed skill (I8AH88SS).
 - `uv run pytest tests/ -q` green; CPV gates green.
+
+## Approval log
+
+- 2026-08-18T19:54:00+0200 — COMPLETED by ampa-main-session (TRDD-LNSZPCKE closing edit). The f29e1c2 archival was a pure git mv that skipped the protocol's `complete → completed` column edit; performed here. Work had shipped in e3ddf58.

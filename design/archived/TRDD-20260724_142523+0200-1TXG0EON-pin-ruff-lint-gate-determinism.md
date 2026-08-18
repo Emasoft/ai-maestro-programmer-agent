@@ -1,9 +1,9 @@
 ---
 trdd-id: 1TXG0EON
 title: Pin the ruff lint gate to its shipped rule set so ruff-default drift stops blocking publishes
-column: complete
+column: completed
 created: 2026-07-24T14:25:23+0200
-updated: 2026-07-24T14:25:23+0200
+updated: 2026-08-18T19:54:00+0200
 current-owner: ampa-programmer
 task-type: bugfix
 min-approval-requirement: none
@@ -56,3 +56,7 @@ separate hardening task.
 - `uv run --with ruff ruff check .` passes (0 errors) with the explicit select.
 - `uv run --with pytest pytest tests/ -q` still 93 passed.
 - `pyproject.toml` change is one `[tool.ruff.lint] select` block; nothing else relaxed.
+
+## Approval log
+
+- 2026-08-18T19:54:00+0200 — COMPLETED by ampa-main-session (TRDD-LNSZPCKE closing edit). The f29e1c2 archival was a pure git mv that skipped the protocol's `complete → completed` column edit; performed here. Work had shipped in 459032f.
