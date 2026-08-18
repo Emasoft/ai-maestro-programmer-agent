@@ -215,8 +215,14 @@ gh pr view 123 --comments
 # @amia-reviewer: SECURITY: SQL injection vulnerability in query builder.
 # Use parameterized queries instead of string concatenation.
 
-# After fixing, reply:
-gh pr comment 123 --body "Fixed SQL injection vulnerability in commit abc123. Now using parameterized queries throughout."
+# After fixing, reply (body begins with the G1 self-id line):
+gh pr comment 123 --body "$(cat <<'EOF'
+_This is the Claude responsible for the <project> project (AMPA programmer,
+via the shared owner gh auth)._
+
+Fixed SQL injection vulnerability in commit abc123. Now using parameterized queries throughout.
+EOF
+)"
 
 # Request re-review
 gh pr edit 123 --add-reviewer "amia-reviewer"
