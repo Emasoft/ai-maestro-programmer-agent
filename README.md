@@ -263,7 +263,7 @@ The Programmer Agent relies on SERENA MCP for code investigation:
 
 **Solution**:
 
-1. Review error logs in `tests/logs/`
+1. Review the linter/formatter errors the fixer reported in its output
 2. Manual fix may be required for complex issues
 3. Report blocking issues to Orchestrator
 
