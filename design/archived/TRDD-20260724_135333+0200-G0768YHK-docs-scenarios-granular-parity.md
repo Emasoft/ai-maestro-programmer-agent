@@ -9,7 +9,7 @@ task-type: docs
 min-approval-requirement: none
 mandate: true
 mandated-by: self
-relevant-rules: [1, 15]
+relevant-rules: [1]
 external-refs: [Emasoft/ai-maestro#61, Emasoft/ai-maestro#71]
 blocked-by: []
 implementation-commits: [e3ddf58]

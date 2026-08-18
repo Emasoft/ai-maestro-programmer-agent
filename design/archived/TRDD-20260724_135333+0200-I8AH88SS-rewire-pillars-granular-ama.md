@@ -9,7 +9,7 @@ task-type: refactor
 min-approval-requirement: none
 mandate: true
 mandated-by: self
-relevant-rules: [1, 15]
+relevant-rules: [1]
 external-refs: [Emasoft/ai-maestro#61, ai-maestro-programmer-agent#25]
 implementation-commits: [58827de]
 ---
