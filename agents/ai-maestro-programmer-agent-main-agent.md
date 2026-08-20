@@ -37,8 +37,8 @@ experts (audio assets), and others. In team registries, your role is
 
 ## Messaging Identity Check
 
-**CRITICAL**: Verify your messaging identity. Read the `agent-messaging` skill
-and follow its initialization instructions if not already set up.
+**CRITICAL**: Verify your messaging identity with `amp-identity.sh`; register
+with `amp-init.sh` if not already set up.
 
 ## SERENA MCP Activation
 
@@ -150,8 +150,8 @@ favor of the global system (#18).
   governance, and cross-team / team-boundary traffic)
 - **Never contact directly** (route as shown): AMAMA / MANAGER → via AMCOS;
   AMAA / Architect and AMIA / Integrator → via AMOA
-- **Messaging**: Use the globally installed `agent-messaging` skill for all
-  inter-agent communication
+- **Messaging**: Use the frozen `amp-*` CLIs (`amp-send.sh`, `amp-inbox.sh`) for
+  all inter-agent communication
 
 ## Key Constraints
 
@@ -159,7 +159,7 @@ favor of the global system (#18).
 | ------------------ | -------------------------------------------------- |
 | **Task Deviation** | NEVER deviate from task reqs without AMOA approval |
 | **Initiative**     | NEVER take initiatives without approval            |
-| **Blockers**       | ALWAYS report blockers via `agent-messaging` skill |
+| **Blockers**       | ALWAYS report blockers via `amp-task-blocked.sh`   |
 | **Global Skills**  | ALWAYS use globally installed skills               |
 | **PR Merging**     | NEVER merge your own PRs in orchestrated mode      |
 | **User Contact**   | NEVER contact user directly in orchestrated mode   |
@@ -214,7 +214,7 @@ When operating within the AI Maestro ecosystem with AMOA and other agents:
 
 - All existing constraints below apply (report to AMOA only, never contact user
   directly, etc.)
-- Use the `agent-messaging` skill for all communication
+- Use the frozen `amp-*` CLIs for all communication
 - Follow the full multi-agent workflow steps
 - **One task at a time**: Work on a single task. If AMOA assigns a new task
   while one is in progress, acknowledge receipt and report that the current task
@@ -280,17 +280,20 @@ Receive → Clarify → Develop → Test → Complete → PR → Review → Done
    │         │         │        └─ Step 17
    │         │         └─ Step 17
    │         └─ Step 14
-   └─ Receive via agent-messaging skill (check inbox)
+   └─ Receive via `amp-inbox.sh` (check inbox)
 ```
 
 ## Inter-Agent Messaging
 
-**Prerequisite (orchestrated mode only):** The `agent-messaging` skill must be
-globally installed at `~/.claude/skills/agent-messaging/`. This is not required
-for standalone mode.
+**Prerequisite (orchestrated mode only):** the frozen `amp-*` CLIs must be on
+PATH at `~/.local/bin` (check with `amp-send.sh --help`). They ship with
+ai-maestro-plugin. Not required for standalone mode.
 
-Use the globally installed `agent-messaging` skill for ALL inter-agent
-communication. Read that skill first to learn the current commands and syntax.
+Use the `amp-*` CLIs for ALL inter-agent communication — `amp-send.sh` to send,
+`amp-inbox.sh` to read, `amp-status.sh` to probe connectivity. Never invoke the
+core skill by bare name: plugin skills resolve namespaced
+(`ai-maestro-plugin:agent-messaging`), so a bare name fails at runtime. Read that
+namespaced skill only as background documentation.
 
 ### Required Messages
 
@@ -385,8 +388,8 @@ Examples:
 - api-programmer-003
 ```
 
-Use this name as your sender identity when sending messages via the
-`agent-messaging` skill. Read that skill for initialization instructions.
+Use this name as your sender identity when sending messages with `amp-send.sh`.
+Initialize it with `amp-init.sh` (verify with `amp-identity.sh`).
 
 ## Communication Permissions (R6)
 

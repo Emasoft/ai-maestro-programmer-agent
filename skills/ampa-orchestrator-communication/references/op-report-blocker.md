@@ -64,8 +64,8 @@ Before reporting a blocker:
 
 Structure your blocker report with these components:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -171,11 +171,11 @@ Follow these steps to report a blocker:
 5. **Identify blocker type**: Use standardized types
 6. **Propose solutions**: Think of possible resolutions
 7. **Compose message**: Use the format from section 3.2
-8. **Send with urgent priority**: Send the blocker report using the
-   `agent-messaging` skill with urgent priority
-9. **Verify**: confirm message delivery via the `agent-messaging` skill's sent
+8. **Send with urgent priority**: Send the blocker report using
+   `amp-send.sh` with urgent priority
+9. **Verify**: confirm message delivery via `amp-inbox.sh`'s sent
    messages feature
-10. **Wait for response**: Check your inbox using the `agent-messaging` skill
+10. **Wait for response**: Check your inbox using `amp-inbox.sh`
     for AMOA reply
 11. **Continue if possible**: Work on unblocked items if any exist
 
@@ -235,8 +235,7 @@ Use this checklist before reporting a blocker:
 
 ### Escalation Message
 
-Send an escalation message to the orchestrator using the `agent-messaging`
-skill:
+Send an escalation message to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "ESCALATION: BLOCKER: [TASK_ID] - [Description]"
@@ -255,7 +254,7 @@ skill:
 
 **Situation**: Cannot access external API due to missing credentials.
 
-Send a blocker report to the orchestrator using the `agent-messaging` skill:
+Send a blocker report to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "BLOCKER: a1b2c3d4-e5f6-7890-abcd-ef1234567890 - Missing
@@ -281,7 +280,7 @@ Send a blocker report to the orchestrator using the `agent-messaging` skill:
 
 **Situation**: Required external service is unavailable.
 
-Send a blocker report to the orchestrator using the `agent-messaging` skill:
+Send a blocker report to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "BLOCKER: b2c3d4e5-f6a7-8901-bcde-f23456789012 - AuthService
@@ -306,7 +305,7 @@ Send a blocker report to the orchestrator using the `agent-messaging` skill:
 
 **Situation**: Requested feature cannot be implemented as specified.
 
-Send a blocker report to the orchestrator using the `agent-messaging` skill:
+Send a blocker report to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "BLOCKER: c3d4e5f6-a7b8-9012-cdef-345678901234 - Technical
@@ -333,9 +332,9 @@ Send a blocker report to the orchestrator using the `agent-messaging` skill:
 
 | Error                     | Cause                         | Resolution                                                                          |
 | ------------------------- | ----------------------------- | ----------------------------------------------------------------------------------- |
-| Messaging service offline | Messaging service not running | Use the `agent-messaging` skill's status check, start AI Maestro immediately        |
+| Messaging service offline | Messaging service not running | Use `amp-status.sh`, start AI Maestro immediately        |
 | AMOA not responding       | AMOA session inactive         | Escalate to AMCOS (your chief-of-staff — a direct R6 edge)                                                           |
-| Message delivery failed   | Network issue                 | Retry the send operation immediately using the `agent-messaging` skill, max 3 times |
+| Message delivery failed   | Network issue                 | Retry the send operation immediately using `amp-send.sh`, max 3 times |
 
 ### Critical Blocker Protocol
 

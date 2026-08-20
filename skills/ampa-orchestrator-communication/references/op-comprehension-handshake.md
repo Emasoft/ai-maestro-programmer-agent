@@ -28,7 +28,7 @@ they cost the whole implementation (R6 v3 / #17 M7a).
 1. **Read the full assignment** (and its TRDD if referenced) before answering.
 2. **Compose the five answers** (template below). Be concrete — paths, not
    "the relevant files"; named risks, not "some risks".
-3. **Send to AMOA** via the `agent-messaging` skill and **WAIT** for
+3. **Send to AMOA** via `amp-send.sh` and **WAIT** for
    confirmation. Do not start coding while waiting.
 4. **On confirmation** — begin work (`op-parse-task-requirements` onward).
 5. **On correction** — AMOA fixes your restatement / answers the ambiguity;

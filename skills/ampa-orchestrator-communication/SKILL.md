@@ -19,43 +19,47 @@ argument-hint: "[clarification|status|blocker|improvement|completion|feedback]"
 ## Overview
 
 Defines all communication protocols between AMPA and AMOA. Uses asynchronous
-inter-agent messaging via the globally installed `agent-messaging` skill. Read
-that skill once during initialization to learn messaging commands and syntax.
+inter-agent messaging via the frozen `amp-*` CLIs installed at `~/.local/bin`
+(`amp-send.sh`, `amp-inbox.sh`, `amp-status.sh`, `amp-init.sh`). Call the CLIs
+directly — never invoke the core skill by bare name, since plugin skills resolve
+namespaced (`ai-maestro-plugin:agent-messaging`) and a bare name fails at runtime.
 
 ## Prerequisites
 
-- **agent-messaging skill installed**: Read it to learn send/receive/reply
-  commands.
+- **amp-* CLIs on PATH**: `amp-send.sh --help` resolves. Background reading, if
+  needed: the `ai-maestro-plugin:agent-messaging` skill.
 - **AMOA session name known**: Your assigned orchestrator must be active and
   registered.
-- **Messaging identity verified**: Your session name is registered via
-  agent-messaging initialization.
+- **Messaging identity verified**: Your session name is registered — check with
+  `amp-identity.sh`, register with `amp-init.sh`.
 
 ## Instructions
 
 Copy this checklist and track your progress:
 
-1. **Initialize**: Read the `agent-messaging` skill and follow its
-   initialization to register your messaging identity.
-2. **Verify connectivity**: Use agent-messaging status check to confirm the
-   service is running.
+1. **Initialize**: Run `amp-init.sh` to register your messaging identity
+   (`amp-identity.sh` reports the identity already registered).
+2. **Verify connectivity**: Run `amp-status.sh` to confirm the service is
+   running.
 3. **Identify operation type**: Determine which applies — clarification, status,
    blocker, improvement, completion, or feedback acknowledgment.
 4. **Read reference file**: Open the corresponding reference file from Resources
    below to learn the exact message format and required fields.
 5. **Compose message**: Build the message with correct `type`, `priority`,
    `subject`, and structured `content` as specified in the reference.
-6. **Send message**: Use agent-messaging send operation to deliver to AMOA.
+6. **Send message**: `amp-send.sh <amoa-address> "<subject>" "<message>"
+   [--priority low|normal|high|urgent] [--type request|response|notification|task|status]`.
    Retry up to 3 times on failure.
-7. **Verify delivery**: Confirm the message appears in your sent messages list.
-8. **Monitor for response**: Check inbox for AMOA replies. Process all unread
-   messages before continuing other work.
+7. **Verify delivery**: Confirm the send exited 0 and the message appears in
+   your sent messages.
+8. **Monitor for response**: Run `amp-inbox.sh` for AMOA replies. Process all
+   unread messages before continuing other work.
 9. **Acknowledge receipt**: Reply to AMOA confirming you received the response
    and stating your next action.
 
 ## Output
 
-Sent/received messages to/from AMOA via agent-messaging skill.
+Sent/received messages to/from AMOA via the `amp-*` CLIs.
 
 ## Error Handling
 
@@ -83,7 +87,9 @@ log. Resume when connectivity is restored.
 | [op-receive-feedback.md](references/op-receive-feedback.md) | When to Use, Prerequisites, Procedure, Examples, Error Handling |
 | [op-report-missing-derived-trdd.md](references/op-report-missing-derived-trdd.md) | Report a missing derived TRDD (NPT/EHT) to the sender + author it — the MEMBER missing-derived duty (ai-maestro#61 Q1) |
 
-**`agent-messaging` skill** (global) — Messaging commands.
+**`amp-*` CLIs** (frozen, `~/.local/bin`) — `amp-send.sh` · `amp-inbox.sh` ·
+`amp-status.sh` · `amp-init.sh` · `amp-identity.sh`. Contract:
+`ai-maestro-plugin:agent-messaging` → `reference/detailed-guide.md`.
 
 ## Governance
 

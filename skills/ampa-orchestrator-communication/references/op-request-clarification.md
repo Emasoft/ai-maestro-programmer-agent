@@ -54,8 +54,8 @@ Before requesting clarification:
 
 Structure your clarification request with these components:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -92,9 +92,9 @@ Follow these steps to request clarification:
    vague requests)
 3. **Document your current understanding**: Show what you already know
 4. **Compose the message**: Use the format specified in section 1.2
-5. **Send via the `agent-messaging` skill**: Use the skill's send operation to
+5. **Send via `amp-send.sh`**: Use it to
    deliver the request to the orchestrator
-6. **Wait for response**: Check your inbox using the `agent-messaging` skill for
+6. **Wait for response**: Check your inbox using `amp-inbox.sh` for
    AMOA reply
 7. **Acknowledge receipt**: Confirm you received the clarification
 8. **Update task understanding**: Incorporate clarification into your work
@@ -114,8 +114,7 @@ Use this checklist before sending a clarification request:
 
 ## 1.3 Sending the Request
 
-Send the clarification request to the orchestrator using the `agent-messaging`
-skill:
+Send the clarification request to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "CLARIFICATION: [TASK_ID] - [Brief Topic]"
@@ -140,8 +139,8 @@ When AMOA responds to your clarification request:
 
 ### Acknowledgment Format
 
-When you receive a clarification response, reply directly to it using the
-`agent-messaging` skill:
+When you receive a clarification response, reply directly to it using
+`amp-send.sh --reply-to <id>`:
 
 - **Action**: reply to the original message by its ID
 - **Content**: confirm understanding and state how you will proceed based on the
@@ -149,8 +148,7 @@ When you receive a clarification response, reply directly to it using the
 
 **Verify**: confirm the reply was sent.
 
-Alternatively, send a new acknowledgment message using the `agent-messaging`
-skill:
+Alternatively, send a new acknowledgment message using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "ACK: CLARIFICATION: [TASK_ID] - [Topic]"
@@ -166,8 +164,7 @@ skill:
 
 **Situation**: Task says "optimize database queries" without specifying targets.
 
-Send a clarification request to the orchestrator using the `agent-messaging`
-skill:
+Send a clarification request to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "CLARIFICATION: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Database
@@ -189,8 +186,7 @@ skill:
 **Situation**: Task requires integration with a service not mentioned in project
 docs.
 
-Send a clarification request to the orchestrator using the `agent-messaging`
-skill:
+Send a clarification request to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "CLARIFICATION: c3d4e5f6-a7b8-9012-cdef-345678901234 -
@@ -210,8 +206,7 @@ skill:
 
 **Situation**: Two parts of the task description contradict each other.
 
-Send a clarification request to the orchestrator using the `agent-messaging`
-skill:
+Send a clarification request to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "CLARIFICATION: d4e5f6a7-b8c9-0123-defa-456789012345 -
@@ -232,10 +227,10 @@ skill:
 
 | Error                                | Cause                         | Resolution                                                                  |
 | ------------------------------------ | ----------------------------- | --------------------------------------------------------------------------- |
-| Identity not found                   | Messaging not initialized     | Read the `agent-messaging` skill and follow its initialization instructions |
+| Identity not found                   | Messaging not initialized     | Run `amp-init.sh` (verify with `amp-identity.sh`) and follow its initialization instructions |
 | Recipient not found                  | AMOA session not registered   | Wait for AMOA to start, or route to AMCOS (your chief-of-staff)                                       |
-| Messaging service offline            | Messaging service not running | Use the `agent-messaging` skill's status check, restart AI Maestro          |
-| No response within 30 minutes        | AMOA busy or unavailable      | Resend with urgent priority using the `agent-messaging` skill               |
+| Messaging service offline            | Messaging service not running | Use `amp-status.sh`, restart AI Maestro          |
+| No response within 30 minutes        | AMOA busy or unavailable      | Resend with urgent priority using `amp-send.sh`               |
 | `Response does not answer questions` | Miscommunication              | Send follow-up with specific unanswered questions                           |
 
 ### Retry Logic
@@ -243,7 +238,7 @@ skill:
 If message delivery fails:
 
 1. Wait 5 seconds
-2. Attempt to send the message again using the `agent-messaging` skill
+2. Attempt to send the message again using `amp-send.sh`
 3. If it fails again, wait 5 seconds and retry one more time (maximum 3 attempts
    total)
 4. If all 3 attempts fail, report the messaging failure up-chain via AMCOS → MANAGER → the MAESTRO

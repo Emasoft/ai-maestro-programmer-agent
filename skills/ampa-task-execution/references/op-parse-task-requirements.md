@@ -113,7 +113,7 @@ Create a file impact map:
 ### Step 2.4: Clarify Ambiguities with Orchestrator
 
 If any requirements are unclear, send a clarification request to the
-orchestrator using the `agent-messaging` skill:
+orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent session
 - **Subject**: "CLARIFY: [TASK_ID] - Ambiguous requirement"
@@ -171,8 +171,8 @@ Task: "Integrate payment gateway"
 
 **Blocker Message Sent:**
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json

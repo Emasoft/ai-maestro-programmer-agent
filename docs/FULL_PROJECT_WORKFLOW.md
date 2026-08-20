@@ -266,7 +266,7 @@ label. Every agent reads/moves a task by editing its TRDD (or via
 #### Step 14: Agent Clarification
 **Actor**: AMOA (Orchestrator) + IMPLEMENTER AGENTS
 **Action**:
-- Send to each agent a notification using the `agent-messaging` skill that their first task has been assigned
+- Send to each agent a notification using `amp-send.sh` that their first task has been assigned
 - Ask each agent if they need clarifications
 - The Orchestrator is the team lead with full project understanding (along with Architect)
 
@@ -349,7 +349,7 @@ label. Every agent reads/moves a task by editing its TRDD (or via
 #### Step 20: PR Review Request
 **Actor**: AMOA (Orchestrator)
 **Action**:
-- Send message using the `agent-messaging` skill to Integrator agent (AMIA) to evaluate all PRs of completed tasks
+- Send message using `amp-send.sh` to Integrator agent (AMIA) to evaluate all PRs of completed tasks
 - Request merge if they pass all checks
 
 **Communication**:

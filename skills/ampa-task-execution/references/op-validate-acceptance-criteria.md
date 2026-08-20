@@ -128,8 +128,8 @@ If ANY criterion is NOT PASSED:
 
 ### Step 6.4: Report Completion to Orchestrator
 
-Send a completion message with validation summary to the orchestrator using the
-`agent-messaging` skill:
+Send a completion message with validation summary to the orchestrator using
+`amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent session
 - **Subject**: "COMPLETE: [TASK_ID]"
@@ -165,8 +165,8 @@ Task: "Add email validation to user form"
 
 Completion message sent:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json

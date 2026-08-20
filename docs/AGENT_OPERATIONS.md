@@ -23,7 +23,7 @@
 - **Project**: Use kebab-case project identifier (must match project name)
 - **Type**: Always use `programmer` (identifies role)
 - **Number**: Zero-padded 3-digit sequence (001, 002, 003, ...)
-- **Messaging Identity**: Session name = messaging identity (initialized via the `agent-messaging` skill)
+- **Messaging Identity**: Session name = messaging identity (initialized via `amp-init.sh`)
 - **Chosen By**: AMCOS (Chief of Staff) when spawning the programmer
 - **NO `ampa-` prefix**: Unlike AMOA/AMCOS/AMIA/AMAMA, AMPA sessions use project-based naming
 
@@ -127,7 +127,7 @@ The AMCOS (Chief of Staff) agent spawns AMPA instances using the `ai-maestro-age
 ### Pre-Spawn Setup
 Before spawning, AMCOS must:
 1. Copy the plugin to `~/agents/$SESSION_NAME/.claude/plugins/ai-maestro-programmer-agent/`
-2. Initialize messaging identity for the session (using the `agent-messaging` skill)
+2. Initialize messaging identity for the session (using `amp-init.sh`)
 3. Create initial task description (from AMOA task breakdown)
 4. Set up working directories
 5. Clone project repository into `work/` directory
@@ -156,7 +156,7 @@ Each plugin defines a **role boundary**. AMPA's job is to **implement tasks**, n
 - Manage user communication (AMAMA's job)
 
 ### Bundled and Globally Installed Skills
-AMPA ships 5 bundled skills in the `skills/` directory, declared via `plugin.json`. Additionally, the `agent-messaging` skill (required for orchestrated mode) must be globally installed at `~/.claude/skills/agent-messaging/`.
+AMPA ships 5 bundled skills in the `skills/` directory, declared via `plugin.json`. Additionally, orchestrated mode requires the `amp-*` CLIs (`amp-init.sh`, `amp-identity.sh`, `amp-send.sh`, `amp-inbox.sh`, `amp-status.sh`, `amp-task-blocked.sh`, `amp-task-done.sh`) installed at `~/.local/bin`; the `ai-maestro-plugin:agent-messaging` skill ships with `ai-maestro-plugin` and documents these CLIs as background reference.
 
 ### SERENA MCP for Code Navigation
 AMPA uses the globally configured **SERENA MCP** for code navigation and analysis:
@@ -169,30 +169,30 @@ AMPA uses the globally configured **SERENA MCP** for code navigation and analysi
 **SERENA is NOT part of the AMPA plugin** - it's a globally installed MCP server.
 
 ### Cross-Role Communication
-All cross-role communication happens via **inter-agent messages** sent through the `agent-messaging` skill, not skill sharing.
+All cross-role communication happens via **inter-agent messages** sent through the `amp-*` CLIs, not skill sharing.
 
 **Example**:
 ```text
 AMPA encounters architectural question
-→ AMPA sends a blocker message to AMOA using the `agent-messaging` skill
+→ AMPA sends a blocker message to AMOA using `amp-send.sh`
   (Recipient: orchestrator, Subject: "BLOCKER: ...", Type: alert, Priority: urgent)
 → AMOA escalates to AMCOS
 → AMCOS delegates to AMAA
 → AMAA responds with architectural guidance
 → AMCOS forwards to AMOA
 → AMOA forwards to AMPA
-→ AMPA checks inbox using the `agent-messaging` skill, reads the response, resumes implementation
+→ AMPA checks inbox using `amp-inbox.sh`, reads the response, resumes implementation
 ```
 
 ---
 
 ## 6. Inter-Agent Messaging
 
-All inter-agent communication uses the globally installed `agent-messaging` skill. Read that skill first to learn the current commands and syntax. Never hardcode command names -- always consult the skill at runtime.
+All inter-agent communication uses the frozen `amp-*` CLIs installed at `~/.local/bin` (`amp-send.sh`, `amp-inbox.sh`, `amp-status.sh`, `amp-init.sh`, `amp-identity.sh`, `amp-task-blocked.sh`, `amp-task-done.sh`). Call the CLIs directly; the `ai-maestro-plugin:agent-messaging` skill is background documentation only, not a runtime dependency.
 
 ### Messaging Identity Setup
 
-Before sending any messages, verify your messaging identity is initialized. Read the `agent-messaging` skill and follow its initialization instructions.
+Before sending any messages, verify your messaging identity is initialized: run `amp-init.sh` to initialize, then `amp-identity.sh` to verify.
 
 **Verify**: Confirm your identity file exists and contains your session name.
 
@@ -200,7 +200,7 @@ Before sending any messages, verify your messaging identity is initialized. Read
 
 #### To AMOA (Orchestrator)
 
-Send a message to the orchestrator using the `agent-messaging` skill:
+Send a message to the orchestrator using `amp-send.sh`:
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "Task Completed: [description]"
 - **Content**: describe what was implemented, reference the PR number, and point to the completion report file path
@@ -213,7 +213,7 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 #### To AMCOS (Chief of Staff) - For Blockers Only
 
-Send a message to the chief of staff using the `agent-messaging` skill:
+Send a message to the chief of staff using `amp-send.sh`:
 - **Recipient**: the AMCOS agent session
 - **Subject**: "BLOCKER: [brief description]"
 - **Content**: describe the blocker, its impact, and point to the blocker report file path
@@ -224,7 +224,7 @@ Send a message to the chief of staff using the `agent-messaging` skill:
 
 #### To AMIA (Integrator) - For Review Requests
 
-Send a message to the integrator using the `agent-messaging` skill:
+Send a message to the integrator using `amp-send.sh`:
 - **Recipient**: the AMIA agent session
 - **Subject**: "Review Request: PR #[number]"
 - **Content**: describe what the PR implements, how many tests pass, and that it is ready for review
@@ -235,13 +235,13 @@ Send a message to the integrator using the `agent-messaging` skill:
 
 ### Reading Messages (AMPA Inbox)
 
-Check your inbox using the `agent-messaging` skill. Process all unread messages before proceeding with any work.
+Check your inbox using `amp-inbox.sh`. Process all unread messages before proceeding with any work.
 
-To read a specific message, use the `agent-messaging` skill to view its full content by message ID.
+To read a specific message, use `amp-inbox.sh` to view its full content by message ID.
 
-To reply to a message, use the `agent-messaging` skill to send a reply referencing the original message.
+To reply to a message, use `amp-send.sh --reply-to <id>` to send a reply referencing the original message.
 
-To check messaging service status, use the `agent-messaging` skill's status check operation.
+To check messaging service status, use `amp-status.sh`.
 
 ### Message Priority Levels
 
@@ -272,7 +272,7 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 ### Core Responsibilities
 
 #### 1. Receive Tasks from AMOA
-- AMOA sends task assignment via the `agent-messaging` skill
+- AMOA sends task assignment via `amp-send.sh`
 - AMPA acknowledges receipt
 - AMPA validates task clarity and completeness
 - AMPA requests clarification if task is ambiguous
@@ -300,7 +300,7 @@ To check messaging service status, use the `agent-messaging` skill's status chec
 - Create PR when task implementation complete
 - PR title: `[Project] Feature/Fix: Brief description`
 - PR body: Include task reference, test results, implementation notes
-- Request review from AMIA using the `agent-messaging` skill
+- Request review from AMIA using `amp-send.sh`
 - **AMPA does NOT merge PRs** - only AMIA can merge
 
 #### 6. Update Task Status
@@ -367,7 +367,7 @@ To wake an AMPA agent, use the `ai-maestro-agents-management` skill to wake the 
 
 **What happens**:
 - Tmux session brought to foreground
-- AMPA checks inbox using the `agent-messaging` skill
+- AMPA checks inbox using `amp-inbox.sh`
 - AMPA resumes implementation work
 
 ### Hibernate (Pause Session)
@@ -382,7 +382,7 @@ To hibernate an AMPA agent, use the `ai-maestro-agents-management` skill to hibe
 **What happens**:
 - Tmux session detached (keeps running in background)
 - AMPA continues monitoring via hooks
-- AMPA can still receive messages via the `agent-messaging` skill
+- AMPA can still receive messages via `amp-inbox.sh`
 
 ### Terminate (End Session)
 
@@ -423,12 +423,12 @@ This prevents AMPA from consuming resources while waiting for review feedback.
 #### Issue: AMPA cannot access AMOA skills
 **Symptom**: `Skill 'amoa-orchestration-patterns' not found`
 **Cause**: Plugin mutual exclusivity - AMPA doesn't have AMOA plugin loaded
-**Solution**: Use the `agent-messaging` skill to send a message requesting AMOA assistance
+**Solution**: Use `amp-send.sh` to send a message requesting AMOA assistance
 
 #### Issue: Message not received by recipient
 **Symptom**: AMOA didn't get task completion notification
 **Cause**: Wrong recipient name or messaging identity not initialized
-**Solution**: Verify your messaging identity is initialized using the `agent-messaging` skill, check that the recipient name is correct, and use the skill's status check to verify connectivity
+**Solution**: Verify your messaging identity is initialized using `amp-identity.sh`, check that the recipient name is correct, and use `amp-status.sh` to verify connectivity
 
 #### Issue: SERENA MCP not available
 **Symptom**: `SERENA MCP server not found` or symbol search fails
@@ -576,12 +576,12 @@ that CI and `publish.py` already use.
 
 ### Related Documentation
 
-> **Cross-Plugin References**: The following plugins are part of the AI Maestro Agent Ecosystem. Each is installed independently and communicates via the `agent-messaging` skill:
+> **Cross-Plugin References**: The following plugins are part of the AI Maestro Agent Ecosystem. Each is installed independently and communicates via the `amp-*` CLIs:
 > - AMOA (Orchestrator) - Task distribution and delegation
 > - AMIA (Integrator) - Code review and quality gates
 > - AMCOS (Chief of Staff) - Agent lifecycle coordination
 > - AMAA (Architect) - Architecture design and planning
-> - `agent-messaging` skill - Provided by the AI Maestro messaging system
+> - `ai-maestro-plugin:agent-messaging` skill - Background documentation for the AI Maestro messaging system (runtime uses the `amp-*` CLIs)
 
 ### External References
 - [Claude Code Plugin System](https://docs.anthropic.com/claude/docs/plugins)

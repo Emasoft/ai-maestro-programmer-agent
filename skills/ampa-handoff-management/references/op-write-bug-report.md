@@ -285,7 +285,7 @@ reader knows where to look.
 ### Step 14: Notify If Critical
 
 For critical or high severity bugs, notify the orchestrator immediately using
-the `agent-messaging` skill:
+`amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "BUG [severity]: [bug title]"

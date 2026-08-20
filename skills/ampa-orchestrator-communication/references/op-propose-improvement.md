@@ -70,8 +70,8 @@ Before proposing an improvement:
 
 Structure your improvement proposal with these components:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -196,7 +196,7 @@ Follow these steps to propose an improvement:
 4. **Consider alternatives**: Evaluate other approaches
 5. **Estimate effort**: Calculate implementation time
 6. **Compose proposal**: Use the format from section 4.2
-7. **Send to AMOA**: Send the proposal using the `agent-messaging` skill
+7. **Send to AMOA**: Send the proposal using `amp-send.sh`
 8. **Wait for response**: Do not implement until approved (unless auto-proceed)
 9. **Implement if approved**: Proceed with the improvement
 10. **Document the change**: Note the improvement in commit message
@@ -258,7 +258,7 @@ When AMOA responds:
 
 **Situation**: Found a more efficient algorithm.
 
-Send a proposal to the orchestrator using the `agent-messaging` skill:
+Send a proposal to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "PROPOSAL: a1b2c3d4-e5f6-7890-abcd-ef1234567890 - Use Binary
@@ -280,7 +280,7 @@ Send a proposal to the orchestrator using the `agent-messaging` skill:
 
 **Situation**: Found existing code that can be reused.
 
-Send a proposal to the orchestrator using the `agent-messaging` skill:
+Send a proposal to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "PROPOSAL: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Reuse Existing
@@ -301,7 +301,7 @@ Send a proposal to the orchestrator using the `agent-messaging` skill:
 
 **Situation**: Identified security improvement opportunity.
 
-Send a proposal to the orchestrator using the `agent-messaging` skill:
+Send a proposal to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "PROPOSAL: c3d4e5f6-a7b8-9012-cdef-345678901234 - Add Input

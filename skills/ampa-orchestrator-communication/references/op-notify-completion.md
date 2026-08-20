@@ -68,8 +68,8 @@ Before sending completion notification:
 
 Structure your completion notification with these components:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -225,9 +225,9 @@ before AMOA green-lights it (R6 v3 / #17 M7c).**
 5. **Only on green-light — create the PR**: Follow `op-create-pull-request`. In
    orchestrated mode AMOA then routes the PR to AMIA for review (Step 20).
 6. **Compose notification**: Use the format from section 5.2 (the PR is now up).
-7. **Send to AMOA**: Send the completion notification using the
-   `agent-messaging` skill.
-8. **Wait for feedback**: Check your inbox using the `agent-messaging` skill for
+7. **Send to AMOA**: Send the completion notification using
+   `amp-send.sh`.
+8. **Wait for feedback**: Check your inbox using `amp-inbox.sh` for
    AMOA response. (AMOA/AMIA — not you — own the `→ completed` flip.)
 
 ### Reflecting Submit-for-Review and Done on the Kanban (Optional)
@@ -279,8 +279,7 @@ Use this checklist before sending completion notification:
 
 ## 5.4 Sending Notification
 
-Send the completion notification to the orchestrator using the `agent-messaging`
-skill:
+Send the completion notification to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "COMPLETE: [TASK_ID] - [Brief Description]"
@@ -298,8 +297,7 @@ skill:
 
 **Situation**: New feature fully implemented with tests.
 
-Send a completion notification to the orchestrator using the `agent-messaging`
-skill:
+Send a completion notification to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "COMPLETE: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Order
@@ -322,8 +320,7 @@ skill:
 
 **Situation**: Bug fix implemented and verified.
 
-Send a completion notification to the orchestrator using the `agent-messaging`
-skill:
+Send a completion notification to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "COMPLETE: c3d4e5f6-a7b8-9012-cdef-345678901234 - Fix Race
@@ -345,8 +342,7 @@ skill:
 
 **Situation**: Refactoring task completed.
 
-Send a completion notification to the orchestrator using the `agent-messaging`
-skill:
+Send a completion notification to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "COMPLETE: d4e5f6a7-b8c9-0123-defa-456789012345 - Refactor
@@ -370,14 +366,14 @@ skill:
 
 | Error                              | Cause                         | Resolution                                                               |
 | ---------------------------------- | ----------------------------- | ------------------------------------------------------------------------ |
-| Messaging service offline          | Messaging service not running | Use the `agent-messaging` skill's status check, start AI Maestro service |
-| Message delivery failed            | Network issue                 | Retry the send operation up to 3 times using the `agent-messaging` skill |
+| Messaging service offline          | Messaging service not running | Use `amp-status.sh`, start AI Maestro service |
+| Message delivery failed            | Network issue                 | Retry the send operation up to 3 times using `amp-send.sh` |
 | `Tests failing after notification` | Regression introduced         | Send correction notification                                             |
 
 ### Post-Notification Issues
 
 If you discover an issue after sending completion notification, send a
-correction to the orchestrator using the `agent-messaging` skill:
+correction to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "CORRECTION: [TASK_ID] - Issue Found After Completion"

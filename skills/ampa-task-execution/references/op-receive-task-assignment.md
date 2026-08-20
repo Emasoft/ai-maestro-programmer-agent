@@ -31,8 +31,7 @@ Use this operation when:
 
 Before executing this operation:
 
-1. AI Maestro service must be running (verify using the `agent-messaging`
-   skill's health check feature)
+1. AI Maestro service must be running (verify using `amp-status.sh`)
 2. You must have a valid session name configured
 3. The message must be in the expected JSON format
 
@@ -40,7 +39,7 @@ Before executing this operation:
 
 ### Step 1.1: Read Incoming AI Maestro Message
 
-Check your inbox using the `agent-messaging` skill. Process all unread messages.
+Check your inbox using `amp-inbox.sh`. Process all unread messages.
 
 Look for messages where:
 
@@ -61,8 +60,8 @@ From the message body, extract:
 
 Example message structure:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -137,8 +136,8 @@ your understanding. A bare ACK tells the orchestrator nothing about whether you
 understood the task — the handshake catches misunderstandings BEFORE tokens are
 burned on a wrong implementation.
 
-Send the handshake answer to the orchestrator using the `agent-messaging`
-skill — full template and reply semantics in
+Send the handshake answer to the orchestrator using `amp-send.sh` — full
+template and reply semantics in
 `op-comprehension-handshake.md` (`ampa-orchestrator-communication` skill):
 
 - **Recipient**: the sender's session name (from the incoming message)
@@ -177,8 +176,8 @@ never silently improvise around it.
 
 Incoming message:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -201,8 +200,8 @@ Incoming message:
 
 Response:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -225,8 +224,8 @@ ambiguity — only then does work begin.
 
 Incoming message missing acceptance criteria:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -242,8 +241,8 @@ Incoming message missing acceptance criteria:
 
 Response:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -267,7 +266,7 @@ Response:
 | No messages in inbox        | No tasks assigned yet      | Wait for orchestrator assignment                                 |
 | Message missing task_id     | Malformed message          | Report error, request resubmission                               |
 | Missing acceptance_criteria | Incomplete task definition | Request criteria from orchestrator                               |
-| AI Maestro unreachable      | Service not running        | Verify AI Maestro connectivity using the `agent-messaging` skill |
+| AI Maestro unreachable      | Service not running        | Verify AI Maestro connectivity using `amp-status.sh` |
 
 ## Related Operations
 

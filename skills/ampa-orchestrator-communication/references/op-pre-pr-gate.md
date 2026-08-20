@@ -24,8 +24,8 @@ the task is done; AMOA confirms it before any PR exists (R6 v3 / #17 M7c).
 
 1. **Self-verify** the completion criteria first (tests green, lint/type clean,
    edge cases handled, no regressions, all EHTs of the TRDD terminal).
-2. **Send the "PR now?" request to AMOA** (template below) using the
-   `agent-messaging` skill. Include the evidence so AMOA can validate without a
+2. **Send the "PR now?" request to AMOA** (template below) using
+   `amp-send.sh`. Include the evidence so AMOA can validate without a
    round-trip.
 3. **WAIT** for AMOA's reply. Do **not** open a PR while waiting.
 4. **On `GO`** — proceed to `op-create-pull-request`, then send the completion
@@ -81,6 +81,6 @@ until AMOA replies.
 
 | Error | Cause | Resolution |
 | ----- | ----- | ---------- |
-| No AMOA reply within the team's gate timeout | AMOA busy / offline | Re-send once via `agent-messaging`; if still none, escalate the blocker to AMCOS — do **not** self-authorize the PR |
+| No AMOA reply within the team's gate timeout | AMOA busy / offline | Re-send once via `amp-send.sh`; if still none, escalate the blocker to AMCOS — do **not** self-authorize the PR |
 | AMOA reply ambiguous | Unclear GO vs HOLD | Ask one clarifying question; treat anything not an explicit GO as HOLD |
 | You already opened the PR before gating | Gate skipped | Convert the PR to draft (`gh pr ready --undo` / open as `--draft`), run the gate, and only mark ready on GO |

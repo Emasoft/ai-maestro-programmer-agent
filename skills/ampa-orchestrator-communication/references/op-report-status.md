@@ -56,8 +56,8 @@ Before sending a status update:
 
 Structure your status update with these components:
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -136,7 +136,7 @@ Follow these steps to report status:
 2. **Identify blockers**: Note any issues preventing progress
 3. **Estimate completion**: Calculate realistic time estimate
 4. **Compose message**: Use the format specified in section 2.2
-5. **Send via the `agent-messaging` skill**: Use the skill's send operation to
+5. **Send via `amp-send.sh`**: Use it to
    deliver the status update to the orchestrator
 6. **Continue work**: Resume task after sending update
 
@@ -155,7 +155,7 @@ Use this checklist before sending a status update:
 
 ## 2.4 Sending Status Updates
 
-Send a status update to the orchestrator using the `agent-messaging` skill:
+Send a status update to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent (e.g., "orchestrator-master")
 - **Subject**: "STATUS: [UUID] - [Current Phase]"
@@ -169,8 +169,8 @@ Send a status update to the orchestrator using the `agent-messaging` skill:
 
 ### Status Update When Delayed
 
-If progress is slower than expected, send a delayed status update using the
-`agent-messaging` skill:
+If progress is slower than expected, send a delayed status update using
+`amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "STATUS: [TASK-ID] - Implementation Delayed"
@@ -187,7 +187,7 @@ If progress is slower than expected, send a delayed status update using the
 
 **Situation**: Beginning work on a new task.
 
-Send a message to the orchestrator using the `agent-messaging` skill:
+Send a message to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "STATUS: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Starting
@@ -206,7 +206,7 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 **Situation**: All tests written and passing.
 
-Send a message to the orchestrator using the `agent-messaging` skill:
+Send a message to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "STATUS: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Tests Complete"
@@ -225,7 +225,7 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 **Situation**: All work complete, ready for AMOA review.
 
-Send a message to the orchestrator using the `agent-messaging` skill:
+Send a message to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "STATUS: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Ready for Review"
@@ -243,7 +243,7 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 **Situation**: Progress blocked by external dependency.
 
-Send a message to the orchestrator using the `agent-messaging` skill:
+Send a message to the orchestrator using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "STATUS: c3d4e5f6-a7b8-9012-cdef-345678901234 - Partially
@@ -264,7 +264,7 @@ Send a message to the orchestrator using the `agent-messaging` skill:
 
 | Error                      | Cause                         | Resolution                                                               |
 | -------------------------- | ----------------------------- | ------------------------------------------------------------------------ |
-| Messaging service offline  | Messaging service not running | Use the `agent-messaging` skill's status check, start AI Maestro service |
+| Messaging service offline  | Messaging service not running | Use `amp-status.sh`, start AI Maestro service |
 | `Message delivery failed`  | Network issue                 | Retry after 5 seconds                                                    |
 | `Invalid progress_percent` | Value outside 0-100           | Use integer between 0 and 100                                            |
 | `Empty completed array`    | No work done yet              | Include at least "Task analysis"                                         |

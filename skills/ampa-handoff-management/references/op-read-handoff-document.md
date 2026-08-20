@@ -143,8 +143,8 @@ continuing.
 
 ### Step 7: Acknowledge Receipt
 
-After successfully reading the handoff, notify the delegating agent using the
-`agent-messaging` skill:
+After successfully reading the handoff, notify the delegating agent using
+`amp-send.sh`:
 
 - **Recipient**: the delegating agent's session name (from the handoff's `from`
   field)

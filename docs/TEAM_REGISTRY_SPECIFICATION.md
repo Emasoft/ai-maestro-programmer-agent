@@ -291,14 +291,14 @@ def get_agent_address(agent_name: str, registry_path: str = ".ai-maestro/team-re
 address = get_agent_address("svgbbox-orchestrator")
 # Returns: "svgbbox-orchestrator"
 
-# Then use the `agent-messaging` skill to send a message to this address.
+# Then use `amp-send.sh` to send a message to this address.
 ```
 
 ---
 
 ## Message Format with Agent Identity
 
-All AI Maestro messages must include full agent identity. Send using the `agent-messaging` skill:
+All AI Maestro messages must include full agent identity. Send using `amp-send.sh`:
 
 - **Sender**: The sending agent's name (e.g., `svgbbox-programmer-001`)
 - **Recipient**: The target agent's name looked up from the team registry (e.g., `svgbbox-orchestrator`)
@@ -317,7 +317,7 @@ All AI Maestro messages must include full agent identity. Send using the `agent-
     - `issue_number`: The GitHub issue number (e.g., 42)
     - `issue_url`: Full URL to the GitHub issue
 
-**Verify**: confirm message delivery via the `agent-messaging` skill's sent messages feature.
+**Verify**: confirm `amp-send.sh` exited 0 — it exits non-zero when the send fails.
 
 ---
 
@@ -382,7 +382,7 @@ Fix login validation bug
 
 ### Registry Update Message
 
-When AMCOS updates the registry, it sends a notification to all team agents using the `agent-messaging` skill:
+When AMCOS updates the registry, it sends a notification to all team agents using `amp-send.sh`:
 
 - **Sender**: `amcos-chief-of-staff`
 - **Recipient**: Each team agent (sent individually to all agents in the registry)
@@ -397,7 +397,7 @@ When AMCOS updates the registry, it sends a notification to all team agents usin
     - `new_status`: New status value (only for `status_change` actions)
   - `registry_commit`: The git commit hash of the registry update
 
-**Verify**: confirm message delivery via the `agent-messaging` skill's sent messages feature.
+**Verify**: confirm `amp-send.sh` exited 0 — it exits non-zero when the send fails.
 
 ---
 

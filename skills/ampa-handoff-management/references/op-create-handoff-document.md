@@ -229,7 +229,7 @@ EOF
 
 ### Step 11: Notify the Receiving Agent
 
-Send a notification to the receiving agent using the `agent-messaging` skill:
+Send a notification to the receiving agent using `amp-send.sh`:
 
 - **Recipient**: the receiving agent's session name
 - **Subject**: "Handoff ready: [task-name]"
@@ -401,10 +401,9 @@ Attempted to integrate the payment processing API. Implementation is blocked wai
 
 **Resolution**:
 
-1. Use the `agent-messaging` skill's status check operation to verify the
-   messaging service is running
-2. Verify your messaging identity is initialized following the `agent-messaging`
-   skill's instructions
+1. Use `amp-status.sh` to verify the messaging service is running
+2. Run `amp-init.sh` (verify with `amp-identity.sh`) to confirm your messaging
+   identity is initialized
 3. If AI Maestro is down, document in the handoff that notification was not sent
 4. The receiving agent can poll the handoff directory instead of waiting for
    notification

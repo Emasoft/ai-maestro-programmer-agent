@@ -26,11 +26,11 @@ After sending a completion notification, actively monitor for AMOA feedback.
 
 ### Checking for Messages
 
-Check your inbox using the `agent-messaging` skill. Look for unread messages
+Check your inbox using `amp-inbox.sh`. Look for unread messages
 from the orchestrator.
 
-To read a specific message, use the `agent-messaging` skill's read operation
-with the message ID to see its full content.
+To read a specific message, use `amp-inbox.sh` with the message ID
+to see its full content.
 
 ### Polling Interval
 
@@ -65,8 +65,8 @@ AMOA may send different types of feedback:
 
 **Subject Pattern**: `APPROVED: a1b2c3d4-e5f6-7890-abcd-ef1234567890`
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -85,8 +85,8 @@ AMOA may send different types of feedback:
 
 **Subject Pattern**: `REVISION: [Task ID]`
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -114,8 +114,8 @@ AMOA may send different types of feedback:
 
 **Subject Pattern**: `REJECTED: [Task ID]`
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -136,8 +136,8 @@ rework.
 
 **Subject Pattern**: `RE: CLARIFICATION: [Task ID]`
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -160,8 +160,8 @@ rework.
 
 **Subject Pattern**: `RE: PROPOSAL: [Task ID]`
 
-> **Note**: The structure below shows the conceptual message content. Use the
-> `agent-messaging` skill to send messages - it handles the exact API format
+> **Note**: The structure below shows the conceptual message content. Use
+> `amp-send.sh` to send messages - it handles the exact API format
 > automatically.
 
 ```json
@@ -249,7 +249,7 @@ Use this checklist when processing feedback:
 ### Immediate Acknowledgment
 
 Send acknowledgment within 5 minutes of receiving feedback. Reply directly to
-the feedback message using the `agent-messaging` skill:
+the feedback message using `amp-send.sh --reply-to <id>`:
 
 - **Action**: reply to the original message by its ID
 - **Content**: "Feedback received and understood. Processing now. Action items:
@@ -257,8 +257,7 @@ the feedback message using the `agent-messaging` skill:
 
 **Verify**: confirm the reply appears in your sent messages.
 
-Alternatively, send a new acknowledgment message using the `agent-messaging`
-skill:
+Alternatively, send a new acknowledgment message using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "ACK: [Original Subject]"
@@ -281,8 +280,8 @@ skill:
 
 ### After Completing Revisions
 
-Send a revision complete notification to the orchestrator using the
-`agent-messaging` skill:
+Send a revision complete notification to the orchestrator using
+`amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "REVISED: [Task ID] - Revisions Complete"
@@ -299,7 +298,7 @@ Send a revision complete notification to the orchestrator using the
 
 **Situation**: AMOA approved the task.
 
-Reply to the approval message using the `agent-messaging` skill:
+Reply to the approval message using `amp-send.sh --reply-to <id>`:
 
 - **Action**: reply to the original message by its ID
 - **Content**: "Approval received. Thank you for the review. Awaiting merge
@@ -311,7 +310,7 @@ Reply to the approval message using the `agent-messaging` skill:
 
 **Situation**: AMOA requested changes.
 
-Reply to the revision request using the `agent-messaging` skill:
+Reply to the revision request using `amp-send.sh --reply-to <id>`:
 
 - **Action**: reply to the original message by its ID
 - **Content**: "Revision request received. Will address all 3 items: 1) Add
@@ -320,8 +319,8 @@ Reply to the revision request using the `agent-messaging` skill:
 
 **Verify**: confirm the acknowledgment was sent.
 
-After completing revisions, send a notification to the orchestrator using the
-`agent-messaging` skill:
+After completing revisions, send a notification to the orchestrator using
+`amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "REVISED: b2c3d4e5-f6a7-8901-bcde-f23456789012 - Revisions
@@ -342,7 +341,7 @@ After completing revisions, send a notification to the orchestrator using the
 
 **Situation**: Task was rejected, need to rework.
 
-Reply to the rejection message using the `agent-messaging` skill:
+Reply to the rejection message using `amp-send.sh --reply-to <id>`:
 
 - **Action**: reply to the original message by its ID
 - **Content**: "Rejection received. I understand the issues and will rework the
@@ -357,7 +356,7 @@ Reply to the rejection message using the `agent-messaging` skill:
 
 **Situation**: AMOA answered clarification questions.
 
-Reply to the clarification response using the `agent-messaging` skill:
+Reply to the clarification response using `amp-send.sh --reply-to <id>`:
 
 - **Action**: reply to the original message by its ID
 - **Content**: "Clarification received and understood. Will use PostgreSQL JSONB
@@ -378,7 +377,7 @@ Reply to the clarification response using the `agent-messaging` skill:
 ### Requesting Clarification on Feedback
 
 If feedback is unclear, send a clarification request to the orchestrator using
-the `agent-messaging` skill:
+`amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "RE: REVISION: [TASK_ID] - Clarification Needed"
@@ -392,7 +391,7 @@ the `agent-messaging` skill:
 ### Reporting Inability to Implement
 
 If a requested change cannot be implemented, send an alert to the orchestrator
-using the `agent-messaging` skill:
+using `amp-send.sh`:
 
 - **Recipient**: your assigned orchestrator agent
 - **Subject**: "CANNOT IMPLEMENT: [TASK_ID] - [Revision Item]"

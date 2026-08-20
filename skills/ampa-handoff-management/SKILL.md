@@ -50,8 +50,8 @@ Copy this checklist and track your progress:
    `task`, `bug-id`, `severity`, `created`.
 5. **Validate the handoff document.** Re-read to confirm all required fields are
    present and content is accurate.
-6. **Send notification.** Use the globally installed `agent-messaging` skill to
-   notify the receiving agent, including the handoff file path.
+6. **Send notification.** Run `amp-send.sh <recipient> "<subject>" "<message>"`
+   to notify the receiving agent, including the handoff file path.
 7. **Archive previous versions.** If updating an existing handoff, move
    `current.md` to `archive/` with a timestamp suffix before writing the new
    version.
@@ -60,16 +60,16 @@ Copy this checklist and track your progress:
 
 - **Handoff documents** stored at
   `$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-<task-name>/current.md`.
-- **Notification** sent to receiving agent via agent-messaging skill.
+- **Notification** sent to receiving agent via `amp-send.sh`.
 
 ## Error Handling
 
 | Error                         | Resolution                                                                                                                  |
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | Handoff directory missing     | Run `mkdir -p "$CLAUDE_PROJECT_DIR/thoughts/shared/handoffs/ampa-<task-name>/"`                                             |
-| AI Maestro notification fails | Verify running with `amp-status` (frozen CLI, not the server `/api/` — R23), check `agent-messaging` skill for connectivity troubleshooting |
+| AI Maestro notification fails | Verify running with `amp-status.sh` (frozen CLI, not the server `/api/` — R23); connectivity troubleshooting is in the `ai-maestro-plugin:agent-messaging` skill |
 | YAML frontmatter parse error  | Ensure `---` delimiters on own lines, quote special characters in values                                                    |
-| Receiving agent not found     | Use the `agent-messaging` skill to list registered agents                                                                   |
+| Receiving agent not found     | Run `amp-inbox.sh`/`amp-identity.sh` to check addressing; team membership via `aimaestro-teams.sh show <teamId>`            |
 | Handoff document is stale     | Archive existing `current.md` to `archive/` with timestamp, then create new                                                 |
 
 ## Examples
@@ -87,7 +87,9 @@ Copy this checklist and track your progress:
 | [op-write-bug-report.md](references/op-write-bug-report.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
 | [op-document-work-state.md](references/op-document-work-state.md) | When to Use, Prerequisites, Procedure, Checklist, Examples, Error Handling |
 
-**`agent-messaging` skill** (global) — Send notifications, list agents.
+**`amp-*` CLIs** (frozen, `~/.local/bin`) — `amp-send.sh` sends notifications,
+`amp-status.sh` probes connectivity. Contract:
+`ai-maestro-plugin:agent-messaging`.
 
 ## Governance
 
