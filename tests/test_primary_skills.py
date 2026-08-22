@@ -394,27 +394,32 @@ def test_agent_preload_list_matches_shipped_skills() -> None:
 
 
 # --------------------------------------------------------------------------
-# Claude Code v2.1.232 alignment.
+# Claude Code v2.1.240 alignment.
 #
 # v2.1.232 made non-teammate agent spawns run in the BACKGROUND by default in
 # interactive sessions, and gave `subagent_type: "fork"` subagents the full
-# conversation and prompt cache. Neither errors; both changed what the persona's
-# prose was *claiming*.
+# conversation and prompt cache. v2.1.239 fixed a defect where an agent, skill,
+# or command `.md` beginning with a UTF-8 BOM was silently ignored — no error,
+# the artifact simply never loaded. None of these error at write time; all
+# changed what the persona's prose was *claiming* or what shipped bytes must
+# never contain.
 #
-# These guards are BIDIRECTIONAL on purpose. A guard that only checks that a
-# term still appears is greenest exactly when the claim around it has been
-# reversed — the term survives the sentence. So each one asserts the claim we
-# now believe AND the absence of the claim it replaced.
+# The claim guards below are BIDIRECTIONAL on purpose. A guard that only checks
+# that a term still appears is greenest exactly when the claim around it has
+# been reversed — the term survives the sentence. So each one asserts the claim
+# we now believe AND the absence of the claim it replaced.
 #
-# What they do NOT check: that the platform default is still background. That is
-# runtime behaviour and cannot be observed from disk. They guard prose drift and
+# What they do NOT check: that the platform default is still background, or
+# that the platform still ignores a BOM-prefixed file. That is runtime
+# behaviour and cannot be observed from disk. They guard prose/byte drift and
 # claim nothing more — the alternative would be a test that can never fail.
 # --------------------------------------------------------------------------
 
 README_FILE = REPO_ROOT / "README.md"
 
-CLAUDE_CODE_ANCHOR = "v2.1.232"
-SUPERSEDED_ANCHOR = "v2.1.224"
+CLAUDE_CODE_ANCHOR = "v2.1.240"
+SUPERSEDED_ANCHOR = "v2.1.232"
+LATEST_TABLE_START = "v2.1.233"
 
 
 def _claim_drift(text: str, *, asserts: list[str], superseded: list[str]) -> list[str]:
@@ -457,9 +462,16 @@ def test_claude_code_anchor_names_the_same_version_everywhere() -> None:
     verification that was never run against the version it names.
 
     The superseded direction is checked too, but only for the two ANCHOR
-    spellings. The historical table heading `### v2.1.184 – v2.1.224` legitimately
-    keeps the old version — it dates a past range and is correct as written, so
-    asserting its absence would fail on correct content.
+    spellings. A historical table heading legitimately keeps an old version — it
+    dates a past range and is correct as written, so asserting its absence would
+    fail on correct content.
+
+    The latest table's start version is its own constant (`LATEST_TABLE_START`),
+    not derived from the previous range. It used to be hardcoded as the previous
+    range's start (e.g. "v2.1.225"), which was only ever true by accident — the
+    new range starts one version after wherever the old one ended, and that
+    boundary moves independently of the anchor on every bump. Deriving it from
+    the old anchor would break on every second bump.
     """
     for label, path, expected in _anchor_claims(CLAUDE_CODE_ANCHOR):
         text = path.read_text(encoding="utf-8")
@@ -472,7 +484,7 @@ def test_claude_code_anchor_names_the_same_version_everywhere() -> None:
             "bumped and this one was not"
         )
 
-    latest_table = f"### v2.1.225 – {CLAUDE_CODE_ANCHOR} "
+    latest_table = f"### {LATEST_TABLE_START} – {CLAUDE_CODE_ANCHOR} "
     readme = README_FILE.read_text(encoding="utf-8")
     assert latest_table in readme, (
         f"README: expected the latest compatibility table to be headed {latest_table!r}"
@@ -553,3 +565,59 @@ def test_control_claim_drift_is_silent_on_correct_text() -> None:
         asserts=["Collect before you relay"],
         superseded=["Subagents must return results to you"],
     )
+
+
+# --------------------------------------------------------------------------
+# Claude Code v2.1.239 alignment: no shipped .md may open with a UTF-8 BOM.
+#
+# Before v2.1.239 an agent/skill/command markdown file starting with a BOM was
+# SILENTLY IGNORED by Claude Code — no error, the artifact simply never loaded.
+# Same silent-failure class as the v2.1.218 and v2.1.232 issues above.
+#
+# What this guard does NOT check: whether the platform still ignores such a
+# file. It only checks the bytes we ship — runtime behaviour is not observable
+# from disk.
+# --------------------------------------------------------------------------
+
+BOM_BYTES = b"\xef\xbb\xbf"
+SHIPPED_MD_DIRS = ["agents", "skills", "commands"]
+
+
+def _bom_offenders(files: list[tuple[str, bytes]]) -> list[str]:
+    """Return the labels of every (label, raw_bytes) pair that opens with a UTF-8 BOM.
+
+    Split out to take raw bytes directly, so a control can feed it synthetic
+    input without writing files to disk.
+    """
+    return [label for label, raw in files if raw.startswith(BOM_BYTES)]
+
+
+def test_no_shipped_markdown_starts_with_a_utf8_bom() -> None:
+    """No shipped agent/skill/command .md file may open with a UTF-8 BOM.
+
+    Reads raw bytes, not decoded text: `encoding="utf-8"` would surface a BOM as
+    a harmless U+FEFF character and `utf-8-sig` would strip it outright, hiding
+    the exact defect this guards against. Reports every offender, not just the
+    first, since a single-file report would hide a systemic authoring mistake.
+    This checks the bytes on disk only — not that the platform still ignores
+    such files, which is runtime behaviour unobservable from disk.
+    """
+    files = []
+    for dirname in SHIPPED_MD_DIRS:
+        for path in sorted((REPO_ROOT / dirname).rglob("*.md")):
+            files.append((str(path.relative_to(REPO_ROOT)), path.read_bytes()))
+    offenders = _bom_offenders(files)
+    assert not offenders, f"shipped .md files open with a UTF-8 BOM (silently ignored pre-v2.1.239): {offenders}"
+
+
+def test_control_bom_offenders_detects_synthetic_bom_and_ignores_clean_input() -> None:
+    """Control: the BOM predicate flags a synthetic BOM-prefixed file and stays silent on clean input."""
+    offenders = _bom_offenders(
+        [
+            ("clean.md", b"# clean file\n"),
+            ("bomful.md", BOM_BYTES + b"# has a bom\n"),
+        ]
+    )
+    assert offenders == ["bomful.md"]
+
+    assert not _bom_offenders([("clean.md", b"# clean file\n")])

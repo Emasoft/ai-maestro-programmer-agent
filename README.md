@@ -289,11 +289,11 @@ mode. `uvx` ships with [uv](https://docs.astral.sh/uv/).
 
 ## Compatibility with Recent Claude Code Releases
 
-AMPA is verified against Claude Code v2.1.105–**v2.1.232**. Most items below
+AMPA is verified against Claude Code v2.1.105–**v2.1.240**. Most items below
 describe **new platform capabilities** that AMPA users can opt into without
-changing the plugin — but three changes altered how AMPA *executes* and required
-fixes: two in the v2.1.184–v2.1.224 range and one in v2.1.232. Each is marked
-**Breaking** in its table.
+changing the plugin — but four changes altered how AMPA *executes* and required
+fixes: two in the v2.1.184–v2.1.224 range, one in v2.1.232, and one in v2.1.239.
+Each is marked **Breaking** in its table.
 
 ### Main-thread agent capabilities (v2.1.116 / v2.1.117 / v2.1.119)
 
@@ -418,6 +418,21 @@ None of the above required an AMPA code change. The next table did.
 | **`/plugin install plugin@marketplace` refreshes the marketplace first** | A newly published AMPA version installs without a manual marketplace refresh. AMPA's documented install uses `--url`, so this reaches marketplace users only | v2.1.232 |
 | **`/code-review` at high, xhigh, and max runs in a background agent** | Now matches the other levels. Operators who wire AMPA into a review step get the result as a notification, not inline | v2.1.232 |
 | **Marketplace `command` sources; GitLab marketplaces; `additionalMarketplaces` / `allowedMarketplaces` aliases** | All **marketplace-entry** features, not plugin-manifest ones — nothing for AMPA to declare | v2.1.229 / v2.1.232 |
+
+### v2.1.233 – v2.1.240 — including one change AMPA had to act on
+
+| Change | What it means for AMPA | Version |
+| ------ | ----------------------- | ------- |
+| **UTF-8 BOM in an agent/skill/command `.md` silently ignored (now fixed)** | **Breaking.** Same silent defect class as v2.1.218 and v2.1.232: no error, the artifact simply never loads. AMPA ships none today (verified by byte check over every tracked file, 2026-08-22) and a pytest guard now enforces that | v2.1.239 |
+| **Todo/task tools (`TaskCreate`/`TaskGet`/`TaskUpdate`/`TaskList`, `TodoWrite`) removed on Opus 4.8, Sonnet 5, Fable 5, Mythos 5 and newer** | `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` restores them. AMPA's persona and skills reference none of them (verified by grep), so nothing broke and nothing was added | v2.1.233 |
+| **Background task notifications between turns now arrive wrapped in `<system-reminder>` tags** | Matching mid-turn delivery — this is how a delegated subagent's result reaches AMPA under the v2.1.232 collect-before-relay rule. The persona now records that the envelope is platform-generated context, never user input and never user approval | v2.1.234 |
+| **"Default teammate model" setting removed; agent-team teammates use the leader's model unless the spawn names one** | AMPA pins no `model:` in its frontmatter, so it inherits correctly by default | v2.1.234 |
+| **An omitted `subagent_type` now returns an error listing available agents** | Previously the Agent tool advertised a general-purpose default even where unavailable. AMPA names its subagent type explicitly | v2.1.235 |
+| **`ANTHROPIC_DEFAULT_MODEL` sets the model new sessions start on** | A `/model` pick still overrides it. An operator preference, not a plugin declaration | v2.1.236 |
+| **`notify_when_idle` on cross-session `SendMessage`** | One-shot idle notice, no polling. AMPA's non-adoption stance for the native channel is unchanged (see the v2.1.224 row): AMP stays the governed channel because it carries an AI Maestro AID | v2.1.236 |
+| **`ListAgents` reports a session its own name and lists live teammates; Windows gains cross-session messaging** | Makes the native channel easier to reach, which does not make it governed. Stance unchanged | v2.1.239 |
+| **Marketplace `headersHelper`; `claude plugin install/update` prompt `[y/N]` (or `-y`)** | The prompt appears only where a catalog entry declares a `headersHelper`. AMPA's documented install is `--url` with none, so scripted installs are unaffected; a marketplace that adds one will need `-y` in CI | v2.1.238 |
+| **`claude plugin validate` now checks a bare `.claude/skills` directory; marketplace `metadata.pluginRoot` fixed** | Both marketplace/tooling-side. AMPA uses the `skills/` layout and declares no `pluginRoot` | v2.1.233 / v2.1.239 |
 
 ## See Also
 
