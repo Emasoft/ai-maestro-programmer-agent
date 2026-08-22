@@ -608,7 +608,11 @@ def test_no_shipped_markdown_starts_with_a_utf8_bom() -> None:
         "Checked because `rglob` on a missing directory yields nothing and raises "
         "nothing — deleting or renaming one would silently shrink this guard's "
         "coverage while it stayed green. A guard that narrows without saying so is "
-        "the very defect class this test exists to catch."
+        "the very defect class this test exists to catch. "
+        "If the offender is an EMPTY directory: git does not track empty "
+        "directories, so it needs a committed `.gitkeep` to survive a clone — "
+        "that is why `commands/` has one. Do not 'tidy up' that file; without it "
+        "this assertion passes locally and fails on every fresh checkout."
     )
 
     files = []
