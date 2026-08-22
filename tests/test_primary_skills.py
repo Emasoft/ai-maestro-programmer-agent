@@ -602,6 +602,15 @@ def test_no_shipped_markdown_starts_with_a_utf8_bom() -> None:
     This checks the bytes on disk only — not that the platform still ignores
     such files, which is runtime behaviour unobservable from disk.
     """
+    missing = [d for d in SHIPPED_MD_DIRS if not (REPO_ROOT / d).is_dir()]
+    assert not missing, (
+        f"SHIPPED_MD_DIRS names directories that do not exist: {missing}. "
+        "Checked because `rglob` on a missing directory yields nothing and raises "
+        "nothing — deleting or renaming one would silently shrink this guard's "
+        "coverage while it stayed green. A guard that narrows without saying so is "
+        "the very defect class this test exists to catch."
+    )
+
     files = []
     for dirname in SHIPPED_MD_DIRS:
         for path in sorted((REPO_ROOT / dirname).rglob("*.md")):
