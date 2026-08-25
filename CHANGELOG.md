@@ -1,11 +1,21 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.12] - 2026-08-25
+
+### Documentation
+
+- Purge data-shaped pre-3.0.0 column enumerations (TRDD-GOE2B4XJ follow-up 2)
+
 ## [2.0.11] - 2026-08-25
 
 ### Documentation
 
 - Purge the last pre-3.0.0 order enumeration (TRDD-GOE2B4XJ follow-up)
+
+### Miscellaneous
+
+- V2.0.11
 
 ## [2.0.10] - 2026-08-25
 
