@@ -1,6 +1,30 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.9] - 2026-08-25
+
+### Bug Fixes
+
+- The new BOM-dir assertion broke every fresh clone
+
+### Documentation
+
+- Archive the 5 Phase-2 cards as published — shipped in v2.0.8
+
+- Route all inter-agent messaging prose through the frozen amp-* CLIs (TRDD-KCX9O26L)
+
+- Realign AMPA to Claude Code v2.1.240 (TRDD-SL4FJ3M2)
+
+- Close TRDD-SL4FJ3M2 as complete
+
+- Correct an unsourced claim in the v2.1.235 row (TRDD-SL4FJ3M2)
+
+- Record the post-close correction on TRDD-SL4FJ3M2
+
+### Tests
+
+- Stop the BOM guard narrowing silently; correct a fabricated timestamp
+
 ## [2.0.8] - 2026-08-18
 
 ### Documentation
@@ -22,6 +46,10 @@ All notable changes to this project will be documented in this file.
 - Correct test_order_pipeline.py description (TRDD-MYX98XFG)
 
 - Close the 7 Phase-2 cards — 5 complete (release-via publish), 2 completed+archived (release-via none)
+
+### Miscellaneous
+
+- V2.0.8
 
 ## [2.0.7] - 2026-08-16
 
