@@ -1,6 +1,12 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.11] - 2026-08-25
+
+### Documentation
+
+- Purge the last pre-3.0.0 order enumeration (TRDD-GOE2B4XJ follow-up)
+
 ## [2.0.10] - 2026-08-25
 
 ### Documentation
@@ -8,6 +14,10 @@ All notable changes to this project will be documented in this file.
 - Archive 9 complete cards as themselves (3P-ZON-05)
 
 - Adopt fleet R41 wave + 3-pillars 3.0.0 vocabulary (TRDD-GOE2B4XJ)
+
+### Miscellaneous
+
+- V2.0.10
 
 ## [2.0.9] - 2026-08-25
 
