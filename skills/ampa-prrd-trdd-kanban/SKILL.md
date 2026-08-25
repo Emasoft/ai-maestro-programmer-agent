@@ -107,9 +107,13 @@ mandated-by: self
 
 It is born approved because sender and receiver are the same agent — do NOT queue
 your own derived work for someone's approval; that stalls you. The lifecycle uses
-the **17-column** vocabulary (14 lifecycle stages + the exception columns
-`blocked` / `failed` / `superseded`). `failed` is **retryable and stays in
-`design/tasks/`** — it is never archived.
+the **22-column** board vocabulary (3-pillars spec 3.0.0, 3P-KAN-01: 19 lifecycle
+stages — including the 3.0.0 gates `approval`, `design_ai_review`,
+`design_human_review`, `verify_assumptions`, `plan` — + the exception columns
+`blocked` / `failed` / `superseded`); the 5 bracket values
+`proposal` / `planned` / `refused` / `completed` / `cancelled` are legal
+`column:` values off the board, 27 legal total (3P-KAN-20). `failed` is
+**retryable and stays in `design/tasks/`** — it is never archived.
 
 ## The missing-derived-TRDD duty (mandatory)
 

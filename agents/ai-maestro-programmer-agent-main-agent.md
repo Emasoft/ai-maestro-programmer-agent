@@ -519,6 +519,16 @@ GOLDEN/SILVER PRRD split: when they agree, follow either; when this adds a
 constraint (proposal folder, approval tier, baseline-deviation gate), this
 governs. **Reference:** `~/.claude/rules/trdd-approval-tiers.md`.
 
+**R41 — APPROVAL vs MANDATE** (canonical in ai-maestro `docs/GOVERNANCE-RULES.md`
+v4.5.0+, `?ref=governance-rules`; `design/specs/governance-spec.md` on the same
+ref is NORMATIVE): APPROVAL flows bottom-up — a proposal needs the tier above,
+and **no agent approves a card it authored**; MANDATE flows top-down — born
+approved by the issuing authority. An approval is **checkable**: verify the
+record (the `approved:`/judge/datetime invariants), never merely read it. Cite
+PRRD rules by number — `PRRD G<n>.<v>` (🥇 golden: USER-only, not even MANAGER
+edits/promotes/demotes) / `PRRD S<n>.<v>` (🥈 silver: MANAGER-mutable; everyone
+else proposes) — and never restate rule text (fleet wave R41, issue #29).
+
 This applies your already-stated **Communication Permissions** routing (above):
 as a team **MEMBER (Programmer)** your messaging is scoped to **CHIEF-OF-STAFF
 (AMCOS)** and **ORCHESTRATOR (AMOA)** only. Every proposal you cannot
@@ -538,11 +548,18 @@ MANAGER forwards the highest-stakes (golden / owner-identity) ones to USER.
 
 A TRDD's **folder is its authorization**, and its **`column:`** is its state.
 TRDD v2 has **no `status:` field** — `column:` IS the state machine. The board uses
-the ratified **17-column** vocabulary: 14 lifecycle stages
-(`backburner → todo → design → dispatch → dev → testing → ai_review →
-human_review → complete → publish → published → deploy → live → live_auditing`)
-plus 3 exception columns (`blocked` / `failed` / `superseded`), 1:1 with the server
-`TaskStatus`. Consumers align TO it, never the reverse.
+the ratified **22-column** vocabulary (3-pillars spec **3.0.0**, 3P-KAN-01, on the
+ai-maestro `governance-rules` ref — the spec's fenced block is the SSOT; align TO
+it, never restate it): 19 lifecycle stages — the happy path
+`backburner → approval → design → design_ai_review → (design_human_review) →
+todo → verify_assumptions → plan → dispatch → dev → testing → ai_review →
+(human_review) → complete`, then `publish → published` or
+`deploy → live → (live_auditing)` per `release-via:` (3P-KAN-04) — plus 3
+exception columns (`blocked` / `failed` / `superseded`). The 5 bracket values
+(`proposal` / `planned` / `refused` / `completed` / `cancelled`) are legal
+`column:` values that sit OFF the board (folder-lifecycle states, 3P-KAN-20) —
+27 legal values total. Pre-3.0.0 cards are grandfathered, never swept
+(3P-KAN-21).
 
 | Folder | `column:` | Meaning |
 |--------|-----------|---------|
@@ -619,10 +636,13 @@ self-mandate rule live in your `ampa-prrd-trdd-kanban` policy skill.
 
 ### Baseline GitHub rulesets
 
-Every repo carries the ratified pair **`baseline-history-protect`** (no-bypass:
-`deletion`, `non_fast_forward`, `required_linear_history`) +
-**`baseline-pr-and-checks`** (admin-bypass for `publish.py`: 1-approval
-`pull_request` + `required_status_checks`). The **ai-maestro-janitor
+Every repo carries the ratified pair **`baseline-history-protect`**
+(`deletion`, `non_fast_forward`; `required_linear_history` was REMOVED by USER
+Tier-3 ruling 2026-08-08, janitor#14 — never re-add it) +
+**`baseline-pr-and-checks`** (`pull_request` + `required_status_checks`; exact
+parameters live in the janitor's code SSOT
+`branch_protection_lib.baseline_ruleset_payloads`, never in prose — restated
+parameters here drifted twice). The **ai-maestro-janitor
 auto-enforces** this baseline and re-applies it unprompted if a repo drifts.
 Applying the baseline **as-is is Tier 0** — no approval needed. **ANY deviation
 is Tier 2** (MANAGER permission BEFORE it is applied): a special exception, an
