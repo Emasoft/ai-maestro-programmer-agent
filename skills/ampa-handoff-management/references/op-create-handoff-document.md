@@ -88,14 +88,17 @@ from: ai-maestro-programmer-agent-main-agent
 to: <receiving-agent-or-future-self>
 created: <current-ISO-timestamp>
 priority: <low|normal|high|urgent>
-column: <backburner|todo|dispatch|dev|testing|ai_review|human_review|complete|blocked>
+column: <the task's current column: value — any of the 27 legal values, 3-pillars spec 3.0.0 (3P-KAN-01/20)>
 ---
 ```
 
-Column values (TRDD v2 — the task's `column:`):
+Column values (the task's `column:` — the 22-column board + 5 bracket values,
+3-pillars spec 3.0.0; the common MEMBER-visible ones):
 
-- `backburner` / `todo`: queued / promoted, not yet in design
-- `dispatch`: designed, assigned, not started
+- `backburner`: not yet approved; `approval`: with the approver
+- `design` / `design_ai_review` / `design_human_review`: expanded in place; design under review
+- `todo`: approved AND designed; `verify_assumptions` / `plan`: fact + plan gates
+- `dispatch`: assigned, not started
 - `dev`: implementation in progress
 - `testing`: code ready, running the test/audit suite
 - `ai_review` / `human_review`: under AI review (and human review when the

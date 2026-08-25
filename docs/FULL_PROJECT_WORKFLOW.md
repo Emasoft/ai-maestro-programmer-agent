@@ -83,10 +83,14 @@ label. Every agent reads/moves a task by editing its TRDD (or via
 
 ### Columns
 
+Coarse grouping of the 22-column board (3-pillars spec 3.0.0, 3P-KAN-01/04;
+grouping licensed by 3P-KAN-03):
+
 | Group | Columns | Meaning |
 |-------|---------|---------|
-| ENTRY | `backburner`, `todo` | parked / promoted, awaiting design |
-| DESIGN | `design`, `dispatch` | ARCHITECT shapes proto→full TRDD; then awaiting `assignee:` |
+| ENTRY | `backburner`, `approval` | not yet approved / with the approver named by `min-approval-requirement:` |
+| DESIGN | `design`, `design_ai_review`, `design_human_review` | card expanded IN PLACE; design AI-reviewed (human step skipped at `min-approval-requirement: none`) |
+| QUEUE + GATES | `todo`, `verify_assumptions`, `plan`, `dispatch` | approved AND designed; every claim verified; plan file exists; then awaiting `assignee:` |
 | WORK | `dev`, `testing`, `ai_review`, `human_review` | MEMBER implements → tests → AI review → (human review when required) |
 | READY | `complete` | requirements met + tested; not yet shipped |
 | SHIP (tools) | `publish` → `published` | publishing a plugin/package (this repo) |

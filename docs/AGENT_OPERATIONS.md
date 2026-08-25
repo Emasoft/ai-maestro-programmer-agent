@@ -484,12 +484,16 @@ This prevents AMPA from consuming resources while waiting for review feedback.
 Task state lives in **TRDD files under `design/tasks/`** (frontmatter
 `column:`), not GitHub Projects labels:
 
+Coarse grouping of the 22-column board (3-pillars spec 3.0.0, 3P-KAN-01/04;
+grouping licensed by 3P-KAN-03):
+
 | Group | Columns | Description |
 |-------|---------|-------------|
-| ENTRY | `backburner`, `todo` | parked / promoted |
-| DESIGN | `design`, `dispatch` | shaped by ARCHITECT; awaiting `assignee:` |
+| ENTRY | `backburner`, `approval` | not yet approved / with the approver |
+| DESIGN | `design`, `design_ai_review`, `design_human_review` | expanded in place; design reviewed |
+| QUEUE + GATES | `todo`, `verify_assumptions`, `plan`, `dispatch` | approved+designed; facts verified; plan file; awaiting `assignee:` |
 | WORK | `dev`, `testing`, `ai_review`, `human_review` | MEMBER's slice → review |
-| READY/SHIP | `complete` → `publish`→`published` / `deploy`→`live` | done; then shipped |
+| READY/SHIP | `complete` → `publish`→`published` / `deploy`→`live`(+`live_auditing`) | done; then shipped |
 | EXCEPTIONS | `blocked`, `failed`, `superseded` | blocked reversible; failed retryable; superseded terminal |
 
 **MEMBER routing**: `dispatch → dev → testing → ai_review` (bounce `testing →

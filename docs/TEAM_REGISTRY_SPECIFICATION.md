@@ -418,12 +418,16 @@ When AMCOS updates the registry, it sends a notification to all team agents usin
 Task state lives in **TRDD files under `design/tasks/`** (frontmatter
 `column:`), not in GitHub Projects labels. The v2 columns:
 
+Coarse grouping of the 22-column board (3-pillars spec 3.0.0, 3P-KAN-01/04;
+grouping licensed by 3P-KAN-03):
+
 | Group | Columns |
 |-------|---------|
-| ENTRY | `backburner`, `todo` |
-| DESIGN | `design`, `dispatch` |
+| ENTRY | `backburner`, `approval` |
+| DESIGN | `design`, `design_ai_review`, `design_human_review` |
+| QUEUE + GATES | `todo`, `verify_assumptions`, `plan`, `dispatch` |
 | WORK | `dev`, `testing`, `ai_review`, `human_review` |
-| READY / SHIP | `complete` → (`publish`→`published`) or (`deploy`→`live`) |
+| READY / SHIP | `complete` → (`publish`→`published`) or (`deploy`→`live`(+`live_auditing`)) |
 | EXCEPTIONS | `blocked`, `failed`, `superseded` |
 
 For full kanban workflow details and the 4-zone

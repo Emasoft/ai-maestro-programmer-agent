@@ -88,7 +88,7 @@ from: <delegating-agent>
 to: <receiving-agent>
 created: <ISO-timestamp>
 priority: <low|normal|high|urgent>
-column: <backburner|todo|dispatch|dev|testing|ai_review|human_review|complete|blocked>
+column: <the task's current column: value — any of the 27 legal values, 3-pillars spec 3.0.0 (3P-KAN-01/20)>
 ---
 ```
 

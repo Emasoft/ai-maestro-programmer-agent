@@ -41,12 +41,6 @@ HANDOFF_TASKSTATE_REFS = [
     "skills/ampa-handoff-management/references/op-document-work-state.md",
 ]
 
-V2_COLUMNS = {
-    "backburner", "todo", "design", "dispatch", "dev", "testing",
-    "ai_review", "human_review", "complete", "publish", "published",
-    "deploy", "live", "live_auditing", "blocked", "failed", "superseded",
-}
-
 # Single source of truth for the core granular pillar skills AMPA wires (verified
 # present in installed ai-maestro-plugin >=2.7). The MEMBER-policy skill
 # (ampa-prrd-trdd-kanban) must enumerate every one; a typo here or there recreates
