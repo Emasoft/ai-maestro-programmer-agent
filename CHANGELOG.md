@@ -1,6 +1,14 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.0.10] - 2026-08-25
+
+### Documentation
+
+- Archive 9 complete cards as themselves (3P-ZON-05)
+
+- Adopt fleet R41 wave + 3-pillars 3.0.0 vocabulary (TRDD-GOE2B4XJ)
+
 ## [2.0.9] - 2026-08-25
 
 ### Bug Fixes
@@ -20,6 +28,10 @@ All notable changes to this project will be documented in this file.
 - Correct an unsourced claim in the v2.1.235 row (TRDD-SL4FJ3M2)
 
 - Record the post-close correction on TRDD-SL4FJ3M2
+
+### Miscellaneous
+
+- V2.0.9
 
 ### Tests
 
