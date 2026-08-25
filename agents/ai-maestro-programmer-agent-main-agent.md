@@ -564,7 +564,7 @@ exception columns (`blocked` / `failed` / `superseded`). The 5 bracket values
 | Folder | `column:` | Meaning |
 |--------|-----------|---------|
 | `design/proposals/` | `proposal` | Authored, **awaiting approval — NOT authorized to execute**. |
-| `design/tasks/` | `planned`, then the normal flow (`todo` → `dispatch` → `dev` → `testing` → `ai_review` → …), plus `blocked` / `failed` | **OPEN work** — approved / authorized, not yet terminal. |
+| `design/tasks/` | `planned`, then the 3P-KAN-04 board flow above (`backburner → … → complete`, incl. the 3.0.0 gates `verify_assumptions` → `plan` before `dispatch`), plus `blocked` / `failed` | **OPEN work** — approved / authorized, not yet terminal. |
 | `design/archived/` | `completed` · `cancelled` · `superseded` | **Once-approved** TRDDs that reached a terminal-DONE state. |
 | `design/refused/` | `refused` | A proposal that was **NEVER approved** — declined at the gate. Kept as an audit record. |
 
