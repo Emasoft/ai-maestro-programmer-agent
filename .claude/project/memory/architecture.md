@@ -9,6 +9,7 @@ metadata:
   tier: hub
   functionality: architecture
   globs: ["agents/**", "skills/**", "scripts/**", "design/**", "docs/**"]
+publish-globally: false
 ---
 ai-maestro-programmer-agent (AMPA) is a Claude Code plugin in the AI Maestro fleet.
 It implements the MEMBER (programmer) role: a general-purpose, multi-language

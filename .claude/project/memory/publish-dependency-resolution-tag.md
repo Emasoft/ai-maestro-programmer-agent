@@ -8,6 +8,7 @@ metadata:
   type: project
   tier: component
   functionality: architecture
+publish-globally: false
 ---
 Claude Code (≥ 2.1.110) resolves a **version-constrained plugin dependency** by listing the
 dependency repo's git tags, **filtering to those whose name starts with `{plugin-name}--v`**

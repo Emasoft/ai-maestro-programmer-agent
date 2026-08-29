@@ -7,6 +7,7 @@ metadata:
   node_type: memory
   type: project
   tier: component
+publish-globally: false
 ---
 
 `scripts/publish.py`'s lint gate runs ruff **UNPINNED** (`uv run --with ruff ruff

@@ -8,6 +8,7 @@ metadata:
   type: project
   tier: component
   functionality: architecture
+publish-globally: false
 ---
 This plugin ships the CPV **`remote-validation` pipeline profile** (CPV TRDD-02e1672b):
 `scripts/publish.py`, the auto-generated `cliff.toml`, and `.markdownlint.json` are

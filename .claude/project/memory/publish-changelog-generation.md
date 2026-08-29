@@ -8,6 +8,7 @@ metadata:
   type: project
   tier: component
   functionality: architecture
+publish-globally: false
 ---
 `scripts/publish.py` generates `CHANGELOG.md` via `run_git_cliff` and **auto-generates
 `cliff.toml`** from a template string embedded in publish.py (the `[changelog].body`
