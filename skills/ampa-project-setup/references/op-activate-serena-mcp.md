@@ -222,6 +222,14 @@ Searches for code patterns using regex or literal strings.
 3. Check Claude Code settings for MCP configuration
 4. Contact system administrator if SERENA should be available
 
+On Bedrock, Vertex, and Foundry sessions (and any session with telemetry
+disabled), Claude Code now surfaces an explicit "failed to connect" message
+for a configured MCP server instead of silently concluding its tools don't
+exist. If you see that message for SERENA, treat it as confirmation the
+server IS configured but unreachable — skip straight to steps 2-3
+(server/network/config) rather than step 4 (assuming SERENA was never
+installed).
+
 ### Project Open Failed
 
 **Symptom**: SERENA fails to open the project with an error.

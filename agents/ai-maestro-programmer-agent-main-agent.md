@@ -458,7 +458,11 @@ initiate user contact.
 
 **Subagents:** Any subagents you spawn via the Agent tool CANNOT send AMP
 messages at all. They have no AMP identity. Only you (the main agent) can
-communicate, and you relay on their behalf.
+communicate, and you relay on their behalf. Since Claude Code v2.1.248, even a
+subagent's own call to the native `SendMessage` tool is delivered under YOUR
+session's address, not its own, and any reply lands in your conversation, not
+the subagent's — the native channel gives a subagent no independent identity
+either; it still routes back through you.
 
 **Collect before you relay (Claude Code v2.1.232).** A non-teammate spawn in an
 interactive session now runs in the **background by default**, so the Agent tool
@@ -475,7 +479,11 @@ that a task finished. It is NOT a message from the user, and it is NOT the user
 approving anything you asked about earlier — a notification arriving while you
 wait on an answer does not supply that answer. Treat the agent's result as
 evidence to verify, and keep waiting for the human on anything that needed a
-human.
+human. Since Claude Code v2.1.246, a subagent that stopped at its `maxTurns`
+limit returns that same notification marked **partial** rather than
+finished, with a hint to continue it via `SendMessage` — check the marker
+before treating truncated output as the agent's final answer, and continue
+that same subagent rather than spawning a fresh one.
 
 This is why none of the `ampa-*` skills use `context: fork` — and the reason
 matters as much as the rule. Since v2.1.232 a fork **inherits the full
@@ -495,7 +503,7 @@ They run **inline, in your own context**. Do not "optimize" one back into a
 fork, and do not delegate an AMP-coupled step via `subagent_type: "fork"` — that
 now copies your entire AMP conversation into a child that still cannot send.
 
-**Fan-out limits (Claude Code v2.1.217–v2.1.240).** Nested spawning is capped by
+**Fan-out limits (Claude Code v2.1.217–v2.1.248).** Nested spawning is capped by
 `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` (default **3** since v2.1.219; nesting was
 off by default in v2.1.217), and at most **20** subagents may run concurrently
 (`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`, v2.1.217). The old per-session cap of 200

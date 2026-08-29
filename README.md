@@ -289,11 +289,24 @@ mode. `uvx` ships with [uv](https://docs.astral.sh/uv/).
 
 ## Compatibility with Recent Claude Code Releases
 
-AMPA is verified against Claude Code v2.1.105–**v2.1.240**. Most items below
+AMPA is verified against Claude Code v2.1.105–**v2.1.248**. Most items below
 describe **new platform capabilities** that AMPA users can opt into without
 changing the plugin — but four changes altered how AMPA *executes* and required
 fixes: two in the v2.1.184–v2.1.224 range, one in v2.1.232, and one in v2.1.239.
 Each is marked **Breaking** in its table.
+
+The v2.1.241–v2.1.248 range added **no** Breaking change — nothing AMPA ships
+stopped working — but it did require three substantive updates (two persona
+paragraphs, one SERENA diagnostic branch) and three new packaging guards. Those
+rows say what was changed and where; every other row in that table is a
+verified no-op recorded so the next reader does not have to re-check it.
+
+The one row that might look Breaking is **`--restricted`**, and it is not, by
+this section's own test: every existing **Breaking** row is a *silent behavioural
+change to a shipped artifact* (skills returned handles; a preload was inert;
+spawns backgrounded; BOM'd files never loaded). `--restricted` is a mode the
+operator opts into, under which AMPA's bytes behave identically — a constraint on
+where AMPA can run, not a change to what it does.
 
 ### Main-thread agent capabilities (v2.1.116 / v2.1.117 / v2.1.119)
 
@@ -433,6 +446,24 @@ None of the above required an AMPA code change. The next table did.
 | **`ListAgents` reports a session its own name and lists live teammates; Windows gains cross-session messaging** | Makes the native channel easier to reach, which does not make it governed. Stance unchanged | v2.1.239 |
 | **Marketplace `headersHelper`; `claude plugin install/update` prompt `[y/N]` (or `-y`)** | The prompt appears only where a catalog entry declares a `headersHelper`. AMPA's documented install is `--url` with none, so scripted installs are unaffected; a marketplace that adds one will need `-y` in CI | v2.1.238 |
 | **`claude plugin validate` now checks a bare `.claude/skills` directory; marketplace `metadata.pluginRoot` fixed** | Both marketplace/tooling-side. AMPA uses the `skills/` layout and declares no `pluginRoot` | v2.1.233 / v2.1.239 |
+
+### v2.1.241 – v2.1.248 — three substantive updates, no Breaking change
+
+| Change | What it means for AMPA | Version |
+| ------ | ----------------------- | ------- |
+| **`--restricted` (or `CLAUDE_CODE_RESTRICTED=1`) removes the built-in tools that run commands or code and `WebFetch` (unless named in `--tools`), keeps file tools inside the working directory, refuses `bypassPermissions`, and ignores user, project and local settings files** | **AMPA cannot run under `--restricted`** unless the operator re-adds the tools via `--tools`. The `ampa-task-execution` loop depends on Bash — step 3 of its workflow is *"activate venv (`uv venv` / `source .venv/bin/activate`), verify dependencies"* (`skills/ampa-task-execution/SKILL.md:41-42`) — and on Edit/Write for the code changes themselves; the skill declares no tool restriction of its own (`allowed-tools`/`tools:` → 0 hits, 2026-08-28). An operator-facing constraint, not a plugin defect — recorded here so nobody debugs it as one | v2.1.248 |
+| **`SendMessage` from a subagent to another session: the send goes out under the PARENT session's address and any reply is delivered to the parent session's conversation, not to the subagent** | **Persona updated.** The "Subagent Restriction" section now states it explicitly: a subagent's native `SendMessage` is delivered under AMPA's own address and any reply lands in AMPA's conversation. This *strengthens* the existing non-adoption argument rather than weakening it — the native channel gives a subagent no independent identity either, so it cannot carry an AI Maestro AID any more than a fork can | v2.1.248 |
+| **A subagent that stops at its `maxTurns` limit now returns its output marked as partial, with a hint to continue it via `SendMessage`, instead of appearing finished** | **Persona updated.** The v2.1.232 "collect before you relay" rule now also says: check for the `partial` marker before treating truncated subagent output as final, and continue the *same* subagent rather than spawn a new one. Same defect class as v2.1.218/v2.1.232 — output that looks complete and is not | v2.1.246 |
+| **Bedrock, Vertex, and Foundry sessions (and any with telemetry disabled): Claude is now told when a configured MCP server failed to connect, instead of concluding its tools don't exist** | **SERENA diagnostic updated.** AMPA hard-depends on SERENA MCP, and `skills/ampa-project-setup/references/op-activate-serena-mcp.md` could not tell "not configured" from "silently unreachable" — both fell into the *assume never installed* branch. An explicit failed-to-connect message now routes straight to server/network troubleshooting | v2.1.247 |
+| **Fixed plugin installation failing when `plugin.json` was saved with a UTF-8 byte-order mark (BOM)** | **Guard added.** The v2.1.239 BOM guard globbed `agents/ skills/ commands/` `*.md` only, so a BOM'd manifest — which broke *install* outright, not just loading — could not have been caught. `tests/test_primary_skills.py::test_no_shipped_json_manifest_starts_with_a_utf8_bom` now covers `.claude-plugin/plugin.json` and `hooks/hooks.json`; both ship BOM-free today (byte-verified). Cited by test NAME, not line number — line numbers rot on the next edit, and a stale one is the same silent-drift defect these rows exist to prevent | v2.1.246 |
+| **Fixed plugin skills whose frontmatter `name` already includes the `<plugin>:` prefix showing it doubled in the slash menu (e.g. `/plugin:plugin:skill`)** | **Guard added.** All six AMPA skill `name:` values are bare (verified `skills/*/SKILL.md`, 2026-08-28); `tests/test_primary_skills.py::test_no_skill_frontmatter_name_carries_a_plugin_prefix` covers every skill, not only the five the primary-skills test already knew about | v2.1.246 |
+| **Improved plugin marketplace hardening: names containing control or invisible characters are rejected** | **Guard added.** AMPA's plugin name and all six skill names carry no control/zero-width/bidi/BOM codepoints (codepoint-verified); `tests/test_primary_skills.py::test_skill_and_plugin_names_carry_no_control_or_invisible_characters` guards both surfaces, so a marketplace rejection cannot be introduced by an invisible paste | v2.1.247 |
+| **`experimental.cacheTtl` (`"5m"` or `"1h"`) added to agent frontmatter: a per-agent prompt cache TTL used when no subagent TTL setting is configured** | **Deliberately not adopted.** AMPA's cache-hit pattern is unmeasured, so pinning a TTL would change real cache-retention cost with no evidence it helps. The frontmatter carries no `experimental:` block (grep → 0 hits, 2026-08-28). Adopt it after measuring, not because it is new | v2.1.248 |
+| **`promptCacheTtl` and `subagentPromptCacheTtl` settings so API-key and cloud-provider users can keep a 1-hour prompt cache on the main conversation while subagents stay at 5 minutes** | Operator-level `settings.json` knobs, not a plugin declaration — no repo anchor (grep → 0 hits, 2026-08-28). Note the interaction with the row above: `experimental.cacheTtl` applies only *when no subagent TTL setting is configured*, so an operator who sets these takes precedence over any per-agent value AMPA might pin later | v2.1.243 |
+| **Cross-session messaging (`SendMessage`/`ListAgents`) now works on Bedrock, Vertex and Foundry and with telemetry disabled; an invalid `crossSessionInbound` value now warns and holds (or refuses) instead of being silently ignored** | Stance unchanged (see the v2.1.224 row): AMP stays AMPA's governed channel because it carries an AI Maestro AID. Wider availability makes the native channel easier to reach, which does not make it governed. `skills/ampa-orchestrator-communication/` invokes only the frozen `amp-*` CLIs (grep for `SendMessage`/`cross-session` → 0 hits, 2026-08-28) | v2.1.248 |
+| **New `SendFeedback` tool: Claude can draft a feedback report for the user to send from `/feedback`; the `feedbackDrafts` setting turns it off** | No repo anchor — AMPA declares no tool allowlist this would touch (grep "feedback" → only PR-review-feedback hits, 2026-08-28). A drafted report is queued locally and never sent without the user, so it crosses no AMP boundary | v2.1.247 |
+| **Fixed: a hook or background agent that printed megabytes of error output could overflow the conversation and wedge the session on "Prompt is too long"** | Already defended by design, and worth recording as such: all six `ampa-task-execution` reference procedures carry the same Token rule — *"write all command output to a report file; return only a 2-3 line summary + file path"* (e.g. `references/op-implement-code.md:17-18`) — so AMPA never returned raw command output to its caller in the first place | v2.1.247 |
+| **Sonnet 5's default auto-compact window is now its full 1M context (auto-compacts at ~967K instead of ~934K)** | No repo anchor — AMPA pins no `model:` and asserts no auto-compact threshold (grep → 0 hits, 2026-08-28), so it inherits the wider window wherever the operator runs it | v2.1.247 |
 
 ## See Also
 

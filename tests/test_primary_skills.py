@@ -388,7 +388,7 @@ def test_agent_preload_list_matches_shipped_skills() -> None:
 
 
 # --------------------------------------------------------------------------
-# Claude Code v2.1.240 alignment.
+# Claude Code v2.1.248 alignment.
 #
 # v2.1.232 made non-teammate agent spawns run in the BACKGROUND by default in
 # interactive sessions, and gave `subagent_type: "fork"` subagents the full
@@ -411,9 +411,9 @@ def test_agent_preload_list_matches_shipped_skills() -> None:
 
 README_FILE = REPO_ROOT / "README.md"
 
-CLAUDE_CODE_ANCHOR = "v2.1.240"
-SUPERSEDED_ANCHOR = "v2.1.232"
-LATEST_TABLE_START = "v2.1.233"
+CLAUDE_CODE_ANCHOR = "v2.1.248"
+SUPERSEDED_ANCHOR = "v2.1.240"
+LATEST_TABLE_START = "v2.1.241"
 
 
 def _claim_drift(text: str, *, asserts: list[str], superseded: list[str]) -> list[str]:
@@ -628,3 +628,85 @@ def test_control_bom_offenders_detects_synthetic_bom_and_ignores_clean_input() -
     assert offenders == ["bomful.md"]
 
     assert not _bom_offenders([("clean.md", b"# clean file\n")])
+
+
+# --------------------------------------------------------------------------
+# Claude Code v2.1.246 alignment: a BOM'd `.claude-plugin/plugin.json` used to
+# make the WHOLE PLUGIN fail to install (not just one markdown file silently
+# ignored, per the v2.1.239 guard above). `_bom_offenders` is reused as-is —
+# it takes raw bytes, so JSON manifests feed it exactly like markdown files.
+# --------------------------------------------------------------------------
+
+SHIPPED_JSON_MANIFESTS = [".claude-plugin/plugin.json", "hooks/hooks.json"]
+
+
+def test_no_shipped_json_manifest_starts_with_a_utf8_bom() -> None:
+    """No shipped JSON manifest may open with a UTF-8 BOM (broke plugin INSTALL pre-v2.1.246).
+
+    Unlike the markdown guard above (a BOM'd skill file was silently ignored),
+    a BOM'd `plugin.json` broke installation outright — the earlier, markdown-only
+    guard would not have caught this failure class at all.
+    """
+    missing = [m for m in SHIPPED_JSON_MANIFESTS if not (REPO_ROOT / m).is_file()]
+    assert not missing, (
+        f"SHIPPED_JSON_MANIFESTS names files that do not exist: {missing}. "
+        "A renamed/deleted manifest must not silently shrink this guard's coverage "
+        "while it stays green — the exact defect class this test exists to catch."
+    )
+    files = [(m, (REPO_ROOT / m).read_bytes()) for m in SHIPPED_JSON_MANIFESTS]
+    offenders = _bom_offenders(files)
+    assert not offenders, f"shipped JSON manifests open with a UTF-8 BOM (breaks plugin install pre-v2.1.246): {offenders}"
+
+
+# --------------------------------------------------------------------------
+# Claude Code v2.1.246/v2.1.247 alignment: skill `name:` must stay bare (no
+# `<plugin>:` prefix, which used to double up as `/plugin:plugin:skill` in the
+# slash menu) and free of control/invisible characters (v2.1.247 marketplace
+# hardening rejects those in names; the slash menu is the same surface).
+# --------------------------------------------------------------------------
+
+_INVISIBLE_OR_CONTROL_RE = re.compile(r"[\x00-\x1f\x7f​-‏‪-‮﻿]")
+
+
+def test_no_skill_frontmatter_name_carries_a_plugin_prefix() -> None:
+    """No SKILL.md `name:` may equal anything but its own directory name.
+
+    Covers every skill under `skills/`, not just the 5 primary ones, so a
+    prefix (or any other drift from the directory name) can't sneak in via
+    the granular ampa-prrd-trdd-kanban skill unnoticed. A `name:` that already
+    carries `ai-maestro-programmer-agent:` (or any `<x>:` prefix) is exactly
+    what produced the doubled `/plugin:plugin:skill` slash-menu entry
+    Claude Code fixed in v2.1.246.
+    """
+    skill_files = sorted(SKILLS_DIR.glob("*/SKILL.md"))
+    assert skill_files, "no SKILL.md files found under skills/ -- guard would pass vacuously"
+    offenders = []
+    for path in skill_files:
+        fm = _split_frontmatter(path.read_text(encoding="utf-8"))
+        name = str(fm.get("name", ""))
+        if ":" in name or name != path.parent.name:
+            offenders.append(f"{path.relative_to(REPO_ROOT)}: name={name!r}")
+    assert not offenders, f"skill frontmatter `name:` must be bare (== dir name, no ':' prefix): {offenders}"
+
+
+def test_skill_and_plugin_names_carry_no_control_or_invisible_characters() -> None:
+    """Skill `name:` values and the plugin's own `name` field must be free of
+    control/invisible characters, per the v2.1.247 marketplace hardening
+    (names with control/invisible characters are rejected — a homograph /
+    spoofing vector in the slash menu and marketplace listing)."""
+    import json
+
+    skill_files = sorted(SKILLS_DIR.glob("*/SKILL.md"))
+    offenders = []
+    for path in skill_files:
+        fm = _split_frontmatter(path.read_text(encoding="utf-8"))
+        name = str(fm.get("name", ""))
+        if _INVISIBLE_OR_CONTROL_RE.search(name):
+            offenders.append(f"{path.relative_to(REPO_ROOT)}: name={name!r}")
+
+    plugin_data = json.loads((REPO_ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    plugin_name = str(plugin_data.get("name", ""))
+    if _INVISIBLE_OR_CONTROL_RE.search(plugin_name):
+        offenders.append(f".claude-plugin/plugin.json: name={plugin_name!r}")
+
+    assert not offenders, f"names contain control/invisible characters: {offenders}"
