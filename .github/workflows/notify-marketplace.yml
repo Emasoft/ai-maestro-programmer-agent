@@ -63,12 +63,22 @@ jobs:
             }
 
       - name: Job summary
+        # The step outputs come from plugin.json, which a PR can change. A `${{ }}`
+        # expression is substituted as raw TEXT before bash parses the script, so a
+        # crafted name/version would execute as code (CWE-94). Bind them in `env:`
+        # and read the quoted shell variables — env values are passed to the process,
+        # never spliced into the script source. MARKETPLACE_* are already workflow
+        # env vars, so they are plain shell variables here too.
+        env:
+          PLUGIN_NAME: ${{ steps.plugin.outputs.name }}
+          PLUGIN_VERSION: ${{ steps.plugin.outputs.version }}
+          PLUGIN_REF: ${{ steps.plugin.outputs.ref }}
         run: |
           {
             echo "## Marketplace Notification"
             echo ""
-            echo "- Plugin: ${{ steps.plugin.outputs.name }}"
-            echo "- Version: ${{ steps.plugin.outputs.version }}"
-            echo "- Ref: ${{ steps.plugin.outputs.ref }}"
-            echo "- Target: ${{ env.MARKETPLACE_OWNER }}/${{ env.MARKETPLACE_REPO }}"
+            echo "- Plugin: $PLUGIN_NAME"
+            echo "- Version: $PLUGIN_VERSION"
+            echo "- Ref: $PLUGIN_REF"
+            echo "- Target: $MARKETPLACE_OWNER/$MARKETPLACE_REPO"
           } >> "$GITHUB_STEP_SUMMARY"
