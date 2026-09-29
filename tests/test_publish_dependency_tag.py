@@ -136,6 +136,11 @@ def test_embedded_cliff_template_body_has_no_trailing_blank_line() -> None:
         if isinstance(node, _ast.Assign):
             for target in node.targets:
                 if getattr(target, "id", None) == "default":
+                    if default is not None:
+                        raise AssertionError(
+                            "second Assign named 'default' found in publish.py — this test "
+                            "would pin whichever the walk hits last; disambiguate it"
+                        )
                     default = node.value.value
     assert default is not None, "embedded cliff default template not found in publish.py"
     body = re.search(r'body = """(.*?)"""', default, re.S).group(1)
@@ -143,4 +148,10 @@ def test_embedded_cliff_template_body_has_no_trailing_blank_line() -> None:
         "embedded cliff template body ends with a blank line — a bare git-cliff run "
         "regenerates CHANGELOG.md with an MD012 EOF defect"
     )
-    assert "\\" not in body, "embedded cliff template body carries a literal backslash"
+    # Backslash scoped to the TAIL, not the whole body: legitimate escapes inside
+    # the body (escaped quotes, regexes) are fine; the defect class this guards is
+    # the backslash-continuation idiom at the tail degrading into a literal `\`.
+    assert not body.rstrip("\n").endswith("\\"), (
+        "embedded cliff template body tail carries a literal backslash — the "
+        "backslash-continuation that removes the trailing newline degraded"
+    )
