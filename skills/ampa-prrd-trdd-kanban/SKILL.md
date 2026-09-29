@@ -3,7 +3,7 @@ name: ampa-prrd-trdd-kanban
 description: "MEMBER (programmer)'s ROLE POLICY for the PRRD / TRDD / Kanban workflow — the op-set a MEMBER may run, the self-mandate rule for Tier-0 work, the missing-derived-TRDD duty, and which moves need approval. Use when this agent is the assignee of a TRDD in dev or testing, or is authoring its own Tier-0 / derived tasks. Mechanics are the core granular ama-* pillar skills; this skill is the policy layer over them, not a passthrough."
 license: MIT
 compatibility: Uses the core granular ama-* pillar skills (ai-maestro-plugin >=3.0.5) for all mechanics.
-allowed-tools: "Bash(git:*), Read, Edit, Write, Grep, Glob"
+allowed-tools: "Bash(git:*), Bash(trddgrep:*), Bash(prrdgrep:*), Bash(specgrep:*), Read, Edit, Write, Grep, Glob"
 metadata:
   author: "Emasoft"
   version: "1.3.0"
@@ -51,9 +51,11 @@ allow-list; do not re-implement them here):
 
 When the core `ama-*` skills are unavailable (standalone session, no
 `ai-maestro-plugin` installed), run the same mechanics through the standalone
-3-pillars CLIs shipped at `~/.local/bin`: **`trddgrep`** (18 verbs over the
-TRDD kanban), **`prrdgrep`** (6 verbs over the PRRD), **`specgrep`** (6 verbs
-over specs). There is **no kanban CLI — the board IS `trddgrep`** (PRRD G12.1).
+3-pillars CLIs (`trddgrep` over the TRDD kanban, `prrdgrep` over the PRRD,
+`specgrep` over specs; check each with `--help` for its current verb list —
+do not assume a count). They ship with the ai-maestro fleet tooling; gate on
+`command -v trddgrep` before instructing anyone to run them. There is **no
+kanban CLI — the board IS `trddgrep`** (owner rule `governance-trdd-kanban`).
 Reads: `trddgrep show <id>`, `trddgrep next`, `trddgrep why <id>`, pattern
 search. Writes: `trddgrep set` / `append` / `move` / `check-box` / `edit`
 (guarded `--expect` / `--replace`). Every card write goes through a
