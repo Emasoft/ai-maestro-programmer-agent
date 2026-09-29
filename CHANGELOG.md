@@ -1,12 +1,20 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.1.2] - 2026-09-29
+
+### Bug Fixes
+
+- Stop the cliff template emitting the EOF blank run (template altitude)
 ## [2.1.1] - 2026-09-29
 
 ### Bug Fixes
 
 - Normalize CHANGELOG EOF after git-cliff regeneration
 
+### Miscellaneous
+
+- V2.1.1
 ## [2.1.0] - 2026-09-29
 
 ### Bug Fixes
@@ -56,7 +64,6 @@ All notable changes to this project will be documented in this file.
 ### Tests
 
 - RP-CITATION-03/04 hardening from the S2H8I7HY self-audit
-
 ## [2.0.12] - 2026-08-25
 
 ### Documentation
@@ -66,7 +73,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V2.0.12
-
 ## [2.0.11] - 2026-08-25
 
 ### Documentation
@@ -76,7 +82,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V2.0.11
-
 ## [2.0.10] - 2026-08-25
 
 ### Documentation
@@ -88,7 +93,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V2.0.10
-
 ## [2.0.9] - 2026-08-25
 
 ### Bug Fixes
@@ -116,7 +120,6 @@ All notable changes to this project will be documented in this file.
 ### Tests
 
 - Stop the BOM guard narrowing silently; correct a fabricated timestamp
-
 ## [2.0.8] - 2026-08-18
 
 ### Documentation
@@ -142,7 +145,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V2.0.8
-
 ## [2.0.7] - 2026-08-16
 
 ### Bug Fixes
@@ -158,7 +160,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V2.0.7
-
 ## [2.0.6] - 2026-08-14
 
 ### Bug Fixes
@@ -172,7 +173,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V2.0.6
-
 ## [2.0.5] - 2026-08-14
 
 ### Bug Fixes
@@ -190,7 +190,6 @@ All notable changes to this project will be documented in this file.
 ### Tests
 
 - Guard the v2.1.232 claims in both directions (TRDD-P9KVMK5A)
-
 ## [2.0.4] - 2026-08-11
 
 ### Miscellaneous
@@ -200,7 +199,6 @@ All notable changes to this project will be documented in this file.
 ### Tests
 
 - Commit the negative controls — mine only ever ran by hand
-
 ## [2.0.3] - 2026-08-11
 
 ### Bug Fixes
@@ -210,7 +208,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V2.0.3
-
 ## [2.0.2] - 2026-08-11
 
 ### Miscellaneous
@@ -220,7 +217,6 @@ All notable changes to this project will be documented in this file.
 ### Tests
 
 - Bind rule TEXT to its version, and cover .py citations
-
 ## [2.0.1] - 2026-08-11
 
 ### Bug Fixes
@@ -244,7 +240,6 @@ All notable changes to this project will be documented in this file.
 - Gate the skill menu against the shipped skill set (RP-SKILL-MENU-01)
 
 - Gate PRRD citation integrity, and fix the one it found
-
 ## [2.0.0] - 2026-08-08
 
 ### Bug Fixes
@@ -262,7 +257,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V2.0.0
-
 ## [1.4.7] - 2026-07-24
 
 ### Bug Fixes
@@ -290,7 +284,6 @@ All notable changes to this project will be documented in this file.
 - Rewire 3-pillars onto granular ama-* + repurpose wrapper as MEMBER policy (TRDD-I8AH88SS)
 
 - Migrate persona to min-approval-requirement + granular ama-* wiring (TRDD-K2X9RF7S)
-
 ## [1.4.6] - 2026-07-14
 
 ### Documentation
@@ -304,7 +297,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V1.4.6
-
 ## [1.4.5] - 2026-07-14
 
 ### Documentation
@@ -334,7 +326,6 @@ All notable changes to this project will be documented in this file.
 ### Ci
 
 - Least-privilege permissions + job timeouts on all workflows (TRDD-e39a6aa8)
-
 ## [1.4.4] - 2026-06-22
 
 ### Bug Fixes
@@ -358,7 +349,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V1.4.4
-
 ## [1.4.3] - 2026-06-20
 
 ### Features
@@ -368,7 +358,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V1.4.3
-
 ## [1.4.2] - 2026-06-20
 
 ### Bug Fixes
@@ -384,7 +373,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V1.4.2
-
 ## [1.4.1] - 2026-06-20
 
 ### Bug Fixes
@@ -398,7 +386,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V1.4.1
-
 ## [1.4.0] - 2026-06-19
 
 ### Bug Fixes
@@ -416,7 +403,6 @@ All notable changes to this project will be documented in this file.
 ### Tests
 
 - Add R23 + R6.6/R37.1 compliance guards (6 tests)
-
 ## [1.3.0] - 2026-06-15
 
 ### Features
@@ -426,7 +412,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - V1.3.0
-
 ## [1.2.0] - 2026-06-13
 
 ### Bug Fixes
@@ -458,7 +443,6 @@ All notable changes to this project will be documented in this file.
 - Keep CPV-direct pipeline; defer canon --force-templates (vendored-script conflict) (#17 / janitor#19)
 
 - V1.2.0
-
 ## [1.1.0] - 2026-06-11
 
 ### Bug Fixes
@@ -486,7 +470,6 @@ All notable changes to this project will be documented in this file.
 - Update uv.lock
 
 - V1.1.0
-
 ## [1.0.25] - 2026-04-13
 
 ### Miscellaneous
@@ -498,7 +481,6 @@ All notable changes to this project will be documented in this file.
 ### Ci
 
 - Fix notify-marketplace.yml to use canonical CPV workflow
-
 ## [1.0.24] - 2026-04-10
 
 ### Bug Fixes
@@ -548,7 +530,6 @@ All notable changes to this project will be documented in this file.
 - Add pre-push hook + update publish.py to strict mode with sentinel
 
 - Pre-push hook uses process ancestry instead of env var
-
 ## [1.0.22] - 2026-03-26
 
 ### Bug Fixes
@@ -556,7 +537,6 @@ All notable changes to this project will be documented in this file.
 - Target Emasoft fork for marketplace notifications
 
 - Resolve all CPV MINOR issues (TOC embedding, checklists, examples)
-
 ## [1.0.21] - 2026-03-26
 
 ### Bug Fixes
@@ -676,7 +656,6 @@ All notable changes to this project will be documented in this file.
 - Emasoft-programmer-agent → ai-maestro-programmer-agent
 
 - Replace all emasoft agent acronyms and references
-
 ## [1.0.1] - 2026-02-08
 
 ### Bug Fixes
