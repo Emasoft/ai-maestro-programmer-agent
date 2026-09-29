@@ -18,6 +18,12 @@ into a breach and the suite fails.
   the authority. The PRRD Tier-3 `USER` label is a fixed contract token (governed
   by ~/.claude/rules/trdd-approval-tiers.md) and is intentionally EXEMPT — the
   last test guards that we did not over-zealously rename it.
+
+SCOPE of the citation/text-hash gates (pinned-citation, rule-text hash): a green
+run asserts citations and rule VERSIONS only. Container-level stamps
+(`prrd-version:`, `updated:`) have no citation pointing at them and are invisible
+to these gates by construction — they need their own independent witness
+(tracked upstream on ai-maestro#145).
 """
 
 from __future__ import annotations
@@ -181,6 +187,11 @@ def _is_frozen_trdd(path: Path) -> bool:
     return bool(m and m.group(1) in _TERMINAL_COLUMNS)
 
 
+# The narration/grammar-example exemption classes from the ratified RP-CITATION
+# spec are deliberately UNIMPLEMENTED here, per the spec's own tiebreak: take the
+# checker that misses a real dangle over one that reds on a grammar example.
+
+
 def test_pinned_prrd_citations_resolve_to_a_live_rule_version() -> None:
     """Every version-pinned `PRRD G<n>.<v>` citation in living prose must still resolve.
 
@@ -218,6 +229,9 @@ def test_pinned_prrd_citations_resolve_to_a_live_rule_version() -> None:
         for p in (REPO_ROOT / d).rglob(pattern)
         if not _is_frozen_trdd(p) and p.resolve() != Path(__file__).resolve()
     ] + [REPO_ROOT / "README.md", REPO_ROOT / "CLAUDE.md"]
+    # Non-vacuity: a silently-empty corpus (glob drift, renamed dirs) must fail
+    # here, not pass an empty scan as green.
+    assert scanned, f"citation scan found no files to scan ({len(scanned)} scanned) — corpus glob has drifted"
 
     dangling: list[str] = []
     for path in scanned:
@@ -289,6 +303,12 @@ def _parse_rule_bodies(prrd: str) -> dict[str, str]:
 # fixture stops exercising it. C asserts the fixture can still TELL THE TWO
 # APART, so it fails the moment the fixture drifts to something undiscriminating.
 # Credit: the ORCHESTRATOR role-plugin, which found this gap in its own controls.
+#
+# Control D (naive parser installed end-to-end) was PERFORMED AND OBSERVED, not
+# committed: with `_broken_bodies` swapped in as the live parser, A and C went
+# red (3 failed) on the committed _FIXTURE_WRAPPED/_FIXTURE_TAIL_EDIT inputs,
+# measured at commit 2445f63. It is deliberately not a committed test because
+# installing the broken parser makes the suite red by construction.
 
 _BROKEN_PARSER = re.compile(r"^- \*\*([GS])(\d+)\.(\d+)\*\* — (.*)$", re.M)
 
