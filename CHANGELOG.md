@@ -1,6 +1,12 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.1.1] - 2026-09-29
+
+### Bug Fixes
+
+- Normalize CHANGELOG EOF after git-cliff regeneration
+
 ## [2.1.0] - 2026-09-29
 
 ### Bug Fixes
@@ -42,6 +48,8 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - Normalize publish-globally on PROJECT wikimem pages
+
+- V2.1.0
 
 - V2.1.0
 
