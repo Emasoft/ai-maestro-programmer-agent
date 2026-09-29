@@ -1,5 +1,7 @@
 # AI Maestro Programmer Agent (AMPA)
 
+![version](https://img.shields.io/badge/version-2.0.12-blue)
+
 A general-purpose, multi-language programmer agent for Claude Code that
 implements, tests, fixes, and documents code across Python,
 JavaScript/TypeScript, Rust, Go, and other toolchains — either standalone or
@@ -473,7 +475,7 @@ None of the above required an AMPA code change. The next table did.
 | **AGENTS.md is read when a project has no CLAUDE.md (toggle in /config)** | AMPA ships no AGENTS.md and keys no workflow on one; projects AMPA works in gain a fallback instruction file, which changes nothing the plugin declares | v2.1.277 |
 | **`"attribution": false` setting hides commit/PR attribution; plugin hook-failure errors name the plugin** | No repo anchor — AMPA sets no attribution default (grep → 1 hit, unrelated prose about review replies, 2026-09-29). Named-plugin hook errors are strictly better diagnostics; AMPA registers no hooks (`hooks/hooks.json` is empty by design) | v2.1.281 |
 | **`/doctor` prompt-audit scans CLAUDE.md/skills/agents/commands for outdated prompting patterns; `claude plugin validate` gains MCP-server checks and reserved-name enforcement** | Tooling-side. Running the audit over AMPA's six skills and agent prompt is the cheap drift check; AMPA declares no MCP server in its manifest (verified) and its names pass the existing reserved/invisible-character guards in `tests/test_primary_skills.py` | v2.1.283 |
-| **Only official/vouched plugin sources keep `allowed-tools` pre-approval under `allowManagedPermissionRulesOnly`** | Enterprise-mode constraint only: with that setting on, AMPA (a third-party marketplace plugin) loses pre-approval for the one skill declaring `allowed-tools` (`skills/ampa-prrd-trdd-kanban/SKILL.md:6`), so its git-scoped Bash calls prompt for permission. Outside enterprise mode nothing changes. Recorded so a prompt there is not debugged as a defect | v2.1.284 |
+| **Only official/vouched plugin sources keep `allowed-tools` pre-approval under `allowManagedPermissionRulesOnly`** | Enterprise-mode constraint only: with that setting on, AMPA (a third-party marketplace plugin) loses pre-approval for the one skill declaring an `allowed-tools` frontmatter line (`skills/ampa-prrd-trdd-kanban/SKILL.md` — the only hit repo-wide, 2026-09-29), so its Bash calls prompt for permission. Outside enterprise mode nothing changes. Recorded so a prompt there is not debugged as a defect | v2.1.284 |
 
 ## See Also
 
