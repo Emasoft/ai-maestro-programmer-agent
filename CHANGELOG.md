@@ -1,11 +1,20 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.1.3] - 2026-09-29
+
+### Tests
+
+- Pin the embedded cliff template tail against EOF blank runs
 ## [2.1.2] - 2026-09-29
 
 ### Bug Fixes
 
 - Stop the cliff template emitting the EOF blank run (template altitude)
+
+### Miscellaneous
+
+- V2.1.2
 ## [2.1.1] - 2026-09-29
 
 ### Bug Fixes
