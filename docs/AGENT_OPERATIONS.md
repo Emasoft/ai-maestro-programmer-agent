@@ -500,6 +500,11 @@ grouping licensed by 3P-KAN-03):
 dev` on failure). The INTEGRATOR owns the `→ complete` flip; blocking is the
 `blocked` column with `blocked-by:`, not a label.
 
+Board reads/writes go through the `ama-*` pillar skills; when those skills are
+unavailable, the standalone `trddgrep` / `prrdgrep` / `specgrep` CLIs operate
+the same files. The policy layer for when and how to touch TRDD/PRRD/spec
+files lives in `skills/ampa-prrd-trdd-kanban/SKILL.md`.
+
 ---
 
 ## Scripts Reference
