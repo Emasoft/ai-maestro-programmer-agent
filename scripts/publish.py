@@ -899,6 +899,12 @@ def run_git_cliff(root: Path, new_version: str) -> str:
         ],
         cwd=root,
     )
+    # Normalize the regenerated CHANGELOG: cliff's template emits a trailing
+    # blank-line run at EOF, and MD012 (strict-gate NIT) reds on it. Hand
+    # fixes do not survive regeneration, so the guarantee lives HERE —
+    # post-cliff, before any later step lints or commits the file.
+    changelog = root / "CHANGELOG.md"
+    changelog.write_text(changelog.read_text(encoding="utf-8").rstrip("\n") + "\n", encoding="utf-8")
     print(f"{GREEN}ok CHANGELOG.md generated for v{new_version}{NC}")
 
     # 2. Extract the latest-only body for the GitHub release notes. We use
