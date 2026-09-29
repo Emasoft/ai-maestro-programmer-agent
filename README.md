@@ -1,6 +1,6 @@
 # AI Maestro Programmer Agent (AMPA)
 
-![version](https://img.shields.io/badge/version-2.0.12-blue)
+![version](https://img.shields.io/badge/version-2.1.0-blue)
 
 A general-purpose, multi-language programmer agent for Claude Code that
 implements, tests, fixes, and documents code across Python,
