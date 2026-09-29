@@ -274,12 +274,12 @@ state-type: work-state
 
 # Implement YAML Parser - Work State
 
-## Task Summary
+### Task Summary
 
 Implementing a YAML configuration parser with schema validation per AMOA
 delegation.
 
-## Current Progress
+### Current Progress
 
 ### Requirements Status
 
@@ -294,7 +294,7 @@ delegation.
 - Phase 2 (Implementation): IN_PROGRESS (requirement 2)
 - Phase 3 (Refactoring): PENDING
 
-## Checkpoints
+### Checkpoints
 
 **Last Updated:** 2025-02-06T14:45:00Z
 
@@ -354,7 +354,7 @@ def validate_against_schema(data: dict, schema_path: str) -> bool:
 4. **Gotcha to remember**: Schema path is relative to project root, not caller
    location
 
-## Codebase State
+### Codebase State
 
 ### Modified Files
 
@@ -364,7 +364,7 @@ def validate_against_schema(data: dict, schema_path: str) -> bool:
 | `tests/unit/test_yaml_parser.py` | Complete    | 12 tests, 7 waiting for implementation |
 | `src/errors.py`                  | Complete    | Added SchemaValidationError            |
 
-## Notes
+### Notes
 
 - The existing JSON parser in `src/parsers/json_parser.py` has a similar
   validation function that can be referenced
@@ -388,10 +388,10 @@ state-type: work-state
 
 # Refactor Config Loader - Work State
 
-## Task Summary
+### Task Summary
 Refactoring the config loader to support multiple file formats. About to make a significant architectural change.
 
-## Current Progress
+### Current Progress
 
 ### Requirements Status
 1. [x] Abstract base class for loaders
@@ -405,7 +405,7 @@ Refactoring the config loader to support multiple file formats. About to make a 
 - Phase 2 (Implementation): VALIDATED (requirements 1-3)
 - Phase 3 (Refactoring): IN_PROGRESS
 
-## Checkpoints
+### Checkpoints
 
 **Last Updated:** 2025-02-06T16:30:00Z
 
@@ -447,7 +447,7 @@ Current HEAD: abc123def (all tests green)
 4. **Gotcha to remember**: The TOML loader needs tomllib (Python 3.11+) or tomli
    fallback
 
-## Notes
+### Notes
 
 - SAVING STATE BEFORE RISKY CHANGE
 - If the factory implementation breaks things, can restore from current state

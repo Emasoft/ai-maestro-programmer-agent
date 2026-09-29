@@ -144,7 +144,7 @@ Follow `op-report-missing-derived-trdd` (`ampa-orchestrator-communication`).
 
 This skill operates under the AI Maestro **approval requirements** — the
 `min-approval-requirement:` ladder `none` (Tier-0 self-authority for in-scope work
-+ DERIVED NPT/EHT tasks, authored directly as a self-mandate) → `chief-of-staff` →
+and DERIVED NPT/EHT tasks, authored directly as a self-mandate) → `chief-of-staff` →
 `manager` → `user`. (`approval-tier:` is the deprecated, decode-only predecessor:
 `0→none, 1→chief-of-staff, 2→manager, 3→user`; never write it on a new TRDD.)
 See `~/.claude/rules/trdd-approval-tiers.md` for which transitions need approval.

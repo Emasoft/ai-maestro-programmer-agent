@@ -341,23 +341,23 @@ affected-files:
 
 # IndexError on Empty YAML Input
 
-## Summary
+### Summary
 
 The `parse_config()` function raises an `IndexError` instead of a proper
 `YamlParseError` when given empty or whitespace-only YAML input. This affects
 error handling and makes debugging harder for users.
 
-## Expected Behavior
+### Expected Behavior
 
 When given empty input, the parser should raise a `YamlParseError` with a clear
 message like "Empty or invalid YAML input".
 
-## Actual Behavior
+### Actual Behavior
 
 The parser raises `IndexError: list index out of range` from an internal
 function, exposing implementation details.
 
-## Reproduction Steps
+### Reproduction Steps
 
 1. Import the parser: `from src.parsers.yaml_parser import parse_config`
 2. Call with empty string: `parse_config("")`
@@ -368,7 +368,7 @@ function, exposing implementation details.
 - Python version: 3.12.1
 - OS: macOS 14.2
 
-## Minimal Reproduction
+### Minimal Reproduction
 
 ```python
 from src.parsers.yaml_parser import parse_config
@@ -378,7 +378,7 @@ parse_config("   ")  # Also raises IndexError
 ```
 ````
 
-## Error Output
+### Error Output
 
 ```
 Traceback (most recent call last):
@@ -387,12 +387,12 @@ Traceback (most recent call last):
 IndexError: list index out of range
 ```text
 
-## Root Cause Analysis
+### Root Cause Analysis
 
 The `tokenize()` function returns an empty list for empty input, but
 `parse_config()` accesses `tokens[0]` without checking if the list is empty.
 
-## Proposed Fix
+### Proposed Fix
 
 ```python
 def parse_config(yaml_string: str) -> Config:
@@ -402,7 +402,7 @@ def parse_config(yaml_string: str) -> Config:
     # ... rest of function
 ```
 
-## Related Items
+### Related Items
 
 - **Source file**: `src/parsers/yaml_parser.py` (line 47)
 - **Missing test**: `test_parse_empty_input`
@@ -427,16 +427,16 @@ affected-files:
 
 # Path Traversal Vulnerability in File Loader
 
-## Summary
+### Summary
 The `load_config_file()` function does not sanitize file paths, allowing attackers to read arbitrary files outside the allowed configuration directory using parent-directory (`..`) traversal sequences.
 
-## Expected Behavior
+### Expected Behavior
 File paths should be validated to ensure they remain within the allowed configuration directory. Attempts to access files outside this directory should raise a `SecurityError`.
 
-## Actual Behavior
+### Actual Behavior
 Any file path is accepted and loaded, including paths with `..` sequences that escape the intended directory.
 
-## Reproduction Steps
+### Reproduction Steps
 
 1. Place a marker file OUTSIDE the allowed config dir, e.g. `/tmp/probe/outside-marker.txt`
 2. Call `load_config_file` with a `..`-relative path that resolves to that marker file
@@ -446,7 +446,7 @@ Any file path is accepted and loaded, including paths with `..` sequences that e
 - Python version: 3.12.1
 - OS: Any Unix-like system
 
-## Minimal Reproduction
+### Minimal Reproduction
 
 ```python
 import os
@@ -464,14 +464,14 @@ with open("/tmp/probe/outside-marker.txt", "w") as fh:
 escape = os.path.join(*([os.pardir] * 6), "tmp", "probe", "outside-marker.txt")
 content = load_config_file(escape)
 print(content)  # Prints ESCAPED-THE-CONFIG-DIR — the loader left its sandbox!
-````
+```
 
-## Root Cause Analysis
+### Root Cause Analysis
 
 The `load_config_file()` function uses `open(path, 'r')` directly without
 validating that the resolved path is within the allowed directory.
 
-## Proposed Fix
+### Proposed Fix
 
 ```python
 import os
@@ -490,12 +490,12 @@ def load_config_file(path: str) -> str:
         return f.read()
 ```
 
-## Related Items
+### Related Items
 
 - **Source file**: `src/loaders/file_loader.py` (lines 10-15)
 - **Security documentation**: OWASP Path Traversal
 
-```text
+````
 
 ## Error Handling
 

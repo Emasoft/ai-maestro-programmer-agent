@@ -130,7 +130,7 @@ If the task is NOT found in the kanban:
 ### Step 1.5: Answer the Task-Comprehension Handshake (NOT a bare ACK)
 
 **The task-comprehension handshake (loop (a) of the corrected workflow model /
-#17 M7a) replaces the bare "Task received" acknowledgment.** Coding MUST NOT
+issue 17 M7a) replaces the bare "Task received" acknowledgment.** Coding MUST NOT
 start until you have answered ALL FIVE handshake points and AMOA has confirmed
 your understanding. A bare ACK tells the orchestrator nothing about whether you
 understood the task — the handshake catches misunderstandings BEFORE tokens are
