@@ -1,11 +1,63 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.1.0] - 2026-09-29
+
+### Bug Fixes
+
+- Bind plugin step outputs to env in notify-marketplace summary
+
+- Resolve review findings on the 3-pillars CLI fallback section
+
+- Clear the 8 strict-gate markdownlint NITs
+
+- Last two strict-gate NITs — CHANGELOG EOF blanks + duplicate Resume Context
+
+### Documentation
+
+- Add TRDD-S2H8I7HY — backburner self-audit vs ratified RP-CITATION-04
+
+- Record USER directive — this session is not an ai-maestro agent
+
+- Realign to Claude Code v2.1.241-v2.1.248 (TRDD-1413FCYF)
+
+- Archive TRDD-1413FCYF as complete
+
+- Record TRDD-1413FCYF close details missed by 94b7783
+
+- Realign to Claude Code v2.1.249-v2.1.284
+
+- Archive TRDD-S2H8I7HY as complete (TRDD-S2H8I7HY)
+
+- Cite allowed-tools skill by property, not line number (TRDD-1413FCYF convention)
+
+- Scope the allowed-tools uniqueness claim to what was grepped
+
+- Pipeline drift fixes + docs currency (CPV audit follow-through)
+
+### Features
+
+- Document trddgrep/prrdgrep/specgrep CLI fallback + memgrep recall in agent
+
+### Miscellaneous
+
+- Normalize publish-globally on PROJECT wikimem pages
+
+- V2.1.0
+
+### Tests
+
+- RP-CITATION-03/04 hardening from the S2H8I7HY self-audit
+
 ## [2.0.12] - 2026-08-25
 
 ### Documentation
 
 - Purge data-shaped pre-3.0.0 column enumerations (TRDD-GOE2B4XJ follow-up 2)
+
+### Miscellaneous
+
+- V2.0.12
 
 ## [2.0.11] - 2026-08-25
 
@@ -640,3 +692,5 @@ All notable changes to this project will be documented in this file.
 ### Tests
 
 - Verify push script
+
+
