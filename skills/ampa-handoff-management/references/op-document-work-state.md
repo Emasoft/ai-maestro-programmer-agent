@@ -315,7 +315,7 @@ delegation.
 ```
 ````
 
-### Resume Context
+#### Resume Context
 
 - **Current focus**: Implementing `validate_against_schema()` function
 - **Next action**: Add jsonschema validation logic to the function stub
@@ -421,7 +421,7 @@ Refactoring the config loader to support multiple file formats. About to make a 
 }
 ````
 
-### Resume Context
+#### Resume Context
 
 - **Current focus**: About to implement loader factory pattern
 - **Next action**: Create LoaderFactory class in src/loaders/factory.py
