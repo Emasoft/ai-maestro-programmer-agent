@@ -1,7 +1,16 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [2.1.4] - 2026-09-29
+
+### Tests
+
+- Scope the backslash assert to the body tail + fail on ambiguous target
 ## [2.1.3] - 2026-09-29
+
+### Miscellaneous
+
+- V2.1.3
 
 ### Tests
 
