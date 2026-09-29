@@ -23,6 +23,7 @@ TRDD-UMRQ84S9.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -116,3 +117,30 @@ def test_never_calls_claude_plugin_tag() -> None:
     assert '"plugin", "tag"' not in PUBLISH_SRC, (
         "do not call `claude plugin tag` — its positional arg is a path, not a tag name"
     )
+
+
+def test_embedded_cliff_template_body_has_no_trailing_blank_line() -> None:
+    """The embedded default cliff template must not emit a trailing blank run at EOF.
+
+    The pipeline normalizes the regenerated CHANGELOG post-cliff (belt-and-suspenders),
+    but a bare `git-cliff -o CHANGELOG.md` outside the pipeline reads the template
+    directly — if its body ends in a blank line, MD012 re-imports the defect that CI
+    red on the v2.1.0 tag. Parse the '''-string the way Python evaluates it (AST, not
+    regex over source — the escapes are the trap) and assert the body template's tail.
+    """
+    import ast as _ast
+
+    tree = _ast.parse(PUBLISH_SRC)
+    default = None
+    for node in _ast.walk(tree):
+        if isinstance(node, _ast.Assign):
+            for target in node.targets:
+                if getattr(target, "id", None) == "default":
+                    default = node.value.value
+    assert default is not None, "embedded cliff default template not found in publish.py"
+    body = re.search(r'body = """(.*?)"""', default, re.S).group(1)
+    assert not body.endswith("\n\n"), (
+        "embedded cliff template body ends with a blank line — a bare git-cliff run "
+        "regenerates CHANGELOG.md with an MD012 EOF defect"
+    )
+    assert "\\" not in body, "embedded cliff template body carries a literal backslash"
