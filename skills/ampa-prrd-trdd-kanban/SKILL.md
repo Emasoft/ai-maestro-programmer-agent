@@ -6,7 +6,7 @@ compatibility: Uses the core granular ama-* pillar skills (ai-maestro-plugin >=3
 allowed-tools: "Bash(git:*), Read, Edit, Write, Grep, Glob"
 metadata:
   author: "Emasoft"
-  version: "1.2.0"
+  version: "1.3.0"
 argument-hint: "[TRDD-id8]"
 ---
 
@@ -46,6 +46,20 @@ allow-list; do not re-implement them here):
 | Find TRDDs | `ama-trdd-find` | read — every role |
 | Render the kanban board | `ama-kanban-render` | read — every role |
 | Approve / refuse / archive proposals | `ama-proposal-approvals` | **read / list ONLY**; never invoke the decision verbs |
+
+### Standalone CLI fallback — `trddgrep` / `prrdgrep` / `specgrep`
+
+When the core `ama-*` skills are unavailable (standalone session, no
+`ai-maestro-plugin` installed), run the same mechanics through the standalone
+3-pillars CLIs shipped at `~/.local/bin`: **`trddgrep`** (18 verbs over the
+TRDD kanban), **`prrdgrep`** (6 verbs over the PRRD), **`specgrep`** (6 verbs
+over specs). There is **no kanban CLI — the board IS `trddgrep`** (PRRD G12.1).
+Reads: `trddgrep show <id>`, `trddgrep next`, `trddgrep why <id>`, pattern
+search. Writes: `trddgrep set` / `append` / `move` / `check-box` / `edit`
+(guarded `--expect` / `--replace`). Every card write goes through a
+`trddgrep` / `prrdgrep` / `specgrep` verb — never hand-edit a card or its
+frontmatter. When both are available, the `ama-*` table above stays primary
+and the CLIs are the direct-access complement.
 
 ## Prerequisites
 

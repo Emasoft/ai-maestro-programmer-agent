@@ -127,6 +127,11 @@ sub-agent you spawn (sub-agents inherit nothing):
 - **Scope:** private → LOCAL; project-shared → PROJECT
   (`.claude/project/memory/`); cross-project → USER; unsure → LOCAL.
 
+Recall runs through the **`memgrep`** CLI over the janitor wikimem stores —
+`memgrep recall "<symptom>" <memdirs>` across the three scopes (use the fixed
+zsh array form from `CLAUDE.md`); the `/janitor-memory-*` skills above are the
+friendly wrapper over the same write/update verbs.
+
 When you spawn a sub-agent that will debug / design / solve, copy this contract
 into its prompt. Do **not** use per-plugin memory skills — they were removed in
 favor of the global system (#18).
