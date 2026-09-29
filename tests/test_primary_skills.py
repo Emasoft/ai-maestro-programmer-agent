@@ -388,7 +388,7 @@ def test_agent_preload_list_matches_shipped_skills() -> None:
 
 
 # --------------------------------------------------------------------------
-# Claude Code v2.1.248 alignment.
+# Claude Code v2.1.284 alignment.
 #
 # v2.1.232 made non-teammate agent spawns run in the BACKGROUND by default in
 # interactive sessions, and gave `subagent_type: "fork"` subagents the full
@@ -411,9 +411,9 @@ def test_agent_preload_list_matches_shipped_skills() -> None:
 
 README_FILE = REPO_ROOT / "README.md"
 
-CLAUDE_CODE_ANCHOR = "v2.1.248"
-SUPERSEDED_ANCHOR = "v2.1.240"
-LATEST_TABLE_START = "v2.1.241"
+CLAUDE_CODE_ANCHOR = "v2.1.284"
+SUPERSEDED_ANCHOR = "v2.1.248"
+LATEST_TABLE_START = "v2.1.249"
 
 
 def _claim_drift(text: str, *, asserts: list[str], superseded: list[str]) -> list[str]:

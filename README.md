@@ -289,7 +289,7 @@ mode. `uvx` ships with [uv](https://docs.astral.sh/uv/).
 
 ## Compatibility with Recent Claude Code Releases
 
-AMPA is verified against Claude Code v2.1.105–**v2.1.248**. Most items below
+AMPA is verified against Claude Code v2.1.105–**v2.1.284**. Most items below
 describe **new platform capabilities** that AMPA users can opt into without
 changing the plugin — but four changes altered how AMPA *executes* and required
 fixes: two in the v2.1.184–v2.1.224 range, one in v2.1.232, and one in v2.1.239.
@@ -464,6 +464,16 @@ None of the above required an AMPA code change. The next table did.
 | **New `SendFeedback` tool: Claude can draft a feedback report for the user to send from `/feedback`; the `feedbackDrafts` setting turns it off** | No repo anchor — AMPA declares no tool allowlist this would touch (grep "feedback" → only PR-review-feedback hits, 2026-08-28). A drafted report is queued locally and never sent without the user, so it crosses no AMP boundary | v2.1.247 |
 | **Fixed: a hook or background agent that printed megabytes of error output could overflow the conversation and wedge the session on "Prompt is too long"** | Already defended by design, and worth recording as such: all six `ampa-task-execution` reference procedures carry the same Token rule — *"write all command output to a report file; return only a 2-3 line summary + file path"* (e.g. `references/op-implement-code.md:17-18`) — so AMPA never returned raw command output to its caller in the first place | v2.1.247 |
 | **Sonnet 5's default auto-compact window is now its full 1M context (auto-compacts at ~967K instead of ~934K)** | No repo anchor — AMPA pins no `model:` and asserts no auto-compact threshold (grep → 0 hits, 2026-08-28), so it inherits the wider window wherever the operator runs it | v2.1.247 |
+
+### v2.1.249 – v2.1.284 — two new model defaults, no Breaking change
+
+| Change | What it means for AMPA | Version |
+| ------ | ----------------------- | ------- |
+| **Claude Opus 5.5 (`claude-opus-5-5`) is the new default Opus model (v2.1.280); Claude Sonnet 5.5 (`claude-sonnet-5-5`) the new default Sonnet (v2.1.284); both carry 1M context** | No repo anchor — AMPA pins no `model:` and no model ID anywhere (grep `claude-(opus|sonnet|haiku)-[0-9]` → 0 hits, 2026-09-29), so it inherits the session default. The §Effort bullet's "carried forward to Opus 4.8" phrasing records when `xhigh` was introduced and stays as written; the current defaults are Opus 5.5 and Sonnet 5.5 | v2.1.280 / v2.1.284 |
+| **AGENTS.md is read when a project has no CLAUDE.md (toggle in /config)** | AMPA ships no AGENTS.md and keys no workflow on one; projects AMPA works in gain a fallback instruction file, which changes nothing the plugin declares | v2.1.277 |
+| **`"attribution": false` setting hides commit/PR attribution; plugin hook-failure errors name the plugin** | No repo anchor — AMPA sets no attribution default (grep → 1 hit, unrelated prose about review replies, 2026-09-29). Named-plugin hook errors are strictly better diagnostics; AMPA registers no hooks (`hooks/hooks.json` is empty by design) | v2.1.281 |
+| **`/doctor` prompt-audit scans CLAUDE.md/skills/agents/commands for outdated prompting patterns; `claude plugin validate` gains MCP-server checks and reserved-name enforcement** | Tooling-side. Running the audit over AMPA's six skills and agent prompt is the cheap drift check; AMPA declares no MCP server in its manifest (verified) and its names pass the existing reserved/invisible-character guards in `tests/test_primary_skills.py` | v2.1.283 |
+| **Only official/vouched plugin sources keep `allowed-tools` pre-approval under `allowManagedPermissionRulesOnly`** | Enterprise-mode constraint only: with that setting on, AMPA (a third-party marketplace plugin) loses pre-approval for the one skill declaring `allowed-tools` (`skills/ampa-prrd-trdd-kanban/SKILL.md:6`), so its git-scoped Bash calls prompt for permission. Outside enterprise mode nothing changes. Recorded so a prompt there is not debugged as a defect | v2.1.284 |
 
 ## See Also
 
